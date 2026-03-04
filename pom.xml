@@ -6,7 +6,6 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Spring Boot Parent -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -25,21 +24,14 @@
     </properties>
 
     <dependencies>
-
-        <!-- ========================= -->
-        <!-- Spring Boot Starters      -->
-        <!-- ========================= -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-
-        <!-- JSP 지원 -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
@@ -53,34 +45,22 @@
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>2.3.3</version>
         </dependency>
-
-        <!-- ========================= -->
-        <!-- MyBatis                    -->
-        <!-- ========================= -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.2.0</version>
         </dependency>
-
-        <!-- ========================= -->
-        <!-- Database                   -->
-        <!-- ========================= -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
             <scope>runtime</scope>
         </dependency>
-
-        <!-- ========================= -->
-        <!-- 기타                       -->
-        <!-- ========================= -->
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-
     </dependencies>
 
     <build>
@@ -91,5 +71,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
