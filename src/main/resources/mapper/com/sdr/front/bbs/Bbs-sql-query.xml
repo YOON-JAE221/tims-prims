@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="bbs">
+	
+	<!-- 게시판 ONE쿼리 -->
+    <select id="selectBbsBrdOne" parameterType="map" resultType="map">
+        SELECT A.BRD_CD
+             , A.BRD_PROP_BINARY
+             , A.BRD_NM
+             , A.BRD_LIST_URL
+          FROM TB_BBS_BRD A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           AND A.BRD_CD = #{brdCd}
+    </select>
+    
+    <select id="getSelectBbsNoticeList" parameterType="map" resultType="map">
+	    SELECT A.PST_CD
+	         , A.PST_NM
+	         , A.NOTICE_YN
+	         , A.RGT_USR_NM
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+	         , A.VIEW_CNT
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.NOTICE_YN = 'Y'
+	     ORDER BY A.IDX DESC
+	</select>
+	
+	<!-- 게시글 쿼리 -->
+    <select id="getSelectBbsPstList" parameterType="map" resultType="map">
+        SELECT A.PST_CD
+             , A.PST_NM
+             , A.PST_CNTS
+             , A.BRD_CD
+             , A.PST_LVL
+             , A.ROT_PST_CD
+             , A.RGT_USR_NM
+             , A.NOTICE_YN
+             , A.THUMB_URL
+             , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , B.BRD_PROP_BINARY
+             , B.BRD_NM
+          FROM TB_BBS_PST A
+         INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN = 'N' AND B.USE_YN = 'Y'
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           AND A.BRD_CD = #{brdCd}
+           AND A.NOTICE_YN = 'N'
+           <if test="searchType == 'title' and keyword != null and keyword != ''">
+	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+	       <if test="searchType == 'content' and keyword != null and keyword != ''">
+	       AND A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+         ORDER BY A.IDX DESC
+         LIMIT #{offset}, #{pageSize}
+    </select>
+    
+    <!-- 게시글 총 건수 -->
+	<select id="getSelectBbsPstCount" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.NOTICE_YN = 'N'
+	       <if test="searchType == 'title' and keyword != null and keyword != ''">
+	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+	       <if test="searchType == 'content' and keyword != null and keyword != ''">
+	       AND A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+	</select>
+
+	<!-- 게시글 상세 ONE쿼리 -->
+    <select id="getSelectBbsPstDetail" parameterType="map" resultType="map">
+        SELECT A.PST_CD
+             , A.PST_NM
+             , A.PST_CNTS
+             , A.BRD_CD
+             , A.PST_LVL
+             , A.NOTICE_YN
+             , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
+             , A.ROT_PST_CD
+             , A.RGT_USR_NM
+             , A.RGT_EMAIL
+             , A.RGT_PHONE
+             , A.ATCH_FILE_KEY
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+          FROM TB_BBS_PST A
+         INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN = 'N' AND B.USE_YN = 'Y'
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           AND A.BRD_CD = #{brdCd}
+           AND A.PST_CD = #{pstCd}
+    </select>
+    
+    <!-- 게시글 저장 (등록/수정 머지) -->
+	<update id="saveBbsPst" parameterType="map">
+		  INSERT INTO TB_BBS_PST (
+		      BRD_CD
+		    , PST_CD
+		    , PST_NM
+		    , PST_CNTS
+		    , PST_LVL
+		    , ROT_PST_CD
+		    , UPR_PST_CD
+		    , NOTICE_YN
+		    , RGT_USR_CD
+		    , RGT_USR_NM
+		    <if test="rgtEmail != null and rgtEmail != ''">
+		    , RGT_EMAIL
+		    </if>
+		    <if test="rgtPhone != null and rgtPhone != ''">
+		    , RGT_PHONE
+		    </if>
+		    <if test="secretYn != null and secretYn != ''">
+		    , SECRET_YN
+		    </if>
+		    <if test="secretPwd != null and secretPwd != ''">
+		    , SECRET_PWD
+		    </if>
+		    , RGT_DTM
+		    , ATCH_FILE_KEY
+		    , ATCH_FILE_TYPE
+		    , VIEW_CNT
+		    , IDX
+		    , THUMB_URL
+		    , USE_YN
+		    , DEL_YN
+		    , CRE_USR_CD
+		    , CRE_DTM
+		    , UPD_USR_CD
+		    , UPD_DTM
+		  ) VALUES (
+		      #{brdCd}
+		    , #{pstCd}
+		    , #{pstNm}
+		    , #{pstCnts}
+		    , IFNULL(#{pstLvl}, 0)
+		    , #{rotPstCd}
+		    , #{uprPstCd}
+		    , IFNULL(#{noticeYn}, 'N')
+		    , #{ssnUsrCd}
+		    , #{rgtUsrNm}
+		    <if test="rgtEmail != null and rgtEmail != ''">
+		    , #{rgtEmail}
+		    </if>
+		    <if test="rgtPhone != null and rgtPhone != ''">
+		    , #{rgtPhone}
+		    </if>
+		    <if test="secretYn != null and secretYn != ''">
+		    , #{secretYn}
+		    </if>
+		    <if test="secretPwd != null and secretPwd != ''">
+		    , F_COM_ENCRYPT(TRIM(#{secretPwd}), #{encryptKey})
+		    </if>
+		    , SYSDATE()
+		    , #{atchFileKey}
+		    , 0
+		    , 0
+		    , (SELECT IFNULL(MAX(T.IDX), 0) + 1 FROM TB_BBS_PST T WHERE T.BRD_CD = #{brdCd})
+		    , #{thumbUrl}
+		    , 'Y'
+		    , 'N'
+		    , #{ssnUsrCd}
+		    , SYSDATE()
+		    , #{ssnUsrCd}
+		    , SYSDATE()
+		  )
+		  ON DUPLICATE KEY UPDATE
+		      PST_NM        = #{pstNm}
+		    , PST_CNTS      = #{pstCnts}
+		    , THUMB_URL 	= #{thumbUrl}
+		    , NOTICE_YN     = IFNULL(#{noticeYn}, 'N')
+		    <if test="rgtEmail != null and rgtEmail != ''">
+		    , RGT_EMAIL     = #{rgtEmail}
+		    </if>
+		    <if test="rgtPhone != null and rgtPhone != ''">
+		    , RGT_PHONE     = #{rgtPhone}
+		    </if>
+		    <if test="secretPwd != null and secretPwd != ''">
+		    , SECRET_PWD    = F_COM_ENCRYPT(TRIM(#{secretPwd}), #{encryptKey})
+		    </if>
+		    , UPD_USR_CD    = #{ssnUsrCd}
+		    , UPD_DTM       = SYSDATE()
+		    <if test="atchFileKey != null and atchFileKey != ''">
+		    , ATCH_FILE_KEY = #{atchFileKey}
+		    </if>
+	</update>
+	
+	<!-- 게시글 조회수 업데이트-->
+	<update id="updateViewCnt" parameterType="map">
+	    UPDATE TB_BBS_PST
+	       SET VIEW_CNT = IFNULL(VIEW_CNT, 0) + 1
+	     WHERE BRD_CD = #{brdCd}
+	       AND PST_CD = #{pstCd}
+	       AND DEL_YN = 'N'
+	</update>
+	
+	<!-- 비밀번호 확인 (문의게시판) -->
+	<select id="checkSecretPwd" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	      FROM TB_BBS_PST
+	     WHERE BRD_CD = #{brdCd}
+	       AND PST_CD = #{pstCd}
+	       AND DEL_YN = 'N'
+	       AND SECRET_PWD = F_COM_ENCRYPT(#{secretPwd}, #{encryptKey})
+	</select>
+
+	<!-- 답변 목록 조회 (문의게시판) -->
+	<select id="getSelectBbsReplyList" parameterType="map" resultType="map">
+	    SELECT A.PST_CD
+	         , A.PST_NM
+	         , A.PST_CNTS
+	         , A.PST_LVL
+	         , A.ROT_PST_CD
+	         , A.RGT_USR_NM
+	         , A.ATCH_FILE_KEY
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.ROT_PST_CD = #{pstCd}
+	       AND A.PST_LVL > 0
+	     ORDER BY A.IDX ASC
+	</select>
+
+	<!-- 문의게시판 전용 리스트 (계층형 정렬) -->
+	<select id="getSelectBbsQnaPstList" parameterType="map" resultType="map">
+	    SELECT A.PST_CD
+	         , A.PST_NM
+	         , A.BRD_CD
+	         , A.PST_LVL
+	         , A.ROT_PST_CD
+	         , A.RGT_USR_NM
+	         , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+	         , CASE WHEN A.PST_LVL = 0 THEN
+	             (SELECT COUNT(*) FROM TB_BBS_PST T
+	              WHERE T.BRD_CD = A.BRD_CD AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
+	                AND T.NOTICE_YN = 'N' AND T.PST_LVL = 0 AND T.IDX <![CDATA[<=]]> A.IDX)
+	           ELSE NULL END AS ROW_NUM
+	         , CASE WHEN A.PST_LVL = 0 THEN
+	             (SELECT COUNT(*) FROM TB_BBS_PST T
+	              WHERE T.BRD_CD = A.BRD_CD AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
+	                AND T.ROT_PST_CD = A.PST_CD AND T.PST_LVL > 0)
+	           ELSE 0 END AS REPLY_CNT
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.NOTICE_YN = 'N'
+	       <if test="searchType == 'title' and keyword != null and keyword != ''">
+	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	            OR A.ROT_PST_CD IN (
+	                SELECT T.PST_CD FROM TB_BBS_PST T
+	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
+	                   AND T.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	            ))
+	       </if>
+	       <if test="searchType == 'content' and keyword != null and keyword != ''">
+	       AND (A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	            OR A.ROT_PST_CD IN (
+	                SELECT T.PST_CD FROM TB_BBS_PST T
+	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
+	                   AND T.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	            ))
+	       </if>
+	     ORDER BY (SELECT T.IDX FROM TB_BBS_PST T WHERE T.PST_CD = A.ROT_PST_CD AND T.DEL_YN = 'N' LIMIT 1) DESC
+	            , A.PST_LVL ASC
+	            , A.IDX ASC
+	     LIMIT #{offset}, #{pageSize}
+	</select>
+
+	<!-- 문의게시판 전용 총 건수 -->
+	<select id="getSelectBbsQnaPstCount" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.NOTICE_YN = 'N'
+	       <if test="searchType == 'title' and keyword != null and keyword != ''">
+	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	            OR A.ROT_PST_CD IN (
+	                SELECT T.PST_CD FROM TB_BBS_PST T
+	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
+	                   AND T.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	            ))
+	       </if>
+	       <if test="searchType == 'content' and keyword != null and keyword != ''">
+	       AND (A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	            OR A.ROT_PST_CD IN (
+	                SELECT T.PST_CD FROM TB_BBS_PST T
+	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
+	                   AND T.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	            ))
+	       </if>
+	</select>
+
+	<!-- 문의게시판 원글만 건수 (번호 매기기용) -->
+	<select id="getSelectBbsQnaOriginalCount" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.NOTICE_YN = 'N'
+	       AND A.PST_LVL = 0
+	       <if test="searchType == 'title' and keyword != null and keyword != ''">
+	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+	       <if test="searchType == 'content' and keyword != null and keyword != ''">
+	       AND A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
+	       </if>
+	</select>
+
+	<!-- 게시글 논리 삭제 -->
+	<update id="updateBbsPstDelYn" parameterType="map">
+	    UPDATE TB_BBS_PST
+	       SET DEL_YN = 'Y'
+	         , USE_YN = 'N'
+	         , UPD_USR_CD = #{ssnUsrCd}
+	         , UPD_DTM = SYSDATE()
+	     WHERE BRD_CD = #{brdCd}
+	       AND PST_CD = #{pstCd}
+	       AND DEL_YN = 'N'
+	</update>
+    
+	<!-- 메인 엔지니어링 서비스 (게시판별 TOP 9, 조회수 DESC) -->
+	<select id="getSelectMainEngList" parameterType="map" resultType="map">
+	    SELECT T.PST_CD, T.PST_NM, T.BRD_CD, T.THUMB_URL, T.VIEW_CNT, T.RGT_DTM, T.BRD_NM
+	      FROM (
+	        SELECT A.PST_CD, A.PST_NM, A.BRD_CD, A.THUMB_URL,
+	               IFNULL(A.VIEW_CNT,0) AS VIEW_CNT,
+	               DATE_FORMAT(A.RGT_DTM,'%Y-%m-%d') AS RGT_DTM,
+	               B.BRD_NM,
+	               ROW_NUMBER() OVER (
+	                 PARTITION BY A.BRD_CD
+	                 ORDER BY A.VIEW_CNT DESC, A.IDX DESC
+	               ) AS RN
+	          FROM TB_BBS_PST A
+	         INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN='N' AND B.USE_YN='Y'
+	         WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y' AND A.NOTICE_YN = 'N' AND A.PST_LVL = 0
+	           AND A.BRD_CD IN (#{brdCdStra}, #{brdCdStre}, #{brdCdDise}, #{brdCdSafe},
+	                            #{brdCdSpfe}, #{brdCdTere}, #{brdCdVera}, #{brdCdSdse})
+	      ) T
+	     WHERE T.RN <![CDATA[<=]]> 9
+	</select>
+
+	</mapper>
+	
+	

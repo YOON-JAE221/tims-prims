@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMain">
+
+    <!-- 문의 통계 (오늘/미답변/이번달/전체) -->
+    <select id="getQnaSummary" resultType="map">
+        SELECT
+            /* 오늘 문의 */
+            (SELECT COUNT(*)
+               FROM TB_BBS_PST
+              WHERE DEL_YN = 'N' AND USE_YN = 'Y'
+                AND BRD_CD = '3ccd942dfcbf11f08771908d6ec6e544'
+                AND PST_LVL = 0 AND NOTICE_YN = 'N'
+                AND DATE(RGT_DTM) = CURDATE()
+            ) AS TODAY_CNT
+
+            /* 미답변 문의 */
+          , (SELECT COUNT(*)
+               FROM TB_BBS_PST A
+              WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+                AND A.BRD_CD = '3ccd942dfcbf11f08771908d6ec6e544'
+                AND A.PST_LVL = 0 AND A.NOTICE_YN = 'N'
+                AND NOT EXISTS (
+                    SELECT 1 FROM TB_BBS_PST R
+                     WHERE R.BRD_CD = A.BRD_CD AND R.ROT_PST_CD = A.PST_CD
+                       AND R.PST_LVL > 0 AND R.DEL_YN = 'N' AND R.USE_YN = 'Y'
+                )
+            ) AS UNANSWERED_CNT
+
+            /* 이번달 문의 */
+          , (SELECT COUNT(*)
+               FROM TB_BBS_PST
+              WHERE DEL_YN = 'N' AND USE_YN = 'Y'
+                AND BRD_CD = '3ccd942dfcbf11f08771908d6ec6e544'
+                AND PST_LVL = 0 AND NOTICE_YN = 'N'
+                AND DATE_FORMAT(RGT_DTM, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+            ) AS MONTH_CNT
+
+            /* 전체 문의 */
+          , (SELECT COUNT(*)
+               FROM TB_BBS_PST
+              WHERE DEL_YN = 'N' AND USE_YN = 'Y'
+                AND BRD_CD = '3ccd942dfcbf11f08771908d6ec6e544'
+                AND PST_LVL = 0 AND NOTICE_YN = 'N'
+            ) AS TOTAL_CNT
+    </select>
+
+    <!-- 최근 문의 10건 (미답변 우선) -->
+    <select id="getRecentQnaList" resultType="map">
+        SELECT A.PST_CD
+             , A.PST_NM
+             , A.RGT_USR_NM
+             , A.RGT_PHONE
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
+             , CASE WHEN EXISTS (
+                   SELECT 1 FROM TB_BBS_PST R
+                    WHERE R.BRD_CD = A.BRD_CD AND R.ROT_PST_CD = A.PST_CD
+                      AND R.PST_LVL > 0 AND R.DEL_YN = 'N' AND R.USE_YN = 'Y'
+               ) THEN 'Y' ELSE 'N' END AS REPLY_YN
+          FROM TB_BBS_PST A
+         WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+           AND A.BRD_CD = '3ccd942dfcbf11f08771908d6ec6e544'
+           AND A.PST_LVL = 0 AND A.NOTICE_YN = 'N'
+         ORDER BY REPLY_YN ASC, A.IDX DESC
+         LIMIT 10
+    </select>
+
+    <!-- 배치 현황 -->
+    <select id="getBatStatusList" resultType="map">
+        SELECT B.JOB_CD
+             , B.JOB_NM
+             , B.USE_YN
+             , B.LAST_EXEC_RSLT
+             , DATE_FORMAT(B.LAST_EXEC_DTM, '%Y-%m-%d %H:%i') AS LAST_EXEC_DTM
+             , (SELECT H.TGT_CNT FROM TB_BAT_HIST H
+                 WHERE H.JOB_CD = B.JOB_CD
+                 ORDER BY H.EXEC_START_DTM DESC LIMIT 1
+               ) AS LAST_TGT_CNT
+             , (SELECT H.PROC_CNT FROM TB_BAT_HIST H
+                 WHERE H.JOB_CD = B.JOB_CD
+                 ORDER BY H.EXEC_START_DTM DESC LIMIT 1
+               ) AS LAST_PROC_CNT
+          FROM TB_BAT B
+         WHERE B.DEL_YN = 'N'
+         ORDER BY B.CRE_DTM
+    </select>
+
+</mapper>

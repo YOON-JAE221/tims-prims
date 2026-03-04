@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="frontMain">
+
+	<!-- 메인 엔지니어링 서비스 (게시판별 TOP 9, 조회수 DESC) -->
+	<select id="getSelectMainEngList" parameterType="map" resultType="map">
+	    SELECT T.PST_CD, T.PST_NM, T.BRD_CD, T.THUMB_URL, T.VIEW_CNT, T.RGT_DTM, T.BRD_NM
+	      FROM (
+	        SELECT A.PST_CD, A.PST_NM, A.BRD_CD, A.THUMB_URL,
+	               IFNULL(A.VIEW_CNT,0) AS VIEW_CNT,
+	               DATE_FORMAT(A.RGT_DTM,'%Y-%m-%d') AS RGT_DTM,
+	               B.BRD_NM,
+	               ROW_NUMBER() OVER (
+	                 PARTITION BY A.BRD_CD
+	                 ORDER BY A.VIEW_CNT DESC, A.IDX DESC
+	               ) AS RN
+	          FROM TB_BBS_PST A
+	         INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN='N' AND B.USE_YN='Y'
+	         WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y' AND A.NOTICE_YN = 'N' AND A.PST_LVL = 0
+	           AND A.BRD_CD IN (#{brdCdStra}, #{brdCdStre}, #{brdCdDise}, #{brdCdSafe},
+	                            #{brdCdSpfe}, #{brdCdTere}, #{brdCdVera}, #{brdCdSdse})
+	      ) T
+	     WHERE T.RN <![CDATA[<=]]> 9
+	</select>
+
+	<!-- FO 활성 팝업 목록 (사용중 + 기간내 + 프론트용) -->
+	<select id="getSelectActivePopList" parameterType="map" resultType="map">
+	    SELECT A.POP_CD
+	         , A.POP_NM
+	         , A.POP_CNTS
+	         , A.POP_WIDTH
+	         , A.POP_HGT
+	         , A.POP_X_LOC
+	         , A.POP_Y_LOC
+	      FROM TB_POP A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.MENU_SYS_DIV = 'F'
+	       AND DATE_FORMAT(NOW(), '%Y%m%d') BETWEEN A.OPEN_START_DT AND A.OPEN_END_DT
+	     ORDER BY A.CRE_DTM DESC
+	</select>
+
+	</mapper>

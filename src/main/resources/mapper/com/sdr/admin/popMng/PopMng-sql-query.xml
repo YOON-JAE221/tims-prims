@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="popMng">
+
+	<!-- 팝업 리스트 -->
+	<select id="getSelectPopList" parameterType="map" resultType="map">
+	    SELECT A.POP_CD
+	         , A.POP_NM
+	         , A.POP_WIDTH
+	         , A.POP_HGT
+	         , A.POP_X_LOC
+	         , A.POP_Y_LOC
+	         , A.OPEN_START_DT
+	         , A.OPEN_END_DT
+	         , A.USE_YN
+	         , A.MENU_SYS_DIV
+	         , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
+	      FROM TB_POP A
+	     WHERE A.DEL_YN = 'N'
+	     ORDER BY A.CRE_DTM DESC
+	</select>
+
+	<!-- 팝업 상세 -->
+	<select id="getSelectPopOne" parameterType="map" resultType="map">
+	    SELECT A.POP_CD
+	         , A.POP_NM
+	         , A.POP_CNTS
+	         , A.POP_WIDTH
+	         , A.POP_HGT
+	         , A.POP_X_LOC
+	         , A.POP_Y_LOC
+	         , A.OPEN_START_DT
+	         , A.OPEN_END_DT
+	         , A.USE_YN
+	         , A.MENU_SYS_DIV
+	      FROM TB_POP A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.POP_CD = #{popCd}
+	</select>
+
+	<!-- 팝업 저장 (등록/수정 머지) -->
+	<update id="savePop" parameterType="map">
+	    INSERT INTO TB_POP (
+	        POP_CD, POP_NM, POP_CNTS, POP_WIDTH, POP_HGT
+	      , POP_X_LOC, POP_Y_LOC, OPEN_START_DT, OPEN_END_DT
+	      , USE_YN, MENU_SYS_DIV, DEL_YN
+	      , CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
+	    ) VALUES (
+	        #{popCd}, #{popNm}, #{popCnts}, #{popWidth}, #{popHgt}
+	      , #{popXLoc}, #{popYLoc}, #{openStartDt}, #{openEndDt}
+	      , #{useYn}, #{menuSysDiv}, 'N'
+	      , #{ssnUsrCd}, SYSDATE(), #{ssnUsrCd}, SYSDATE()
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        POP_NM        = #{popNm}
+	      , POP_CNTS      = #{popCnts}
+	      , POP_WIDTH     = #{popWidth}
+	      , POP_HGT       = #{popHgt}
+	      , POP_X_LOC     = #{popXLoc}
+	      , POP_Y_LOC     = #{popYLoc}
+	      , OPEN_START_DT = #{openStartDt}
+	      , OPEN_END_DT   = #{openEndDt}
+	      , USE_YN        = #{useYn}
+	      , MENU_SYS_DIV  = #{menuSysDiv}
+	      , UPD_USR_CD    = #{ssnUsrCd}
+	      , UPD_DTM       = SYSDATE()
+	</update>
+
+	<!-- 팝업 삭제 -->
+	<update id="deletePop" parameterType="map">
+	    UPDATE TB_POP
+	       SET DEL_YN = 'Y'
+	         , UPD_USR_CD = #{ssnUsrCd}
+	         , UPD_DTM = SYSDATE()
+	     WHERE POP_CD = #{popCd}
+	</update>
+
+	</mapper>

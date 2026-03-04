@@ -1,0 +1,54 @@
+# ===========================================
+# TIMS-SDR 공통 설정
+# ===========================================
+server:
+  port: 28080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+    session:
+      timeout: 30m
+
+spring:
+  profiles:
+    active: dev   # 기본 프로필 (로컬에서는 -Dspring.profiles.active=local 로 오버라이드)
+
+  # 메일 설정
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: minwook8507@gmail.com
+    password: ohatzlvaxhambrut
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+
+  # 멀티파트 설정
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+# MyBatis 설정
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:/mapper/**/*.xml
+
+# 파일 업로드 설정
+upload:
+  base:
+    web: /upload
+
+# 로깅
+logging:
+  level:
+    com.sdr: DEBUG
+    org.mybatis: DEBUG

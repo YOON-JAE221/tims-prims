@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="popupMng">
+	
+	<!-- 메뉴 트리 쿼리 -->
+    <select id="getPopupMngList" parameterType="map" resultType="map">
+        SELECT A.POP_CD
+			 , A.POP_CNTS
+			 , A.POP_NM
+			 , A.POP_WIDTH
+			 , A.POP_HGT
+			 , DATE_FORMAT(A.OPEN_START_DT, '%Y-%m-%d') AS OPEN_START_DT
+			 , DATE_FORMAT(A.OPEN_END_DT, '%Y-%m-%d') AS OPEN_END_DT
+			 , A.POP_X_LOC
+			 , A.POP_Y_LOC
+			 , A.USE_YN
+			 , A.MENU_SYS_DIV
+          FROM TB_POP A
+         WHERE A.DEL_YN = 'N'
+         <if test='searchMenuSysDiv != null and !searchMenuSysDiv.equals("")'>
+		   AND A.MENU_SYS_DIV = #{searchMenuSysDiv}
+		 </if>
+         <if test='searchUseYn != null and !searchUseYn.equals("")'>
+		   AND A.USE_YN = #{searchUseYn}
+		 </if>
+		 <if test='searchPopNmCnts != null and !searchPopNmCnts.equals("")'>
+		   AND (A.POP_NM LIKE '%'||TRIM( #{searchPopNmCnts} )||'%' OR A.POP_CNTS LIKE '%'||TRIM( #{searchPopNmCnts} )||'%')
+		 </if>
+    </select>
+	
+	<!-- 메뉴 다건 저장 -->
+	<update id="savePopupMng" parameterType="map">
+		    INSERT INTO TB_POP (
+		          POP_CD
+				, POP_CNTS
+				, POP_NM
+				, POP_WIDTH
+				, POP_HGT
+				, OPEN_START_DT
+				, OPEN_END_DT
+				, POP_X_LOC
+				, POP_Y_LOC
+				, MENU_SYS_DIV
+				, USE_YN
+				, CRE_USR_CD
+				, CRE_DTM
+				, UPD_USR_CD
+				, UPD_DTM
+		    )
+		    VALUES
+		    <foreach item="rm" collection="mergeRows" separator=",">
+		        (
+		            <choose>
+						<when test='rm.rowStatus.equals("I")'>
+							F_COM_UUID_PK()
+						</when>
+						<otherwise>
+							#{rm.popCd}
+						</otherwise>
+					</choose>
+		            , #{rm.popCnts}
+		            , #{rm.popNm}
+		            , #{rm.popWidth}
+		            , #{rm.popHgt} 
+		            , REPLACE(#{rm.openStartDt},'-','')
+		            , REPLACE(#{rm.openEndDt},'-','')
+		            , #{rm.popXLoc}
+		            , #{rm.popYLoc}
+		            , #{rm.menuSysDiv}
+		            , #{rm.useYn}
+		            , #{ssnUsrCd}
+		            , SYSDATE()
+		            , #{ssnUsrCd}
+		            , SYSDATE()
+		        )
+		    </foreach>
+		    ON DUPLICATE KEY UPDATE
+		          POP_CNTS             = VALUES(POP_CNTS)
+		        , POP_NM               = VALUES(POP_NM)
+		        , POP_WIDTH            = VALUES(POP_WIDTH)
+		        , POP_HGT              = VALUES(POP_HGT)
+		        , OPEN_START_DT        = VALUES(OPEN_START_DT)
+		        , OPEN_END_DT          = VALUES(OPEN_END_DT)
+		        , POP_X_LOC            = VALUES(POP_X_LOC)
+		        , POP_Y_LOC            = VALUES(POP_Y_LOC)
+		        , MENU_SYS_DIV         = VALUES(MENU_SYS_DIV)
+		        , USE_YN               = VALUES(USE_YN)
+		        , UPD_USR_CD           = #{ssnUsrCd}
+		        , UPD_DTM              = SYSDATE()
+		</update>
+
+	<!-- 메뉴 단건 삭제 -->
+	<delete id="deletePopupMng" parameterType="map">
+		DELETE FROM TB_POP
+		 WHERE POP_CD = #{popCd}
+	</delete>
+		
+	</mapper>
+	
+	

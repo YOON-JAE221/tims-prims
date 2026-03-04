@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                             http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!--
+        Spring Boot 전환 완료
+        - 모든 설정은 application.yml + Java Config 로 관리
+        - TimsSdrApplication.java 가 진입점
+        - 이 web.xml 은 WAR 패키징 호환용 최소 파일
+    -->
+
+</web-app>

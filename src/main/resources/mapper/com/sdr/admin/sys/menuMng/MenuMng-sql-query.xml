@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="menuMng">
+	
+	<!-- 메뉴 네비 트리 쿼리 -->
+    <select id="getMenuNaviTreeList" parameterType="map" resultType="map">
+        WITH RECURSIVE MENU_TREE AS (
+		    -- ROOT 메뉴
+		   SELECT SYS_MENU_CD
+		        , UPR_MENU_CD
+		        , MENU_NM
+		        , MENU_LVL
+		        , MENU_SORT
+		        , MENU_SYS_DIV
+		        , MENU_DIV
+		        , MENU_URL
+		        , BRD_CD
+		        , USE_YN
+		        , CAST(SYS_MENU_CD AS CHAR(1000)) AS MENU_FULL_PATH_CD
+		        , CAST(MENU_NM AS CHAR(1000))     AS MENU_FULL_PATH_NM
+		        , CAST(LPAD(MENU_SORT, 3, '0') AS CHAR(1000)) AS SORT_KEY
+		        , 1 AS DEPTH
+		     FROM TB_SYS_MENU
+		    WHERE DEL_YN = 'N'
+		      AND USE_YN = 'Y'
+		      AND MENU_SYS_DIV = #{menuSysDiv}
+		      AND (UPR_MENU_CD IS NULL OR UPR_MENU_CD = '')
+		
+		    UNION ALL
+		
+		    -- 자식 메뉴
+		    SELECT T.SYS_MENU_CD
+		         , T.UPR_MENU_CD
+		         , T.MENU_NM
+		         , T.MENU_LVL
+		         , T.MENU_SORT
+		         , T.MENU_SYS_DIV
+		         , T.MENU_DIV
+		         , T.MENU_URL
+		         , T.BRD_CD
+		         , T.USE_YN
+		         , CONCAT(MT.MENU_FULL_PATH_CD, ' > ', T.SYS_MENU_CD) AS MENU_FULL_PATH_CD
+		         , CONCAT(MT.MENU_FULL_PATH_NM, ' > ', T.MENU_NM)     AS MENU_FULL_PATH_NM
+		         , CONCAT(MT.SORT_KEY, '.', LPAD(T.MENU_SORT, 3, '0')) AS SORT_KEY
+		         , MT.DEPTH + 1                              AS DEPTH
+		      FROM TB_SYS_MENU T
+		     INNER JOIN MENU_TREE MT ON T.UPR_MENU_CD = MT.SYS_MENU_CD
+		     WHERE T.DEL_YN = 'N'
+		       AND T.USE_YN = 'Y'
+		       AND T.MENU_SYS_DIV = #{menuSysDiv}
+		)
+		
+		SELECT A.*
+       		 , IFNULL(B.CHILD_COUNT, 0) AS CHILD_COUNT
+		  FROM MENU_TREE A
+		  LEFT OUTER JOIN (
+		       SELECT UPR_MENU_CD, COUNT(*) AS CHILD_COUNT
+		         FROM TB_SYS_MENU
+		        WHERE DEL_YN = 'N'
+		          AND MENU_SYS_DIV = #{menuSysDiv}
+		        GROUP BY UPR_MENU_CD
+		  ) B ON A.SYS_MENU_CD = B.UPR_MENU_CD
+		ORDER BY A.SORT_KEY
+    </select>
+    
+    
+	<!-- 메뉴 네비 트리 쿼리 -->
+    <select id="getMenuTreeList" parameterType="map" resultType="map">
+        WITH RECURSIVE MENU_TREE AS (
+		    -- ROOT 메뉴
+		   SELECT SYS_MENU_CD
+		        , UPR_MENU_CD
+		        , MENU_NM
+		        , MENU_LVL
+		        , MENU_SORT
+		        , MENU_SYS_DIV
+		        , MENU_DIV
+		        , MENU_URL
+		        , BRD_CD
+		        , USE_YN
+		        , BIGO
+		        , CAST(SYS_MENU_CD AS CHAR(1000)) AS MENU_FULL_PATH_CD
+		        , CAST(MENU_NM AS CHAR(1000))     AS MENU_FULL_PATH_NM
+		        , CAST(LPAD(MENU_SORT, 3, '0') AS CHAR(1000)) AS SORT_KEY
+		        , 1 AS DEPTH
+		     FROM TB_SYS_MENU
+		    WHERE DEL_YN = 'N'
+		      AND MENU_SYS_DIV = #{searchMenuSysDiv}
+		      AND (UPR_MENU_CD IS NULL OR UPR_MENU_CD = '')
+		
+		    UNION ALL
+		
+		    -- 자식 메뉴
+		    SELECT T.SYS_MENU_CD
+		         , T.UPR_MENU_CD
+		         , T.MENU_NM
+		         , T.MENU_LVL
+		         , T.MENU_SORT
+		         , T.MENU_SYS_DIV
+		         , T.MENU_DIV
+		         , T.MENU_URL
+		         , T.BRD_CD
+		         , T.USE_YN
+		         , T.BIGO
+		         , CONCAT(MT.MENU_FULL_PATH_CD, ' > ', T.SYS_MENU_CD) AS MENU_FULL_PATH_CD
+		         , CONCAT(MT.MENU_FULL_PATH_NM, ' > ', T.MENU_NM)     AS MENU_FULL_PATH_NM
+		         , CONCAT(MT.SORT_KEY, '.', LPAD(T.MENU_SORT, 3, '0')) AS SORT_KEY
+		         , MT.DEPTH + 1                              AS DEPTH
+		      FROM TB_SYS_MENU T
+		     INNER JOIN MENU_TREE MT ON T.UPR_MENU_CD = MT.SYS_MENU_CD
+		     WHERE T.DEL_YN = 'N'
+		       AND T.MENU_SYS_DIV = #{searchMenuSysDiv}
+		)
+		
+		SELECT A.*
+       		 , IFNULL(B.CHILD_COUNT, 0) AS CHILD_COUNT
+		  FROM MENU_TREE A
+		  LEFT OUTER JOIN (
+		       SELECT UPR_MENU_CD, COUNT(*) AS CHILD_COUNT
+		         FROM TB_SYS_MENU
+		        WHERE DEL_YN = 'N'
+		          AND MENU_SYS_DIV = #{searchMenuSysDiv}
+		        GROUP BY UPR_MENU_CD
+		  ) B ON A.SYS_MENU_CD = B.UPR_MENU_CD
+		ORDER BY A.SORT_KEY
+    </select>
+	
+	<!-- 메뉴 다건 저장 -->
+	<update id="saveMenuMng" parameterType="map">
+		    INSERT INTO TB_SYS_MENU (
+		          SYS_MENU_CD
+		        , UPR_MENU_CD
+		        , MENU_NM
+		        , MENU_LVL
+		        , MENU_SORT
+		        , MENU_URL
+		        , MENU_SYS_DIV
+		        , MENU_DIV
+		        , BRD_CD
+		        , USE_YN
+		        , BIGO
+		        , CRE_USR_CD
+		        , CRE_DTM
+		        , UPD_USR_CD
+		        , UPD_DTM
+		        , DEL_YN
+		    )
+		    VALUES
+		    <foreach item="rm" collection="mergeRows" separator=",">
+		        (
+		              #{rm.sysMenuCd}
+		            , #{rm.uprMenuCd}
+		            , #{rm.menuNm}
+		            , #{rm.menuLvl}
+		            , #{rm.menuSort} 
+		            , #{rm.menuUrl}
+		            , #{rm.menuSysDiv}
+		            , #{rm.menuDiv}
+		            , #{rm.brdCd}
+		            , #{rm.useYn}
+		            , #{rm.bigo}
+		            , #{ssnUsrCd}
+		            , SYSDATE()
+		            , #{ssnUsrCd}
+		            , SYSDATE()
+		            , 'N'
+		        )
+		    </foreach>
+		    ON DUPLICATE KEY UPDATE
+		          MENU_NM              = VALUES(MENU_NM)
+		        , MENU_SORT            = VALUES(MENU_SORT)
+		        , MENU_URL             = VALUES(MENU_URL)
+		        , BRD_CD               = VALUES(BRD_CD)
+		        , BIGO                 = VALUES(BIGO)
+		        , USE_YN               = VALUES(USE_YN)
+		        , UPD_USR_CD           = #{ssnUsrCd}
+		        , UPD_DTM              = SYSDATE()
+		        , DEL_YN               = 'N'
+		</update>
+
+	<!-- 메뉴 단건 삭제 -->
+	<delete id="deleteMenuMng" parameterType="map">
+		DELETE FROM TB_SYS_MENU
+		 WHERE SYS_MENU_CD = #{sysMenuCd}
+		   AND DEL_YN = 'N'
+	</delete>
+		
+	</mapper>
+	
+	

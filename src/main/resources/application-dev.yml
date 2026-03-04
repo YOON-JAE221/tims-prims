@@ -1,0 +1,16 @@
+# ===========================================
+# DEV 환경
+# ===========================================
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db.mwkim-dev.com:3306/dbmwkim?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
+    username: mwkim
+    password: thsqjatndprps12
+
+upload:
+  base:
+    dir: /web/upload/

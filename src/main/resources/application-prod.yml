@@ -1,0 +1,18 @@
+# ===========================================
+# PROD 운영 환경
+# ===========================================
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://db.mwkim-dev.com:3306/dbmwkim?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
+    username: mwkim
+    password: thsqjatndprps12
+
+upload:
+  base:
+    dir: /web/upload/
+
+logging:
+  level:
+    com.sdr: INFO
+    org.mybatis: WARN

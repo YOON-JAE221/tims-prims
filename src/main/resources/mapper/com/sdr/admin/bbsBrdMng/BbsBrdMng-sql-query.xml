@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="bbsBrdMng">
+
+	<!-- 게시판 리스트 -->
+	<select id="getSelectBbsBrdList" parameterType="map" resultType="map">
+	    SELECT A.BRD_CD
+	         , A.BRD_NM
+	         , A.BRD_TYPE
+	         , A.BRD_PROP_BINARY
+	         , A.BRD_LIST_URL
+	         , A.BRD_DSCR
+	         , A.USE_YN
+	         , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
+	      FROM TB_BBS_BRD A
+	     WHERE A.DEL_YN = 'N'
+	     ORDER BY A.CRE_DTM DESC
+	</select>
+
+	<!-- 게시판 상세 -->
+	<select id="getSelectBbsBrdOne" parameterType="map" resultType="map">
+	    SELECT A.BRD_CD
+	         , A.BRD_NM
+	         , A.BRD_TYPE
+	         , A.BRD_PROP_BINARY
+	         , A.BRD_LIST_URL
+	         , A.BRD_DSCR
+	         , A.USE_YN
+	      FROM TB_BBS_BRD A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.BRD_CD = #{brdCd}
+	</select>
+
+	<!-- 게시판 저장 (등록/수정 머지) -->
+	<update id="saveBbsBrd" parameterType="map">
+	    INSERT INTO TB_BBS_BRD (
+	        BRD_CD, BRD_NM, BRD_TYPE, BRD_PROP_BINARY, BRD_LIST_URL, BRD_DSCR
+	      , USE_YN, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
+	    ) VALUES (
+	        #{brdCd}, #{brdNm}, 0, #{brdPropBinary}, #{brdListUrl}, #{brdDscr}
+	      , #{useYn}, 'N', #{ssnUsrCd}, SYSDATE(), #{ssnUsrCd}, SYSDATE()
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        BRD_NM          = #{brdNm}
+	      , BRD_PROP_BINARY = #{brdPropBinary}
+	      , BRD_LIST_URL    = #{brdListUrl}
+	      , BRD_DSCR        = #{brdDscr}
+	      , USE_YN          = #{useYn}
+	      , UPD_USR_CD      = #{ssnUsrCd}
+	      , UPD_DTM         = SYSDATE()
+	</update>
+
+	</mapper>

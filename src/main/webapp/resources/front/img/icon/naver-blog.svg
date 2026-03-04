@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+  <circle cx="30" cy="30" r="30" fill="#03C75A"/>
+  <path d="M13 17 C13 13.5, 16 11, 20 11 L40 11 C44 11, 47 13.5, 47 17 L47 31 C47 34.5, 44 37, 40 37 L32 37 L27 44 L25 37 L20 37 C16 37, 13 34.5, 13 31 Z" fill="#fff"/>
+  <text x="30" y="28" text-anchor="middle" dominant-baseline="central" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="13" fill="#EA6F0A">blog</text>
+</svg>

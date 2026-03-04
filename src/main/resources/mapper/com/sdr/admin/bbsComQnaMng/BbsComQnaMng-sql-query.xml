@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="bbsComQnaMng">
+
+	<!-- 문의게시판 리스트 (원글만, 답변상태 포함) -->
+	<select id="getSelectQnaPstList" parameterType="map" resultType="map">
+	    SELECT A.PST_CD
+	         , A.PST_NM
+	         , A.BRD_CD
+	         , A.RGT_USR_NM
+	         , A.RGT_EMAIL
+	         , A.RGT_PHONE
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
+	         , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
+	         , (SELECT COUNT(*) FROM TB_BBS_PST T
+	             WHERE T.BRD_CD = A.BRD_CD AND T.ROT_PST_CD = A.PST_CD
+	               AND T.PST_LVL > 0 AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
+	           ) AS REPLY_CNT
+	         , CASE WHEN (SELECT COUNT(*) FROM TB_BBS_PST T
+	                       WHERE T.BRD_CD = A.BRD_CD AND T.ROT_PST_CD = A.PST_CD
+	                         AND T.PST_LVL > 0 AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
+	                     ) > 0 THEN '답변완료' ELSE '대기' END AS REPLY_STATUS
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N'
+	       AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd}
+	       AND A.PST_LVL = 0
+	       AND A.NOTICE_YN = 'N'
+	       <if test="keyword != null and keyword != ''">
+	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
+	            OR A.RGT_USR_NM LIKE CONCAT('%', #{keyword}, '%'))
+	       </if>
+	     ORDER BY A.IDX DESC
+	</select>
+
+	<!-- 문의글 삭제 (답변도 함께) -->
+	<update id="deleteQnaPst" parameterType="map">
+	    UPDATE TB_BBS_PST
+	       SET DEL_YN = 'Y'
+	         , USE_YN = 'N'
+	         , UPD_USR_CD = #{ssnUsrCd}
+	         , UPD_DTM = SYSDATE()
+	     WHERE DEL_YN = 'N'
+	       AND BRD_CD = #{brdCd}
+	       AND (PST_CD = #{pstCd} OR ROT_PST_CD = #{pstCd})
+	</update>
+
+	<!-- 게시판 정보 -->
+	<select id="selectBbsBrdOne" parameterType="map" resultType="map">
+	    SELECT A.BRD_CD, A.BRD_PROP_BINARY, A.BRD_NM, A.BRD_LIST_URL
+	      FROM TB_BBS_BRD A
+	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y' AND A.BRD_CD = #{brdCd}
+	</select>
+
+	<!-- 문의글 상세 -->
+	<select id="getSelectQnaPstDetail" parameterType="map" resultType="map">
+	    SELECT A.PST_CD, A.PST_NM, A.PST_CNTS, A.BRD_CD, A.PST_LVL
+	         , A.RGT_USR_NM, A.RGT_EMAIL, A.RGT_PHONE
+	         , A.ATCH_FILE_KEY, IFNULL(A.VIEW_CNT,0) AS VIEW_CNT
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd} AND A.PST_CD = #{pstCd}
+	</select>
+
+	<!-- 답변 목록 -->
+	<select id="getSelectQnaReplyList" parameterType="map" resultType="map">
+	    SELECT A.PST_CD, A.PST_NM, A.PST_CNTS, A.PST_LVL
+	         , A.RGT_USR_NM, A.ATCH_FILE_KEY
+	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
+	      FROM TB_BBS_PST A
+	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+	       AND A.BRD_CD = #{brdCd} AND A.ROT_PST_CD = #{pstCd}
+	       AND A.PST_LVL > 0
+	     ORDER BY A.IDX ASC
+	</select>
+
+	<!-- 첨부파일 목록 -->
+	<select id="getSelectUpldFileList" parameterType="map" resultType="map">
+	    SELECT UPLD_FILE_CD, FILE_SEQ, FILE_NM, SAVE_FILE_NM, SAVE_PATH
+	      FROM TB_UPLD_FILE
+	     WHERE DEL_YN = 'N' AND UPLD_FILE_CD = #{upldFileCd}
+	</select>
+
+	</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="batch">
+
+    <!-- 활성 잡 목록 (스케줄러 기동 시 조회) -->
+    <select id="getActiveJobList" resultType="map">
+        SELECT JOB_CD
+             , JOB_NM
+             , JOB_DESC
+             , JOB_CRON
+             , MANUAL_EXEC_YN
+             , DATE_FORMAT(LAST_EXEC_DTM, '%Y-%m-%d %H:%i:%s') AS LAST_EXEC_DTM
+             , LAST_EXEC_RSLT
+          FROM TB_BAT
+         WHERE USE_YN = 'Y'
+           AND DEL_YN = 'N'
+           AND JOB_CRON IS NOT NULL
+           AND JOB_CRON != ''
+         ORDER BY CRE_DTM
+    </select>
+
+    <!-- 잡 단건 조회 -->
+    <select id="getJobByCode" parameterType="string" resultType="map">
+        SELECT JOB_CD
+             , JOB_NM
+             , JOB_DESC
+             , JOB_CRON
+             , MANUAL_EXEC_YN
+             , DATE_FORMAT(LAST_EXEC_DTM, '%Y-%m-%d %H:%i:%s') AS LAST_EXEC_DTM
+             , LAST_EXEC_RSLT
+          FROM TB_BAT
+         WHERE JOB_CD = #{jobCd}
+           AND DEL_YN = 'N'
+    </select>
+
+    <!-- TB_BAT 최근 실행 정보 갱신 -->
+    <update id="updateLastExec" parameterType="map">
+        UPDATE TB_BAT
+           SET LAST_EXEC_DTM = NOW()
+             , LAST_EXEC_RSLT = #{lastExecRslt}
+             , UPD_DTM = NOW()
+         WHERE JOB_CD = #{jobCd}
+    </update>
+
+    <!-- 이력 등록 (RUNNING 상태) -->
+    <insert id="insertBatHist" parameterType="map">
+        INSERT INTO TB_BAT_HIST (
+            HIST_CD, JOB_CD, EXEC_START_DTM, EXEC_RSLT, EXEC_TYPE, EXEC_USR_CD
+        ) VALUES (
+            #{histCd}, #{jobCd}, NOW(), 'RUNNING', #{execType}, #{execUsrCd}
+        )
+    </insert>
+
+    <!-- 이력 갱신 (완료 처리) -->
+    <update id="updateBatHist" parameterType="map">
+        UPDATE TB_BAT_HIST
+           SET EXEC_END_DTM = NOW()
+             , EXEC_RSLT = #{execRslt}
+             , TGT_CNT = #{tgtCnt}
+             , PROC_CNT = #{procCnt}
+             , ERR_MSG = #{errMsg}
+             , ERR_DETAIL = #{errDetail}
+         WHERE HIST_CD = #{histCd}
+    </update>
+
+    <!-- ============================================ -->
+    <!-- usrInfoMaskingJob : 개인정보 마스킹           -->
+    <!-- ============================================ -->
+
+    <!-- 마스킹 대상건수 조회 (3년 경과 + 미처리) -->
+    <select id="getMaskingTargetCount" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_BBS_PST
+         WHERE DEL_YN = 'N'
+           AND PST_LVL = 0
+           AND RGT_DTM <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 36 MONTH)
+           AND RGT_USR_NM IS NOT NULL
+           AND RGT_USR_NM != ''
+           AND RGT_USR_NM != '****'
+    </select>
+
+    <!-- 마스킹 실행 -->
+    <update id="executeMasking">
+        UPDATE TB_BBS_PST
+           SET RGT_USR_NM = '****'
+             , RGT_EMAIL  = '****'
+             , RGT_PHONE  = '****'
+             , UPD_USR_CD = 'BATCH'
+             , UPD_DTM    = NOW()
+         WHERE DEL_YN = 'N'
+           AND PST_LVL = 0
+           AND RGT_DTM <![CDATA[<]]> DATE_SUB(NOW(), INTERVAL 36 MONTH)
+           AND RGT_USR_NM IS NOT NULL
+           AND RGT_USR_NM != ''
+           AND RGT_USR_NM != '****'
+    </update>
+
+</mapper>

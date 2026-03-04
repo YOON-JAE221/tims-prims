@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="comHistoryMng">
+	
+	<!-- 메뉴 네비 트리 쿼리 -->
+    <select id="getSelectList" parameterType="map" resultType="map">
+        SELECT A.HST_CD
+			 , A.HST_YR
+			 , A.HST_CNTS
+			 , A.SORT
+			 , A.USE_YN
+			 , A.DEL_YN
+          FROM TB_COM_HST A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+         ORDER BY A.HST_YR DESC, A.SORT DESC
+    </select>
+    
+    <!-- 연혁 다건 저장 (INSERT + UPDATE) -->
+	<update id="saveComHistoryMng" parameterType="map">
+	  INSERT INTO TB_COM_HST (
+	      HST_CD
+	    , HST_YR
+	    , HST_CNTS
+	    , SORT
+	    , USE_YN
+	    , DEL_YN
+	    , CRE_USR_CD
+	    , CRE_DTM
+	    , UPD_USR_CD
+	    , UPD_DTM
+	  )
+	  VALUES
+	  <foreach item="rm" collection="mergeRows" separator=",">
+	    (
+	        CASE
+	          WHEN #{rm.hstCd} IS NULL OR #{rm.hstCd} = '' THEN F_COM_UUID_PK()
+	          ELSE #{rm.hstCd}
+	        END
+	      , #{rm.hstYr}
+	      , #{rm.hstCnts}
+	      , #{rm.sort}
+	      , 'Y'
+	      , 'N'
+	      , #{ssnUsrCd}
+	      , SYSDATE()
+	      , #{ssnUsrCd}
+	      , SYSDATE()
+	    )
+	  </foreach>
+	  ON DUPLICATE KEY UPDATE
+	      HST_YR      = VALUES(HST_YR)
+	    , HST_CNTS    = VALUES(HST_CNTS)
+	    , SORT        = VALUES(SORT)
+	    , UPD_USR_CD  = #{ssnUsrCd}
+	    , UPD_DTM     = SYSDATE()
+	</update>
+
+    <!-- 연혁 삭제 (delYn = 'Y') -->
+	<update id="updateComHistoryMngDelYn" parameterType="map">
+	    UPDATE TB_COM_HST
+	       SET DEL_YN = 'Y'
+	         , USE_YN = 'N' 
+	         , UPD_USR_CD  = #{ssnUsrCd}
+	         , UPD_DTM  = SYSDATE()
+	     WHERE DEL_YN = 'N'
+	       AND HST_CD = #{hstCd}
+	</update>
+	
+		
+	</mapper>
+	
+	

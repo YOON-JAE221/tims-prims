@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="batMng">
+
+    <!-- 배치 목록 -->
+    <select id="getSelectBatList" parameterType="map" resultType="map">
+        SELECT JOB_CD
+             , JOB_NM
+             , JOB_DESC
+             , JOB_CRON
+             , MANUAL_EXEC_YN
+             , USE_YN
+             , DATE_FORMAT(LAST_EXEC_DTM, '%Y-%m-%d %H:%i:%s') AS LAST_EXEC_DTM
+             , LAST_EXEC_RSLT
+             , DATE_FORMAT(CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
+          FROM TB_BAT
+         WHERE DEL_YN = 'N'
+         ORDER BY CRE_DTM
+    </select>
+
+    <!-- 배치 단건 조회 -->
+    <select id="getSelectBatOne" parameterType="map" resultType="map">
+        SELECT JOB_CD
+             , JOB_NM
+             , JOB_DESC
+             , JOB_CRON
+             , MANUAL_EXEC_YN
+             , USE_YN
+             , DATE_FORMAT(LAST_EXEC_DTM, '%Y-%m-%d %H:%i:%s') AS LAST_EXEC_DTM
+             , LAST_EXEC_RSLT
+             , DATE_FORMAT(CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
+          FROM TB_BAT
+         WHERE JOB_CD = #{jobCd}
+           AND DEL_YN = 'N'
+    </select>
+
+    <!-- 배치 등록 -->
+    <insert id="insertBat" parameterType="map">
+        INSERT INTO TB_BAT (
+            JOB_CD, JOB_NM, JOB_DESC, JOB_CRON,
+            MANUAL_EXEC_YN, USE_YN, DEL_YN,
+            CRE_USR_CD, CRE_DTM
+        ) VALUES (
+            #{jobCd}, #{jobNm}, #{jobDesc}, #{jobCron},
+            #{manualExecYn}, #{useYn}, 'N',
+            #{ssnUsrCd}, NOW()
+        )
+    </insert>
+
+    <!-- 배치 수정 -->
+    <update id="updateBat" parameterType="map">
+        UPDATE TB_BAT
+           SET JOB_NM = #{jobNm}
+             , JOB_DESC = #{jobDesc}
+             , JOB_CRON = #{jobCron}
+             , MANUAL_EXEC_YN = #{manualExecYn}
+             , USE_YN = #{useYn}
+             , UPD_USR_CD = #{ssnUsrCd}
+             , UPD_DTM = NOW()
+         WHERE JOB_CD = #{jobCd}
+           AND DEL_YN = 'N'
+    </update>
+
+    <!-- 배치 삭제 (논리삭제) -->
+    <update id="deleteBat" parameterType="map">
+        UPDATE TB_BAT
+           SET DEL_YN = 'Y'
+             , USE_YN = 'N'
+             , UPD_USR_CD = #{ssnUsrCd}
+             , UPD_DTM = NOW()
+         WHERE JOB_CD = #{jobCd}
+    </update>
+
+    <!-- 실행 이력 목록 (최근 50건) -->
+    <select id="getSelectBatHistList" parameterType="map" resultType="map">
+        SELECT H.HIST_CD
+             , H.JOB_CD
+             , DATE_FORMAT(H.EXEC_START_DTM, '%Y-%m-%d %H:%i:%s') AS EXEC_START_DTM
+             , DATE_FORMAT(H.EXEC_END_DTM, '%Y-%m-%d %H:%i:%s')   AS EXEC_END_DTM
+             , H.EXEC_RSLT
+             , H.EXEC_TYPE
+             , H.EXEC_USR_CD
+             , H.TGT_CNT
+             , H.PROC_CNT
+             , H.ERR_MSG
+          FROM TB_BAT_HIST H
+         WHERE H.JOB_CD = #{jobCd}
+         ORDER BY H.EXEC_START_DTM DESC
+         LIMIT 50
+    </select>
+
+</mapper>

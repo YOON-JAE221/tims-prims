@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sendLog">
+
+    <!-- 발송 로그 INSERT -->
+    <insert id="insertSendLog" parameterType="map">
+        INSERT INTO TB_SEND_LOG (
+            LOG_CD
+          , SEND_TYPE
+          , RECV_NM
+          , RECV_ADDR
+          , SEND_TITLE
+          , SEND_CONTENT
+          , SEND_RSLT
+          , ERR_MSG
+          , REF_CD
+          , CRE_USR_CD
+          , CRE_DTM
+        ) VALUES (
+            REPLACE(UUID(), '-', '')
+          , #{sendType}
+          , #{recvNm}
+          , #{recvAddr}
+          , #{sendTitle}
+          , #{sendContent}
+          , #{sendRslt}
+          , #{errMsg}
+          , #{refCd}
+          , #{creUsrCd}
+          , NOW()
+        )
+    </insert>
+
+</mapper>

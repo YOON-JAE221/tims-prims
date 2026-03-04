@@ -1,0 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%-- pageNo/pageSize가 모델로 오면 그걸 쓰고, 없으면 param에서 기본값 --%>
+<c:set var="pageNo" value="${empty pageNo ? (empty param.pageNo ? 1 : param.pageNo) : pageNo}" />
+<c:set var="pageSize" value="${empty pageSize ? (empty param.pageSize ? 10 : param.pageSize) : pageSize}" />
+
+<%-- 페이징 offset 계산 --%>
+<c:set var="offset" value="${(pageNo - 1) * pageSize}" />
