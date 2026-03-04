@@ -25,8 +25,8 @@
         <level value="DEBUG"/>
     </logger>
 
-    <!-- 너희 프로젝트 패키지 로그 (com.sdr.*) -->
-    <logger name="com.sdr">
+    <!-- 너희 프로젝트 패키지 로그 (com.prims.*) -->
+    <logger name="com.prims">
         <level value="DEBUG"/>
     </logger>
     

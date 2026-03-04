@@ -2,13 +2,13 @@
 # LOCAL 환경
 # ===========================================
 server:
-  port: 28080
+  port: 38080
 
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.mwkim-dev.com:3306/dbmwkim?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
-    username: mwkim
+    url: jdbc:mysql://my8003.gabiadb.com:3306/kmwown?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
+    username: minuk3466
     password: thsqjatndprps12
 
 upload:

@@ -14,5 +14,5 @@ upload:
 
 logging:
   level:
-    com.sdr: INFO
+    com.prims: INFO
     org.mybatis: WARN

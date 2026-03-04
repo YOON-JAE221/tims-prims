@@ -10,5 +10,5 @@
 <!--         <setting name="mapUnderscoreToCamelCase" value="false"/> -->
     </settings>
 
-    <objectWrapperFactory type="com.sdr.common.mybatis.CamelCaseMapWrapperFactory"/>
+    <objectWrapperFactory type="com.prims.common.mybatis.CamelCaseMapWrapperFactory"/>
 </configuration>

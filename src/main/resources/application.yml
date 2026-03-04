@@ -1,5 +1,5 @@
 # ===========================================
-# TIMS-SDR 공통 설정
+# TIMS-PRIMS 공통 설정
 # ===========================================
 server:
   port: 28080
@@ -13,7 +13,7 @@ server:
 
 spring:
   profiles:
-    active: dev   # 기본 프로필 (로컬에서는 -Dspring.profiles.active=local 로 오버라이드)
+    active: local   # 기본 프로필 (로컬 환경)
 
   # 메일 설정
   mail:
@@ -50,5 +50,5 @@ upload:
 # 로깅
 logging:
   level:
-    com.sdr: DEBUG
+    com.prims: DEBUG
     org.mybatis: DEBUG
