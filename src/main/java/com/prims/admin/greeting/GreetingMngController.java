@@ -30,7 +30,7 @@ public class GreetingMngController {
 
 	    Map<String, Object> param = new HashMap<>();
 
-	    param.put("brdCd", Constant.BRD_CD_GREETING);
+	    param.put("brdCd", Constant.BRD_CD_ABOUT);
 
 	    Map<String, Object> map = greetingMngService.selectGreetingPost(param);
 

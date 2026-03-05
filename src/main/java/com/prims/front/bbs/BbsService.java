@@ -269,19 +269,7 @@ public class BbsService{
 	    return bbsDao.getSelectBbsQnaOriginalCount(paramMap);
 	}
 
-	//메인 엔지니어링 서비스 통합 리스트 (조회수 DESC, 9건)
-	public List<Map<String, Object>> getSelectMainEngList() {
-	    Map<String, Object> paramMap = new HashMap<>();
-	    paramMap.put("brdCdStra", Constant.BRD_CD_STRA);
-	    paramMap.put("brdCdStre", Constant.BRD_CD_STRE);
-	    paramMap.put("brdCdDise", Constant.BRD_CD_DISE);
-	    paramMap.put("brdCdSafe", Constant.BRD_CD_SAFE);
-	    paramMap.put("brdCdSpfe", Constant.BRD_CD_SPFE);
-	    paramMap.put("brdCdTere", Constant.BRD_CD_TERE);
-	    paramMap.put("brdCdVera", Constant.BRD_CD_VERA);
-	    paramMap.put("brdCdSdse", Constant.BRD_CD_SDSE);
-	    return bbsDao.getSelectMainEngList(paramMap);
-	}
+	// 프리머스에서는 미사용 (기존 건축구조 전용 기능 제거)
 
 	/**
 	 * 지연 삭제 파일 처리

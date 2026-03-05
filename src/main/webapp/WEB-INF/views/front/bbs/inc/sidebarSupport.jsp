@@ -2,29 +2,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
-<aside class="lnb">
-  <h3 class="lnb-title">고객지원</h3>
-  <ul class="lnb-menu">
+<aside class="side-nav">
+  <h3 class="side-nav-title">고객지원</h3>
+  <ul class="side-nav-menu">
     <li class="${activeLnb eq 'notice' ? 'active' : ''}">
       <a href="${ctx}/bbs/viewBbsNotice">공지사항</a>
     </li>
-    <li class="${activeLnb eq 'dataroom' ? 'active' : ''}">
-      <a href="${ctx}/bbs/viewBbsDataRoom">자료실</a>
+    <li class="${activeLnb eq 'faq' ? 'active' : ''}">
+      <a href="${ctx}/bbs/viewBbsFaq">FAQ</a>
     </li>
-    <li class="${activeLnb eq 'qna' ? 'active' : ''}">
-      <a href="${ctx}/bbs/viewBbsQna">문의게시판</a>
+    <li class="${activeLnb eq 'inquiry' ? 'active' : ''}">
+      <a href="${ctx}/inquiry/viewInquiry">문의하기</a>
     </li>
   </ul>
 
-  <div class="lnb-cs">
-    <h4 class="lnb-csTitle">Customer Center</h4>
-    <p class="lnb-csDesc">구조설계 및 안전진단에 관한 문의사항이 있으시면 언제든지 연락 주시기 바랍니다.</p>
-    <div class="lnb-csInfo">
-      <p class="lnb-csTel"><strong>HP : 010-5093-1443</strong></p>
-      <p class="lnb-csTel"><strong>TEL : 070-7640-1002</strong></p>
-      <p class="lnb-csFax"><strong>FAX : 070-7640-1003</strong></p>
-      <p class="lnb-csEmail">kanghanstr@naver.com</p>
-      <p class="lnb-csTime">운영시간 : 09:00 ~ 18:00</p>
+  <div class="side-cs">
+    <h4 class="side-cs-title">상담 안내</h4>
+    <p class="side-cs-desc">부동산에 관한 궁금한 점이 있으시면 언제든지 연락 주세요.</p>
+    <p class="side-cs-tel">032-327-1277</p>
+    <div class="side-cs-info">
+      FAX : 032-327-1279<br>
+      운영시간 : 09:00 ~ 18:00<br>
+      (주말·공휴일 휴무)
     </div>
   </div>
 </aside>

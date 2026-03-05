@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.sdr.common.constant.Constant" %>
+<%@ page import="com.prims.common.constant.Constant" %>
 <%@ include file="/WEB-INF/views/common/taglibs.jsp" %>
 
 <!DOCTYPE html>
@@ -11,7 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>강한건축구조기술사사무소</title>
+  <title>프리머스 부동산 관리자</title>
   
   <c:set var="ctx" value="${pageContext.request.contextPath}" />
   
@@ -61,20 +61,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
-<%--       <a href="${ctx}/resources/admin/index3.html" class="navbar-brand"> --%>
         <a href="${ctx}/admin/viewAdminMain" class="navbar-brand">
-	      <img class="brand-logo" src="${ctx}/resources/admin/dist/img/logo/adminLogo_h60.png" alt="강한건축구조기술사사무소">
-	    </a>
-
-<!--         <span class="brand-text font-weight-light">강한건축기술사사무소</span> -->
-<!--       </a> -->
+          <span class="brand-text font-weight-bold" style="font-size:18px;color:#1B2A4A;">
+            <span style="color:#E8830C;">프리머스</span> 부동산 관리자
+          </span>
+        </a>
 
       <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-        <!-- Left navbar links -->
         <ul class="navbar-nav">
           <li class="nav-item">
             <a href="/" class="nav-link">Home</a>
@@ -82,52 +79,32 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">회사소개</a>
             <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="${ctx}/greetingMng/viewGreetingMng" class="dropdown-item">인사말 </a></li>
-              <li><a href="${ctx}/comHistoryMng/viewComHistoryMng" class="dropdown-item">연혁관리 </a></li>
-              <li><a href="${ctx}/licenseMng/viewLicenseMng" class="dropdown-item">등록 및 면허</a></li>
+              <li><a href="${ctx}/greetingMng/viewGreetingMng" class="dropdown-item">인사말</a></li>
+              <li><a href="${ctx}/comHistoryMng/viewComHistoryMng" class="dropdown-item">연혁관리</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
-            <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">ENGINEERING</a>
-            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_STRA%>')" class="dropdown-item">구조설계</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_STRE%>')" class="dropdown-item">구조검토</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_DISE%>')" class="dropdown-item">해체검토</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_SAFE%>')" class="dropdown-item">안전진단</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_SPFE%>')" class="dropdown-item">내진성능평가</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_TERE%>')" class="dropdown-item">가설재설계</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_VERA%>')" class="dropdown-item">VE설계</a></li>
-              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_SDSE%>')" class="dropdown-item">비구조요소 내진설계</a></li>
+            <a id="dropdownSubMenu3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">고객지원</a>
+            <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
+              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_NOTICE%>')" class="dropdown-item">공지사항</a></li>
+              <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_FAQ%>')" class="dropdown-item">FAQ</a></li>
+              <li><a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="dropdown-item">문의게시판</a></li>
             </ul>
           </li>
-		  </li>
-		  <li class="nav-item dropdown">
-			 <a id="dropdownSubMenu3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">고객지원</a>
-			 <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
-			   <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_NOTICE%>')" class="dropdown-item">공지사항</a></li>
-			   <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_DATA%>')" class="dropdown-item">자료실</a></li>
-			   <li><a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="dropdown-item">문의게시판</a></li>
-			 </ul>
-		  </li>
-		  <li class="nav-item dropdown">
-			 <a id="dropdownSubMenu4" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">시스템관리</a>
-			 <ul aria-labelledby="dropdownSubMenu4" class="dropdown-menu border-0 shadow">
-			   <li><a href="${ctx}/sysMenuMng/viewSysMenuMng" class="dropdown-item">메뉴관리</a></li>
-			   <li><a href="${ctx}/popMng/viewPopMng" class="dropdown-item">팝업관리</a></li>
-			   <li><a href="${ctx}/batMng/viewBatMng" class="dropdown-item">배치관리</a></li>
-			   <li><a href="${ctx}/bbsBrdMng/viewBbsBrdMng" class="dropdown-item">게시판관리</a></li>
-			   <li><a href="${ctx}/sendLogMng/viewSendLogMng" class="dropdown-item">발송내역</a></li>
-			 </ul>
-		  </li>
-		  <li class="nav-item">
-            <a href="https://blog.naver.com/thdeofyd" class="nav-link" target="_blank" rel="noopener noreferrer">BLOG</a>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu4" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">시스템관리</a>
+            <ul aria-labelledby="dropdownSubMenu4" class="dropdown-menu border-0 shadow">
+              <li><a href="${ctx}/sysMenuMng/viewSysMenuMng" class="dropdown-item">메뉴관리</a></li>
+              <li><a href="${ctx}/popMng/viewPopMng" class="dropdown-item">팝업관리</a></li>
+              <li><a href="${ctx}/batMng/viewBatMng" class="dropdown-item">배치관리</a></li>
+              <li><a href="${ctx}/bbsBrdMng/viewBbsBrdMng" class="dropdown-item">게시판관리</a></li>
+              <li><a href="${ctx}/sendLogMng/viewSendLogMng" class="dropdown-item">발송내역</a></li>
+            </ul>
           </li>
           <li class="nav-item">
             <a href="${ctx}/login/doLogout" class="nav-link">LOGOUT</a>
           </li>
         </ul>
-
-
       </div>
 
     </div>
