@@ -67,19 +67,19 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>매매가 (만원)</label>
+                  <label>매매가 (만원) <span class="text-danger">*</span></label>
                   <input type="number" name="sellPrice" class="form-control" value="${prop.sellPrice}" placeholder="0" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>보증금 (만원)</label>
+                  <label>보증금 (만원) <span class="text-danger">*</span></label>
                   <input type="number" name="deposit" class="form-control" value="${prop.deposit}" placeholder="0" />
                 </div>
               </div>
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>월세 (만원)</label>
+                  <label>월세 (만원) <span class="text-danger">*</span></label>
                   <input type="number" name="monthlyRent" class="form-control" value="${prop.monthlyRent}" placeholder="0" />
                 </div>
               </div>
@@ -100,7 +100,7 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>전용면적 (㎡)</label>
+                  <label>전용면적 (㎡) <span class="text-danger">*</span></label>
                   <input type="number" step="0.01" name="areaExclusive" class="form-control" value="${prop.areaExclusive}" />
                 </div>
               </div>
@@ -112,7 +112,7 @@
               </div>
               <div class="col-md-2">
                 <div class="form-group">
-                  <label>방수</label>
+                  <label>방수 <span class="text-danger">*</span></label>
                   <input type="number" name="roomCnt" class="form-control" value="${prop.roomCnt}" />
                 </div>
               </div>
@@ -140,7 +140,7 @@
             <div class="row">
               <div class="col-md-2">
                 <div class="form-group">
-                  <label>해당층</label>
+                  <label>해당층 <span class="text-danger">*</span></label>
                   <input type="text" name="floorNo" class="form-control" value="${prop.floorNo}" />
                 </div>
               </div>
@@ -195,30 +195,41 @@
           <div class="card-header"><h5 class="card-title mb-0">위치정보</h5></div>
           <div class="card-body">
             <div class="row">
+              <!-- 좌측: 주소 입력 -->
               <div class="col-md-6">
                 <div class="form-group">
                   <label>주소 <span class="text-danger">*</span></label>
-                  <input type="text" name="address" id="address" class="form-control" value="${prop.address}" placeholder="경기도 부천시 길주로 280" />
+                  <div class="input-group">
+                    <input type="text" name="address" id="address" class="form-control" value="${prop.address}" placeholder="주소 검색 버튼을 클릭하세요" readonly />
+                    <div class="input-group-append">
+                      <button type="button" class="btn btn-bo-save" onclick="fnSearchAddress()">주소 검색</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="col-md-6">
                 <div class="form-group">
                   <label>상세주소</label>
-                  <input type="text" name="addressDtl" class="form-control" value="${prop.addressDtl}" placeholder="프리머스 부천타워 1층" />
+                  <input type="text" name="addressDtl" id="addressDtl" class="form-control" value="${prop.addressDtl}" placeholder="상세주소 입력 (동/호수 등)" />
+                </div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>위도</label>
+                      <input type="text" name="lat" id="lat" class="form-control" value="${prop.lat}" readonly style="background:#f4f4f4;" />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label>경도</label>
+                      <input type="text" name="lng" id="lng" class="form-control" value="${prop.lng}" readonly style="background:#f4f4f4;" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>위도</label>
-                  <input type="text" name="lat" class="form-control" value="${prop.lat}" placeholder="37.5038" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>경도</label>
-                  <input type="text" name="lng" class="form-control" value="${prop.lng}" placeholder="126.7656" />
+              <!-- 우측: 지도 미리보기 -->
+              <div class="col-md-6">
+                <label>지도 미리보기</label>
+                <div id="propMapPreview" style="width:100%; height:220px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background:#f4f4f4; display:flex; align-items:center; justify-content:center; color:#999; font-size:13px;">
+                  주소를 검색하면 지도가 표시됩니다
                 </div>
               </div>
             </div>
@@ -308,7 +319,67 @@
   </section>
 </div>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d&libraries=services&autoload=false"></script>
 <script>
+  // 다음 우편번호 + 카카오 Geocoder
+  function fnSearchAddress() {
+    new daum.Postcode({
+      oncomplete: function(data) {
+        var addr = data.roadAddress || data.jibunAddress;
+        console.log('[주소선택]', addr);
+        $('#address').val(addr);
+        $('#addressDtl').val('').focus();
+
+        // 카카오 Geocoder로 좌표 변환
+        kakao.maps.load(function() {
+          var geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch(addr, function(results, status) {
+            console.log('[Geocoder] status:', status, 'results:', results);
+            if (status === kakao.maps.services.Status.OK) {
+              var lat = results[0].y;
+              var lng = results[0].x;
+              $('#lat').val(lat);
+              $('#lng').val(lng);
+              fnShowMapPreview(lat, lng);
+            } else {
+              $('#lat').prop('readonly', false).css('background', '');
+              $('#lng').prop('readonly', false).css('background', '');
+              alert('좌표를 자동으로 가져올 수 없습니다.\n위도/경도를 직접 입력해주세요.');
+            }
+          });
+        });
+      }
+    }).open();
+  }
+
+  // 지도 미리보기
+  function fnShowMapPreview(lat, lng) {
+    kakao.maps.load(function() {
+      var container = document.getElementById('propMapPreview');
+      container.innerHTML = '';
+      container.style.color = '';
+      container.style.fontSize = '';
+      container.style.display = '';
+      var map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(lat, lng),
+        level: 3
+      });
+      var marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng) });
+      marker.setMap(map);
+      map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+    });
+  }
+
+  // 수정 모드: 기존 좌표 있으면 지도 표시
+  $(function() {
+    var lat = '${prop.lat}';
+    var lng = '${prop.lng}';
+    if (lat && lng && lat !== '' && lng !== '' && lat !== 'null' && lng !== 'null') {
+      fnShowMapPreview(parseFloat(lat), parseFloat(lng));
+    }
+  });
+
   const editor = EDIT.Summernote.init({
     el: '#summernote',
     ctx: '${ctx}',
@@ -339,6 +410,28 @@
   function fnSave() {
     if (!$('#propNm').val().trim()) { alert('매물명을 입력해주세요.'); $('#propNm').focus(); return; }
     if (!$('#address').val().trim()) { alert('주소를 입력해주세요.'); $('#address').focus(); return; }
+
+    // 거래유형에 따른 가격 필수 체크
+    var dealType = $('#dealType').val();
+    if (dealType === 'SELL') {
+      if (!$('input[name="sellPrice"]').val() || $('input[name="sellPrice"]').val() == '0') { alert('매매가를 입력해주세요.'); $('input[name="sellPrice"]').focus(); return; }
+    } else if (dealType === 'JEONSE') {
+      if (!$('input[name="deposit"]').val() || $('input[name="deposit"]').val() == '0') { alert('보증금을 입력해주세요.'); $('input[name="deposit"]').focus(); return; }
+    } else {
+      if (!$('input[name="deposit"]').val() && !$('input[name="monthlyRent"]').val()) { alert('보증금 또는 월세를 입력해주세요.'); $('input[name="deposit"]').focus(); return; }
+    }
+
+    // 전용면적
+    if (!$('input[name="areaExclusive"]').val()) { alert('전용면적을 입력해주세요.'); $('input[name="areaExclusive"]').focus(); return; }
+
+    // 방수 (상가/사무실은 0 허용)
+    var propType = $('#propType').val();
+    if ((propType === 'APT' || propType === 'OFFICETEL') && (!$('input[name="roomCnt"]').val() || $('input[name="roomCnt"]').val() == '0')) {
+      alert('방수를 입력해주세요.'); $('input[name="roomCnt"]').focus(); return;
+    }
+
+    // 해당층
+    if (!$('input[name="floorNo"]').val().trim()) { alert('해당층을 입력해주세요.'); $('input[name="floorNo"]').focus(); return; }
 
     // 에디터 내용 hidden에 세팅
     $('#propDescHidden').val(editor.getHTML());

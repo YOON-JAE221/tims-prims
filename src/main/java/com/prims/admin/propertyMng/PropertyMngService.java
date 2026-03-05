@@ -63,13 +63,69 @@ public class PropertyMngService {
             paramMap.put("propCd", Utility.getUuidPk32());
         }
 
-        // MAIN_YN 변경 시 MAIN_YN_DTM 설정
-        String mainYn = String.valueOf(paramMap.getOrDefault("mainYn", "N"));
-        if ("Y".equals(mainYn)) {
-            paramMap.put("mainYnDtm", "NOW()");
+        // 숫자 필드 변환 (빈 문자열 → 0)
+        paramMap.put("sellPrice", toLong(paramMap.get("sellPrice")));
+        paramMap.put("deposit", toLong(paramMap.get("deposit")));
+        paramMap.put("monthlyRent", toLong(paramMap.get("monthlyRent")));
+        paramMap.put("mgmtCost", toInt(paramMap.get("mgmtCost")));
+        paramMap.put("roomCnt", toInt(paramMap.get("roomCnt")));
+        paramMap.put("bathCnt", toInt(paramMap.get("bathCnt")));
+        paramMap.put("areaExclusive", toDecimal(paramMap.get("areaExclusive")));
+        paramMap.put("areaSupply", toDecimal(paramMap.get("areaSupply")));
+        paramMap.put("lat", toDecimal(paramMap.get("lat")));
+        paramMap.put("lng", toDecimal(paramMap.get("lng")));
+
+        // 기본값 처리
+        if (paramMap.get("mainYn") == null || "".equals(paramMap.get("mainYn"))) paramMap.put("mainYn", "N");
+        if (paramMap.get("soldYn") == null || "".equals(paramMap.get("soldYn"))) paramMap.put("soldYn", "N");
+        if (paramMap.get("badgeType") == null || "".equals(paramMap.get("badgeType"))) paramMap.put("badgeType", "NONE");
+
+        // MAIN_YN_DTM 로직
+        String mainYn = String.valueOf(paramMap.get("mainYn"));
+        if ("N".equals(mainYn)) {
+            // N이면 무조건 null
+            paramMap.put("mainYnDtm", null);
+        } else {
+            // Y일 때: 기존 데이터 확인
+            if (isNew) {
+                // 신규: NOW
+                paramMap.put("mainYnDtm", new java.sql.Timestamp(System.currentTimeMillis()));
+            } else {
+                // 수정: 기존 값 확인
+                Map<String, Object> existing = propertyMngDao.getSelectPropertyDetail(paramMap);
+                String oldMainYn = existing != null ? String.valueOf(existing.getOrDefault("mainYn", "N")) : "N";
+                if ("Y".equals(oldMainYn)) {
+                    // Y→Y: 기존값 유지
+                    paramMap.put("mainYnDtm", existing.get("mainYnDtm"));
+                } else {
+                    // N→Y: NOW
+                    paramMap.put("mainYnDtm", new java.sql.Timestamp(System.currentTimeMillis()));
+                }
+            }
         }
 
         return propertyMngDao.saveProperty(paramMap);
+    }
+
+    private long toLong(Object val) {
+        if (val == null) return 0;
+        String s = val.toString().trim();
+        if (s.isEmpty()) return 0;
+        try { return Long.parseLong(s); } catch (NumberFormatException e) { return 0; }
+    }
+
+    private int toInt(Object val) {
+        if (val == null) return 0;
+        String s = val.toString().trim();
+        if (s.isEmpty()) return 0;
+        try { return Integer.parseInt(s); } catch (NumberFormatException e) { return 0; }
+    }
+
+    private java.math.BigDecimal toDecimal(Object val) {
+        if (val == null) return null;
+        String s = val.toString().trim();
+        if (s.isEmpty()) return null;
+        try { return new java.math.BigDecimal(s); } catch (NumberFormatException e) { return null; }
     }
 
     @Transactional(rollbackFor = Exception.class)

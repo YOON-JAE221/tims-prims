@@ -132,30 +132,26 @@
 }
 </style>
 
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d644274bbbb3fccf96aeed95241bcfab"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d"></script>
 <script>
   $(function () {
     kakao.maps.load(function () {
-      initKakaoMap();
+      var lat = 37.5038;
+      var lng = 126.7656;
+      var container = document.getElementById('kakaoMap');
+      var map = new kakao.maps.Map(container, {
+        center: new kakao.maps.LatLng(lat, lng),
+        level: 3
+      });
+      var marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng) });
+      marker.setMap(map);
+      var infowindow = new kakao.maps.InfoWindow({
+        content: '<div style="padding:10px 16px; font-size:14px; font-weight:700; white-space:nowrap; color:#1B2A4A;">프리머스 부동산</div>'
+      });
+      infowindow.open(map, marker);
+      map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
     });
   });
-
-  function initKakaoMap() {
-    var lat = 37.5038;
-    var lng = 126.7656;
-    var container = document.getElementById('kakaoMap');
-    var map = new kakao.maps.Map(container, {
-      center: new kakao.maps.LatLng(lat, lng),
-      level: 3
-    });
-    var marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng) });
-    marker.setMap(map);
-    var infowindow = new kakao.maps.InfoWindow({
-      content: '<div style="padding:10px 16px; font-size:14px; font-weight:700; white-space:nowrap; color:#1B2A4A;">프리머스 부동산</div>'
-    });
-    infowindow.open(map, marker);
-    map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
-  }
 </script>
 
 </body>

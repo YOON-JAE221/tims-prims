@@ -52,7 +52,7 @@
       </a>
       <ul class="nav-links">
         <li class="nav-item"><a href="${ctx}/about/viewAbout">회사소개</a></li>
-        <li class="nav-item"><a href="${ctx}/property/viewPropertyList">매물검색</a></li>
+        <li class="nav-item"><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
         <li class="nav-item">
           <a href="#">매물유형 ▾</a>
           <div class="nav-dropdown">
