@@ -1,0 +1,358 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
+
+<div class="content-wrapper">
+
+  <div class="content-header">
+    <div class="container">
+      <div class="row mb-2">
+        <div class="col-sm-6"><h4>${empty prop ? '매물 등록' : '매물 수정'}</h4></div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item active">매물관리</li>
+            <li class="breadcrumb-item"><a href="${ctx}/propertyMng/viewPropertyMng">매물목록</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container">
+
+      <form id="propForm" enctype="multipart/form-data">
+        <input type="hidden" name="propCd" value="${prop.propCd}" />
+
+        <!-- 기본정보 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">기본정보</h5></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>매물명 <span class="text-danger">*</span></label>
+                  <input type="text" name="propNm" id="propNm" class="form-control" value="${prop.propNm}" placeholder="예: 프리머스타워 32평" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>매물유형 <span class="text-danger">*</span></label>
+                  <select name="propType" id="propType" class="form-control">
+                    <option value="APT" ${prop.propType eq 'APT' ? 'selected' : ''}>아파트</option>
+                    <option value="OFFICETEL" ${prop.propType eq 'OFFICETEL' ? 'selected' : ''}>오피스텔</option>
+                    <option value="SHOP" ${prop.propType eq 'SHOP' ? 'selected' : ''}>상가</option>
+                    <option value="OFFICE" ${prop.propType eq 'OFFICE' ? 'selected' : ''}>사무실</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>거래유형 <span class="text-danger">*</span></label>
+                  <select name="dealType" id="dealType" class="form-control">
+                    <option value="SELL" ${prop.dealType eq 'SELL' ? 'selected' : ''}>매매</option>
+                    <option value="JEONSE" ${prop.dealType eq 'JEONSE' ? 'selected' : ''}>전세</option>
+                    <option value="WOLSE" ${prop.dealType eq 'WOLSE' ? 'selected' : ''}>월세</option>
+                    <option value="RENT" ${prop.dealType eq 'RENT' ? 'selected' : ''}>임대</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 가격정보 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">가격정보</h5></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>매매가 (만원)</label>
+                  <input type="number" name="sellPrice" class="form-control" value="${prop.sellPrice}" placeholder="0" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>보증금 (만원)</label>
+                  <input type="number" name="deposit" class="form-control" value="${prop.deposit}" placeholder="0" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>월세 (만원)</label>
+                  <input type="number" name="monthlyRent" class="form-control" value="${prop.monthlyRent}" placeholder="0" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>관리비 (만원)</label>
+                  <input type="number" name="mgmtCost" class="form-control" value="${prop.mgmtCost}" placeholder="0" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 면적/구조 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">면적 / 구조</h5></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>전용면적 (㎡)</label>
+                  <input type="number" step="0.01" name="areaExclusive" class="form-control" value="${prop.areaExclusive}" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>공급면적 (㎡)</label>
+                  <input type="number" step="0.01" name="areaSupply" class="form-control" value="${prop.areaSupply}" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>방수</label>
+                  <input type="number" name="roomCnt" class="form-control" value="${prop.roomCnt}" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>욕실수</label>
+                  <input type="number" name="bathCnt" class="form-control" value="${prop.bathCnt}" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>방향</label>
+                  <select name="direction" class="form-control">
+                    <option value="">선택</option>
+                    <option value="남향" ${prop.direction eq '남향' ? 'selected' : ''}>남향</option>
+                    <option value="동향" ${prop.direction eq '동향' ? 'selected' : ''}>동향</option>
+                    <option value="서향" ${prop.direction eq '서향' ? 'selected' : ''}>서향</option>
+                    <option value="북향" ${prop.direction eq '북향' ? 'selected' : ''}>북향</option>
+                    <option value="남동향" ${prop.direction eq '남동향' ? 'selected' : ''}>남동향</option>
+                    <option value="남서향" ${prop.direction eq '남서향' ? 'selected' : ''}>남서향</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>해당층</label>
+                  <input type="text" name="floorNo" class="form-control" value="${prop.floorNo}" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>총층</label>
+                  <input type="text" name="floorTotal" class="form-control" value="${prop.floorTotal}" />
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label>현관구조</label>
+                  <select name="entranceType" class="form-control">
+                    <option value="">선택</option>
+                    <option value="복도식" ${prop.entranceType eq '복도식' ? 'selected' : ''}>복도식</option>
+                    <option value="계단식" ${prop.entranceType eq '계단식' ? 'selected' : ''}>계단식</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>주차</label>
+                  <input type="text" name="parking" class="form-control" value="${prop.parking}" placeholder="세대당 1대" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>난방방식</label>
+                  <input type="text" name="heating" class="form-control" value="${prop.heating}" placeholder="개별난방 (도시가스)" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>건축년도</label>
+                  <input type="text" name="buildYear" class="form-control" value="${prop.buildYear}" placeholder="2020" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>입주가능일</label>
+                  <input type="text" name="moveInDate" class="form-control" value="${prop.moveInDate}" placeholder="즉시입주 / 2026-04 등" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 위치 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">위치정보</h5></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>주소 <span class="text-danger">*</span></label>
+                  <input type="text" name="address" id="address" class="form-control" value="${prop.address}" placeholder="경기도 부천시 길주로 280" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>상세주소</label>
+                  <input type="text" name="addressDtl" class="form-control" value="${prop.addressDtl}" placeholder="프리머스 부천타워 1층" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>위도</label>
+                  <input type="text" name="lat" class="form-control" value="${prop.lat}" placeholder="37.5038" />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>경도</label>
+                  <input type="text" name="lng" class="form-control" value="${prop.lng}" placeholder="126.7656" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 노출설정 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">노출 / 상태</h5></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>뱃지</label>
+                  <select name="badgeType" class="form-control">
+                    <option value="NONE" ${prop.badgeType eq 'NONE' or empty prop.badgeType ? 'selected' : ''}>선택없음</option>
+                    <option value="RECOMMEND" ${prop.badgeType eq 'RECOMMEND' ? 'selected' : ''}>추천</option>
+                    <option value="URGENT" ${prop.badgeType eq 'URGENT' ? 'selected' : ''}>급매</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>메인 슬라이더 노출</label>
+                  <select name="mainYn" class="form-control">
+                    <option value="N" ${prop.mainYn ne 'Y' ? 'selected' : ''}>노출안함</option>
+                    <option value="Y" ${prop.mainYn eq 'Y' ? 'selected' : ''}>노출</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>거래상태</label>
+                  <select name="soldYn" class="form-control">
+                    <option value="N" ${prop.soldYn ne 'Y' ? 'selected' : ''}>거래중</option>
+                    <option value="Y" ${prop.soldYn eq 'Y' ? 'selected' : ''}>거래완료</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 매물 설명 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">매물 설명</h5></div>
+          <div class="card-body">
+            <textarea id="initPropDesc" style="display:none;"><c:out value="${prop.propDesc}" escapeXml="true"/></textarea>
+            <textarea id="summernote"></textarea>
+            <input type="hidden" name="propDesc" id="propDescHidden" />
+          </div>
+        </div>
+
+        <!-- 첨부파일 -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">이미지 첨부</h5></div>
+          <div class="card-body">
+            <c:if test="${not empty fileList}">
+              <div id="existFileWrap" class="mb-2">
+                <c:forEach var="file" items="${fileList}">
+                  <div class="d-flex align-items-center mb-1" data-upld-file-cd="${file.upldFileCd}" data-file-seq="${file.fileSeq}">
+                    <a href="${ctx}/file/download?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}">📎 ${file.fileNm}</a>
+                    <button type="button" class="btn btn-xs btn-outline-danger ml-2" onclick="fnRemoveExistFile(this)">삭제</button>
+                    <button type="button" class="btn btn-xs btn-outline-warning ml-1" onclick="fnRestoreExistFile(this)" style="display:none;">취소</button>
+                  </div>
+                </c:forEach>
+              </div>
+            </c:if>
+            <div id="fileWrap">
+              <div class="mb-1"><input type="file" name="atchFile" class="form-control-file" /></div>
+            </div>
+            <button type="button" class="btn btn-xs btn-outline-secondary mt-1" onclick="fnAddFile()">+ 파일추가</button>
+            <p class="text-muted mt-1" style="font-size:12px;">* 최대 10개, 파일당 20MB 이하</p>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- 버튼 -->
+      <!-- 버튼 -->
+      <div style="text-align:center; padding:40px 0 80px;">
+        <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+        <button type="button" class="btn btn-bo-save ml-3" onclick="fnSave()">${empty prop ? '등록' : '수정'}</button>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script>
+  const editor = EDIT.Summernote.init({
+    el: '#summernote',
+    ctx: '${ctx}',
+    initSelector: '#initPropDesc',
+    height: 350
+  });
+
+  function fnAddFile() {
+    $('#fileWrap').append('<div class="mb-1"><input type="file" name="atchFile" class="form-control-file" /></div>');
+  }
+
+  function fnRemoveExistFile(btn) {
+    var $row = $(btn).closest('div[data-upld-file-cd]');
+    $row.find('a').css({'text-decoration':'line-through','color':'#999'});
+    $(btn).hide(); $row.find('[onclick*="fnRestoreExistFile"]').show();
+    var key = $row.data('upld-file-cd') + ':' + $row.data('file-seq');
+    $('#propForm').append('<input type="hidden" name="deleteFiles" class="deleteFileInput" value="' + key + '" />');
+  }
+
+  function fnRestoreExistFile(btn) {
+    var $row = $(btn).closest('div[data-upld-file-cd]');
+    $row.find('a').css({'text-decoration':'','color':''});
+    $(btn).hide(); $row.find('[onclick*="fnRemoveExistFile"]').show();
+    var key = $row.data('upld-file-cd') + ':' + $row.data('file-seq');
+    $('#propForm .deleteFileInput').filter(function(){ return $(this).val() === key; }).remove();
+  }
+
+  function fnSave() {
+    if (!$('#propNm').val().trim()) { alert('매물명을 입력해주세요.'); $('#propNm').focus(); return; }
+    if (!$('#address').val().trim()) { alert('주소를 입력해주세요.'); $('#address').focus(); return; }
+
+    // 에디터 내용 hidden에 세팅
+    $('#propDescHidden').val(editor.getHTML());
+
+    var res = ajaxFormCall('${ctx}/propertyMng/saveProperty', '#propForm', false);
+    if (res && res.result === 'OK') {
+      alert('${empty prop ? "등록" : "수정"}되었습니다.');
+      fnGoList();
+    } else {
+      alert('저장 실패: ' + (res && res.message ? res.message : ''));
+    }
+  }
+
+  function fnGoList() {
+    location.href = '${ctx}/propertyMng/viewPropertyMng';
+  }
+</script>

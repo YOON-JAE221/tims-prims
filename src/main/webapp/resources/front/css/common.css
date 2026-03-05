@@ -138,6 +138,216 @@ img { max-width: 100%; display: block; }
   background: var(--navy-light); color: white;
 }
 
+/* ===== 매물 카드 그리드 ===== */
+.prop-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.prop-card {
+  border: 1px solid var(--gray-200); border-radius: 12px;
+  overflow: hidden; cursor: pointer;
+  transition: all 0.25s; background: white;
+}
+.prop-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  border-color: transparent;
+}
+.prop-card-img {
+  height: 140px; position: relative;
+  display: flex; align-items: center; justify-content: center;
+}
+.prop-card-img.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5); }
+.prop-card-img.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5); }
+.prop-card-img.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
+.prop-card-img.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
+.prop-card-emoji { font-size: 40px; }
+.prop-card-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--orange); color: white;
+  padding: 3px 10px; border-radius: 5px;
+  font-size: 11px; font-weight: 700;
+}
+.prop-card-body { padding: 14px; }
+.prop-card-type {
+  font-size: 11px; color: var(--orange); font-weight: 700;
+  margin-bottom: 4px;
+}
+.prop-card-title {
+  font-size: 15px; font-weight: 700; color: var(--navy);
+  margin-bottom: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prop-card-loc {
+  font-size: 12px; color: var(--gray-400); margin-bottom: 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.prop-card-price {
+  font-size: 18px; font-weight: 800; color: var(--navy);
+}
+.prop-card-price span {
+  font-size: 12px; font-weight: 500; color: var(--gray-400); margin-left: 2px;
+}
+.prop-card-info {
+  display: flex; gap: 10px; margin-top: 10px;
+  padding-top: 10px; border-top: 1px solid var(--gray-100);
+  font-size: 12px; color: var(--gray-500);
+}
+
+/* 매물 검색 필터 */
+.prop-filter {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  padding: 16px 0; margin-bottom: 16px;
+  border-bottom: 2px solid var(--navy);
+  align-items: center;
+}
+.prop-filter select,
+.prop-filter input[type="text"] {
+  padding: 9px 12px; border: 1px solid var(--gray-200);
+  border-radius: 8px; font-size: 13px; font-family: inherit;
+  outline: none; color: var(--gray-700);
+}
+.prop-filter select:focus,
+.prop-filter input[type="text"]:focus {
+  border-color: var(--orange);
+}
+.prop-filter select { min-width: 100px; }
+.prop-filter input[type="text"] { width: 160px; }
+.prop-filter-btn {
+  padding: 9px 20px; border: none; border-radius: 8px;
+  background: var(--navy); color: white;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.prop-filter-btn:hover { background: var(--navy-light); }
+.prop-filter-reset {
+  padding: 9px 16px; border: 1px solid var(--gray-200); border-radius: 8px;
+  background: white; color: var(--gray-500);
+  font-size: 13px; cursor: pointer;
+  transition: all 0.2s;
+}
+.prop-filter-reset:hover { border-color: var(--orange); color: var(--orange); }
+
+/* 매물 결과 건수 */
+.prop-result-info {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 16px;
+}
+.prop-result-cnt {
+  font-size: 14px; color: var(--gray-500);
+}
+.prop-result-cnt strong {
+  color: var(--orange); font-weight: 800;
+}
+.prop-sort select {
+  padding: 7px 10px; border: 1px solid var(--gray-200);
+  border-radius: 6px; font-size: 12px; font-family: inherit;
+  color: var(--gray-700); outline: none;
+}
+
+@media (max-width: 1024px) {
+  .prop-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .prop-grid { grid-template-columns: 1fr; }
+  .prop-card-img { height: 160px; }
+  .prop-filter { flex-direction: column; }
+  .prop-filter select, .prop-filter input[type="text"] { width: 100%; }
+}
+
+/* ===== 매물 상세 ===== */
+.prop-detail-top {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 28px; margin-bottom: 36px;
+}
+.prop-detail-img {
+  height: 320px; border-radius: 14px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.prop-detail-img.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5); }
+.prop-detail-img.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5); }
+.prop-detail-img.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
+.prop-detail-img.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
+.prop-detail-img .prop-card-emoji { font-size: 64px; }
+.prop-detail-img .prop-card-badge { top: 16px; left: 16px; padding: 5px 14px; font-size: 13px; }
+
+.prop-detail-summary { display: flex; flex-direction: column; justify-content: center; }
+.prop-detail-type { font-size: 13px; color: var(--orange); font-weight: 700; margin-bottom: 8px; }
+.prop-detail-title { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 8px; letter-spacing: -0.5px; }
+.prop-detail-loc { font-size: 14px; color: var(--gray-400); margin-bottom: 16px; }
+.prop-detail-price { font-size: 28px; font-weight: 800; color: var(--navy); margin-bottom: 16px; }
+.prop-detail-price span { font-size: 15px; font-weight: 500; color: var(--gray-400); }
+
+.prop-detail-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.prop-tag {
+  padding: 5px 12px; border-radius: 20px;
+  background: var(--gray-50); border: 1px solid var(--gray-200);
+  font-size: 12px; color: var(--gray-600); font-weight: 500;
+}
+
+.prop-detail-quick {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.prop-quick-item {
+  padding: 12px 14px; background: var(--gray-50);
+  border-radius: 10px; border: 1px solid var(--gray-100);
+}
+.prop-quick-label { font-size: 11px; color: var(--gray-400); font-weight: 600; margin-bottom: 4px; }
+.prop-quick-value { font-size: 15px; color: var(--navy); font-weight: 700; }
+
+/* 상세 섹션 */
+.prop-detail-section {
+  margin-bottom: 32px; padding-top: 28px;
+  border-top: 1px solid var(--gray-200);
+}
+.prop-detail-section-title {
+  font-size: 18px; font-weight: 800; color: var(--navy);
+  margin-bottom: 18px;
+}
+
+/* 상세 테이블 */
+.prop-detail-table {
+  width: 100%; border-collapse: collapse;
+  border-top: 2px solid var(--navy);
+}
+.prop-detail-table th,
+.prop-detail-table td {
+  padding: 13px 16px; font-size: 14px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.prop-detail-table th {
+  background: var(--gray-50); font-weight: 700;
+  color: var(--gray-600); width: 120px; text-align: left;
+}
+.prop-detail-table td { color: var(--gray-700); }
+
+/* 매물 설명 */
+.prop-detail-desc {
+  font-size: 15px; color: var(--gray-600); line-height: 1.9;
+}
+.prop-detail-desc p { margin-bottom: 6px; }
+
+/* 하단 CTA */
+.prop-detail-cta {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 28px; background: var(--gray-50);
+  border-radius: 14px; border: 1px solid var(--gray-100);
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .prop-detail-top { grid-template-columns: 1fr; }
+  .prop-detail-img { height: 220px; }
+  .prop-detail-title { font-size: 22px; }
+  .prop-detail-price { font-size: 24px; }
+  .prop-detail-quick { grid-template-columns: 1fr 1fr; }
+  .prop-detail-table th { width: 90px; font-size: 13px; padding: 10px 12px; }
+  .prop-detail-table td { font-size: 13px; padding: 10px 12px; }
+  .prop-detail-cta { flex-direction: column; text-align: center; }
+}
+
 /* ===== 회사소개 페이지 ===== */
 .about-page-section {
   padding: 64px 0;

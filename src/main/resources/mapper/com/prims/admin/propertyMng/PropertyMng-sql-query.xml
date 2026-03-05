@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="propertyMng">
+
+    <!-- 매물 목록 조회 -->
+    <select id="getSelectPropertyList" parameterType="map" resultType="map">
+        SELECT A.PROP_CD
+             , A.PROP_NM
+             , A.PROP_TYPE
+             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , A.DEAL_TYPE
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , A.SELL_PRICE
+             , A.DEPOSIT
+             , A.MONTHLY_RENT
+             , A.AREA_EXCLUSIVE
+             , A.ROOM_CNT
+             , A.FLOOR_NO
+             , A.ADDRESS
+             , A.BADGE_TYPE
+             , CASE A.BADGE_TYPE WHEN 'RECOMMEND' THEN '추천' WHEN 'URGENT' THEN '급매' ELSE '-' END AS BADGE_TYPE_NM
+             , A.MAIN_YN
+             , A.SOLD_YN
+             , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           <if test="propType != null and propType != '' and propType != 'ALL'">
+           AND A.PROP_TYPE = #{propType}
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
+             <choose>
+               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
+               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
+             </choose>
+           </if>
+           <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
+           AND A.SOLD_YN = #{soldYn}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
+         ORDER BY A.RGT_DTM DESC
+         <if test="pageSize != null">
+         LIMIT ${offset}, ${pageSize}
+         </if>
+    </select>
+
+    <!-- 매물 총 건수 -->
+    <select id="getSelectPropertyCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           <if test="propType != null and propType != '' and propType != 'ALL'">
+           AND A.PROP_TYPE = #{propType}
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
+             <choose>
+               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
+               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
+             </choose>
+           </if>
+           <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
+           AND A.SOLD_YN = #{soldYn}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
+    </select>
+
+    <!-- 매물 상세 -->
+    <select id="getSelectPropertyDetail" parameterType="map" resultType="map">
+        SELECT A.*
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM_FMT
+             , DATE_FORMAT(A.UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM_FMT
+          FROM TB_PROPERTY A
+         WHERE A.PROP_CD = #{propCd}
+           AND A.DEL_YN = 'N'
+    </select>
+
+    <!-- 매물 저장 (UPSERT) -->
+    <update id="saveProperty" parameterType="map">
+        INSERT INTO TB_PROPERTY (
+            PROP_CD, PROP_NM, PROP_TYPE, DEAL_TYPE
+          , SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST
+          , AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT
+          , FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE
+          , PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE
+          , ADDRESS, ADDRESS_DTL, LAT, LNG
+          , BADGE_TYPE, MAIN_YN, MAIN_YN_DTM, SOLD_YN
+          , PROP_DESC, ATCH_FILE_KEY
+          , USE_YN, DEL_YN, SORT_ORD
+          , RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
+        ) VALUES (
+            #{propCd}, #{propNm}, #{propType}, #{dealType}
+          , #{sellPrice}, #{deposit}, #{monthlyRent}, #{mgmtCost}
+          , #{areaExclusive}, #{areaSupply}, #{roomCnt}, #{bathCnt}
+          , #{floorNo}, #{floorTotal}, #{direction}, #{entranceType}
+          , #{parking}, #{heating}, #{buildYear}, #{moveInDate}
+          , #{address}, #{addressDtl}, #{lat}, #{lng}
+          , #{badgeType}
+          , #{mainYn}
+          , <choose><when test="mainYn == 'Y'">NOW()</when><otherwise>NULL</otherwise></choose>
+          , #{soldYn}
+          , #{propDesc}, #{atchFileKey}
+          , 'Y', 'N', IFNULL(#{sortOrd}, 0)
+          , #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
+        )
+        ON DUPLICATE KEY UPDATE
+            PROP_NM        = #{propNm}
+          , PROP_TYPE      = #{propType}
+          , DEAL_TYPE      = #{dealType}
+          , SELL_PRICE     = #{sellPrice}
+          , DEPOSIT        = #{deposit}
+          , MONTHLY_RENT   = #{monthlyRent}
+          , MGMT_COST      = #{mgmtCost}
+          , AREA_EXCLUSIVE = #{areaExclusive}
+          , AREA_SUPPLY    = #{areaSupply}
+          , ROOM_CNT       = #{roomCnt}
+          , BATH_CNT       = #{bathCnt}
+          , FLOOR_NO       = #{floorNo}
+          , FLOOR_TOTAL    = #{floorTotal}
+          , DIRECTION      = #{direction}
+          , ENTRANCE_TYPE  = #{entranceType}
+          , PARKING        = #{parking}
+          , HEATING        = #{heating}
+          , BUILD_YEAR     = #{buildYear}
+          , MOVE_IN_DATE   = #{moveInDate}
+          , ADDRESS        = #{address}
+          , ADDRESS_DTL    = #{addressDtl}
+          , LAT            = #{lat}
+          , LNG            = #{lng}
+          , BADGE_TYPE     = #{badgeType}
+          , MAIN_YN        = #{mainYn}
+          , MAIN_YN_DTM    = <choose><when test="mainYn == 'Y'">IFNULL(MAIN_YN_DTM, NOW())</when><otherwise>NULL</otherwise></choose>
+          , SOLD_YN        = #{soldYn}
+          , PROP_DESC      = #{propDesc}
+          <if test="atchFileKey != null and atchFileKey != ''">
+          , ATCH_FILE_KEY  = #{atchFileKey}
+          </if>
+          , SORT_ORD       = IFNULL(#{sortOrd}, 0)
+          , UPD_USR_CD     = #{ssnUsrCd}
+          , UPD_DTM        = NOW()
+    </update>
+
+    <!-- 매물 삭제 (논리) -->
+    <update id="deleteProperty" parameterType="map">
+        UPDATE TB_PROPERTY
+           SET DEL_YN = 'Y'
+             , USE_YN = 'N'
+             , UPD_USR_CD = #{ssnUsrCd}
+             , UPD_DTM = NOW()
+         WHERE PROP_CD = #{propCd}
+           AND DEL_YN = 'N'
+    </update>
+
+</mapper>
