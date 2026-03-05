@@ -22,7 +22,10 @@
   <meta property="og:url" content="http://primusrealestate.co.kr" />
 
   <!-- Favicons -->
-  <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico">
+  <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">
+  <link rel="icon" type="image/png" sizes="16x16" href="${ctx}/resources/front/img/favicon/favicon-16x16.png?v=20260305">
+  <link rel="icon" type="image/png" sizes="32x32" href="${ctx}/resources/front/img/favicon/favicon-32x32.png?v=20260305">
+  <link rel="apple-touch-icon" sizes="180x180" href="${ctx}/resources/front/img/favicon/apple-touch-icon.png?v=20260305">
 
   <!-- jQuery -->
   <script src="${ctx}/resources/common/util/js/jquery-4.0.0.min.js" charset="UTF-8"></script>
@@ -31,8 +34,8 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503050020" rel="stylesheet">
-  <link href="${ctx}/resources/front/css/main.css?v=202503050020" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503050031" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/main.css?v=202503050030" rel="stylesheet">
 
   <!-- Common JS -->
   <script src="${ctx}/resources/common/util/js/common.js" charset="UTF-8"></script>
@@ -64,7 +67,7 @@
           <div class="nav-dropdown">
             <a href="${ctx}/bbs/viewBbsNotice">공지사항</a>
             <a href="${ctx}/bbs/viewBbsFaq">FAQ</a>
-            <a href="${ctx}/inquiry/viewInquiry">문의하기</a>
+            <a href="${ctx}/bbs/viewBbsQna">문의하기</a>
           </div>
         </li>
         <li class="nav-item"><a href="${ctx}/locGuide/viewLocGuide">오시는길</a></li>
@@ -74,7 +77,7 @@
           <small>대표전화</small>
           032-327-1277
         </div>
-        <a href="${ctx}/inquiry/viewInquiry" class="nav-cta">상담신청</a>
+        <a href="${ctx}/bbs/viewBbsQna" class="nav-cta">상담신청</a>
         <button class="nav-mobile-toggle" onclick="fnToggleMobileNav()">☰</button>
       </div>
     </div>

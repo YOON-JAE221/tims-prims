@@ -7,76 +7,20 @@
   margin-top: 72px;
   position: relative; overflow: hidden;
   height: 620px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .hero-slide {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
   opacity: 0; visibility: hidden;
   transition: opacity 0.8s ease, visibility 0.8s ease;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.hero-slide.active { opacity: 1; visibility: visible;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.hero-slide.active { opacity: 1; visibility: visible; }
 
 .slide-bg {
   position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.slide-bg.s1 { background: linear-gradient(160deg, #0a1628 0%, #1B2A4A 40%, #1a3355 100%);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.slide-bg.s2 { background: linear-gradient(160deg, #14243d 0%, #1e3a5f 40%, #0F1C33 100%);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.slide-bg.s3 { background: linear-gradient(160deg, #0d1926 0%, #1B2A4A 50%, #2a4570 100%);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slide-bg.s1 { background: linear-gradient(160deg, #0a1628 0%, #1B2A4A 40%, #1a3355 100%); }
+.slide-bg.s2 { background: linear-gradient(160deg, #14243d 0%, #1e3a5f 40%, #0F1C33 100%); }
+.slide-bg.s3 { background: linear-gradient(160deg, #0d1926 0%, #1B2A4A 50%, #2a4570 100%); }
 
 .slide-grid {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
@@ -84,386 +28,62 @@
     linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 80px 80px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 
 /* Glow orbs */
-.slide-orb {
-  position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.orb-a { width: 450px; height: 450px; background: rgba(232,131,12,0.12); top: -10%; right: 5%; animation: orbF1 8s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.orb-b { width: 300px; height: 300px; background: rgba(45,74,122,0.2); bottom: -5%; left: 15%; animation: orbF2 10s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.orb-c { width: 400px; height: 400px; background: rgba(232,131,12,0.1); top: 10%; right: 15%; animation: orbF1 9s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.orb-d { width: 350px; height: 350px; background: rgba(45,74,122,0.18); bottom: 0; left: 5%; animation: orbF2 7s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.orb-e { width: 500px; height: 500px; background: rgba(232,131,12,0.15); top: -5%; right: -5%; animation: orbF1 10s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-@keyframes orbF1 { 0%,100%{transform:translate(0,0) scale(1)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} 50%{transform:translate(-20px,15px) scale(1.08)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-@keyframes orbF2 { 0%,100%{transform:translate(0,0) scale(1)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} 50%{transform:translate(15px,-20px) scale(1.05)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slide-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+.orb-a { width: 450px; height: 450px; background: rgba(232,131,12,0.12); top: -10%; right: 5%; animation: orbF1 8s ease-in-out infinite; }
+.orb-b { width: 300px; height: 300px; background: rgba(45,74,122,0.2); bottom: -5%; left: 15%; animation: orbF2 10s ease-in-out infinite; }
+.orb-c { width: 400px; height: 400px; background: rgba(232,131,12,0.1); top: 10%; right: 15%; animation: orbF1 9s ease-in-out infinite; }
+.orb-d { width: 350px; height: 350px; background: rgba(45,74,122,0.18); bottom: 0; left: 5%; animation: orbF2 7s ease-in-out infinite; }
+.orb-e { width: 500px; height: 500px; background: rgba(232,131,12,0.15); top: -5%; right: -5%; animation: orbF1 10s ease-in-out infinite; }
+@keyframes orbF1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,15px) scale(1.08)} }
+@keyframes orbF2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(15px,-20px) scale(1.05)} }
 
 /* Floating shapes */
-.slide-shape {
-  position: absolute; pointer-events: none; border: 1px solid rgba(255,255,255,0.05);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.sh1 { width: 220px; height: 220px; border-radius: 24px; top: 8%; right: 10%; animation: shRot 25s linear infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.sh2 { width: 140px; height: 140px; border-radius: 50%; bottom: 18%; right: 22%; border-color: rgba(232,131,12,0.08); animation: shRot 18s linear infinite reverse;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.sh3 { width: 280px; height: 280px; border-radius: 50%; top: -3%; right: 0; border-width: 2px; border-color: rgba(232,131,12,0.06);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.sh4 { width: 100px; height: 100px; border-radius: 14px; top: 35%; right: 38%; border-color: rgba(255,255,255,0.03); transform: rotate(-20deg); animation: shFloat 7s ease-in-out infinite;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.sh5 { width: 70px; height: 70px; border-radius: 10px; background: rgba(232,131,12,0.04); border: none; bottom: 28%; right: 14%; transform: rotate(25deg); animation: shFloat 5s ease-in-out infinite reverse;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-@keyframes shRot { from{transform:rotate(0)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} to{transform:rotate(360deg)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-@keyframes shFloat { 0%,100%{transform:rotate(-20deg) translate(0,0)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} 50%{transform:rotate(-20deg) translate(8px,-12px)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slide-shape { position: absolute; pointer-events: none; border: 1px solid rgba(255,255,255,0.05); }
+.sh1 { width: 220px; height: 220px; border-radius: 24px; top: 8%; right: 10%; animation: shRot 25s linear infinite; }
+.sh2 { width: 140px; height: 140px; border-radius: 50%; bottom: 18%; right: 22%; border-color: rgba(232,131,12,0.08); animation: shRot 18s linear infinite reverse; }
+.sh3 { width: 280px; height: 280px; border-radius: 50%; top: -3%; right: 0; border-width: 2px; border-color: rgba(232,131,12,0.06); }
+.sh4 { width: 100px; height: 100px; border-radius: 14px; top: 35%; right: 38%; border-color: rgba(255,255,255,0.03); transform: rotate(-20deg); animation: shFloat 7s ease-in-out infinite; }
+.sh5 { width: 70px; height: 70px; border-radius: 10px; background: rgba(232,131,12,0.04); border: none; bottom: 28%; right: 14%; transform: rotate(25deg); animation: shFloat 5s ease-in-out infinite reverse; }
+@keyframes shRot { from{transform:rotate(0)} to{transform:rotate(360deg)} }
+@keyframes shFloat { 0%,100%{transform:rotate(-20deg) translate(0,0)} 50%{transform:rotate(-20deg) translate(8px,-12px)} }
 
 .slide-overlay {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   background: linear-gradient(100deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, transparent 65%);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 
 /* Right visual card */
 .slide-visual {
   position: absolute; right: 6%; top: 50%; transform: translateY(-50%); width: 360px; z-index: 5;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .visual-card {
   background: rgba(255,255,255,0.06); backdrop-filter: blur(16px);
   border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 24px; color: white;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.vc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-badge { background: var(--orange); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 700;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-type { font-size: 12px; color: rgba(255,255,255,0.4);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.vc-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.vc-badge { background: var(--orange); padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 700; }
+.vc-type { font-size: 12px; color: rgba(255,255,255,0.4); }
 .vc-img {
   width: 100%; height: 160px; border-radius: 12px; margin-bottom: 16px;
   display: flex; align-items: center; justify-content: center; font-size: 52px;
   position: relative; overflow: hidden;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.vc-img.i1 { background: linear-gradient(135deg, rgba(44,62,107,0.5), rgba(74,111,165,0.3));   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-img.i2 { background: linear-gradient(135deg, rgba(90,74,138,0.4), rgba(123,108,181,0.25));   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.vc-img.i1 { background: linear-gradient(135deg, rgba(44,62,107,0.5), rgba(74,111,165,0.3)); }
+.vc-img.i2 { background: linear-gradient(135deg, rgba(90,74,138,0.4), rgba(123,108,181,0.25)); }
 .vc-img::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50px;
   background: linear-gradient(to top, rgba(0,0,0,0.25), transparent);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.vc-title { font-size: 17px; font-weight: 700; margin-bottom: 5px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-loc { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-price { font-size: 22px; font-weight: 800;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.vc-price small { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.4);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.vc-title { font-size: 17px; font-weight: 700; margin-bottom: 5px; }
+.vc-loc { font-size: 13px; color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+.vc-price { font-size: 22px; font-weight: 800; }
+.vc-price small { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.4); }
 .vc-stats {
   display: flex; gap: 14px; margin-top: 14px; padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,0.08); font-size: 13px; color: rgba(255,255,255,0.45);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 
 /* Floating mini cards */
@@ -472,367 +92,95 @@
   background: rgba(255,255,255,0.07); backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.1); border-radius: 14px;
   padding: 14px 18px; color: white; animation: fcFloat 4s ease-in-out infinite;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.fc-icon { font-size: 20px; margin-bottom: 5px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.fc-text { font-size: 12px; font-weight: 600; white-space: nowrap;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.fc-sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-@keyframes fcFloat { 0%,100%{transform:translateY(0)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} 50%{transform:translateY(-8px)  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.fc-icon { font-size: 20px; margin-bottom: 5px; }
+.fc-text { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.fc-sub { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+@keyframes fcFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
 /* Slide content */
 .slide-content {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center;
   max-width: 1200px; margin: 0 auto; padding: 0 24px; z-index: 5;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.slide-text { max-width: 520px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slide-text { max-width: 520px; }
 
 /* Slide text animations */
 .slide-text > * {
   opacity: 0; transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.hero-slide.active .slide-text > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.15s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide.active .slide-text > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.3s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide.active .slide-text > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.45s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide.active .slide-text > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.6s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide .slide-visual { opacity:0; transform:translateY(-50%) translateX(30px); transition: all 0.7s ease 0.3s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide.active .slide-visual { opacity:1; transform:translateY(-50%) translateX(0);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide .float-card { opacity:0; transition: opacity 0.4s ease 0.7s;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.hero-slide.active .float-card { opacity:1;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.hero-slide.active .slide-text > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
+.hero-slide.active .slide-text > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.3s; }
+.hero-slide.active .slide-text > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.45s; }
+.hero-slide.active .slide-text > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.6s; }
+.hero-slide .slide-visual { opacity:0; transform:translateY(-50%) translateX(30px); transition: all 0.7s ease 0.3s; }
+.hero-slide.active .slide-visual { opacity:1; transform:translateY(-50%) translateX(0); }
+.hero-slide .float-card { opacity:0; transition: opacity 0.4s ease 0.7s; }
+.hero-slide.active .float-card { opacity:1; }
 
 .slide-badge {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(232,131,12,0.15); border: 1px solid rgba(232,131,12,0.3);
   color: var(--orange); padding: 7px 18px; border-radius: 100px;
   font-size: 13px; font-weight: 600; margin-bottom: 24px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slide-badge::before {
   content: ''; width: 6px; height: 6px; background: var(--orange);
   border-radius: 50%; animation: pulse 2s infinite;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-@keyframes pulse { 0%,100%{opacity:1  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-} 50%{opacity:0.3  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
 .slide-text h1 {
   font-size: 46px; font-weight: 800; color: white;
   line-height: 1.28; letter-spacing: -1.5px; margin-bottom: 18px;
   text-shadow: 0 2px 16px rgba(0,0,0,0.12);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slide-text h1 em {
   font-style: normal;
   background: linear-gradient(135deg, var(--orange), #F5A623);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slide-text p {
   font-size: 17px; color: rgba(255,255,255,0.55);
   line-height: 1.7; margin-bottom: 36px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.slide-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slide-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 
-/* Hero 전용 버튼 */
+/* Hero buttons */
 .hero .btn-outline-hero {
   background: rgba(255,255,255,0.06); color: white;
   padding: 15px 32px; border-radius: 10px;
   font-size: 15px; font-weight: 600;
   border: 1px solid rgba(255,255,255,0.18);
   transition: all 0.25s; backdrop-filter: blur(8px);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .hero .btn-outline-hero:hover {
   background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.3);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slide-phone {
   display: flex; align-items: center; gap: 10px; margin-left: 10px;
   color: white; font-weight: 700; font-size: 18px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slide-phone-icon {
   width: 42px; height: 42px; border-radius: 50%;
   background: rgba(232,131,12,0.15); border: 1px solid rgba(232,131,12,0.3);
   display: flex; align-items: center; justify-content: center; font-size: 18px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 
 /* Slider controls */
 .slider-dots {
   position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
   display: flex; gap: 10px; z-index: 10;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .slider-dot {
   width: 10px; height: 10px; border-radius: 50%;
   background: rgba(255,255,255,0.25); border: none;
   cursor: pointer; transition: all 0.3s; padding: 0;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.slider-dot.active { background: var(--orange); width: 32px; border-radius: 5px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slider-dot.active { background: var(--orange); width: 32px; border-radius: 5px; }
 .slider-arrow {
   position: absolute; top: 50%; transform: translateY(-50%);
   width: 50px; height: 50px; border-radius: 14px;
@@ -840,984 +188,236 @@
   color: white; font-size: 22px; cursor: pointer; z-index: 10;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.25s; backdrop-filter: blur(8px);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.slider-arrow:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.slider-arrow.prev { left: 24px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.slider-arrow.next { right: 24px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.slider-arrow:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.25); }
+.slider-arrow.prev { left: 24px; }
+.slider-arrow.next { right: 24px; }
 
 /* ===== 추천매물 섹션 ===== */
 .property-section {
   padding: 100px 24px;
   max-width: 1200px; margin: 0 auto;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .section-header {
   display: flex; justify-content: space-between;
   align-items: flex-end; margin-bottom: 48px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .view-all {
   font-size: 15px; color: var(--navy); font-weight: 600;
   display: flex; align-items: center; gap: 6px;
   transition: gap 0.2s;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.view-all:hover { gap: 10px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.view-all:hover { gap: 10px; }
 
 .property-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .property-card {
   background: var(--white); border-radius: 16px; overflow: hidden;
   border: 1px solid var(--gray-200); transition: all 0.3s; cursor: pointer;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .property-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(0,0,0,0.08);
   border-color: transparent;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.card-img { height: 220px; position: relative; overflow: hidden;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.card-img { height: 220px; position: relative; overflow: hidden; }
 .card-img-placeholder {
   width: 100%; height: 100%;
   display: flex; align-items: center; justify-content: center;
   font-size: 48px; color: white;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.card-img-placeholder.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-img-placeholder.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-img-placeholder.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-img-placeholder.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.card-img-placeholder.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5); }
+.card-img-placeholder.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5); }
+.card-img-placeholder.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
+.card-img-placeholder.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
 
 .card-badge {
   position: absolute; top: 14px; left: 14px;
   background: var(--orange); color: white;
   padding: 5px 12px; border-radius: 6px;
   font-size: 12px; font-weight: 700;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.card-body { padding: 20px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-type { font-size: 12px; color: var(--orange); font-weight: 700; margin-bottom: 6px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-location { font-size: 13px; color: var(--gray-500); margin-bottom: 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-price { font-size: 22px; font-weight: 800; color: var(--navy);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.card-price span { font-size: 14px; font-weight: 500; color: var(--gray-400); margin-left: 4px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.card-body { padding: 20px; }
+.card-type { font-size: 12px; color: var(--orange); font-weight: 700; margin-bottom: 6px; }
+.card-title { font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+.card-location { font-size: 13px; color: var(--gray-500); margin-bottom: 16px; }
+.card-price { font-size: 22px; font-weight: 800; color: var(--navy); }
+.card-price span { font-size: 14px; font-weight: 500; color: var(--gray-400); margin-left: 4px; }
 .card-info {
   display: flex; gap: 16px; margin-top: 14px;
   padding-top: 14px; border-top: 1px solid var(--gray-100);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.card-info-item { font-size: 13px; color: var(--gray-500);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.card-info-item { font-size: 13px; color: var(--gray-500); }
 
 /* ===== 회사소개 섹션 ===== */
-.about-section { background: var(--gray-50); padding: 100px 24px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.about-section { background: var(--gray-50); padding: 100px 24px; }
 .about-inner {
   max-width: 1200px; margin: 0 auto;
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 80px; align-items: center;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-img {
   background: linear-gradient(135deg, var(--navy), var(--navy-light));
   border-radius: 20px; height: 480px;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-img::before {
   content: ''; position: absolute; bottom: -30px; right: -30px;
   width: 200px; height: 200px;
   border: 3px solid rgba(232,131,12,0.3);
   border-radius: 20px; transform: rotate(15deg);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-img::after {
   content: ''; position: absolute; top: -20px; left: -20px;
   width: 120px; height: 120px;
   border: 2px solid rgba(255,255,255,0.06);
   border-radius: 16px; transform: rotate(-10deg);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.about-img-text { color: white; text-align: center;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.about-img-text .big { font-size: 56px; font-weight: 900; line-height: 1; letter-spacing: -2px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.about-img-text .sub { font-size: 15px; opacity: 0.5; margin-top: 12px; letter-spacing: 2px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.about-img-text { color: white; text-align: center; }
+.about-img-text .big { font-size: 56px; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+.about-img-text .sub { font-size: 15px; opacity: 0.5; margin-top: 12px; letter-spacing: 2px; }
 .about-img-badge {
   position: absolute; bottom: 24px; left: 24px;
   background: var(--orange); color: white;
   padding: 12px 20px; border-radius: 12px;
   font-size: 14px; font-weight: 700;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.about-text { font-size: 15px; color: var(--gray-500); line-height: 1.9; margin-bottom: 20px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.about-text { font-size: 15px; color: var(--gray-500); line-height: 1.9; margin-bottom: 20px; }
 .about-features {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 14px; margin: 32px 0;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-feature {
   display: flex; align-items: center; gap: 10px;
   font-size: 14px; font-weight: 600; color: var(--gray-700);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-feature-icon {
   width: 28px; height: 28px; border-radius: 7px;
   background: var(--orange-light);
   display: flex; align-items: center; justify-content: center;
   color: var(--orange); font-size: 12px; font-weight: 800; flex-shrink: 0;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-ceo {
   display: flex; align-items: center; gap: 14px;
   margin-top: 32px; padding-top: 28px;
   border-top: 1px solid var(--gray-200);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .about-ceo-avatar {
   width: 52px; height: 52px; border-radius: 50%;
   background: var(--navy); color: white;
   display: flex; align-items: center; justify-content: center;
   font-size: 20px; font-weight: 800;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
-.about-ceo-info .name { font-size: 16px; font-weight: 700; color: var(--navy);   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.about-ceo-info .role { font-size: 13px; color: var(--gray-400); margin-top: 2px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+.about-ceo-info .name { font-size: 16px; font-weight: 700; color: var(--navy); }
+.about-ceo-info .role { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
 
 /* ===== WHY PRIMUS (메인 강점 섹션) ===== */
 .trust-section {
   background: var(--gray-50); padding: 100px 24px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-inner {
   max-width: 1200px; margin: 0 auto;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-header {
   text-align: center; margin-bottom: 56px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-header .section-desc {
   max-width: 100%; margin: 0 auto;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-grid {
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-card {
   background: white; border-radius: 16px;
   padding: 36px 28px; text-align: center;
   border: 1px solid var(--gray-200);
-  transition: all 0.3s;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-.trust-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.06);
-  border-color: var(--orange);
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-card-icon {
   font-size: 40px; margin-bottom: 20px;
   display: flex; align-items: center; justify-content: center;
   width: 72px; height: 72px; margin: 0 auto 20px;
   background: var(--orange-light); border-radius: 16px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-card-title {
   font-size: 18px; font-weight: 700; color: var(--navy);
   margin-bottom: 12px;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 .trust-card-desc {
   font-size: 14px; color: var(--gray-500);
   line-height: 1.7;
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
 }
 
 /* =============================================
    MAIN PAGE - RESPONSIVE
    ============================================= */
 @media (max-width: 1024px) {
-  .hero { height: 520px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text h1 { font-size: 36px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-visual { width: 300px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .property-grid { gap: 20px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-inner { gap: 48px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img { height: 400px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
+  .hero { height: 520px; }
+  .slide-text h1 { font-size: 36px; }
+  .slide-visual { width: 300px; }
+  .property-grid { gap: 20px; }
+  .about-inner { gap: 48px; }
+  .about-img { height: 400px; }
+  .trust-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .hero { height: 400px; margin-top: 60px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text h1 { font-size: 28px; margin-bottom: 12px; letter-spacing: -1px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text p { font-size: 14px; margin-bottom: 24px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-badge { font-size: 11px; padding: 5px 12px; margin-bottom: 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-actions { gap: 10px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .btn-primary-primus { padding: 12px 24px; font-size: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .hero .btn-outline-hero { padding: 12px 24px; font-size: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .hero { height: 400px; margin-top: 60px; }
+  .slide-text h1 { font-size: 28px; margin-bottom: 12px; letter-spacing: -1px; }
+  .slide-text p { font-size: 14px; margin-bottom: 24px; }
+  .slide-badge { font-size: 11px; padding: 5px 12px; margin-bottom: 16px; }
+  .slide-actions { gap: 10px; }
+  .btn-primary-primus { padding: 12px 24px; font-size: 14px; }
+  .hero .btn-outline-hero { padding: 12px 24px; font-size: 14px; }
   .slide-content {
     padding: 0 24px;
     align-items: center;
     justify-content: center;
     max-width: 100%;
-    /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text { max-width: 100%; text-align: center;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-badge { margin-left: auto; margin-right: auto;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-actions { justify-content: center;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  }
+  .slide-text { max-width: 100%; text-align: center; }
+  .slide-badge { margin-left: auto; margin-right: auto; }
+  .slide-actions { justify-content: center; }
 
   /* 모바일에서 숨길 요소 */
   .slide-visual,
   .float-card,
   .slide-phone,
   .slider-arrow,
-  .slide-shape { display: none !important;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .slide-shape { display: none !important; }
 
-  .slide-orb { opacity: 0.4;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .slide-orb { opacity: 0.4; }
   .slide-overlay {
     background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.35) 100%);
-    /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  }
 
-  .slider-dots { bottom: 16px; gap: 8px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slider-dot { width: 8px; height: 8px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slider-dot.active { width: 24px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .slider-dots { bottom: 16px; gap: 8px; }
+  .slider-dot { width: 8px; height: 8px; }
+  .slider-dot.active { width: 24px; }
 
   /* 추천매물 */
-  .property-section { padding: 48px 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .section-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 28px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .section-title { font-size: 26px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .section-desc { font-size: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .property-grid { grid-template-columns: 1fr; gap: 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .card-img { height: 200px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .card-price { font-size: 20px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .property-section { padding: 48px 16px; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 28px; }
+  .section-title { font-size: 26px; }
+  .section-desc { font-size: 14px; }
+  .property-grid { grid-template-columns: 1fr; gap: 16px; }
+  .card-img { height: 200px; }
+  .card-price { font-size: 20px; }
 
   /* 회사소개 */
-  .about-section { padding: 48px 16px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-inner { grid-template-columns: 1fr; gap: 32px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img { height: 240px; border-radius: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img-text .big { font-size: 36px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img-text .sub { font-size: 12px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img-badge { padding: 8px 14px; font-size: 12px; border-radius: 8px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-text { font-size: 14px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-features { grid-template-columns: 1fr; gap: 10px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-ceo { margin-top: 24px; padding-top: 20px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  /* 회사소개 → 강점 섹션 */
+  .about-section { padding: 48px 16px; }
+  .about-inner { grid-template-columns: 1fr; gap: 32px; }
+  .about-img { height: 240px; border-radius: 14px; }
+  .about-img-text .big { font-size: 36px; }
+  .about-img-text .sub { font-size: 12px; }
+  .about-img-badge { padding: 8px 14px; font-size: 12px; border-radius: 8px; }
+  .about-text { font-size: 14px; }
+  .about-features { grid-template-columns: 1fr; gap: 10px; }
+  .about-ceo { margin-top: 24px; padding-top: 20px; }
+
+  /* 강점 섹션 */
   .trust-section { padding: 48px 16px; }
   .trust-header { margin-bottom: 32px; }
   .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -1828,113 +428,16 @@
 }
 
 @media (max-width: 480px) {
-  .hero { height: 380px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text h1 { font-size: 22px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-text p { font-size: 13px; line-height: 1.6;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .slide-badge { font-size: 10px; padding: 4px 10px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .btn-primary-primus { padding: 10px 20px; font-size: 13px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .hero .btn-outline-hero { padding: 10px 20px; font-size: 13px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
+  .hero { height: 380px; }
+  .slide-text h1 { font-size: 22px; }
+  .slide-text p { font-size: 13px; line-height: 1.6; }
+  .slide-badge { font-size: 10px; padding: 4px 10px; }
+  .btn-primary-primus { padding: 10px 20px; font-size: 13px; }
+  .hero .btn-outline-hero { padding: 10px 20px; font-size: 13px; }
   .slide-overlay {
     background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 100%);
-    /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .property-grid { grid-template-columns: 1fr;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .card-img { height: 180px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img { height: 200px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  .about-img-text .big { font-size: 28px;   /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
-}
-  /* 회사소개 → 강점 섹션 */
-  .trust-section { padding: 48px 16px; }
-  .trust-header { margin-bottom: 32px; }
-  .trust-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
-  .trust-card { padding: 28px 20px; }
-  .trust-card-icon { width: 56px; height: 56px; font-size: 28px; border-radius: 12px; }
-  .trust-card-title { font-size: 16px; }
-  .trust-card-desc { font-size: 13px; }
+  }
+  .property-grid { grid-template-columns: 1fr; }
+  .card-img { height: 180px; }
+  .trust-grid { grid-template-columns: 1fr; }
 }

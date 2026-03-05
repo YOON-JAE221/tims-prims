@@ -226,6 +226,49 @@ img { max-width: 100%; display: block; }
   .company-table td { font-size: 13px; padding: 12px; }
 }
 
+/* ===== 문의 글쓰기 폼 ===== */
+.qna-form-table {
+  width: 100%; border-top: 2px solid var(--navy);
+  border-collapse: collapse;
+}
+.qna-form-table th {
+  text-align: left; background: var(--gray-50);
+  font-weight: 700; font-size: 14px; color: var(--gray-700);
+  padding: 16px 20px; border-bottom: 1px solid var(--gray-200);
+  width: 130px; vertical-align: top;
+}
+.qna-form-table td {
+  padding: 16px 20px; border-bottom: 1px solid var(--gray-200);
+}
+.qna-input {
+  width: 100%; padding: 11px 14px;
+  border: 1px solid var(--gray-200); border-radius: 8px;
+  font-size: 14px; outline: none; font-family: inherit;
+  color: var(--gray-900);
+}
+.qna-input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,131,12,0.08); }
+.qna-input-sm { width: 200px; }
+.qna-input-md { width: 300px; }
+.qna-select {
+  padding: 11px 12px; border: 1px solid var(--gray-200);
+  border-radius: 8px; font-size: 14px; font-family: inherit;
+  outline: none; color: var(--gray-900);
+}
+.qna-select:focus { border-color: var(--orange); }
+.qna-textarea {
+  width: 100%; padding: 14px; border: 1px solid var(--gray-200);
+  border-radius: 8px; font-size: 14px; outline: none;
+  resize: vertical; font-family: inherit; line-height: 1.7;
+  min-height: 200px; color: var(--gray-900);
+}
+.qna-textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,131,12,0.08); }
+.qna-inline { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.qna-inline .sep { color: var(--gray-400); }
+.qna-file-row { margin-bottom: 6px; font-size: 13px; }
+.qna-file-add { font-size: 13px; color: var(--orange); background: none; border: none; cursor: pointer; font-weight: 600; margin-top: 4px; }
+.qna-file-guide { margin-top: 6px; font-size: 12px; color: var(--gray-400); }
+.qna-required { color: var(--orange); }
+
 /* ===== FAQ 아코디언 ===== */
 .faq-list {
   border-top: 2px solid var(--navy);

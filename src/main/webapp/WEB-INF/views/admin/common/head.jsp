@@ -16,14 +16,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <c:set var="ctx" value="${pageContext.request.contextPath}" />
   
   <!-- Favicons -->
-  <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260202">
-  <link rel="icon" type="image/png" sizes="16x16" href="${ctx}/resources/front/img/favicon/favicon-16x16.png?v=20260202">
-  <link rel="icon" type="image/png" sizes="32x32" href="${ctx}/resources/front/img/favicon/favicon-32x32.png?v=20260202">
-  <link rel="apple-touch-icon" sizes="180x180" href="${ctx}/resources/front/img/favicon/apple-touch-icon.png?v=20260202">
-  <link rel="icon" type="image/png" sizes="192x192" href="${ctx}/resources/front/img/favicon/android-chrome-192x192.png?v=20260202">
-  <link rel="icon" type="image/png" sizes="512x512" href="${ctx}/resources/front/img/favicon/android-chrome-512x512.png?v=20260202">
-  <link rel="manifest" href="${ctx}/resources/front/img/favicon/site.webmanifest?v=20260202">
-  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">
+  <link rel="icon" type="image/png" sizes="16x16" href="${ctx}/resources/front/img/favicon/favicon-16x16.png?v=20260305">
+  <link rel="icon" type="image/png" sizes="32x32" href="${ctx}/resources/front/img/favicon/favicon-32x32.png?v=20260305">
 
   	<!-- Font Awesome Icons -->
   	<link rel="stylesheet" href="${ctx}/resources/admin/plugins/fontawesome-free/css/all.min.css">

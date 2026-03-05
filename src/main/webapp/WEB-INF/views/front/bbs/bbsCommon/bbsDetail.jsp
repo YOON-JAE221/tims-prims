@@ -15,7 +15,6 @@
 <!-- 페이지 헤더 -->
 <div class="page-header">
   <h2>${brd.brdNm}</h2>
-  <p class="page-breadcrumb">홈 &gt; <span>${brdMenuNm}</span> &gt; ${brd.brdNm}</p>
 </div>
 
 <!-- 2컬럼 레이아웃 -->

@@ -4,7 +4,6 @@
 <!-- 페이지 헤더 -->
 <div class="page-header">
   <h2>FAQ</h2>
-  <p class="page-breadcrumb">홈 &gt; <span>고객지원</span> &gt; FAQ</p>
 </div>
 
 <!-- 2컬럼 레이아웃 -->

@@ -10,8 +10,9 @@
       </div>
       <div class="footer-info">
         대표 : 박세환 | 등록번호 : 제41190-2022-00040호<br>
-        경기도 부천시 길주로 280 프리머스 부천타워 1층<br>
-        TEL 032-327-1277 | FAX 032-327-1279
+        경기도 부천시 길주로 280 프리머스 부천타워 1층 (중동 1141-2 롯데시네마 건물 1층)<br>
+        TEL 032-327-1277 | FAX 032-327-1279<br>
+        영업시간 : 평일 09:00 ~ 18:00 (토요일·공휴일 휴무)
       </div>
     </div>
 
@@ -38,7 +39,7 @@
         <ul>
           <li><a href="${ctx}/bbs/viewBbsNotice">공지사항</a></li>
           <li><a href="${ctx}/bbs/viewBbsFaq">FAQ</a></li>
-          <li><a href="${ctx}/inquiry/viewInquiry">문의하기</a></li>
+          <li><a href="${ctx}/bbs/viewBbsQna">문의하기</a></li>
         </ul>
       </div>
     </div>

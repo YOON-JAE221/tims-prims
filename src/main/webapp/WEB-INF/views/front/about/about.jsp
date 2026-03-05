@@ -33,23 +33,6 @@
   </div>
 </section>
 
-<!-- ===== 회사 기본정보 ===== -->
-<section class="about-page-section">
-  <div class="about-page-inner">
-    <div class="section-label">기본정보</div>
-    <h2 class="section-title" style="margin-bottom:28px;">회사 개요</h2>
-    <table class="company-table">
-      <tr><th>상호</th><td>프리머스 부동산</td></tr>
-      <tr><th>대표</th><td>박세환</td></tr>
-      <tr><th>등록번호</th><td>제41190-2022-00040호</td></tr>
-      <tr><th>주소</th><td>경기도 부천시 길주로 280 프리머스 부천타워 1층 (중동 1141-2 롯데시네마 건물 1층)</td></tr>
-      <tr><th>대표전화</th><td>032-327-1277</td></tr>
-      <tr><th>팩스</th><td>032-327-1279</td></tr>
-      <tr><th>영업시간</th><td>평일 09:00 ~ 18:00 (토요일·공휴일 휴무)</td></tr>
-    </table>
-  </div>
-</section>
-
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>
 
 </body>

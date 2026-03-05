@@ -11,8 +11,8 @@
     <li class="${activeLnb eq 'faq' ? 'active' : ''}">
       <a href="${ctx}/bbs/viewBbsFaq">FAQ</a>
     </li>
-    <li class="${activeLnb eq 'inquiry' ? 'active' : ''}">
-      <a href="${ctx}/inquiry/viewInquiry">문의하기</a>
+    <li class="${activeLnb eq 'qna' or activeLnb eq 'inquiry' ? 'active' : ''}">
+      <a href="${ctx}/bbs/viewBbsQna">문의하기</a>
     </li>
   </ul>
 

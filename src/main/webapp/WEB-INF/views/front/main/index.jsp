@@ -39,7 +39,7 @@
         <p>아파트, 오피스텔, 상가, 사무실까지<br>부천 지역 전문 공인중개사가 함께합니다.</p>
         <div class="slide-actions">
           <a href="${ctx}/property/viewPropertyList" class="btn-primary-primus">매물 둘러보기</a>
-          <a href="${ctx}/inquiry/viewInquiry" class="btn-outline-hero">상담 신청</a>
+          <a href="${ctx}/bbs/viewBbsQna" class="btn-outline-hero">상담 신청</a>
           <div class="slide-phone"><div class="slide-phone-icon">📞</div>032-327-1277</div>
         </div>
       </div>
@@ -124,7 +124,7 @@
         <h1>부동산 고민,<br><em>지금 바로</em> 상담하세요</h1>
         <p>매매, 전세, 월세 무엇이든 편하게 문의해 주세요.<br>빠르고 친절하게 답변드리겠습니다.</p>
         <div class="slide-actions">
-          <a href="${ctx}/inquiry/viewInquiry" class="btn-primary-primus">온라인 문의하기</a>
+          <a href="${ctx}/bbs/viewBbsQna" class="btn-primary-primus">온라인 문의하기</a>
           <a href="${ctx}/locGuide/viewLocGuide" class="btn-outline-hero">오시는 길</a>
           <div class="slide-phone"><div class="slide-phone-icon">📞</div>032-327-1277</div>
         </div>

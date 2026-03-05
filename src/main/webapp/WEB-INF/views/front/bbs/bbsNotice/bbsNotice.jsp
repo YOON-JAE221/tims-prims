@@ -5,7 +5,6 @@
 <!-- 페이지 헤더 -->
 <div class="page-header">
   <h2>공지사항</h2>
-  <p class="page-breadcrumb">홈 &gt; <span>고객지원</span> &gt; 공지사항</p>
 </div>
 
 <!-- 2컬럼 레이아웃 -->
