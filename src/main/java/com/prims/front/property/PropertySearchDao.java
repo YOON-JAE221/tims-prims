@@ -16,4 +16,12 @@ public class PropertySearchDao {
     public List<Map<String, Object>> getPropertyMapList(Map<String, Object> paramMap) {
         return sqlSession.selectList("propertySearch.getPropertyMapList", paramMap);
     }
+
+    public List<Map<String, Object>> getPropertyTypeList(Map<String, Object> paramMap) {
+        return sqlSession.selectList("propertySearch.getPropertyTypeList", paramMap);
+    }
+
+    public int getPropertyTypeCount(Map<String, Object> paramMap) {
+        return sqlSession.selectOne("propertySearch.getPropertyTypeCount", paramMap);
+    }
 }

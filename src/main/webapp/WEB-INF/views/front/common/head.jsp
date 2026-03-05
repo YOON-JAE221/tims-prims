@@ -34,7 +34,7 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503050035" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503060001" rel="stylesheet">
   <link href="${ctx}/resources/front/css/main.css?v=202503050030" rel="stylesheet">
 
   <!-- Common JS -->
@@ -56,10 +56,10 @@
         <li class="nav-item">
           <a href="#">매물유형 ▾</a>
           <div class="nav-dropdown">
-            <a href="${ctx}/property/viewPropertyList?type=apt">아파트</a>
-            <a href="${ctx}/property/viewPropertyList?type=officetel">오피스텔</a>
-            <a href="${ctx}/property/viewPropertyList?type=shop">상가</a>
-            <a href="${ctx}/property/viewPropertyList?type=office">사무실</a>
+            <a href="javascript:fnGoPropertyType('apt')">아파트</a>
+            <a href="javascript:fnGoPropertyType('officetel')">오피스텔</a>
+            <a href="javascript:fnGoPropertyType('shop')">상가</a>
+            <a href="javascript:fnGoPropertyType('office')">사무실</a>
           </div>
         </li>
         <li class="nav-item">
@@ -86,6 +86,11 @@
     </div>
   </nav>
 
+  <!-- 매물유형 이동 -->
+  <form id="goPropertyTypeForm" action="${ctx}/property/viewPropertyList" method="post">
+    <input type="hidden" name="type" id="navPropertyType" />
+  </form>
+
   <script>
     window.addEventListener('scroll', function() {
       document.getElementById('primusNav').classList.toggle('scrolled', window.scrollY > 10);
@@ -94,6 +99,11 @@
     function fnToggleMobileNav() {
       var links = document.querySelector('.nav-links');
       links.classList.toggle('mobile-open');
+    }
+
+    function fnGoPropertyType(t) {
+      document.getElementById('navPropertyType').value = t;
+      document.getElementById('goPropertyTypeForm').submit();
     }
 
     // 고객지원 드롭다운 모바일 토글

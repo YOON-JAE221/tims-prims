@@ -6,19 +6,19 @@
   <h3 class="side-nav-title">매물유형</h3>
   <ul class="side-nav-menu">
     <li class="${type eq 'all' ? 'active' : ''}">
-      <a href="${ctx}/property/viewPropertyList?type=all">전체매물</a>
+      <a href="javascript:fnGoType('all')">전체매물</a>
     </li>
     <li class="${type eq 'apt' ? 'active' : ''}">
-      <a href="${ctx}/property/viewPropertyList?type=apt">아파트</a>
+      <a href="javascript:fnGoType('apt')">아파트</a>
     </li>
     <li class="${type eq 'officetel' ? 'active' : ''}">
-      <a href="${ctx}/property/viewPropertyList?type=officetel">오피스텔</a>
+      <a href="javascript:fnGoType('officetel')">오피스텔</a>
     </li>
     <li class="${type eq 'shop' ? 'active' : ''}">
-      <a href="${ctx}/property/viewPropertyList?type=shop">상가</a>
+      <a href="javascript:fnGoType('shop')">상가</a>
     </li>
     <li class="${type eq 'office' ? 'active' : ''}">
-      <a href="${ctx}/property/viewPropertyList?type=office">사무실</a>
+      <a href="javascript:fnGoType('office')">사무실</a>
     </li>
   </ul>
 
@@ -33,3 +33,14 @@
     </div>
   </div>
 </aside>
+
+<form id="goTypeForm" action="${ctx}/property/viewPropertyList" method="post">
+  <input type="hidden" name="type" id="goTypeVal" />
+</form>
+
+<script>
+  function fnGoType(t) {
+    $('#goTypeVal').val(t);
+    $('#goTypeForm').submit();
+  }
+</script>

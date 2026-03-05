@@ -16,8 +16,31 @@ import java.util.Map;
 public class PropertyController {
 
     @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type, Model model) {
+    public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
+                                   @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
+                                   @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                   @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
+                                   Model model) {
+        int pageSize = 12;
+        int offset = (pageNo - 1) * pageSize;
+        Map<String, Object> param = new HashMap<>();
+        param.put("propType", type);
+        param.put("dealType", dealType);
+        param.put("keyword", keyword);
+        param.put("pageSize", Integer.valueOf(pageSize));
+        param.put("offset", Integer.valueOf(offset));
+
+        List<?> list = propertySearchDao.getPropertyTypeList(param);
+        int totalCnt = propertySearchDao.getPropertyTypeCount(param);
+        int totalPage = totalCnt > 0 ? (int) Math.ceil((double) totalCnt / pageSize) : 1;
+
         model.addAttribute("type", type);
+        model.addAttribute("dealType", dealType);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("list", list);
+        model.addAttribute("totalCnt", totalCnt);
+        model.addAttribute("pageNo", pageNo);
+        model.addAttribute("totalPage", totalPage);
         return "front/property/propertyList";
     }
 

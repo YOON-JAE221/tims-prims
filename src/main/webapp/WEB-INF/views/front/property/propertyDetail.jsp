@@ -13,7 +13,7 @@
     <!-- 상단: 이미지 + 기본정보 -->
     <div class="prop-detail-top">
       <div class="prop-detail-img apt">
-        <span class="prop-card-emoji">🏢</span>
+        <span class="prop-card-emoji">&#127970;</span>
         <span class="prop-card-badge">추천</span>
       </div>
       <div class="prop-detail-summary">

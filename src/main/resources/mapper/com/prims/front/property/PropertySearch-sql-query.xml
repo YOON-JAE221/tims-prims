@@ -27,6 +27,7 @@
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
+           AND A.SOLD_YN = 'N'
            AND A.LAT IS NOT NULL
            AND A.LNG IS NOT NULL
            <if test="swLat != null">
@@ -41,6 +42,66 @@
            </if>
          ORDER BY A.RGT_DTM DESC
          LIMIT 100
+    </select>
+
+    <!-- 매물유형 목록 -->
+    <select id="getPropertyTypeList" parameterType="map" resultType="map">
+        SELECT A.PROP_CD
+             , A.PROP_NM
+             , A.PROP_TYPE
+             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , A.DEAL_TYPE
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , A.SELL_PRICE
+             , A.DEPOSIT
+             , A.MONTHLY_RENT
+             , A.AREA_EXCLUSIVE
+             , A.ROOM_CNT
+             , A.FLOOR_NO
+             , A.ADDRESS
+             , A.BADGE_TYPE
+             , A.SOLD_YN
+             , A.ATCH_FILE_KEY
+             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
+                  FROM TB_UPLD_FILE F
+                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
+                   AND F.DEL_YN = 'N'
+                 ORDER BY F.FILE_SEQ ASC
+                 LIMIT 1) AS THUMB_PATH
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           <if test="propType != null and propType != '' and propType != 'all' and propType != 'ALL'">
+           AND A.PROP_TYPE = UPPER(#{propType})
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
+         ORDER BY
+           CASE A.SOLD_YN WHEN 'N' THEN 0 ELSE 1 END ASC,
+           A.RGT_DTM DESC
+         LIMIT ${offset}, ${pageSize}
+    </select>
+
+    <!-- 매물유형 건수 -->
+    <select id="getPropertyTypeCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           <if test="propType != null and propType != '' and propType != 'all' and propType != 'ALL'">
+           AND A.PROP_TYPE = UPPER(#{propType})
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
     </select>
 
 </mapper>
