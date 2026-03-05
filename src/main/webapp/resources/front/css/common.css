@@ -123,6 +123,159 @@ img { max-width: 100%; display: block; }
   background: var(--orange-hover); transform: translateY(-1px);
 }
 
+/* 햄버거 - 데스크탑 숨김 */
+.nav-mobile-toggle { display: none; }
+
+/* ===== 회사소개 페이지 ===== */
+.about-page-section {
+  padding: 64px 0;
+}
+.about-page-section + .about-page-section {
+  border-top: 1px solid var(--gray-100);
+}
+.about-page-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+}
+
+/* 대표인사 */
+.ceo-greeting {
+  display: grid; grid-template-columns: 280px 1fr;
+  gap: 56px; align-items: center;
+}
+.ceo-photo {
+  width: 280px; height: 340px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  border-radius: 20px; display: flex;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.ceo-photo-text {
+  color: white; text-align: center;
+}
+.ceo-photo-text .initial {
+  font-size: 64px; font-weight: 900; line-height: 1;
+}
+.ceo-photo-text .name-label {
+  font-size: 14px; opacity: 0.5; margin-top: 8px;
+}
+.ceo-photo-badge {
+  position: absolute; bottom: 16px; left: 16px;
+  background: var(--orange); color: white;
+  padding: 6px 14px; border-radius: 8px;
+  font-size: 12px; font-weight: 700;
+}
+.ceo-content {}
+.ceo-content .ceo-title {
+  font-size: 28px; font-weight: 800; color: var(--navy);
+  margin-bottom: 8px; letter-spacing: -0.5px;
+}
+.ceo-content .ceo-name {
+  font-size: 16px; color: var(--gray-500); margin-bottom: 28px;
+}
+.ceo-content .ceo-name strong {
+  color: var(--navy); font-weight: 700;
+}
+.ceo-content .ceo-text {
+  font-size: 15px; color: var(--gray-600); line-height: 1.9;
+  margin-bottom: 16px;
+}
+
+/* 회사소개 */
+.company-info-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 24px; margin-top: 36px;
+}
+.company-info-card {
+  background: var(--gray-50); border-radius: 14px;
+  padding: 28px 24px;
+  border: 1px solid var(--gray-100);
+}
+.company-info-card-icon {
+  font-size: 28px; margin-bottom: 14px;
+}
+.company-info-card h4 {
+  font-size: 16px; font-weight: 700; color: var(--navy);
+  margin-bottom: 8px;
+}
+.company-info-card p {
+  font-size: 14px; color: var(--gray-500); line-height: 1.7;
+}
+
+/* 회사 기본정보 테이블 */
+.company-table {
+  width: 100%; margin-top: 32px; border-top: 2px solid var(--navy);
+}
+.company-table tr {
+  border-bottom: 1px solid var(--gray-100);
+}
+.company-table th {
+  padding: 14px 16px; font-size: 14px; font-weight: 700;
+  color: var(--gray-700); background: var(--gray-50);
+  width: 140px; text-align: left;
+}
+.company-table td {
+  padding: 14px 16px; font-size: 14px; color: var(--gray-700);
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .ceo-greeting { grid-template-columns: 1fr; gap: 28px; }
+  .ceo-photo { width: 100%; height: 240px; }
+  .company-info-grid { grid-template-columns: 1fr; }
+  .company-table th { width: 100px; font-size: 13px; padding: 12px; }
+  .company-table td { font-size: 13px; padding: 12px; }
+}
+
+/* ===== FAQ 아코디언 ===== */
+.faq-list {
+  border-top: 2px solid var(--navy);
+  margin-top: 0;
+}
+.faq-item {
+  border-bottom: 1px solid var(--gray-200);
+}
+.faq-question {
+  padding: 18px 4px;
+  cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 15px; font-weight: 600; color: var(--gray-900);
+  transition: color 0.2s;
+  gap: 16px;
+}
+.faq-question:hover { color: var(--orange); }
+.faq-question .faq-q-badge {
+  font-size: 15px; font-weight: 800; color: var(--orange);
+  margin-right: 10px; flex-shrink: 0;
+}
+.faq-question .faq-arrow {
+  font-size: 18px; color: var(--gray-400);
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.faq-item.open .faq-arrow {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  display: none;
+  padding: 0 4px 18px 4px;
+}
+.faq-item.open .faq-answer {
+  display: block;
+}
+.faq-answer-inner {
+  padding: 18px 20px;
+  background: var(--gray-50);
+  border-radius: 10px;
+  font-size: 14px; color: var(--gray-600);
+  line-height: 1.85;
+}
+.faq-answer-inner .faq-a-badge {
+  font-size: 14px; font-weight: 800; color: var(--navy);
+  margin-right: 8px;
+}
+.faq-answer-inner p { margin-bottom: 8px; }
+.faq-answer-inner p:last-child { margin-bottom: 0; }
+
 /* ===== 로그인 ===== */
 .login-section {
   margin-top: 72px;
@@ -434,16 +587,18 @@ img { max-width: 100%; display: block; }
   max-width: 1200px; margin: 0 auto;
   padding: 48px 24px 80px;
   display: flex; gap: 40px;
+  align-items: flex-start;
 }
 
 /* 사이드바 */
 .side-nav { width: 220px; flex-shrink: 0; }
 .side-nav-title {
-  font-size: 20px; font-weight: 800; color: var(--navy);
-  padding-bottom: 16px; margin-bottom: 8px;
+  font-size: 15px; font-weight: 800; color: var(--navy);
+  padding-bottom: 20px; margin-bottom: 0;
   border-bottom: 2px solid var(--navy);
+  line-height: 1.3;
 }
-.side-nav-menu { list-style: none; padding: 0; }
+.side-nav-menu { list-style: none; padding: 0; margin: 0; }
 .side-nav-menu li { border-bottom: 1px solid var(--gray-100); }
 .side-nav-menu a {
   display: block; padding: 14px 16px;
@@ -486,11 +641,14 @@ img { max-width: 100%; display: block; }
 
 /* ===== 게시판 공통 ===== */
 .board-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 16px;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 0;
+  padding-bottom: 20px;
+  line-height: 1.3;
 }
 .board-total {
-  font-size: 14px; color: var(--gray-500);
+  font-size: 15px; color: var(--gray-500);
+  line-height: 1.3;
 }
 .board-total strong {
   color: var(--navy); font-weight: 700;
@@ -759,4 +917,168 @@ img { max-width: 100%; display: block; }
 .privacy-modal-body {
   padding: 24px; font-size: 14px; color: var(--gray-700);
   line-height: 1.8; white-space: pre-line;
+}
+
+/* =============================================
+   RESPONSIVE - 태블릿 (1024px 이하)
+   ============================================= */
+@media (max-width: 1024px) {
+  .nav-inner { padding: 0 16px; }
+  .nav-links { gap: 24px; }
+  .nav-phone-num { display: none; }
+
+  .content-layout { gap: 28px; padding: 36px 16px 60px; }
+  .side-nav { width: 180px; }
+
+  .footer-main { padding: 36px 16px 24px; gap: 36px; }
+  .footer-right { gap: 32px; }
+}
+
+/* =============================================
+   RESPONSIVE - 모바일 (768px 이하)
+   ============================================= */
+@media (max-width: 768px) {
+
+  /* ===== NAV 모바일 ===== */
+  .primus-nav { position: fixed; }
+  .nav-inner { height: 60px; padding: 0 16px; }
+  .nav-logo-icon { width: 32px; height: 32px; font-size: 14px; }
+  .nav-logo-text { font-size: 17px; }
+
+  .nav-links {
+    display: none;
+    position: absolute; top: 60px; left: 0; right: 0;
+    background: white; flex-direction: column;
+    gap: 0; padding: 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    border-top: 1px solid var(--gray-200);
+    z-index: 99;
+  }
+  .nav-links.mobile-open { display: flex; }
+  .nav-item > a {
+    padding: 16px 20px; border-bottom: 1px solid var(--gray-100);
+    font-size: 15px;
+  }
+  .nav-item > a::after { display: none; }
+  .nav-dropdown {
+    position: static; opacity: 1; visibility: visible;
+    transform: none; box-shadow: none; border: none;
+    border-radius: 0; padding: 0;
+    background: var(--gray-50);
+    display: none;
+  }
+  .nav-item.mobile-dropdown-open .nav-dropdown { display: block; }
+  .nav-dropdown a { padding: 14px 32px; border-bottom: 1px solid var(--gray-100); }
+
+  .nav-phone-num { display: none; }
+  .nav-cta { padding: 8px 16px; font-size: 13px; }
+
+  /* 햄버거 버튼 */
+  .nav-mobile-toggle {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    background: none; border: none; cursor: pointer;
+    font-size: 22px; color: var(--navy);
+  }
+
+  .nav-right { gap: 8px; }
+
+  /* ===== PAGE HEADER 모바일 ===== */
+  .page-header { margin-top: 60px; padding: 36px 16px; }
+  .page-header h2 { font-size: 24px; }
+  .page-header .page-breadcrumb { font-size: 12px; }
+
+  /* ===== 2컬럼 → 1컬럼 ===== */
+  .content-layout {
+    flex-direction: column; gap: 0;
+    padding: 0 16px 48px;
+  }
+  .side-nav { display: none; }
+  .content-main { width: 100%; padding-top: 24px; }
+
+  /* ===== 게시판 테이블 모바일 ===== */
+  .board-table { font-size: 13px; }
+  .board-table colgroup { display: none; }
+  .board-table thead th { padding: 12px 8px; font-size: 12px; }
+  .board-table tbody td { padding: 12px 8px; font-size: 13px; }
+
+  /* 번호, 작성자, 조회 숨김 */
+  .board-table thead th:nth-child(1),
+  .board-table tbody td:nth-child(1),
+  .board-table thead th:nth-child(3),
+  .board-table tbody td:nth-child(3),
+  .board-table thead th:nth-child(5),
+  .board-table tbody td:nth-child(5) { display: none; }
+
+  /* 제목 열 넓게 */
+  .board-table thead th:nth-child(2),
+  .board-table tbody td:nth-child(2) { text-align: left; }
+
+  .board-badge-notice { font-size: 10px; padding: 2px 8px; }
+
+  /* 페이징 */
+  .board-paging { margin-top: 24px; }
+  .board-paging a { min-width: 32px; height: 32px; font-size: 13px; }
+
+  /* 검색 */
+  .board-search { flex-wrap: wrap; gap: 6px; }
+  .board-search select { flex: 0 0 auto; font-size: 13px; padding: 8px 10px; }
+  .board-search input[type="text"] { flex: 1; width: auto; min-width: 0; font-size: 13px; padding: 8px 12px; }
+  .board-search button { padding: 8px 18px; font-size: 13px; }
+
+  /* ===== 게시판 상세 모바일 ===== */
+  .board-detail-header { padding: 20px 0 16px; }
+  .board-detail-title { font-size: 18px; }
+  .board-detail-meta { flex-wrap: wrap; gap: 8px 16px; font-size: 12px; }
+  .board-detail-body { padding: 24px 0; font-size: 14px; }
+  .board-detail-attach { flex-direction: column; gap: 8px; padding: 14px 16px; }
+  .board-detail-btns { gap: 8px; }
+  .board-btn { padding: 10px 24px; font-size: 13px; }
+
+  /* ===== FAQ 모바일 ===== */
+  .faq-question { padding: 16px 4px; font-size: 14px; }
+  .faq-answer { padding: 0 4px 14px 4px; }
+  .faq-answer-inner { padding: 14px 16px; font-size: 13px; }
+
+  /* ===== 로그인 모바일 ===== */
+  .login-section { margin-top: 60px; padding: 32px 16px; }
+  .login-box { padding: 36px 24px; }
+  .login-box-logo .login-logo-text { font-size: 19px; }
+
+  /* ===== FOOTER 모바일 ===== */
+  .footer-main {
+    flex-direction: column; gap: 28px;
+    padding: 32px 16px 24px;
+  }
+  .footer-left { max-width: 100%; }
+  .footer-right { flex-direction: column; gap: 24px; }
+  .footer-nav-col { display: flex; gap: 16px; flex-wrap: wrap; }
+  .footer-nav-col h4 { width: 100%; margin-bottom: 4px; }
+  .footer-nav-col ul { display: flex; gap: 12px; flex-wrap: wrap; }
+  .footer-nav-col li { margin-bottom: 0; }
+  .footer-bottom-bar {
+    flex-direction: column; gap: 8px;
+    text-align: center; padding: 14px 16px 18px;
+  }
+
+  /* 모달 */
+  .privacy-modal-content { margin: 20px 16px; max-height: 90vh; }
+  .privacy-modal-header { padding: 16px 20px; }
+  .privacy-modal-body { padding: 20px; font-size: 13px; }
+}
+
+/* =============================================
+   RESPONSIVE - 작은 모바일 (480px 이하)
+   ============================================= */
+@media (max-width: 480px) {
+  .nav-logo-text { font-size: 15px; }
+  .nav-cta { padding: 7px 12px; font-size: 12px; }
+
+  .page-header { padding: 28px 16px; }
+  .page-header h2 { font-size: 20px; }
+
+  .board-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+  .footer-info { font-size: 11px; }
+  .footer-contact-tel { font-size: 18px; }
 }

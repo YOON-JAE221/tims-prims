@@ -14,7 +14,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">${menuNm}</li>
-            <li class="breadcrumb-item">${brd.brdNm}</li>
+            <li class="breadcrumb-item"><a href="javascript:fnGoList()">${brd.brdNm}</a></li>
           </ol>
         </div>
       </div>

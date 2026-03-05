@@ -1,9 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/front/common/head.jsp" %>
 
-<!-- 메인페이지 전용 CSS -->
-<link href="${ctx}/resources/front/css/main.css?v=202503050001" rel="stylesheet">
-
 <!-- ===== HERO SLIDER ===== -->
 <section class="hero">
 
@@ -29,10 +26,10 @@
       </div>
     </div>
 
-    <div class="float-card" style="right:3%;top:12%;">
-      <div class="fc-icon">📊</div>
-      <div class="fc-text">이번 달 거래 +12건</div>
-      <div class="fc-sub">부천 중동 기준</div>
+    <div class="float-card" style="right:38%;bottom:14%;">
+      <div class="fc-icon">🛡️</div>
+      <div class="fc-text">안심 거래 보장</div>
+      <div class="fc-sub">권리분석 무료 제공</div>
     </div>
 
     <div class="slide-content">
@@ -99,12 +96,23 @@
     <div class="slide-shape sh2" style="bottom:25%;right:40%;"></div>
     <div class="slide-overlay"></div>
 
-    <div class="float-card" style="right:8%;top:16%;animation-delay:0.5s;">
+    <div class="slide-visual">
+      <div class="visual-card">
+        <div class="vc-header"><div class="vc-badge">급매</div><div class="vc-type">상가 · 월세</div></div>
+        <div class="vc-img" style="background:linear-gradient(135deg,rgba(58,122,106,0.4),rgba(91,181,160,0.25));">🏪</div>
+        <div class="vc-title">신중동역 로데오 상가</div>
+        <div class="vc-loc">📍 부천시 부천로 98</div>
+        <div class="vc-price">3,000/180 <small>만원</small></div>
+        <div class="vc-stats"><span>🏠 18평</span><span>🚪 1층</span><span>📐 코너</span></div>
+      </div>
+    </div>
+
+    <div class="float-card" style="right:30%;top:18%;animation-delay:0.5s;">
       <div class="fc-icon">💬</div>
       <div class="fc-text">24시간 접수 가능</div>
       <div class="fc-sub">온라인 상담</div>
     </div>
-    <div class="float-card" style="right:28%;bottom:18%;animation-delay:1.5s;">
+    <div class="float-card" style="right:32%;bottom:22%;animation-delay:1.5s;">
       <div class="fc-icon">🏠</div>
       <div class="fc-text">맞춤 매물 추천</div>
       <div class="fc-sub">무료 상담</div>
@@ -177,28 +185,34 @@
   </div>
 </section>
 
-<!-- ===== 회사소개 ===== -->
-<section class="about-section">
-  <div class="about-inner">
-    <div class="about-img reveal">
-      <div class="about-img-text"><div class="big">PRIMUS</div><div class="sub">REAL ESTATE SERVICE</div></div>
-      <div class="about-img-badge">Since 2022</div>
+<!-- ===== 왜 프리머스인가 ===== -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="trust-header reveal">
+      <div class="section-label">WHY PRIMUS</div>
+      <h2 class="section-title">프리머스 부동산을<br>선택해야 하는 이유</h2>
+      <p class="section-desc">고객의 소중한 자산, 전문가의 눈으로 지켜드립니다.</p>
     </div>
-    <div class="about-content reveal reveal-delay-1">
-      <div class="section-label">회사소개</div>
-      <h2 class="section-title">신뢰와 전문성으로<br>고객과 함께합니다</h2>
-      <p class="about-text">프리머스 부동산은 부천 중동을 중심으로 아파트, 오피스텔, 상가, 사무실 등 다양한 부동산 거래를 전문으로 하는 공인중개사 사무소입니다.</p>
-      <p class="about-text">오랜 현장 경험과 지역 시장에 대한 깊은 이해를 바탕으로, 고객 한 분 한 분께 맞춤형 부동산 솔루션을 제공합니다. 단순한 중개를 넘어 계약 전 시세 분석부터 계약 후 입주·사후관리까지 전 과정을 책임지고 함께합니다.</p>
-      <p class="about-text">'정직한 거래, 투명한 정보'를 경영 원칙으로 삼아 고객의 소중한 자산을 안전하게 지켜드리겠습니다.</p>
-      <div class="about-features">
-        <div class="about-feature"><div class="about-feature-icon">✓</div>부천 지역 전문</div>
-        <div class="about-feature"><div class="about-feature-icon">✓</div>투명한 시세 분석</div>
-        <div class="about-feature"><div class="about-feature-icon">✓</div>정직한 거래</div>
-        <div class="about-feature"><div class="about-feature-icon">✓</div>사후 관리 책임</div>
+    <div class="trust-grid">
+      <div class="trust-card reveal">
+        <div class="trust-card-icon">🏠</div>
+        <h3 class="trust-card-title">부천 지역 전문</h3>
+        <p class="trust-card-desc">부천 중동을 중심으로 오랜 현장 경험과 지역 시장에 대한 깊은 이해를 바탕으로 최적의 매물을 추천합니다.</p>
       </div>
-      <div class="about-ceo">
-        <div class="about-ceo-avatar">박</div>
-        <div class="about-ceo-info"><div class="name">박세환 대표</div><div class="role">공인중개사 · 프리머스 부동산 대표</div></div>
+      <div class="trust-card reveal reveal-delay-1">
+        <div class="trust-card-icon">🛡️</div>
+        <h3 class="trust-card-title">안심 거래 보장</h3>
+        <p class="trust-card-desc">계약 전 등기부등본 분석, 권리관계 검토를 무료로 제공하여 안전한 거래를 보장합니다.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-2">
+        <div class="trust-card-icon">📊</div>
+        <h3 class="trust-card-title">투명한 시세 분석</h3>
+        <p class="trust-card-desc">실거래가 데이터 기반의 정확한 시세 분석으로 합리적인 가격에 거래할 수 있도록 도와드립니다.</p>
+      </div>
+      <div class="trust-card reveal reveal-delay-3">
+        <div class="trust-card-icon">🤝</div>
+        <h3 class="trust-card-title">사후관리까지 책임</h3>
+        <p class="trust-card-desc">계약 완료 후에도 입주·이사·하자 등 사후관리까지 끝까지 책임지고 함께합니다.</p>
       </div>
     </div>
   </div>

@@ -5,8 +5,7 @@
   <div class="login-box">
 
     <div class="login-box-logo">
-      <div class="login-logo-icon">P</div>
-      <div class="login-logo-text"><span>프리머스</span> 부동산</div>
+      <img src="${ctx}/resources/front/img/logo/primus-logo.png" alt="프리머스 부동산" style="height:44px;">
     </div>
     <p class="login-box-sub">관리자 로그인</p>
 

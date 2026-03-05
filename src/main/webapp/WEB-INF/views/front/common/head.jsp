@@ -8,7 +8,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>프리머스 부동산 | 부천 중동 전문 공인중개사</title>
+  <title>프리머스 부동산</title>
 
   <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
@@ -31,7 +31,8 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503050001" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503050020" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/main.css?v=202503050020" rel="stylesheet">
 
   <!-- Common JS -->
   <script src="${ctx}/resources/common/util/js/common.js" charset="UTF-8"></script>
@@ -44,12 +45,20 @@
   <nav class="primus-nav" id="primusNav">
     <div class="nav-inner">
       <a href="/" class="nav-logo">
-        <div class="nav-logo-icon">P</div>
-        <div class="nav-logo-text"><span>프리머스</span> 부동산</div>
+        <img src="${ctx}/resources/front/img/logo/primus-logo.png" alt="프리머스 부동산" style="height:40px;">
       </a>
       <ul class="nav-links">
         <li class="nav-item"><a href="${ctx}/about/viewAbout">회사소개</a></li>
         <li class="nav-item"><a href="${ctx}/property/viewPropertyList">매물검색</a></li>
+        <li class="nav-item">
+          <a href="#">매물유형 ▾</a>
+          <div class="nav-dropdown">
+            <a href="${ctx}/property/viewPropertyList?type=apt">아파트</a>
+            <a href="${ctx}/property/viewPropertyList?type=officetel">오피스텔</a>
+            <a href="${ctx}/property/viewPropertyList?type=shop">상가</a>
+            <a href="${ctx}/property/viewPropertyList?type=office">사무실</a>
+          </div>
+        </li>
         <li class="nav-item">
           <a href="#">고객지원 ▾</a>
           <div class="nav-dropdown">
@@ -66,6 +75,7 @@
           032-327-1277
         </div>
         <a href="${ctx}/inquiry/viewInquiry" class="nav-cta">상담신청</a>
+        <button class="nav-mobile-toggle" onclick="fnToggleMobileNav()">☰</button>
       </div>
     </div>
   </nav>
@@ -73,5 +83,20 @@
   <script>
     window.addEventListener('scroll', function() {
       document.getElementById('primusNav').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    function fnToggleMobileNav() {
+      var links = document.querySelector('.nav-links');
+      links.classList.toggle('mobile-open');
+    }
+
+    // 고객지원 드롭다운 모바일 토글
+    document.querySelectorAll('.nav-item > a').forEach(function(a) {
+      a.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768 && this.nextElementSibling && this.nextElementSibling.classList.contains('nav-dropdown')) {
+          e.preventDefault();
+          this.parentElement.classList.toggle('mobile-dropdown-open');
+        }
+      });
     });
   </script>

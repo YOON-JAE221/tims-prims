@@ -94,7 +94,7 @@
       <input type="hidden" name="brdCd" value="${brdCd}" />
       <input type="hidden" name="pageNo" value="${pageNo}" />
     </form>
-    <form id="goEditForm" action="${ctx}/bbs/viewBbsWrite" method="post">
+    <form id="goEditForm" action="${ctx}/bbsComMng/viewBbsComWrite" method="post" target="_blank">
       <input type="hidden" name="brdCd" value="${brdCd}" />
       <input type="hidden" name="pstCd" value="${pst.pstCd}" />
     </form>
@@ -116,7 +116,7 @@
   }
   function fnDelete() {
     if (!confirm('삭제하시겠습니까?')) return;
-    var res = ajaxCall("${ctx}/bbs/deleteBbsPst", { brdCd: '${brdCd}', pstCd: '${pst.pstCd}' }, false);
+    var res = ajaxCall("${ctx}/bbsComMng/deleteBbsPst", { brdCd: '${brdCd}', pstCd: '${pst.pstCd}' }, false);
     if (res && res.result === 'OK') { alert('삭제되었습니다.'); fnGoList(); }
     else { alert('삭제 실패'); }
   }

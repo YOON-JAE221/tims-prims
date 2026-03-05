@@ -51,7 +51,6 @@
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
            AND A.BRD_CD = #{brdCd}
-           AND A.NOTICE_YN = 'N'
            <if test="searchType == 'title' and keyword != null and keyword != ''">
 	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
 	       </if>
@@ -68,7 +67,6 @@
 	     WHERE A.DEL_YN = 'N'
 	       AND A.USE_YN = 'Y'
 	       AND A.BRD_CD = #{brdCd}
-	       AND A.NOTICE_YN = 'N'
 	       <if test="searchType == 'title' and keyword != null and keyword != ''">
 	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
 	       </if>

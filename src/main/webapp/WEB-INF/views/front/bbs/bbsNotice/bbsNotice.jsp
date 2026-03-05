@@ -20,15 +20,8 @@
       <p class="board-total">전체 <strong>${totalCnt + noticeList.size()}</strong>건</p>
       <c:if test="${not empty sessionScope.loginUser}">
         <div class="board-admin-btns">
-          <form action="${ctx}/bbsComMng/viewBbsComMng" method="POST" style="display:inline;">
-            <input type="hidden" name="brdCd" value="${brdCd}" />
-            <button type="submit" class="btn-admin">⚙ 관리</button>
-          </form>
-          <form action="${ctx}/bbs/viewBbsWrite" method="POST" style="display:inline;">
-            <input type="hidden" name="brdCd" value="${brdCd}" />
-            <input type="hidden" name="pageNo" value="${pageNo}" />
-            <button type="submit" class="btn-admin">✏ 글쓰기</button>
-          </form>
+          <button type="button" class="btn-admin" onclick="fnGoMng()">⚙ 관리</button>
+          <button type="button" class="btn-admin" onclick="fnGoWrite()">✏ 글쓰기</button>
         </div>
       </c:if>
     </div>
@@ -104,6 +97,9 @@
       <input type="hidden" name="searchType" value="${param.searchType}" />
       <input type="hidden" name="keyword" value="${param.keyword}" />
     </form>
+    <form id="goBoForm" method="post" target="_blank">
+      <input type="hidden" name="brdCd" value="" />
+    </form>
 
   </div><!-- /content-main -->
 </div><!-- /content-layout -->
@@ -116,6 +112,16 @@
   function fnGoDetail(pstCd) {
     $('#detailPstCd').val(pstCd);
     $('#goDetailForm').submit();
+  }
+  function fnGoMng() {
+    $('#goBoForm input[name="brdCd"]').val('${brdCd}');
+    $('#goBoForm').attr('action', '${ctx}/bbsComMng/viewBbsComMng');
+    $('#goBoForm').submit();
+  }
+  function fnGoWrite() {
+    $('#goBoForm input[name="brdCd"]').val('${brdCd}');
+    $('#goBoForm').attr('action', '${ctx}/bbsComMng/viewBbsComWrite');
+    $('#goBoForm').submit();
   }
 </script>
 

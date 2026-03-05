@@ -90,42 +90,6 @@ public class BbsController {
 	    return "front/bbs/bbsQna/bbsQna";
 	}
 
-	// ===== 글쓰기 (공통) =====
-	@RequestMapping("/viewBbsWrite")
-	public String viewBbsWrite(@RequestParam("brdCd") String brdCd,
-	                           @RequestParam(value="pstCd", required=false) String pstCd,
-	                           @ParamMap Map<String, Object> paramMap,
-	                           Model model) {
-
-	    paramMap.put("brdCd", brdCd);
-	    if (pstCd != null) paramMap.put("pstCd", pstCd);
-
-	    Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);
-	    model.addAttribute("brd", bbsBrd);
-
-	    if (pstCd != null && !pstCd.isEmpty()) {
-	        Map<String, Object> pst = bbsService.getSelectBbsPstDetail(paramMap);
-	        model.addAttribute("pst", pst);
-
-	        String brdProp = String.valueOf(bbsBrd.getOrDefault("brdPropBinary", ""));
-	        String atchFileKey = String.valueOf(pst.getOrDefault("atchFileKey", ""));
-
-	        if (brdProp.contains(Constant.BRD_PROP_FILE) && !atchFileKey.isEmpty() && !"null".equals(atchFileKey)) {
-	            Map<String, Object> fileParam = new HashMap<>();
-	            fileParam.put("upldFileCd", atchFileKey);
-	            List<Map<String, Object>> fileList = bbsService.getSelectUpldFileList(fileParam);
-	            model.addAttribute("fileList", fileList);
-	        }
-	    }
-
-	    model.addAttribute("listUrl", bbsBrd.get("brdListUrl").toString());
-	    model.addAttribute("brdMenuNm", "고객지원");
-	    model.addAttribute("brdCd", paramMap.get("brdCd").toString());
-	    model.addAttribute("pageNo", paramMap.getOrDefault("pageNo", "1"));
-
-	    return "front/bbs/bbsCommon/bbsWrite";
-	}
-
 	// ===== 문의게시판 글쓰기 =====
     @RequestMapping(value = "/viewBbsWriteQna", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewBbsWriteQna(@RequestParam(value="brdCd") String brdCd, @RequestParam(value="pstCd", required=false) String pstCd, Model model) {
@@ -162,8 +126,14 @@ public class BbsController {
     }
 
 	// ===== 글 상세 (공통) =====
-	@RequestMapping(value = "/viewBbsDetail", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewBbsDetail", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewBbsDetail(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
+
+	    String brdCd = (String) paramMap.get("brdCd");
+	    String pstCd = (String) paramMap.get("pstCd");
+	    if (brdCd == null || brdCd.isEmpty() || pstCd == null || pstCd.isEmpty()) {
+	        return "redirect:/";
+	    }
 
 	    Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);
 	    model.addAttribute("brd", bbsBrd);
@@ -191,25 +161,6 @@ public class BbsController {
 	    return "front/bbs/bbsCommon/bbsDetail";
 	}
 
-	// ===== 게시글 저장 =====
-	@RequestMapping(value = "/saveBbsPst", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> saveBbsPst(@ParamMap Map<String, Object> paramMap, @RequestParam(value = "atchFile", required = false) MultipartFile[] atchFile) {
-
-	    Map<String, Object> result = new HashMap<>();
-
-	    try {
-	        int cnt = bbsService.saveBbsPst(paramMap, atchFile);
-	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
-	        result.put("pstCd", paramMap.get("pstCd"));
-	    } catch (Exception e) {
-	        result.put("result", Constant.FAIL);
-	        result.put("message", e.getMessage());
-	    }
-
-	    return result;
-	}
-
 	// ===== 문의게시판 저장 (비로그인) =====
 	@RequestMapping(value = "/saveBbsPstQna", method = RequestMethod.POST)
 	@ResponseBody
@@ -221,24 +172,6 @@ public class BbsController {
 	        int cnt = bbsService.saveBbsPstQna(paramMap, atchFile);
 	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
 	        result.put("pstCd", paramMap.get("pstCd"));
-	    } catch (Exception e) {
-	        result.put("result", Constant.FAIL);
-	        result.put("message", e.getMessage());
-	    }
-
-	    return result;
-	}
-
-	// ===== 게시글 삭제 =====
-	@RequestMapping(value = "/deleteBbsPst", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> deleteBbsPst(@ParamMap Map<String, Object> paramMap) {
-
-	    Map<String, Object> result = new HashMap<>();
-
-	    try {
-	        int cnt = bbsService.updateBbsPstDelYn(paramMap);
-	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
 	    } catch (Exception e) {
 	        result.put("result", Constant.FAIL);
 	        result.put("message", e.getMessage());
@@ -311,8 +244,13 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 상세 =====
-	@RequestMapping(value = "/viewBbsDetailQna", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewBbsDetailQna", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewBbsDetailQna(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
+
+	    String pstCd = (String) paramMap.get("pstCd");
+	    if (pstCd == null || pstCd.isEmpty()) {
+	        return "redirect:/bbs/viewBbsQna";
+	    }
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);
 
