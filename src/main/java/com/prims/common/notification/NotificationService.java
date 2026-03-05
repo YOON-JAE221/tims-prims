@@ -122,7 +122,7 @@ public class NotificationService {
      */
     private void sendQnaEmail(Map<String, Object> paramMap) {
         String title   = nvl(paramMap.get("pstNm"));
-        String subject = "[강한건축구조] 새로운 문의가 접수되었습니다 - " + title;
+        String subject = "[프리머스 부동산] 새로운 문의가 접수되었습니다 - " + title;
         String refCd   = nvl(paramMap.get("pstCd"));
 
         try {
@@ -161,7 +161,7 @@ public class NotificationService {
      */
     private void sendQnaReplyEmail(Map<String, Object> parentPst, String replyContent) {
         String title   = nvl(parentPst.get("pstNm"));
-        String subject = "[강한건축구조] 문의하신 내용에 답변이 등록되었습니다";
+        String subject = "[프리머스 부동산] 문의하신 내용에 답변이 등록되었습니다";
         String refCd   = nvl(parentPst.get("pstCd"));
 
         try {
@@ -208,7 +208,7 @@ public class NotificationService {
         String title    = nvl(paramMap.get("pstNm"));
         String refCd    = nvl(paramMap.get("pstCd"));
 
-        String content = "[강한건축구조] 새 문의가 접수되었습니다.\n"
+        String content = "[프리머스 부동산] 새 문의가 접수되었습니다.\n"
                        + "제목: " + title + "\n"
                        + "작성자: " + writerNm;
 
@@ -230,7 +230,7 @@ public class NotificationService {
             return;
         }
 
-        String content = "[강한건축구조] 문의하신 내용에 답변이 등록되었습니다.\n"
+        String content = "[프리머스 부동산] 문의하신 내용에 답변이 등록되었습니다.\n"
                        + "제목: " + title;
 
         sendSmsNhn(writerNm, phone, content, refCd, null);
@@ -365,7 +365,7 @@ public class NotificationService {
 
         sb.append("<p style='margin:16px 0 0;font-size:12px;color:#999;text-align:center;line-height:1.6;'>");
         sb.append("본 메일은 문의 답변 알림을 위해 자동 발송된 메일입니다.<br/>");
-        sb.append("강한건축구조기술사사무소 | TEL 070-7640-1002");
+        sb.append("프리머스 부동산 | TEL 032-327-1277");
         sb.append("</p>");
 
         sb.append("</div></div>");

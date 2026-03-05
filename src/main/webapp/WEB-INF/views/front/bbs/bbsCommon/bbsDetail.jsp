@@ -57,28 +57,6 @@
       <c:out value="${pst.pstCnts}" escapeXml="false"/>
     </div>
 
-    <!-- 이전글 / 다음글 -->
-    <div class="board-detail-nav">
-      <div class="board-detail-nav-item">
-        <span class="board-detail-nav-label">▲ 다음글</span>
-        <c:choose>
-          <c:when test="${not empty nextPst}">
-            <a href="javascript:fnGoDetail('${nextPst.pstCd}')">${nextPst.pstNm}</a>
-          </c:when>
-          <c:otherwise><span class="board-detail-nav-none">다음글이 없습니다.</span></c:otherwise>
-        </c:choose>
-      </div>
-      <div class="board-detail-nav-item">
-        <span class="board-detail-nav-label">▼ 이전글</span>
-        <c:choose>
-          <c:when test="${not empty prevPst}">
-            <a href="javascript:fnGoDetail('${prevPst.pstCd}')">${prevPst.pstNm}</a>
-          </c:when>
-          <c:otherwise><span class="board-detail-nav-none">이전글이 없습니다.</span></c:otherwise>
-        </c:choose>
-      </div>
-    </div>
-
     <!-- 버튼 -->
     <div class="board-detail-btns">
       <button type="button" class="board-btn board-btn-list" onclick="fnGoList()">목록</button>

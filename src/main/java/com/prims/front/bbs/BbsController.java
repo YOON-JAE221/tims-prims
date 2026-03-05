@@ -161,6 +161,25 @@ public class BbsController {
 	    return "front/bbs/bbsCommon/bbsDetail";
 	}
 
+	// ===== 문의게시판 답변 저장 (관리자 - 로그인 필요) =====
+	@RequestMapping(value = "/saveBbsPst", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveBbsPst(@ParamMap Map<String, Object> paramMap, @RequestParam(value = "atchFile", required = false) MultipartFile[] atchFile) {
+
+	    Map<String, Object> result = new HashMap<>();
+
+	    try {
+	        int cnt = bbsService.saveBbsPst(paramMap, atchFile);
+	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
+	        result.put("pstCd", paramMap.get("pstCd"));
+	    } catch (Exception e) {
+	        result.put("result", Constant.FAIL);
+	        result.put("message", e.getMessage());
+	    }
+
+	    return result;
+	}
+
 	// ===== 문의게시판 저장 (비로그인) =====
 	@RequestMapping(value = "/saveBbsPstQna", method = RequestMethod.POST)
 	@ResponseBody
@@ -172,6 +191,24 @@ public class BbsController {
 	        int cnt = bbsService.saveBbsPstQna(paramMap, atchFile);
 	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
 	        result.put("pstCd", paramMap.get("pstCd"));
+	    } catch (Exception e) {
+	        result.put("result", Constant.FAIL);
+	        result.put("message", e.getMessage());
+	    }
+
+	    return result;
+	}
+
+	// ===== 문의게시판 삭제 (비로그인 포함) =====
+	@RequestMapping(value = "/deleteBbsPst", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteBbsPst(@ParamMap Map<String, Object> paramMap) {
+
+	    Map<String, Object> result = new HashMap<>();
+
+	    try {
+	        int cnt = bbsService.updateBbsPstDelYn(paramMap);
+	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
 	    } catch (Exception e) {
 	        result.put("result", Constant.FAIL);
 	        result.put("message", e.getMessage());

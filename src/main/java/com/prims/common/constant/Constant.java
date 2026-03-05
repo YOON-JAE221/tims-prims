@@ -68,7 +68,7 @@ public final class Constant {
      * 이메일 발송 설정
      * ========================= */
     public static final String MAIL_FROM_EMAIL  = "minwook8507@gmail.com";   // 발신자 이메일 (추후 변경)
-    public static final String MAIL_FROM_NAME   = "프리머스 부동산";            // 발신자 이름
+    public static final String MAIL_FROM_NAME   = "프리머스 부동산";
     public static final String MAIL_ADMIN_EMAIL = "minuk94@naver.com";       // 관리자 수신 이메일 (추후 변경)
     public static final String SITE_URL         = "http://primusrealestate.co.kr"; // 사이트 URL
 

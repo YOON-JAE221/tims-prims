@@ -39,7 +39,7 @@
         <p>아파트, 오피스텔, 상가, 사무실까지<br>부천 지역 전문 공인중개사가 함께합니다.</p>
         <div class="slide-actions">
           <a href="${ctx}/property/viewPropertyList" class="btn-primary-primus">매물 둘러보기</a>
-          <a href="${ctx}/bbs/viewBbsQna" class="btn-outline-hero">상담 신청</a>
+          <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="btn-outline-hero">상담 신청</a>
           <div class="slide-phone"><div class="slide-phone-icon">📞</div>032-327-1277</div>
         </div>
       </div>

@@ -9,8 +9,8 @@
 <!-- ===== 회사소개 (메인에 있던 그대로) ===== -->
 <section class="about-section" style="padding-top:60px;">
   <div class="about-inner">
-    <div class="about-img reveal">
-      <div class="about-img-text"><div class="big">PRIMUS</div><div class="sub">REAL ESTATE SERVICE</div></div>
+    <div class="about-img reveal" style="background:none; overflow:hidden;">
+      <img src="${ctx}/resources/front/img/logo/primus-brand.png" alt="PRIMUS PROPERTY" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" />
       <div class="about-img-badge">Since 2022</div>
     </div>
     <div class="about-content reveal reveal-delay-1">

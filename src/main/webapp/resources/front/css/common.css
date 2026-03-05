@@ -115,9 +115,10 @@ img { max-width: 100%; display: block; }
 }
 .nav-cta {
   background: var(--orange); color: white;
-  padding: 10px 22px; border-radius: 8px;
-  font-size: 14px; font-weight: 600;
+  padding: 11px 24px; border-radius: 8px;
+  font-size: 15px; font-weight: 700;
   transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(232,131,12,0.3);
 }
 .nav-cta:hover {
   background: var(--orange-hover); transform: translateY(-1px);
@@ -125,6 +126,17 @@ img { max-width: 100%; display: block; }
 
 /* 햄버거 - 데스크탑 숨김 */
 .nav-mobile-toggle { display: none; }
+
+/* 관리자 버튼 */
+.nav-admin-btn {
+  padding: 11px 24px; border-radius: 8px;
+  font-size: 15px; font-weight: 700;
+  background: var(--navy); color: white;
+  transition: all 0.2s;
+}
+.nav-admin-btn:hover {
+  background: var(--navy-light); color: white;
+}
 
 /* ===== 회사소개 페이지 ===== */
 .about-page-section {
@@ -927,10 +939,10 @@ img { max-width: 100%; display: block; }
 }
 .board-btn-edit:hover { border-color: var(--orange); color: var(--orange); }
 .board-btn-delete {
-  background: white; color: #dc3545;
-  border: 1px solid #fecdd3;
+  background: white; color: var(--gray-700);
+  border: 1px solid var(--gray-200);
 }
-.board-btn-delete:hover { background: #fff1f2; border-color: #dc3545; }
+.board-btn-delete:hover { border-color: var(--orange); color: var(--orange); }
 
 /* ===== 개인정보/사이트맵 모달 ===== */
 .privacy-modal {
@@ -1124,4 +1136,15 @@ img { max-width: 100%; display: block; }
 
   .footer-info { font-size: 11px; }
   .footer-contact-tel { font-size: 18px; }
+}
+
+/* ===== btn-admin 강조 ===== */
+.board-admin-btns .btn-admin {
+  background: var(--navy); color: white;
+  border-color: var(--navy);
+  padding: 9px 20px;
+}
+.board-admin-btns .btn-admin:hover {
+  background: var(--navy-light); border-color: var(--navy-light);
+  color: white;
 }

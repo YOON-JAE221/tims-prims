@@ -34,7 +34,7 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503050031" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503050032" rel="stylesheet">
   <link href="${ctx}/resources/front/css/main.css?v=202503050030" rel="stylesheet">
 
   <!-- Common JS -->
@@ -77,7 +77,10 @@
           <small>대표전화</small>
           032-327-1277
         </div>
-        <a href="${ctx}/bbs/viewBbsQna" class="nav-cta">상담신청</a>
+        <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="nav-cta">상담신청</a>
+        <c:if test="${not empty sessionScope.loginUser}">
+          <a href="${ctx}/admin/viewAdminMain" class="nav-admin-btn" target="_blank">관리자</a>
+        </c:if>
         <button class="nav-mobile-toggle" onclick="fnToggleMobileNav()">☰</button>
       </div>
     </div>

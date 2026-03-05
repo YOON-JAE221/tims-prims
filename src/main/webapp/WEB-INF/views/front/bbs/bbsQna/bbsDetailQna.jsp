@@ -113,10 +113,10 @@
     <form id="goListForm" action="${ctx}/bbs/viewBbsQna" method="post">
       <input type="hidden" name="brdCd" value="${brdCd}" /><input type="hidden" name="pageNo" value="${pageNo}" />
     </form>
-    <form id="goReplyForm" action="${ctx}/bbs/viewBbsWriteQnaAns" method="post">
+    <form id="goReplyForm" action="${ctx}/bbsComQnaMng/viewBbsComWriteQna" method="post" target="_blank">
       <input type="hidden" name="brdCd" value="${brdCd}" /><input type="hidden" name="pstCd" value="${pst.pstCd}" /><input type="hidden" name="pageNo" value="${pageNo}" />
     </form>
-    <form id="goEditReplyForm" action="${ctx}/bbs/viewBbsWriteQnaAns" method="post">
+    <form id="goEditReplyForm" action="${ctx}/bbsComQnaMng/viewBbsComWriteQna" method="post" target="_blank">
       <input type="hidden" name="brdCd" value="${brdCd}" /><input type="hidden" name="pstCd" value="${pst.pstCd}" />
       <c:if test="${not empty replyList}"><input type="hidden" name="ansPstCd" value="${replyList[0].pstCd}" /></c:if>
       <input type="hidden" name="pageNo" value="${pageNo}" />
@@ -149,7 +149,7 @@
   }
   function fnDeleteByUser() {
     if (!confirm('삭제하시겠습니까?')) return;
-    var res = ajaxCall("${ctx}/bbsComMng/deleteBbsPst", { brdCd:'${brdCd}', pstCd:'${pst.pstCd}' }, false);
+    var res = ajaxCall("${ctx}/bbs/deleteBbsPst", { brdCd:'${brdCd}', pstCd:'${pst.pstCd}' }, false);
     if (res && res.result === 'OK') { alert('삭제되었습니다.'); fnGoList(); } else { alert('삭제 실패'); }
   }
 </script>

@@ -167,6 +167,9 @@ public class BbsService{
 	        paramMap.put("pstLvl", 0);
 	    }
 
+	    // 비밀번호 암호화 키
+	    paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
+
 	    int cnt = bbsDao.saveBbsPst(paramMap);
 
 	    // 지연 삭제 파일 처리
@@ -245,6 +248,7 @@ public class BbsService{
 
 	//비밀번호 확인 (문의게시판)
 	public boolean checkSecretPwd(Map<String, Object> paramMap) {
+	    paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
 	    int cnt = bbsDao.checkSecretPwd(paramMap);
 	    return cnt > 0;
 	}
