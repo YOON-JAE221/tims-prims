@@ -63,7 +63,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 로그인 체크 인터셉터 (기존 spring-config.xml 에서 이관)
         registry.addInterceptor(new LoginCheckInterceptor())
-                .addPathPatterns("/*Mng/**", "/bbs/*Write*", "/bbs/*save*")
+                .addPathPatterns("/*Mng/**", "/admin/**", "/bbs/*Write*", "/bbs/*save*")
                 .excludePathPatterns(
                     "/login/**",
                     "/resources/**",

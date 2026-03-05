@@ -30,11 +30,15 @@ public class BbsComMngController {
 	private BbsComMngService bbsComMngService;
 	
 	
-	@RequestMapping(value = "/viewBbsComMng", method = {RequestMethod.POST})
-	public String viewBbsComMng(@ParamMap Map<String, Object> paramMap, Model model) {	
+	@RequestMapping(value = "/viewBbsComMng", method = {RequestMethod.GET, RequestMethod.POST})
+	public String viewBbsComMng(@ParamMap Map<String, Object> paramMap, Model model) {
+		String brdCd = (String) paramMap.get("brdCd");
+		if (brdCd == null || brdCd.isEmpty()) {
+			return "redirect:/admin/viewAdminMain";
+		}
 		Map<String, Object> bbsBrd = bbsComMngService.selectBbsBrdOne(paramMap);
 		model.addAttribute("brd", bbsBrd);
-		model.addAttribute("menuNm", getMenuNmByBrdCd(paramMap.get("brdCd").toString()));
+		model.addAttribute("menuNm", getMenuNmByBrdCd(brdCd));
 	    return "admin/bbsComMng/bbsComMng";
 	}
 	
@@ -121,6 +125,7 @@ public class BbsComMngController {
 	    try {
 	        int cnt = bbsComMngService.updateBbsPstDelYn(paramMap);
 	        result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
+	        result.put("resultCnt", cnt);
 	    } catch (Exception e) {
 	        result.put("result", Constant.FAIL);
 	        result.put("message", e.getMessage());

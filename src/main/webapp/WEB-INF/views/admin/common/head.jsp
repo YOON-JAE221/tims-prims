@@ -77,13 +77,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a href="/" class="nav-link">Home</a>
           </li>
           <li class="nav-item dropdown">
-            <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">회사소개</a>
-            <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
-              <li><a href="${ctx}/greetingMng/viewGreetingMng" class="dropdown-item">인사말</a></li>
-              <li><a href="${ctx}/comHistoryMng/viewComHistoryMng" class="dropdown-item">연혁관리</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
             <a id="dropdownSubMenu3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">고객지원</a>
             <ul aria-labelledby="dropdownSubMenu3" class="dropdown-menu border-0 shadow">
               <li><a href="javascript:fnGoMng('<%=Constant.BRD_CD_NOTICE%>')" class="dropdown-item">공지사항</a></li>
