@@ -17,6 +17,8 @@
         <option value="ALL">전체유형</option>
         <option value="APT">아파트</option>
         <option value="OFFICETEL">오피스텔</option>
+        <option value="VILLA">빌라/주택</option>
+        <option value="ONEROOM">원룸/투룸</option>
         <option value="SHOP">상가</option>
         <option value="OFFICE">사무실</option>
       </select>
@@ -123,6 +125,10 @@
 .map-price-label.apt::after { border-top-color: #2c3e6b; }
 .map-price-label.officetel { background: #5a4a8a; }
 .map-price-label.officetel::after { border-top-color: #5a4a8a; }
+.map-price-label.villa { background: #6b4c3b; }
+.map-price-label.villa::after { border-top-color: #6b4c3b; }
+.map-price-label.oneroom { background: #3b5e6b; }
+.map-price-label.oneroom::after { border-top-color: #3b5e6b; }
 .map-price-label.shop { background: #3a7a6a; }
 .map-price-label.shop::after { border-top-color: #3a7a6a; }
 .map-price-label.office { background: #5a6a3a; }

@@ -9,7 +9,7 @@
         SELECT A.PROP_CD
              , A.PROP_NM
              , A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE

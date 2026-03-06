@@ -92,4 +92,29 @@ public final class Constant {
     public static final String SMS_SECRET_KEY = "";
     public static final String SMS_SENDER_NO  = "";
 
+    /* =========================
+     * 매물유형 (TB_PROPERTY.PROP_TYPE)
+     * ========================= */
+    public static final String PROP_TYPE_APT       = "APT";        // 아파트
+    public static final String PROP_TYPE_OFFICETEL  = "OFFICETEL";  // 오피스텔
+    public static final String PROP_TYPE_VILLA      = "VILLA";      // 빌라/주택
+    public static final String PROP_TYPE_ONEROOM    = "ONEROOM";    // 원룸/투룸
+    public static final String PROP_TYPE_SHOP       = "SHOP";       // 상가
+    public static final String PROP_TYPE_OFFICE     = "OFFICE";     // 사무실
+
+    /* =========================
+     * 거래유형 (TB_PROPERTY.DEAL_TYPE)
+     * ========================= */
+    public static final String DEAL_TYPE_SELL    = "SELL";    // 매매
+    public static final String DEAL_TYPE_JEONSE  = "JEONSE";  // 전세
+    public static final String DEAL_TYPE_WOLSE   = "WOLSE";   // 월세
+    public static final String DEAL_TYPE_RENT    = "RENT";     // 임대
+
+    /* =========================
+     * 매물 뱃지 (TB_PROPERTY.BADGE_TYPE)
+     * ========================= */
+    public static final String BADGE_NONE      = "NONE";       // 없음
+    public static final String BADGE_RECOMMEND = "RECOMMEND";  // 추천
+    public static final String BADGE_URGENT    = "URGENT";     // 급매
+
 }

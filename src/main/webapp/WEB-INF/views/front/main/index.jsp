@@ -16,14 +16,38 @@
     <div class="slide-overlay"></div>
 
     <div class="slide-visual">
+      <c:if test="${not empty sliderProp}">
       <div class="visual-card">
-        <div class="vc-header"><div class="vc-badge">추천 매물</div><div class="vc-type">아파트 · 매매</div></div>
-        <div class="vc-img i1">🏢</div>
-        <div class="vc-title">프리머스타워 32평</div>
-        <div class="vc-loc">📍 부천시 길주로 280</div>
-        <div class="vc-price">5억 2,000 <small>만원</small></div>
-        <div class="vc-stats"><span>🏠 32평</span><span>🚪 3룸</span><span>📐 15층</span></div>
+        <div class="vc-header"><div class="vc-badge">${sliderProp.badgeType eq 'RECOMMEND' ? '추천 매물' : sliderProp.badgeType eq 'URGENT' ? '급매' : '추천 매물'}</div><div class="vc-type">${sliderProp.propTypeNm} &middot; ${sliderProp.dealTypeNm}</div></div>
+        <div class="vc-img i1">
+          <c:choose>
+            <c:when test="${not empty sliderProp.thumbPath}"><img src="/upload/${sliderProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
+            <c:otherwise>&#127970;</c:otherwise>
+          </c:choose>
+        </div>
+        <div class="vc-title">${sliderProp.propNm}</div>
+        <div class="vc-loc">${sliderProp.address}</div>
+        <div class="vc-price">
+          <c:choose>
+            <c:when test="${sliderProp.dealType eq 'SELL'}"><fmt:formatNumber value="${sliderProp.sellPrice}" pattern="#,###"/></c:when>
+            <c:when test="${sliderProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${sliderProp.deposit}" pattern="#,###"/></c:when>
+            <c:otherwise><fmt:formatNumber value="${sliderProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${sliderProp.monthlyRent}" pattern="#,###"/></c:otherwise>
+          </c:choose>
+          <small>만원</small>
+        </div>
+        <div class="vc-stats"><span>${sliderProp.areaExclusive}&#13217;</span><c:if test="${sliderProp.roomCnt > 0}"><span>${sliderProp.roomCnt}룸</span></c:if><c:if test="${not empty sliderProp.floorNo}"><span>${sliderProp.floorNo}층</span></c:if></div>
       </div>
+      </c:if>
+      <c:if test="${empty sliderProp}">
+      <div class="visual-card">
+        <div class="vc-header"><div class="vc-badge">추천 매물</div><div class="vc-type">아파트 &middot; 매매</div></div>
+        <div class="vc-img i1">&#127970;</div>
+        <div class="vc-title">매물 준비중</div>
+        <div class="vc-loc">프리머스 부동산</div>
+        <div class="vc-price">- <small>만원</small></div>
+        <div class="vc-stats"><span>-</span></div>
+      </div>
+      </c:if>
     </div>
 
     <div class="float-card" style="right:38%;bottom:14%;">
@@ -152,36 +176,53 @@
     <a href="${ctx}/property/viewPropertyList" class="view-all">전체보기 →</a>
   </div>
   <div class="property-grid">
-    <div class="property-card reveal">
-      <div class="card-img"><div class="card-img-placeholder apt">🏢</div><div class="card-badge">추천</div></div>
-      <div class="card-body">
-        <div class="card-type">아파트</div>
-        <div class="card-title">부천 중동 프리머스타워</div>
-        <div class="card-location">📍 부천시 길주로 280</div>
-        <div class="card-price">매매 5억 2,000<span>만원</span></div>
-        <div class="card-info"><div class="card-info-item">🏠 32평</div><div class="card-info-item">🚪 3룸</div><div class="card-info-item">📐 15층</div></div>
+    <c:if test="${empty featuredList}">
+      <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--gray-400);">추천 매물이 없습니다.</div>
+    </c:if>
+    <c:forEach var="fp" items="${featuredList}" varStatus="st">
+      <div class="property-card reveal ${st.index == 1 ? 'reveal-delay-1' : ''} ${st.index == 2 ? 'reveal-delay-2' : ''}">
+        <div class="card-img">
+          <c:choose>
+            <c:when test="${not empty fp.thumbPath}">
+              <img src="/upload/${fp.thumbPath}" style="width:100%;height:100%;object-fit:cover;" />
+            </c:when>
+            <c:otherwise>
+              <div class="card-img-placeholder ${fn:toLowerCase(fp.propType)}">
+                <c:choose>
+                  <c:when test="${fp.propType eq 'APT'}">&#127970;</c:when>
+                  <c:when test="${fp.propType eq 'OFFICETEL'}">&#127980;</c:when>
+                  <c:when test="${fp.propType eq 'VILLA'}">&#127968;</c:when>
+                  <c:when test="${fp.propType eq 'ONEROOM'}">&#128682;</c:when>
+                  <c:when test="${fp.propType eq 'SHOP'}">&#127978;</c:when>
+                  <c:when test="${fp.propType eq 'OFFICE'}">&#127963;</c:when>
+                  <c:otherwise>&#127968;</c:otherwise>
+                </c:choose>
+              </div>
+            </c:otherwise>
+          </c:choose>
+          <div class="card-badge">${fp.badgeType eq 'RECOMMEND' ? '추천' : fp.badgeType eq 'URGENT' ? '급매' : '신규'}</div>
+        </div>
+        <div class="card-body">
+          <div class="card-type">${fp.propTypeNm}</div>
+          <div class="card-title">${fp.propNm}</div>
+          <div class="card-location">${fp.address}</div>
+          <div class="card-price">
+            ${fp.dealTypeNm}
+            <c:choose>
+              <c:when test="${fp.dealType eq 'SELL'}"><fmt:formatNumber value="${fp.sellPrice}" pattern="#,###"/></c:when>
+              <c:when test="${fp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${fp.deposit}" pattern="#,###"/></c:when>
+              <c:otherwise><fmt:formatNumber value="${fp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${fp.monthlyRent}" pattern="#,###"/></c:otherwise>
+            </c:choose>
+            <span>만원</span>
+          </div>
+          <div class="card-info">
+            <div class="card-info-item">${fp.areaExclusive}&#13217;</div>
+            <c:if test="${fp.roomCnt > 0}"><div class="card-info-item">${fp.roomCnt}룸</div></c:if>
+            <c:if test="${not empty fp.floorNo}"><div class="card-info-item">${fp.floorNo}층</div></c:if>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="property-card reveal reveal-delay-1">
-      <div class="card-img"><div class="card-img-placeholder officetel">🏬</div><div class="card-badge">신규</div></div>
-      <div class="card-body">
-        <div class="card-type">오피스텔</div>
-        <div class="card-title">중동역 스카이뷰 오피스텔</div>
-        <div class="card-location">📍 부천시 중동로 45</div>
-        <div class="card-price">월세 500/60<span>만원</span></div>
-        <div class="card-info"><div class="card-info-item">🏠 12평</div><div class="card-info-item">🚪 원룸</div><div class="card-info-item">📐 8층</div></div>
-      </div>
-    </div>
-    <div class="property-card reveal reveal-delay-2">
-      <div class="card-img"><div class="card-img-placeholder shop">🏪</div><div class="card-badge">급매</div></div>
-      <div class="card-body">
-        <div class="card-type">상가</div>
-        <div class="card-title">신중동역 로데오 상가 1층</div>
-        <div class="card-location">📍 부천시 부천로 98</div>
-        <div class="card-price">보증금 3,000/180<span>만원</span></div>
-        <div class="card-info"><div class="card-info-item">🏠 18평</div><div class="card-info-item">🚪 1층</div><div class="card-info-item">📐 코너</div></div>
-      </div>
-    </div>
+    </c:forEach>
   </div>
 </section>
 

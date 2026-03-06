@@ -34,7 +34,7 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503060001" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503060002" rel="stylesheet">
   <link href="${ctx}/resources/front/css/main.css?v=202503050030" rel="stylesheet">
 
   <!-- Common JS -->
@@ -58,6 +58,8 @@
           <div class="nav-dropdown">
             <a href="javascript:fnGoPropertyType('apt')">아파트</a>
             <a href="javascript:fnGoPropertyType('officetel')">오피스텔</a>
+            <a href="javascript:fnGoPropertyType('villa')">빌라/주택</a>
+            <a href="javascript:fnGoPropertyType('oneroom')">원룸/투룸</a>
             <a href="javascript:fnGoPropertyType('shop')">상가</a>
             <a href="javascript:fnGoPropertyType('office')">사무실</a>
           </div>

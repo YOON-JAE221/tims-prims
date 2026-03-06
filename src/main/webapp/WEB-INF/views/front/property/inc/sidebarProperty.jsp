@@ -14,6 +14,12 @@
     <li class="${type eq 'officetel' ? 'active' : ''}">
       <a href="javascript:fnGoType('officetel')">오피스텔</a>
     </li>
+    <li class="${type eq 'villa' ? 'active' : ''}">
+      <a href="javascript:fnGoType('villa')">빌라/주택</a>
+    </li>
+    <li class="${type eq 'oneroom' ? 'active' : ''}">
+      <a href="javascript:fnGoType('oneroom')">원룸/투룸</a>
+    </li>
     <li class="${type eq 'shop' ? 'active' : ''}">
       <a href="javascript:fnGoType('shop')">상가</a>
     </li>

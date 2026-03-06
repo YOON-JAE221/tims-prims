@@ -24,4 +24,14 @@ public class PropertySearchDao {
     public int getPropertyTypeCount(Map<String, Object> paramMap) {
         return sqlSession.selectOne("propertySearch.getPropertyTypeCount", paramMap);
     }
+
+    /** 메인 슬라이더 매물 (MAIN_YN=Y, 최신 1건) */
+    public Map<String, Object> getMainSliderProperty() {
+        return sqlSession.selectOne("propertySearch.getMainSliderProperty");
+    }
+
+    /** 메인 추천매물 (RECOMMEND+URGENT, 최신 3건) */
+    public List<Map<String, Object>> getMainFeaturedList() {
+        return sqlSession.selectList("propertySearch.getMainFeaturedList");
+    }
 }

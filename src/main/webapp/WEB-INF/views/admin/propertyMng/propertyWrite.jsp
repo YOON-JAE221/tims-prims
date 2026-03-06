@@ -40,6 +40,8 @@
                   <select name="propType" id="propType" class="form-control">
                     <option value="APT" ${prop.propType eq 'APT' ? 'selected' : ''}>아파트</option>
                     <option value="OFFICETEL" ${prop.propType eq 'OFFICETEL' ? 'selected' : ''}>오피스텔</option>
+                    <option value="VILLA" ${prop.propType eq 'VILLA' ? 'selected' : ''}>빌라/주택</option>
+                    <option value="ONEROOM" ${prop.propType eq 'ONEROOM' ? 'selected' : ''}>원룸/투룸</option>
                     <option value="SHOP" ${prop.propType eq 'SHOP' ? 'selected' : ''}>상가</option>
                     <option value="OFFICE" ${prop.propType eq 'OFFICE' ? 'selected' : ''}>사무실</option>
                   </select>
@@ -426,7 +428,7 @@
 
     // 방수 (상가/사무실은 0 허용)
     var propType = $('#propType').val();
-    if ((propType === 'APT' || propType === 'OFFICETEL') && (!$('input[name="roomCnt"]').val() || $('input[name="roomCnt"]').val() == '0')) {
+    if ((propType === 'APT' || propType === 'OFFICETEL' || propType === 'VILLA' || propType === 'ONEROOM') && (!$('input[name="roomCnt"]').val() || $('input[name="roomCnt"]').val() == '0')) {
       alert('방수를 입력해주세요.'); $('input[name="roomCnt"]').focus(); return;
     }
 

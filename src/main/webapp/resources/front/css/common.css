@@ -159,6 +159,8 @@ img { max-width: 100%; display: block; }
 }
 .prop-card-img.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5); }
 .prop-card-img.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5); }
+.prop-card-img.villa { background: linear-gradient(135deg, #6b4c3b, #a07860); }
+.prop-card-img.oneroom { background: linear-gradient(135deg, #3b5e6b, #5a9aaa); }
 .prop-card-img.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
 .prop-card-img.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
 .prop-card-emoji { font-size: 40px; }

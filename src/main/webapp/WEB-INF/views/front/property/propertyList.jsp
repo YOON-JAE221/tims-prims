@@ -4,6 +4,8 @@
 <c:set var="typeNm" value="전체매물" />
 <c:if test="${type eq 'apt'}"><c:set var="typeNm" value="아파트" /></c:if>
 <c:if test="${type eq 'officetel'}"><c:set var="typeNm" value="오피스텔" /></c:if>
+<c:if test="${type eq 'villa'}"><c:set var="typeNm" value="빌라/주택" /></c:if>
+<c:if test="${type eq 'oneroom'}"><c:set var="typeNm" value="원룸/투룸" /></c:if>
 <c:if test="${type eq 'shop'}"><c:set var="typeNm" value="상가" /></c:if>
 <c:if test="${type eq 'office'}"><c:set var="typeNm" value="사무실" /></c:if>
 
@@ -47,7 +49,7 @@
         </div>
       </c:if>
       <c:forEach var="prop" items="${list}">
-        <div class="prop-card ${prop.soldYn eq 'Y' ? 'sold-card' : ''}" onclick="fnGoDetail('${prop.propType}','${prop.propCd}')">>
+        <div class="prop-card ${prop.soldYn eq 'Y' ? 'sold-card' : ''}" onclick="fnGoDetail('${prop.propType}','${prop.propCd}')">
           <div class="prop-card-img ${fn:toLowerCase(prop.propType)}">
             <c:choose>
               <c:when test="${not empty prop.thumbPath}">
@@ -58,6 +60,8 @@
                   <c:choose>
                     <c:when test="${prop.propType eq 'APT'}">&#127970;</c:when>
                     <c:when test="${prop.propType eq 'OFFICETEL'}">&#127980;</c:when>
+                    <c:when test="${prop.propType eq 'VILLA'}">&#127968;</c:when>
+                    <c:when test="${prop.propType eq 'ONEROOM'}">&#128682;</c:when>
                     <c:when test="${prop.propType eq 'SHOP'}">&#127978;</c:when>
                     <c:when test="${prop.propType eq 'OFFICE'}">&#127963;</c:when>
                     <c:otherwise>&#127968;</c:otherwise>
