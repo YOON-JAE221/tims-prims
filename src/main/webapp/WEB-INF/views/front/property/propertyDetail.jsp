@@ -19,40 +19,89 @@
 
   <div class="content-main">
 
-    <!-- 상단: 이미지 + 기본정보 -->
+    <!-- 상단: 이미지 갤러리 + 기본정보 -->
     <div class="prop-detail-top">
-      <div class="prop-detail-img ${fn:toLowerCase(prop.propType)}">
+      <!-- 이미지 갤러리 영역 -->
+      <div class="prop-gallery-wrap">
         <c:choose>
-          <c:when test="${not empty prop.thumbPath}">
-            <img src="/upload/${prop.thumbPath}" style="width:100%;height:100%;object-fit:cover;" />
-          </c:when>
-          <c:otherwise>
-            <span class="prop-card-emoji" style="font-size:64px;">
-              <c:choose>
-                <c:when test="${prop.propType eq 'APT'}">&#127970;</c:when>
-                <c:when test="${prop.propType eq 'OFFICETEL'}">&#127980;</c:when>
-                <c:when test="${prop.propType eq 'VILLA'}">&#127968;</c:when>
-                <c:when test="${prop.propType eq 'ONEROOM'}">&#128682;</c:when>
-                <c:when test="${prop.propType eq 'SHOP'}">&#127978;</c:when>
-                <c:when test="${prop.propType eq 'OFFICE'}">&#127963;</c:when>
-                <c:otherwise>&#127968;</c:otherwise>
-              </c:choose>
-            </span>
-          </c:otherwise>
-        </c:choose>
-        <c:choose>
-          <c:when test="${prop.soldYn eq 'Y'}">
-            <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
-            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;">
-              <span style="color:white;font-size:24px;font-weight:800;letter-spacing:3px;">거래완료</span>
+          <c:when test="${not empty imgList}">
+            <c:set var="imgCnt" value="${fn:length(imgList)}" />
+            <!-- 이미지 수에 따른 갤러리 레이아웃 -->
+            <div class="prop-gallery-grid prop-gallery-count-${imgCnt > 4 ? 'many' : imgCnt}" id="propGalleryGrid">
+
+              <!-- 메인 이미지 -->
+              <div class="prop-gallery-main" onclick="openGallerySlider(0)">
+                <img src="/upload/${imgList[0].imgPath}" alt="매물 대표 이미지" />
+                <c:choose>
+                  <c:when test="${prop.soldYn eq 'Y'}">
+                    <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
+                    <div class="prop-gallery-sold-overlay"><span>거래완료</span></div>
+                  </c:when>
+                  <c:when test="${prop.badgeType eq 'URGENT'}">
+                    <span class="prop-card-badge" style="background:#dc3545;">급매</span>
+                  </c:when>
+                  <c:when test="${prop.badgeType eq 'RECOMMEND'}">
+                    <span class="prop-card-badge">추천</span>
+                  </c:when>
+                </c:choose>
+              </div>
+
+              <!-- 우측 썸네일 (2장 이상일 때만) -->
+              <c:if test="${imgCnt >= 2}">
+                <div class="prop-gallery-side">
+                  <c:forEach var="img" items="${imgList}" varStatus="vs">
+                    <c:if test="${vs.index >= 1 and vs.index <= 3}">
+                      <div class="prop-gallery-thumb" onclick="openGallerySlider(${vs.index})">
+                        <img src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}" />
+                        <!-- 4번째 썸네일(index=3)이고 이미지가 5장 이상이면 더보기 오버레이 -->
+                        <c:if test="${vs.index == 3 and imgCnt > 4}">
+                          <div class="prop-gallery-more-overlay">
+                            <span class="more-count">+${imgCnt - 4}</span>
+                            <span class="more-label">더보기</span>
+                          </div>
+                        </c:if>
+                      </div>
+                    </c:if>
+                  </c:forEach>
+                </div>
+              </c:if>
+
+              <!-- 전체보기 버튼 (항상 표시) -->
+              <button class="prop-gallery-all-btn" onclick="openGallerySlider(0)">
+                &#128247; 사진 전체보기 <span class="all-cnt">${imgCnt}</span>
+              </button>
             </div>
           </c:when>
-          <c:when test="${prop.badgeType eq 'URGENT'}">
-            <span class="prop-card-badge" style="background:#dc3545;">급매</span>
-          </c:when>
-          <c:when test="${prop.badgeType eq 'RECOMMEND'}">
-            <span class="prop-card-badge">추천</span>
-          </c:when>
+          <c:otherwise>
+            <!-- 이미지 없을 때 기존 스타일 유지 -->
+            <div class="prop-detail-img ${fn:toLowerCase(prop.propType)}" style="height:100%;min-height:300px;">
+              <span class="prop-card-emoji" style="font-size:64px;">
+                <c:choose>
+                  <c:when test="${prop.propType eq 'APT'}">&#127970;</c:when>
+                  <c:when test="${prop.propType eq 'OFFICETEL'}">&#127980;</c:when>
+                  <c:when test="${prop.propType eq 'VILLA'}">&#127968;</c:when>
+                  <c:when test="${prop.propType eq 'ONEROOM'}">&#128682;</c:when>
+                  <c:when test="${prop.propType eq 'SHOP'}">&#127978;</c:when>
+                  <c:when test="${prop.propType eq 'OFFICE'}">&#127963;</c:when>
+                  <c:otherwise>&#127968;</c:otherwise>
+                </c:choose>
+              </span>
+              <c:choose>
+                <c:when test="${prop.soldYn eq 'Y'}">
+                  <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
+                  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;">
+                    <span style="color:white;font-size:24px;font-weight:800;letter-spacing:3px;">거래완료</span>
+                  </div>
+                </c:when>
+                <c:when test="${prop.badgeType eq 'URGENT'}">
+                  <span class="prop-card-badge" style="background:#dc3545;">급매</span>
+                </c:when>
+                <c:when test="${prop.badgeType eq 'RECOMMEND'}">
+                  <span class="prop-card-badge">추천</span>
+                </c:when>
+              </c:choose>
+            </div>
+          </c:otherwise>
         </c:choose>
       </div>
       <div class="prop-detail-summary">
@@ -182,6 +231,323 @@
 
   </div>
 </div>
+
+<!-- 이미지 슬라이더 모달 -->
+<c:if test="${not empty imgList}">
+<div id="galleryModal" class="gallery-modal" style="display:none;" onclick="closeGalleryOnBg(event)">
+  <div class="gallery-modal-inner">
+    <button class="gallery-close-btn" onclick="closeGallerySlider()">&#10005;</button>
+    <div class="gallery-counter" id="galleryCounter">1 / ${fn:length(imgList)}</div>
+    <button class="gallery-nav-btn gallery-prev" onclick="slideGallery(-1)">&#10094;</button>
+    <div class="gallery-slider" id="gallerySlider">
+      <c:forEach var="img" items="${imgList}" varStatus="vs">
+        <div class="gallery-slide">
+          <img src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}" />
+        </div>
+      </c:forEach>
+    </div>
+    <button class="gallery-nav-btn gallery-next" onclick="slideGallery(1)">&#10095;</button>
+    <div class="gallery-dots" id="galleryDots">
+      <c:forEach var="img" items="${imgList}" varStatus="vs">
+        <span class="gallery-dot ${vs.index == 0 ? 'active' : ''}" onclick="goToSlide(${vs.index})"></span>
+      </c:forEach>
+    </div>
+  </div>
+</div>
+</c:if>
+
+<style>
+/* ── 갤러리 그리드 ─────────────────────────────── */
+.prop-gallery-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  flex: 0 0 440px;
+  width: 440px;
+  min-width: 260px;
+  align-self: stretch;
+}
+
+/* 메인 + 사이드 2열 레이아웃 */
+.prop-gallery-grid {
+  display: flex;
+  gap: 4px;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 좌측 메인 이미지 */
+.prop-gallery-main {
+  position: relative;
+  flex: 2;
+  overflow: hidden;
+  cursor: pointer;
+  background: #e8e8e8;
+  min-height: 300px;
+}
+
+/* 1장: 메인이 100% 차지 */
+.prop-gallery-count-1 .prop-gallery-main {
+  flex: 1;
+}
+
+.prop-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+.prop-gallery-main:hover img {
+  transform: scale(1.03);
+}
+
+/* 우측 썸네일 열 */
+.prop-gallery-side {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+
+.prop-gallery-thumb {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #e8e8e8;
+  min-height: 0;
+}
+.prop-gallery-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+.prop-gallery-thumb:hover img {
+  transform: scale(1.05);
+}
+
+/* 더보기 오버레이 */
+.prop-gallery-more-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  pointer-events: none;
+}
+.more-count { font-size: 26px; font-weight: 800; line-height: 1; }
+.more-label { font-size: 12px; margin-top: 4px; opacity: 0.9; }
+
+/* 전체보기 버튼 */
+.prop-gallery-all-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.92);
+  color: #333;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  transition: background 0.2s;
+  white-space: nowrap;
+  z-index: 3;
+}
+.prop-gallery-all-btn:hover { background: #fff; }
+.prop-gallery-all-btn .all-cnt {
+  display: inline-block;
+  background: var(--navy, #1a2e5a);
+  color: #fff;
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 11px;
+  margin-left: 4px;
+}
+
+.prop-gallery-sold-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.prop-gallery-sold-overlay span {
+  color: white;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+/* ── 슬라이더 모달 ────────────────────────────── */
+.gallery-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gallery-modal-inner {
+  position: relative;
+  width: 100%;
+  max-width: 860px;
+  padding: 20px 60px;
+  box-sizing: border-box;
+}
+.gallery-slider {
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.gallery-slide {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: none;
+}
+.gallery-slide img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 8px;
+  user-select: none;
+}
+.gallery-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.18);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  padding: 14px 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+}
+.gallery-nav-btn:hover { background: rgba(255,255,255,0.35); }
+.gallery-prev { left: 10px; }
+.gallery-next { right: 10px; }
+.gallery-close-btn {
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 10;
+  opacity: 0.8;
+}
+.gallery-close-btn:hover { opacity: 1; }
+.gallery-counter {
+  text-align: center;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.gallery-dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.gallery-dot.active { background: #fff; }
+
+@media (max-width: 768px) {
+  .prop-gallery-wrap { width: 100%; }
+  .prop-gallery-grid { height: 200px; }
+  .prop-gallery-side { flex: 0 0 80px; }
+  .gallery-modal-inner { padding: 20px 44px; }
+}
+</style>
+
+<script>
+(function() {
+  var currentIdx = 0;
+  var totalSlides = ${fn:length(imgList)};
+
+  window.openGallerySlider = function(startIdx) {
+    currentIdx = startIdx || 0;
+    document.getElementById('galleryModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    renderSlide();
+  };
+
+  window.closeGallerySlider = function() {
+    document.getElementById('galleryModal').style.display = 'none';
+    document.body.style.overflow = '';
+  };
+
+  window.closeGalleryOnBg = function(e) {
+    if (e.target === document.getElementById('galleryModal')) {
+      closeGallerySlider();
+    }
+  };
+
+  window.slideGallery = function(dir) {
+    currentIdx = (currentIdx + dir + totalSlides) % totalSlides;
+    renderSlide();
+  };
+
+  window.goToSlide = function(idx) {
+    currentIdx = idx;
+    renderSlide();
+  };
+
+  function renderSlide() {
+    var slides = document.querySelectorAll('.gallery-slide');
+    slides.forEach(function(s, i) {
+      s.style.display = i === currentIdx ? 'flex' : 'none';
+    });
+    var counter = document.getElementById('galleryCounter');
+    if (counter) counter.textContent = (currentIdx + 1) + ' / ' + totalSlides;
+    var dots = document.querySelectorAll('.gallery-dot');
+    dots.forEach(function(d, i) {
+      d.classList.toggle('active', i === currentIdx);
+    });
+  }
+
+  // 키보드 방향키 지원
+  document.addEventListener('keydown', function(e) {
+    var modal = document.getElementById('galleryModal');
+    if (!modal || modal.style.display === 'none') return;
+    if (e.key === 'ArrowLeft') slideGallery(-1);
+    else if (e.key === 'ArrowRight') slideGallery(1);
+    else if (e.key === 'Escape') closeGallerySlider();
+  });
+})();
+</script>
 
 <c:if test="${not empty prop.lat and not empty prop.lng}">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d"></script>

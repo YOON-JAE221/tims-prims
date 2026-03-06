@@ -62,6 +62,8 @@ public class PropertyController {
 
             Map<String, Object> prop = propertySearchDao.getPropertyDetail(param);
             model.addAttribute("prop", prop);
+            List<Map<String, Object>> imgList = propertySearchDao.getPropertyImageList(param);
+            model.addAttribute("imgList", imgList);
         }
         return "front/property/propertyDetail";
     }

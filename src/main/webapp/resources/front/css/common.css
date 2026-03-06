@@ -265,11 +265,12 @@ img { max-width: 100%; display: block; }
 
 /* ===== 매물 상세 ===== */
 .prop-detail-top {
-  display: grid; grid-template-columns: 1fr 1fr;
+  display: flex;
+  align-items: stretch;
   gap: 28px; margin-bottom: 36px;
 }
 .prop-detail-img {
-  height: 320px; border-radius: 14px; overflow: hidden;
+  height: 100%; min-height: 300px; border-radius: 16px; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   position: relative;
 }
@@ -280,7 +281,7 @@ img { max-width: 100%; display: block; }
 .prop-detail-img .prop-card-emoji { font-size: 64px; }
 .prop-detail-img .prop-card-badge { top: 16px; left: 16px; padding: 5px 14px; font-size: 13px; }
 
-.prop-detail-summary { display: flex; flex-direction: column; justify-content: center; }
+.prop-detail-summary { display: flex; flex-direction: column; justify-content: flex-start; flex: 1; min-width: 0; }
 .prop-detail-type { font-size: 13px; color: var(--orange); font-weight: 700; margin-bottom: 8px; }
 .prop-detail-title { font-size: 26px; font-weight: 800; color: var(--navy); margin-bottom: 8px; letter-spacing: -0.5px; }
 .prop-detail-loc { font-size: 14px; color: var(--gray-400); margin-bottom: 16px; }
@@ -346,7 +347,7 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 768px) {
-  .prop-detail-top { grid-template-columns: 1fr; }
+  .prop-detail-top { flex-direction: column; }
   .prop-detail-img { height: 220px; }
   .prop-detail-title { font-size: 22px; }
   .prop-detail-price { font-size: 24px; }

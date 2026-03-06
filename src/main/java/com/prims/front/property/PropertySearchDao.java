@@ -54,4 +54,9 @@ public class PropertySearchDao {
     public void increaseViewCnt(Map<String, Object> paramMap) {
         sqlSession.update("propertySearch.increaseViewCnt", paramMap);
     }
+
+    /** 매물 이미지 목록 */
+    public List<Map<String, Object>> getPropertyImageList(Map<String, Object> paramMap) {
+        return sqlSession.selectList("propertySearch.getPropertyImageList", paramMap);
+    }
 }
