@@ -104,7 +104,7 @@
            </if>
     </select>
 
-    <!-- 메인 슬라이더 매물 (MAIN_YN=Y, MAIN_YN_DTM 최신 1건) -->
+    <!-- 메인 슬라이더 추천매물 (RECOMMEND, 최신 등록 1건) -->
     <select id="getMainSliderProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
              , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
@@ -120,11 +120,10 @@
                  ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.BADGE_TYPE = 'RECOMMEND'
-           AND A.MAIN_YN = 'Y'
            AND A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.MAIN_YN_DTM DESC
+         ORDER BY A.RGT_DTM DESC
          LIMIT 1
     </select>
 
@@ -150,7 +149,7 @@
          LIMIT 1
     </select>
 
-    <!-- 메인 급매매물 (URGENT + MAIN_YN=Y, MAIN_YN_DTM 최신 1건) -->
+    <!-- 메인 급매매물 (URGENT, 최신 등록 1건) -->
     <select id="getMainUrgentProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
              , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
@@ -166,11 +165,10 @@
                  ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.BADGE_TYPE = 'URGENT'
-           AND A.MAIN_YN = 'Y'
            AND A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.MAIN_YN_DTM DESC
+         ORDER BY A.RGT_DTM DESC
          LIMIT 1
     </select>
 

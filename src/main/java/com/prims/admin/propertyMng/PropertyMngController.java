@@ -82,10 +82,11 @@ public class PropertyMngController {
     @RequestMapping(value = "/saveProperty", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveProperty(@ParamMap Map<String, Object> paramMap,
-                                            @RequestParam(value = "atchFile", required = false) MultipartFile[] atchFile) {
+                                            @RequestParam(value = "atchFile", required = false) MultipartFile[] atchFile,
+                                            @RequestParam(value = "deleteFiles", required = false) String[] deleteFiles) {
         Map<String, Object> result = new HashMap<>();
         try {
-            int cnt = propertyMngService.saveProperty(paramMap, atchFile);
+            int cnt = propertyMngService.saveProperty(paramMap, atchFile, deleteFiles);
             result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
             result.put("propCd", paramMap.get("propCd"));
         } catch (Exception e) {

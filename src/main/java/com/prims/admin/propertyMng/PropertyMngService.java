@@ -40,7 +40,28 @@ public class PropertyMngService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int saveProperty(Map<String, Object> paramMap, MultipartFile[] atchFile) throws Exception {
+    public int saveProperty(Map<String, Object> paramMap, MultipartFile[] atchFile, String[] deleteFiles) throws Exception {
+
+        // 기존 첨부파일 삭제 처리
+        if (deleteFiles != null && deleteFiles.length > 0) {
+            String ssnUsrCd = String.valueOf(paramMap.getOrDefault("ssnUsrCd", ""));
+            for (String delKey : deleteFiles) {
+                if (delKey == null || delKey.isEmpty()) continue;
+                String[] parts = delKey.split(":");
+                if (parts.length < 2) continue;
+
+                Map<String, Object> fileParam = new HashMap<>();
+                fileParam.put("upldFileCd", parts[0]);
+                fileParam.put("fileSeq", Integer.parseInt(parts[1]));
+
+                // 파일 상세 조회 후 삭제
+                Map<String, Object> fileInfo = fileService.getSelectUpldFileOne(fileParam);
+                if (fileInfo != null) {
+                    fileInfo.put("ssnUsrCd", ssnUsrCd);
+                    fileService.deleteCommonFile(fileInfo);
+                }
+            }
+        }
 
         // 첨부파일 처리
         if (atchFile != null) {
@@ -79,30 +100,6 @@ public class PropertyMngService {
         if (paramMap.get("mainYn") == null || "".equals(paramMap.get("mainYn"))) paramMap.put("mainYn", "N");
         if (paramMap.get("soldYn") == null || "".equals(paramMap.get("soldYn"))) paramMap.put("soldYn", "N");
         if (paramMap.get("badgeType") == null || "".equals(paramMap.get("badgeType"))) paramMap.put("badgeType", "NONE");
-
-        // MAIN_YN_DTM 로직
-        String mainYn = String.valueOf(paramMap.get("mainYn"));
-        if ("N".equals(mainYn)) {
-            // N이면 무조건 null
-            paramMap.put("mainYnDtm", null);
-        } else {
-            // Y일 때: 기존 데이터 확인
-            if (isNew) {
-                // 신규: NOW
-                paramMap.put("mainYnDtm", new java.sql.Timestamp(System.currentTimeMillis()));
-            } else {
-                // 수정: 기존 값 확인
-                Map<String, Object> existing = propertyMngDao.getSelectPropertyDetail(paramMap);
-                String oldMainYn = existing != null ? String.valueOf(existing.getOrDefault("mainYn", "N")) : "N";
-                if ("Y".equals(oldMainYn)) {
-                    // Y→Y: 기존값 유지
-                    paramMap.put("mainYnDtm", existing.get("mainYnDtm"));
-                } else {
-                    // N→Y: NOW
-                    paramMap.put("mainYnDtm", new java.sql.Timestamp(System.currentTimeMillis()));
-                }
-            }
-        }
 
         return propertyMngDao.saveProperty(paramMap);
     }

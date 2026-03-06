@@ -79,7 +79,7 @@
           <small>대표전화</small>
           032-327-1277
         </div>
-        <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="nav-cta">상담신청</a>
+        <a href="javascript:fnGoConsult()" class="nav-cta">상담신청</a>
         <c:if test="${not empty sessionScope.loginUser}">
           <a href="${ctx}/admin/viewAdminMain" class="nav-admin-btn" target="_blank">관리자</a>
         </c:if>
@@ -91,6 +91,11 @@
   <!-- 매물유형 이동 -->
   <form id="goPropertyTypeForm" action="${ctx}/property/viewPropertyList" method="post">
     <input type="hidden" name="type" id="navPropertyType" />
+  </form>
+
+  <!-- 상담신청 이동 -->
+  <form id="goConsultForm" action="${ctx}/bbs/viewBbsWriteQna" method="post">
+    <input type="hidden" name="brdCd" value="3ccd942dfcbf11f08771908d6ec6e544" />
   </form>
 
   <script>
@@ -106,6 +111,10 @@
     function fnGoPropertyType(t) {
       document.getElementById('navPropertyType').value = t;
       document.getElementById('goPropertyTypeForm').submit();
+    }
+
+    function fnGoConsult() {
+      document.getElementById('goConsultForm').submit();
     }
 
     // 고객지원 드롭다운 모바일 토글

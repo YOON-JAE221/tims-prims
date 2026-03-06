@@ -255,7 +255,7 @@
           <div class="card-header"><h5 class="card-title mb-0">노출 / 상태</h5></div>
           <div class="card-body">
             <div class="row">
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>뱃지</label>
                   <select name="badgeType" class="form-control">
@@ -263,18 +263,10 @@
                     <option value="RECOMMEND" ${prop.badgeType eq 'RECOMMEND' ? 'selected' : ''}>추천</option>
                     <option value="URGENT" ${prop.badgeType eq 'URGENT' ? 'selected' : ''}>급매</option>
                   </select>
+                  <small class="text-muted">추천/급매 설정 시 메인 슬라이더에 자동 노출됩니다.</small>
                 </div>
               </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>메인 슬라이더 노출</label>
-                  <select name="mainYn" class="form-control">
-                    <option value="N" ${prop.mainYn ne 'Y' ? 'selected' : ''}>노출안함</option>
-                    <option value="Y" ${prop.mainYn eq 'Y' ? 'selected' : ''}>노출</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>거래상태</label>
                   <select name="soldYn" class="form-control">
@@ -284,7 +276,7 @@
                 </div>
               </div>
               <c:if test="${not empty prop}">
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <div class="form-group">
                   <label>조회수</label>
                   <input type="text" class="form-control" value="${prop.viewCnt != null ? prop.viewCnt : 0}" readonly style="background:#f4f4f4;" />
@@ -310,7 +302,7 @@
           <div class="card-header"><h5 class="card-title mb-0">이미지 첨부</h5></div>
           <div class="card-body">
             <c:if test="${not empty fileList}">
-              <div id="existFileWrap" class="mb-2">
+              <div id="existFileWrap" class="mb-3">
                 <c:forEach var="file" items="${fileList}">
                   <div class="d-flex align-items-center mb-1" data-upld-file-cd="${file.upldFileCd}" data-file-seq="${file.fileSeq}">
                     <a href="${ctx}/file/download?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}">📎 ${file.fileNm}</a>
@@ -320,11 +312,19 @@
                 </c:forEach>
               </div>
             </c:if>
-            <div id="fileWrap">
-              <div class="mb-1"><input type="file" name="atchFile" class="form-control-file" /></div>
+
+            <!-- 드래그앤드롭 영역 -->
+            <div id="dropZone" class="drop-zone">
+              <div class="drop-zone-inner">
+                <div class="drop-zone-icon">📷</div>
+                <p class="drop-zone-text">이미지를 여기에 드래그하거나 <span class="drop-zone-browse">클릭하여 선택</span></p>
+                <p class="drop-zone-hint">최대 10개, 파일당 20MB 이하 (JPG, PNG, GIF, WEBP)</p>
+              </div>
+              <input type="file" id="dropFileInput" multiple accept="image/*" style="display:none;" />
             </div>
-            <button type="button" class="btn btn-xs btn-outline-secondary mt-1" onclick="fnAddFile()">+ 파일추가</button>
-            <p class="text-muted mt-1" style="font-size:12px;">* 최대 10개, 파일당 20MB 이하</p>
+
+            <!-- 추가된 파일 미리보기 -->
+            <div id="newFilePreview" class="file-preview-wrap"></div>
           </div>
         </div>
 
@@ -353,6 +353,47 @@
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d&libraries=services&autoload=false"></script>
+
+<style>
+.drop-zone {
+  border: 2px dashed #ccc; border-radius: 12px; padding: 40px 20px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  background: #fafafa;
+}
+.drop-zone:hover, .drop-zone.dragover {
+  border-color: #007bff; background: #f0f7ff;
+}
+.drop-zone.dragover .drop-zone-icon { transform: scale(1.15); }
+.drop-zone-icon { font-size: 36px; margin-bottom: 8px; transition: transform 0.2s; }
+.drop-zone-text { font-size: 14px; color: #555; margin: 0 0 4px; }
+.drop-zone-browse { color: #007bff; font-weight: 600; text-decoration: underline; }
+.drop-zone-hint { font-size: 12px; color: #999; margin: 0; }
+
+.file-preview-wrap { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
+.file-preview-item {
+  position: relative; width: 120px; border: 1px solid #e0e0e0; border-radius: 8px;
+  overflow: hidden; background: #fff;
+}
+.file-preview-item img {
+  width: 120px; height: 90px; object-fit: cover; display: block;
+}
+.file-preview-item .fp-name {
+  padding: 4px 6px; font-size: 11px; color: #555;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.file-preview-item .fp-size {
+  padding: 0 6px 4px; font-size: 10px; color: #999;
+}
+.file-preview-item .fp-remove {
+  position: absolute; top: 4px; right: 4px;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(0,0,0,0.55); color: #fff; border: none;
+  font-size: 14px; line-height: 22px; text-align: center;
+  cursor: pointer; transition: background 0.15s;
+}
+.file-preview-item .fp-remove:hover { background: rgba(220,53,69,0.85); }
+</style>
+
 <script>
   // 다음 우편번호 + 카카오 Geocoder
   function fnSearchAddress() {
@@ -419,8 +460,85 @@
     height: 350
   });
 
-  function fnAddFile() {
-    $('#fileWrap').append('<div class="mb-1"><input type="file" name="atchFile" class="form-control-file" /></div>');
+  /* ===== 드래그앤드롭 파일 업로드 ===== */
+  var newFiles = []; // { file, id }
+  var fileIdSeq = 0;
+  var MAX_FILES = 10;
+  var MAX_SIZE = 20 * 1024 * 1024;
+  var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+  var $dropZone = $('#dropZone');
+  var $dropInput = $('#dropFileInput');
+
+  // 클릭 → 파일선택
+  $dropZone.on('click', function(e) {
+    if (e.target === $dropInput[0]) return; // input 자체 클릭은 무시
+    $dropInput.trigger('click');
+  });
+  $dropInput.on('click', function(e) { e.stopPropagation(); });
+  $dropInput.on('change', function() {
+    fnHandleFiles(this.files);
+    this.value = '';
+  });
+
+  // 드래그 이벤트
+  $dropZone.on('dragenter dragover', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    $dropZone.addClass('dragover');
+  });
+  $dropZone.on('dragleave drop', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    $dropZone.removeClass('dragover');
+  });
+  $dropZone.on('drop', function(e) {
+    var dt = e.originalEvent.dataTransfer;
+    if (dt && dt.files) fnHandleFiles(dt.files);
+  });
+
+  function fnHandleFiles(fileList) {
+    var existCnt = $('#existFileWrap div[data-upld-file-cd]').length - $('#propForm .deleteFileInput').length;
+    if (existCnt < 0) existCnt = 0;
+
+    for (var i = 0; i < fileList.length; i++) {
+      var f = fileList[i];
+
+      if (existCnt + newFiles.length >= MAX_FILES) {
+        alert('최대 ' + MAX_FILES + '개까지 첨부할 수 있습니다.'); break;
+      }
+      if (f.size > MAX_SIZE) {
+        alert('"' + f.name + '" 파일이 20MB를 초과합니다.'); continue;
+      }
+      if (ALLOWED_TYPES.indexOf(f.type) === -1) {
+        alert('"' + f.name + '"은 지원하지 않는 파일 형식입니다.\n(JPG, PNG, GIF, WEBP만 가능)'); continue;
+      }
+
+      var id = 'nf_' + (++fileIdSeq);
+      newFiles.push({ file: f, id: id });
+      fnRenderPreview(f, id);
+    }
+  }
+
+  function fnRenderPreview(file, id) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var sizeStr = file.size < 1024 * 1024
+        ? (file.size / 1024).toFixed(0) + 'KB'
+        : (file.size / (1024 * 1024)).toFixed(1) + 'MB';
+
+      var html = '<div class="file-preview-item" data-file-id="' + id + '">'
+        + '<button type="button" class="fp-remove" onclick="fnRemoveNewFile(\'' + id + '\')">&times;</button>'
+        + '<img src="' + e.target.result + '" />'
+        + '<div class="fp-name" title="' + file.name + '">' + file.name + '</div>'
+        + '<div class="fp-size">' + sizeStr + '</div>'
+        + '</div>';
+      $('#newFilePreview').append(html);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function fnRemoveNewFile(id) {
+    newFiles = newFiles.filter(function(f) { return f.id !== id; });
+    $('.file-preview-item[data-file-id="' + id + '"]').remove();
   }
 
   function fnRemoveExistFile(btn) {
@@ -468,7 +586,13 @@
     // 에디터 내용 hidden에 세팅
     $('#propDescHidden').val(editor.getHTML());
 
-    var res = ajaxFormCall('${ctx}/propertyMng/saveProperty', '#propForm', false);
+    // FormData 빌드 (폼 데이터 + 드래그앤드롭 파일)
+    var formData = new FormData($('#propForm')[0]);
+    for (var i = 0; i < newFiles.length; i++) {
+      formData.append('atchFile', newFiles[i].file);
+    }
+
+    var res = ajaxFormCall('${ctx}/propertyMng/saveProperty', formData, false);
     if (res && res.result === 'OK') {
       alert('저장되었습니다.');
       fnGoList();
