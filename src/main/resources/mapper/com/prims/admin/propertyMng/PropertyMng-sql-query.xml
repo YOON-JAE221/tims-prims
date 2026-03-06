@@ -24,6 +24,7 @@
              , A.MAIN_YN
              , A.SOLD_YN
              , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
+             , A.VIEW_CNT
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
@@ -183,5 +184,36 @@
          WHERE PROP_CD = #{propCd}
            AND DEL_YN = 'N'
     </update>
+
+    <!-- 매물 복사 -->
+    <insert id="copyProperty" parameterType="map">
+        INSERT INTO TB_PROPERTY (
+            PROP_CD, PROP_NM, PROP_TYPE, DEAL_TYPE,
+            SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST,
+            AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT,
+            FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE,
+            PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE,
+            ADDRESS, ADDRESS_DTL, LAT, LNG,
+            BADGE_TYPE, MAIN_YN, MAIN_YN_DTM, SOLD_YN, VIEW_CNT,
+            PROP_DESC, ATCH_FILE_KEY,
+            USE_YN, DEL_YN,
+            RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
+        )
+        SELECT #{newPropCd}
+             , CONCAT(PROP_NM, '_복사본')
+             , PROP_TYPE, DEAL_TYPE
+             , SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST
+             , AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT
+             , FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE
+             , PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE
+             , ADDRESS, ADDRESS_DTL, LAT, LNG
+             , 'NONE', 'N', NULL, 'N', 0
+             , PROP_DESC, NULL
+             , 'Y', 'N'
+             , #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
+          FROM TB_PROPERTY
+         WHERE PROP_CD = #{propCd}
+           AND DEL_YN = 'N'
+    </insert>
 
 </mapper>

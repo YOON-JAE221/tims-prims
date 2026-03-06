@@ -35,10 +35,26 @@ public class MainController {
             e.printStackTrace();
         }
 
-        // 메인 슬라이더 매물 (MAIN_YN=Y, 최신 1건)
+        // Slide 1: 추천매물 (RECOMMEND + MAIN_YN=Y)
         try {
             Map<String, Object> sliderProp = propertySearchDao.getMainSliderProperty();
             model.addAttribute("sliderProp", sliderProp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Slide 2: 인기매물 (조회수 높은 순, 거래중 1건)
+        try {
+            Map<String, Object> latestProp = propertySearchDao.getMainLatestProperty();
+            model.addAttribute("latestProp", latestProp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Slide 3: 급매매물 (URGENT + MAIN_YN=Y)
+        try {
+            Map<String, Object> urgentProp = propertySearchDao.getMainUrgentProperty();
+            model.addAttribute("urgentProp", urgentProp);
         } catch (Exception e) {
             e.printStackTrace();
         }

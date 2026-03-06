@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,9 +47,22 @@ public class PropertyController {
 
     @RequestMapping(value = "/viewPropertyDetail", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyDetail(@RequestParam(value = "type", required = false, defaultValue = "apt") String type,
-                                     @RequestParam(value = "id", required = false, defaultValue = "1") String id, Model model) {
+                                     @RequestParam(value = "id", required = false, defaultValue = "") String id,
+                                     HttpSession session, Model model) {
         model.addAttribute("type", type);
-        model.addAttribute("propId", id);
+        if (id != null && !id.isEmpty()) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("id", id);
+
+            // 관리자가 아닌 경우에만 조회수 증가
+            Object loginUser = session.getAttribute("loginUser");
+            if (loginUser == null) {
+                propertySearchDao.increaseViewCnt(param);
+            }
+
+            Map<String, Object> prop = propertySearchDao.getPropertyDetail(param);
+            model.addAttribute("prop", prop);
+        }
         return "front/property/propertyDetail";
     }
 

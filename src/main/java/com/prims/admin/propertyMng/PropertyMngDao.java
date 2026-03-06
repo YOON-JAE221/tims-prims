@@ -32,4 +32,8 @@ public class PropertyMngDao {
     public int deleteProperty(Map<String, Object> paramMap) {
         return sqlSession.update("propertyMng.deleteProperty", paramMap);
     }
+
+    public int copyProperty(Map<String, Object> paramMap) {
+        return sqlSession.insert("propertyMng.copyProperty", paramMap);
+    }
 }

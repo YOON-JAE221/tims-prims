@@ -6,7 +6,7 @@
   <div class="content-header">
     <div class="container">
       <div class="row mb-2">
-        <div class="col-sm-6"><h4>${empty prop ? '매물 등록' : '매물 수정'}</h4></div>
+        <div class="col-sm-6"><h4>${empty prop ? '매물 등록' : '매물 상세'}</h4></div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
@@ -22,6 +22,18 @@
 
       <form id="propForm" enctype="multipart/form-data">
         <input type="hidden" name="propCd" value="${prop.propCd}" />
+
+        <!-- 상단 버튼 -->
+        <div style="text-align:right; margin-bottom:16px;">
+          <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+          <c:if test="${not empty prop}">
+          <button type="button" class="btn btn-bo-reset ml-2" onclick="fnDelete()">삭제</button>
+          </c:if>
+          <button type="button" class="btn btn-bo-save ml-2" onclick="fnSave()">저장</button>
+          <c:if test="${not empty prop}">
+          <button type="button" class="btn btn-bo-reset ml-2" onclick="fnCopy()">복사</button>
+          </c:if>
+        </div>
 
         <!-- 기본정보 -->
         <div class="card">
@@ -271,6 +283,14 @@
                   </select>
                 </div>
               </div>
+              <c:if test="${not empty prop}">
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label>조회수</label>
+                  <input type="text" class="form-control" value="${prop.viewCnt != null ? prop.viewCnt : 0}" readonly style="background:#f4f4f4;" />
+                </div>
+              </div>
+              </c:if>
             </div>
           </div>
         </div>
@@ -314,12 +334,22 @@
       <!-- 버튼 -->
       <div style="text-align:center; padding:40px 0 80px;">
         <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
-        <button type="button" class="btn btn-bo-save ml-3" onclick="fnSave()">${empty prop ? '등록' : '수정'}</button>
+        <c:if test="${not empty prop}">
+        <button type="button" class="btn btn-bo-reset ml-2" onclick="fnDelete()">삭제</button>
+        </c:if>
+        <button type="button" class="btn btn-bo-save ml-2" onclick="fnSave()">저장</button>
+        <c:if test="${not empty prop}">
+        <button type="button" class="btn btn-bo-reset ml-2" onclick="fnCopy()">복사</button>
+        </c:if>
       </div>
 
     </div>
   </section>
 </div>
+
+<form id="goWriteForm" action="${ctx}/propertyMng/viewPropertyWrite" method="post" style="display:none;">
+  <input type="hidden" name="propCd" id="writePropCd" />
+</form>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d&libraries=services&autoload=false"></script>
@@ -440,7 +470,7 @@
 
     var res = ajaxFormCall('${ctx}/propertyMng/saveProperty', '#propForm', false);
     if (res && res.result === 'OK') {
-      alert('${empty prop ? "등록" : "수정"}되었습니다.');
+      alert('저장되었습니다.');
       fnGoList();
     } else {
       alert('저장 실패: ' + (res && res.message ? res.message : ''));
@@ -449,5 +479,28 @@
 
   function fnGoList() {
     location.href = '${ctx}/propertyMng/viewPropertyMng';
+  }
+
+  function fnDelete() {
+    if (!confirm('삭제하시겠습니까?\n삭제된 매물은 복구할 수 없습니다.')) return;
+    var res = ajaxCall('${ctx}/propertyMng/deleteProperty', { propCd: '${prop.propCd}' }, false);
+    if (res && res.resultCnt > 0) {
+      alert('삭제되었습니다.');
+      fnGoList();
+    } else {
+      alert('삭제 실패');
+    }
+  }
+
+  function fnCopy() {
+    if (!confirm('이 매물을 복사하시겠습니까?\n매물명 뒤에 "_복사본"이 붙습니다.')) return;
+    var res = ajaxCall('${ctx}/propertyMng/copyProperty', { propCd: '${prop.propCd}' }, false);
+    if (res && res.result === 'OK') {
+      alert('복사되었습니다. 복사된 매물의 수정화면으로 이동합니다.');
+      $('#writePropCd').val(res.newPropCd);
+      $('#goWriteForm').submit();
+    } else {
+      alert('복사 실패: ' + (res && res.message ? res.message : ''));
+    }
   }
 </script>

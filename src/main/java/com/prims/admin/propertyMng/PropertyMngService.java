@@ -132,4 +132,12 @@ public class PropertyMngService {
     public int deleteProperty(Map<String, Object> paramMap) throws Exception {
         return propertyMngDao.deleteProperty(paramMap);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public String copyProperty(Map<String, Object> paramMap) throws Exception {
+        String newPropCd = Utility.getUuidPk32();
+        paramMap.put("newPropCd", newPropCd);
+        propertyMngDao.copyProperty(paramMap);
+        return newPropCd;
+    }
 }

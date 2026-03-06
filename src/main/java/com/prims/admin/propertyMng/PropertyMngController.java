@@ -110,4 +110,20 @@ public class PropertyMngController {
         }
         return result;
     }
+
+    // 매물 복사
+    @RequestMapping(value = "/copyProperty", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> copyProperty(@ParamMap Map<String, Object> paramMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            String newPropCd = propertyMngService.copyProperty(paramMap);
+            result.put("result", Constant.OK);
+            result.put("newPropCd", newPropCd);
+        } catch (Exception e) {
+            result.put("result", Constant.FAIL);
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
 }

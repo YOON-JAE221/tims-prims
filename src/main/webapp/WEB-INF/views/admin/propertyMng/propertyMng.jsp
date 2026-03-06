@@ -113,7 +113,7 @@ function initGrid() {
     columns: [
       { title: "유형", field: "propTypeNm", width: 100, hozAlign: "center", resizable: false },
       { title: "거래", field: "dealTypeNm", width: 80, hozAlign: "center", resizable: false },
-      { title: "매물명", field: "propNm", widthGrow: 3,
+      { title: "매물명", field: "propNm", widthGrow: 2,
         formatter: function(cell) {
           return '<span style="color:#1B2A4A;font-weight:600;text-decoration:underline;cursor:pointer;">' + (cell.getValue() || '') + '</span>';
         },
@@ -121,7 +121,7 @@ function initGrid() {
           fnEdit(cell.getRow().getData().propCd);
         }
       },
-      { title: "주소", field: "address", widthGrow: 3 },
+      { title: "주소", field: "address", widthGrow: 1 },
       { title: "뱃지", field: "badgeTypeNm", width: 80, hozAlign: "center", resizable: false,
         formatter: function(cell) {
           var v = cell.getRow().getData().badgeType;
@@ -137,7 +137,8 @@ function initGrid() {
             : '<span style="color:#28a745;">거래중</span>';
         }
       },
-      { title: "등록일", field: "rgtDtm", width: 100, hozAlign: "center", resizable: false },
+      { title: "등록일", field: "rgtDtm", width: 110, hozAlign: "center", resizable: false },
+      { title: "조회수", field: "viewCnt", width: 110, hozAlign: "center", resizable: false },
       { title: "삭제", width: 60, hozAlign: "center", headerSort: false, resizable: false,
         formatter: function() { return '<button class="btn btn-xs btn-bo-reset">삭제</button>'; },
         cellClick: function(e, cell) { fnDelete(cell.getRow()); }

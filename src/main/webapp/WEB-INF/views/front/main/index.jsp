@@ -17,7 +17,7 @@
 
     <div class="slide-visual">
       <c:if test="${not empty sliderProp}">
-      <div class="visual-card">
+      <div class="visual-card" style="cursor:pointer;" onclick="fnGoSliderDetail()">
         <div class="vc-header"><div class="vc-badge">${sliderProp.badgeType eq 'RECOMMEND' ? '추천 매물' : sliderProp.badgeType eq 'URGENT' ? '급매' : '추천 매물'}</div><div class="vc-type">${sliderProp.propTypeNm} &middot; ${sliderProp.dealTypeNm}</div></div>
         <div class="vc-img i1">
           <c:choose>
@@ -81,14 +81,28 @@
     <div class="slide-overlay"></div>
 
     <div class="slide-visual">
-      <div class="visual-card">
-        <div class="vc-header"><div class="vc-badge">신규 매물</div><div class="vc-type">오피스텔 · 월세</div></div>
-        <div class="vc-img i2">🏬</div>
-        <div class="vc-title">중동역 스카이뷰</div>
-        <div class="vc-loc">📍 부천시 중동로 45</div>
-        <div class="vc-price">500/60 <small>만원</small></div>
-        <div class="vc-stats"><span>🏠 12평</span><span>🚪 원룸</span><span>📐 8층</span></div>
+      <c:if test="${not empty latestProp}">
+      <div class="visual-card" style="cursor:pointer;" onclick="fnGoLatestDetail()">
+        <div class="vc-header"><div class="vc-badge" style="background:#0052A4;">인기 매물</div><div class="vc-type">${latestProp.propTypeNm} &middot; ${latestProp.dealTypeNm}</div></div>
+        <div class="vc-img i2">
+          <c:choose>
+            <c:when test="${not empty latestProp.thumbPath}"><img src="/upload/${latestProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
+            <c:otherwise>&#127980;</c:otherwise>
+          </c:choose>
+        </div>
+        <div class="vc-title">${latestProp.propNm}</div>
+        <div class="vc-loc">${latestProp.address}</div>
+        <div class="vc-price">
+          <c:choose>
+            <c:when test="${latestProp.dealType eq 'SELL'}"><fmt:formatNumber value="${latestProp.sellPrice}" pattern="#,###"/></c:when>
+            <c:when test="${latestProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${latestProp.deposit}" pattern="#,###"/></c:when>
+            <c:otherwise><fmt:formatNumber value="${latestProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${latestProp.monthlyRent}" pattern="#,###"/></c:otherwise>
+          </c:choose>
+          <small>만원</small>
+        </div>
+        <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${not empty latestProp.floorNo}"><span>${latestProp.floorNo}층</span></c:if></div>
       </div>
+      </c:if>
     </div>
 
     <div class="float-card" style="right:36%;bottom:12%;animation-delay:1s;">
@@ -121,14 +135,28 @@
     <div class="slide-overlay"></div>
 
     <div class="slide-visual">
-      <div class="visual-card">
-        <div class="vc-header"><div class="vc-badge">급매</div><div class="vc-type">상가 · 월세</div></div>
-        <div class="vc-img" style="background:linear-gradient(135deg,rgba(58,122,106,0.4),rgba(91,181,160,0.25));">🏪</div>
-        <div class="vc-title">신중동역 로데오 상가</div>
-        <div class="vc-loc">📍 부천시 부천로 98</div>
-        <div class="vc-price">3,000/180 <small>만원</small></div>
-        <div class="vc-stats"><span>🏠 18평</span><span>🚪 1층</span><span>📐 코너</span></div>
+      <c:if test="${not empty urgentProp}">
+      <div class="visual-card" style="cursor:pointer;" onclick="fnGoUrgentDetail()">
+        <div class="vc-header"><div class="vc-badge" style="background:#dc3545;">&#44553;&#47588;</div><div class="vc-type">${urgentProp.propTypeNm} &middot; ${urgentProp.dealTypeNm}</div></div>
+        <div class="vc-img" style="background:linear-gradient(135deg,rgba(58,122,106,0.4),rgba(91,181,160,0.25));">
+          <c:choose>
+            <c:when test="${not empty urgentProp.thumbPath}"><img src="/upload/${urgentProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
+            <c:otherwise>&#127978;</c:otherwise>
+          </c:choose>
+        </div>
+        <div class="vc-title">${urgentProp.propNm}</div>
+        <div class="vc-loc">${urgentProp.address}</div>
+        <div class="vc-price">
+          <c:choose>
+            <c:when test="${urgentProp.dealType eq 'SELL'}"><fmt:formatNumber value="${urgentProp.sellPrice}" pattern="#,###"/></c:when>
+            <c:when test="${urgentProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${urgentProp.deposit}" pattern="#,###"/></c:when>
+            <c:otherwise><fmt:formatNumber value="${urgentProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${urgentProp.monthlyRent}" pattern="#,###"/></c:otherwise>
+          </c:choose>
+          <small>만원</small>
+        </div>
+        <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${not empty urgentProp.floorNo}"><span>${urgentProp.floorNo}층</span></c:if></div>
       </div>
+      </c:if>
     </div>
 
     <div class="float-card" style="right:30%;top:18%;animation-delay:0.5s;">
@@ -173,14 +201,14 @@
       <h2 class="section-title">지금 주목할 매물</h2>
       <p class="section-desc">프리머스 부동산이 엄선한 최신 매물을 확인하세요.</p>
     </div>
-    <a href="${ctx}/property/viewPropertyList" class="view-all">전체보기 →</a>
+    <a href="javascript:fnGoPropertyType('all')" class="view-all">전체보기 &rarr;</a>
   </div>
   <div class="property-grid">
     <c:if test="${empty featuredList}">
       <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--gray-400);">추천 매물이 없습니다.</div>
     </c:if>
     <c:forEach var="fp" items="${featuredList}" varStatus="st">
-      <div class="property-card reveal ${st.index == 1 ? 'reveal-delay-1' : ''} ${st.index == 2 ? 'reveal-delay-2' : ''}">
+      <div class="property-card reveal ${st.index == 1 ? 'reveal-delay-1' : ''} ${st.index == 2 ? 'reveal-delay-2' : ''}" style="cursor:pointer;" onclick="fnGoFeaturedDetail('${fp.propType}','${fp.propCd}')">
         <div class="card-img">
           <c:choose>
             <c:when test="${not empty fp.thumbPath}">
@@ -200,7 +228,13 @@
               </div>
             </c:otherwise>
           </c:choose>
-          <div class="card-badge">${fp.badgeType eq 'RECOMMEND' ? '추천' : fp.badgeType eq 'URGENT' ? '급매' : '신규'}</div>
+          <div class="card-badge">
+            <c:choose>
+              <c:when test="${fp.badgeType eq 'RECOMMEND'}">추천</c:when>
+              <c:when test="${fp.badgeType eq 'URGENT'}">급매</c:when>
+              <c:otherwise>신규</c:otherwise>
+            </c:choose>
+          </div>
         </div>
         <div class="card-body">
           <div class="card-type">${fp.propTypeNm}</div>
@@ -260,7 +294,48 @@
 </section>
 
 <!-- 슬라이더 JS -->
+<form id="sliderDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
+  <input type="hidden" name="type" value="${sliderProp.propType}" />
+  <input type="hidden" name="id" value="${sliderProp.propCd}" />
+</form>
+<form id="latestDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
+  <input type="hidden" name="type" value="${latestProp.propType}" />
+  <input type="hidden" name="id" value="${latestProp.propCd}" />
+</form>
+<form id="urgentDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
+  <input type="hidden" name="type" value="${urgentProp.propType}" />
+  <input type="hidden" name="id" value="${urgentProp.propCd}" />
+</form>
+<form id="featuredDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
+  <input type="hidden" name="type" id="featuredType" />
+  <input type="hidden" name="id" id="featuredId" />
+</form>
+
 <script>
+  function fnGoSliderDetail() {
+    <c:if test="${not empty sliderProp}">
+    document.getElementById('sliderDetailForm').submit();
+    </c:if>
+  }
+
+  function fnGoLatestDetail() {
+    <c:if test="${not empty latestProp}">
+    document.getElementById('latestDetailForm').submit();
+    </c:if>
+  }
+
+  function fnGoUrgentDetail() {
+    <c:if test="${not empty urgentProp}">
+    document.getElementById('urgentDetailForm').submit();
+    </c:if>
+  }
+
+  function fnGoFeaturedDetail(propType, propCd) {
+    document.getElementById('featuredType').value = propType;
+    document.getElementById('featuredId').value = propCd;
+    document.getElementById('featuredDetailForm').submit();
+  }
+
   var currentSlide = 0;
   var slides = document.querySelectorAll('.hero-slide');
   var dots = document.querySelectorAll('.slider-dot');
