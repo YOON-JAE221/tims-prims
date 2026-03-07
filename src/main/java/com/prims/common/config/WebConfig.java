@@ -65,6 +65,21 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 접속코드 인터셉터 (FO 전체)
+        registry.addInterceptor(accessCodeInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                    "/accessCode",
+                    "/verifyAccessCode",
+                    "/login/**",
+                    "/admin/**",
+                    "/*Mng/**",
+                    "/resources/**",
+                    "/upload/**",
+                    "/file/**",
+                    "/error/**"
+                );
+
         // 로그인 체크 인터셉터 (기존 spring-config.xml 에서 이관)
         registry.addInterceptor(new LoginCheckInterceptor())
                 .addPathPatterns("/*Mng/**", "/admin/**", "/bbs/*Write*", "/bbs/*save*")
