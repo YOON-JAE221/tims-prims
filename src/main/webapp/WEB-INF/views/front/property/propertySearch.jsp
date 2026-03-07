@@ -188,11 +188,13 @@
   background: var(--orange); color: white;
 }
 
+/* 매물검색 페이지: 풋터 숨김 (전체화면 앱 레이아웃) */
+.ps-wrap ~ .primus-footer { display: none; }
+
 @media (max-width: 768px) {
   .ps-wrap { flex-direction: column; height: calc(100vh - 60px); margin-top: 60px; }
   .ps-map { height: 45vh; flex-shrink: 0; }
   .ps-panel { width: 100%; flex: 1; min-height: 0; }
-  .primus-footer { display: none; }
 }
 </style>
 
@@ -500,6 +502,6 @@ function fnBadgeHtml(d) {
   <input type="hidden" name="id" id="searchDetailId" />
 </form>
 
-<%@ include file="/WEB-INF/views/front/common/footer.jsp" %>
+<script>document.body.style.overflow = 'hidden';</script>
 </body>
 </html>
