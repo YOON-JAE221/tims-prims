@@ -92,7 +92,10 @@ public class BbsController {
 
 	// ===== 문의게시판 글쓰기 =====
     @RequestMapping(value = "/viewBbsWriteQna", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewBbsWriteQna(@RequestParam(value="brdCd") String brdCd, @RequestParam(value="pstCd", required=false) String pstCd, Model model) {
+    public String viewBbsWriteQna(@RequestParam(value="brdCd") String brdCd,
+                                   @RequestParam(value="pstCd", required=false) String pstCd,
+                                   @RequestParam(value="pstNm", required=false) String pstNm,
+                                   Model model) {
 
         Map<String, Object> paramMap = new HashMap<>();
 
@@ -121,6 +124,11 @@ public class BbsController {
         model.addAttribute("brdMenuNm", "고객지원");
         model.addAttribute("brdCd", brdCd);
         model.addAttribute("pageNo", "1");
+
+        // 매물 문의 시 제목 자동 설정
+        if (pstNm != null && !pstNm.isEmpty() && pstCd == null) {
+            model.addAttribute("initPstNm", pstNm);
+        }
 
         return "front/bbs/bbsQna/bbsWriteQna";
     }

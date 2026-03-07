@@ -128,13 +128,11 @@ public class NotificationService {
         try {
             String writerNm = nvl(paramMap.get("rgtUsrNm"));
             String phone    = nvl(paramMap.get("rgtPhone"));
-            String email    = nvl(paramMap.get("rgtEmail"));
             String content  = nvl(paramMap.get("pstCnts"));
 
             if (phone.isEmpty()) phone = buildPhone(paramMap);
-            if (email.isEmpty()) email = buildEmail(paramMap);
 
-            String html = buildQnaEmailHtml(writerNm, phone, email, title, content);
+            String html = buildQnaEmailHtml(writerNm, phone, title, content);
 
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
@@ -374,11 +372,10 @@ public class NotificationService {
         return sb.toString();
     }
 
-    private String buildQnaEmailHtml(String name, String phone, String email, String title, String content) {
+    private String buildQnaEmailHtml(String name, String phone, String title, String content) {
 
         String safeName  = escapeHtml(name);
         String safePhone = escapeHtml(phone);
-        String safeEmail = escapeHtml(email);
         String safeTitle = escapeHtml(title);
 
         String safeContent = content
@@ -401,7 +398,6 @@ public class NotificationService {
         sb.append("<table style='width:100%;border-collapse:collapse;margin-bottom:24px;'>");
         sb.append(infoRow("성명", safeName));
         sb.append(infoRow("연락처", safePhone));
-        sb.append(infoRow("이메일", safeEmail.isEmpty() ? "-" : safeEmail));
         sb.append(infoRow("제목", safeTitle));
         sb.append("</table>");
 

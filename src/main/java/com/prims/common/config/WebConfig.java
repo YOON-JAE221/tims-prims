@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.prims.common.interceptor.LoginCheckInterceptor;
+import com.prims.common.interceptor.AccessCodeInterceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private AppProperties appProperties;
+
+    @Autowired
+    private AccessCodeInterceptor accessCodeInterceptor;
 
     /** JSP 뷰 리졸버 명시 등록 */
     @Bean

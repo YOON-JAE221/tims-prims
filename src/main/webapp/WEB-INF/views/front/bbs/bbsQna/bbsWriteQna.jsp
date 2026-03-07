@@ -18,7 +18,6 @@
     <form id="bbsWriteForm" enctype="multipart/form-data">
       <input type="hidden" name="brdCd" value="${brdCd}" />
       <input type="hidden" name="pstCd" value="${pst.pstCd}" />
-      <input type="hidden" name="rgtEmail" id="rgtEmail" />
       <input type="hidden" name="rgtPhone" id="rgtPhone" />
 
       <table class="qna-form-table">
@@ -44,26 +43,8 @@
             </td>
           </tr>
           <tr>
-            <th>이메일</th>
-            <td>
-              <c:if test="${not empty pst.rgtEmail}"><c:set var="emailParts" value="${fn:split(pst.rgtEmail, '@')}" /></c:if>
-              <div class="qna-inline">
-                <input type="text" name="emailId" id="emailId" class="qna-input" style="width:150px;" value="${not empty emailParts ? emailParts[0] : ''}" maxlength="50" />
-                <span class="sep">@</span>
-                <input type="text" name="emailDomain" id="emailDomain" class="qna-input" style="width:150px;" value="${not empty emailParts ? emailParts[1] : ''}" maxlength="50" />
-                <select name="emailSelect" id="emailSelect" class="qna-select" onchange="fnSelectEmailDomain(this)">
-                  <option value="">직접입력</option>
-                  <option value="naver.com">naver.com</option>
-                  <option value="gmail.com">gmail.com</option>
-                  <option value="daum.net">daum.net</option>
-                  <option value="hanmail.net">hanmail.net</option>
-                </select>
-              </div>
-            </td>
-          </tr>
-          <tr>
             <th>제목 <span class="qna-required">*</span></th>
-            <td><input type="text" name="pstNm" id="pstNm" class="qna-input" placeholder="제목을 입력해주세요" value="${pst.pstNm}" maxlength="200" /></td>
+            <td><input type="text" name="pstNm" id="pstNm" class="qna-input" placeholder="제목을 입력해주세요" value="${not empty pst.pstNm ? pst.pstNm : initPstNm}" maxlength="200" /></td>
           </tr>
           <c:if test="${empty pst.pstCd}">
           <tr>
@@ -113,11 +94,11 @@
       <div style="max-height:160px; overflow-y:auto; padding:16px; background:white; border:1px solid var(--gray-200); border-radius:8px; font-size:13px; color:var(--gray-500); line-height:1.8; white-space:pre-line; margin-bottom:14px;">프리머스 부동산(이하 '회사')은 개인정보보호법에 따라 이용자의 개인정보 보호 및 권익을 보호하기 위해 다음과 같이 개인정보를 수집·이용합니다.
 
 1. 수집 목적 : 온라인 문의 접수 및 답변 처리
-2. 수집 항목 : 필수(성명, 연락처) / 선택(이메일)
+2. 수집 항목 : 성명, 연락처
 3. 보유 기간 : 수집일로부터 3년
 4. 보호책임자 : 박세환 (032-327-1277)
 
-동의를 거부할 권리가 있으며, 필수항목 동의 거부 시 문의 접수가 제한됩니다.</div>
+동의를 거부할 권리가 있으며, 동의 거부 시 문의 접수가 제한됩니다.</div>
       <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:14px; color:var(--gray-700); font-weight:600;">
         <input type="checkbox" id="privacyAgree" style="width:18px; height:18px; accent-color:var(--orange);" />
         개인정보 수집 및 이용에 동의합니다.
@@ -139,7 +120,6 @@
 </div>
 
 <script>
-  function fnSelectEmailDomain(sel) { if (sel.value) $('#emailDomain').val(sel.value); }
   function fnAddFile() { $('#fileWrap').append('<div class="qna-file-row"><input type="file" name="atchFile" style="font-size:13px;" /></div>'); }
   function fnGoList() { $('#goListForm').submit(); }
 
@@ -166,8 +146,6 @@
     var p2 = $('#phone2').val().trim(), p3 = $('#phone3').val().trim();
     if (!p2 || !p3) { alert('연락처를 입력해주세요.'); $('#phone2').focus(); return; }
     $('#rgtPhone').val($('#phone1').val() + '-' + p2 + '-' + p3);
-    var eId = $('#emailId').val().trim(), eDm = $('#emailDomain').val().trim();
-    if (eId || eDm) { if (!eId || !eDm) { alert('이메일을 정확히 입력해주세요.'); return; } $('#rgtEmail').val(eId + '@' + eDm); }
     if (!$('#pstNm').val().trim()) { alert('제목을 입력해주세요.'); $('#pstNm').focus(); return; }
     if ($('#secretPwd').length && !$('#secretPwd').val().trim()) { alert('비밀번호를 입력해주세요.'); $('#secretPwd').focus(); return; }
     if (!$('#pstCnts').val().trim()) { alert('문의사항을 입력해주세요.'); $('#pstCnts').focus(); return; }

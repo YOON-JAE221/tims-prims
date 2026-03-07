@@ -101,29 +101,6 @@ public class BbsService{
 	    // 지연 삭제 파일 처리
 	    processDeleteFiles(paramMap);
 
-	    // 문의게시판 답변 등록 시 문의자에게 알림 이메일 발송
-	    String brdCd = String.valueOf(paramMap.getOrDefault("brdCd", ""));
-	    String pstLvlStr = String.valueOf(paramMap.getOrDefault("pstLvl", "0"));
-	    int pstLvlInt = 0;
-	    try { pstLvlInt = Integer.parseInt(pstLvlStr); } catch (NumberFormatException ignored) {}
-
-	    if (isNew && cnt > 0 && Constant.BRD_CD_QNA.equals(brdCd) && pstLvlInt > 0) {
-	        try {
-	            // 원글 조회 (문의자 이메일 확인용)
-	            Map<String, Object> parentParam = new HashMap<>();
-	            parentParam.put("brdCd", brdCd);
-	            parentParam.put("pstCd", paramMap.get("rotPstCd"));
-	            Map<String, Object> parentPst = bbsDao.getSelectBbsPstDetail(parentParam);
-
-	            if (parentPst != null) {
-	                String replyContent = String.valueOf(paramMap.getOrDefault("pstCnts", ""));
-	                notificationService.sendQnaReplyNotification(parentPst, replyContent);
-	            }
-	        } catch (Exception e) {
-	            // 메일 실패해도 답변 등록은 정상 처리
-	        }
-	    }
-
 	    return cnt;
 	}
 

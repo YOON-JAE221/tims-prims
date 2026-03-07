@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sysConfig">
+
+    <!-- 설정값 조회 -->
+    <select id="getConfigValue" parameterType="string" resultType="string">
+        SELECT CONFIG_VALUE
+          FROM TB_SYS_CONFIG
+         WHERE CONFIG_KEY = #{configKey}
+    </select>
+
+    <!-- 설정값 저장 (UPSERT) -->
+    <update id="saveConfigValue" parameterType="map">
+        INSERT INTO TB_SYS_CONFIG (CONFIG_KEY, CONFIG_VALUE, CONFIG_DESC, UPD_DTM)
+        VALUES (#{configKey}, #{configValue}, #{configDesc}, NOW())
+        ON DUPLICATE KEY UPDATE
+            CONFIG_VALUE = #{configValue},
+            UPD_DTM = NOW()
+    </update>
+
+</mapper>
