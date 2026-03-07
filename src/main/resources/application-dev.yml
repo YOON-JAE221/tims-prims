@@ -1,5 +1,5 @@
 # ===========================================
-# DEV 환경
+# DEV 환경 (테스트 배포 - DB는 local과 동일)
 # ===========================================
 server:
   port: 8080
@@ -7,10 +7,20 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.mwkim-dev.com:3306/dbmwkim?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
-    username: mwkim
+    url: jdbc:mysql://my8003.gabiadb.com:3306/kmwown?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
+    username: minuk3466
     password: thsqjatndprps12
 
 upload:
   base:
     dir: /web/upload/
+
+logging:
+  level:
+    com.prims: INFO
+    org.mybatis: WARN
+    propertyMng: INFO
+    propertySearch: INFO
+    bbs: INFO
+    bbsComMng: INFO
+    org.springframework.jdbc.core: WARN
