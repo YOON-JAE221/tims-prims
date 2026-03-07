@@ -136,6 +136,27 @@
 .map-price-label.sold { background: var(--gray-400); }
 .map-price-label.sold::after { border-top-color: var(--gray-400); }
 
+/* 클러스터 (줌 아웃 시 개수 표시) */
+.map-cluster {
+  background: var(--orange); color: white;
+  border-radius: 24px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  box-shadow: 0 3px 12px rgba(232,119,34,0.4);
+  white-space: nowrap; transition: transform 0.15s;
+  text-align: center; line-height: 1.3;
+}
+.map-cluster:hover { transform: scale(1.08); }
+.map-cluster.sm { padding: 8px 14px; font-size: 12px; font-weight: 700; }
+.map-cluster.md { padding: 10px 16px; font-size: 13px; font-weight: 700; }
+.map-cluster.lg { padding: 12px 18px; font-size: 14px; font-weight: 800; }
+.map-cluster .cl-total {
+  font-size: 20px; font-weight: 800; line-height: 1;
+}
+.map-cluster .cl-detail {
+  font-size: 10px; font-weight: 500; opacity: 0.9;
+  margin-top: 2px;
+}
+
 /* 선택된 마커 */
 .map-price-label.active {
   background: var(--orange) !important;
@@ -270,6 +291,92 @@ function fnRenderMarkers(list) {
   for (var i = 0; i < overlays.length; i++) { overlays[i].setMap(null); }
   overlays = [];
 
+  var level = map.getLevel();
+
+  if (level >= 5) {
+    // ===== 줌 아웃: 클러스터 (유형별 개수) =====
+    fnRenderCluster(list);
+  } else {
+    // ===== 줌 인: 개별 가격 마커 =====
+    fnRenderPriceMarkers(list);
+  }
+}
+
+/* 줌 아웃: 근접 매물 클러스터링 */
+function fnRenderCluster(list) {
+  var gridSize = 0.005; // 클러스터 격자 크기 (약 500m)
+  if (map.getLevel() >= 7) gridSize = 0.015;
+  else if (map.getLevel() >= 6) gridSize = 0.01;
+
+  var clusters = {};
+
+  for (var i = 0; i < list.length; i++) {
+    var d = list[i];
+    if (!d.lat || !d.lng) continue;
+
+    var gx = Math.floor(d.lat / gridSize);
+    var gy = Math.floor(d.lng / gridSize);
+    var key = gx + '_' + gy;
+
+    if (!clusters[key]) {
+      clusters[key] = { lat: 0, lng: 0, count: 0, types: {}, items: [] };
+    }
+    clusters[key].lat += parseFloat(d.lat);
+    clusters[key].lng += parseFloat(d.lng);
+    clusters[key].count++;
+    clusters[key].items.push(d);
+
+    var tNm = d.propTypeNm || '기타';
+    clusters[key].types[tNm] = (clusters[key].types[tNm] || 0) + 1;
+  }
+
+  for (var key in clusters) {
+    var c = clusters[key];
+    var avgLat = c.lat / c.count;
+    var avgLng = c.lng / c.count;
+
+    // 유형별 텍스트 (최대 2개 + 나머지)
+    var typeArr = [];
+    for (var t in c.types) typeArr.push({ nm: t, cnt: c.types[t] });
+    typeArr.sort(function(a, b) { return b.cnt - a.cnt; });
+
+    var label = '';
+    if (typeArr.length === 1) {
+      label = typeArr[0].nm + ' ' + typeArr[0].cnt;
+    } else {
+      label = '<span class="cl-total">' + c.count + '</span>';
+      var detail = '';
+      for (var j = 0; j < Math.min(typeArr.length, 3); j++) {
+        detail += typeArr[j].nm + ' ' + typeArr[j].cnt;
+        if (j < Math.min(typeArr.length, 3) - 1) detail += ' · ';
+      }
+      label += '<span class="cl-detail">' + detail + '</span>';
+    }
+
+    var size = c.count >= 10 ? 'lg' : (c.count >= 5 ? 'md' : 'sm');
+    var content = '<div class="map-cluster ' + size + '" '
+                + 'onclick="fnClusterZoom(' + avgLat + ',' + avgLng + ')">'
+                + label + '</div>';
+
+    var overlay = new kakao.maps.CustomOverlay({
+      position: new kakao.maps.LatLng(avgLat, avgLng),
+      content: content,
+      yAnchor: 0.5
+    });
+    overlay.setMap(map);
+    overlays.push(overlay);
+  }
+}
+
+/* 클러스터 클릭 → 줌인 */
+function fnClusterZoom(lat, lng) {
+  skipReloadUntil = Date.now() + 800;
+  map.setLevel(map.getLevel() - 2);
+  map.panTo(new kakao.maps.LatLng(lat, lng));
+}
+
+/* 줌 인: 개별 가격 마커 */
+function fnRenderPriceMarkers(list) {
   for (var i = 0; i < list.length; i++) {
     var d = list[i];
     if (!d.lat || !d.lng) continue;
