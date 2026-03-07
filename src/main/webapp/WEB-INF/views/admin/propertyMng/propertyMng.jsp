@@ -10,6 +10,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
+            <li class="breadcrumb-item"><a href="${ctx}/property/viewPropertySearch" target="_blank">매물관리</a></li>
           </ol>
         </div>
       </div>
@@ -101,6 +102,11 @@ var pageSize = 20;
 var table;
 
 $(function() {
+  // FO에서 매물유형 가지고 넘어온 경우 자동 세팅
+  var initType = '${initPropType}';
+  if (initType) {
+    $('#srchPropType').val(initType);
+  }
   initGrid();
 });
 

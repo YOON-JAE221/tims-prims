@@ -207,7 +207,7 @@
              , FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE
              , PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE
              , ADDRESS, ADDRESS_DTL, LAT, LNG
-             , 'NONE', 'N', NULL, 'N', 0
+             , BADGE_TYPE, 'N', NULL, 'N', 0
              , PROP_DESC, NULL
              , 'Y', 'N'
              , #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()

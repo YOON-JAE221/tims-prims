@@ -30,7 +30,11 @@ public class PropertyMngController {
 
     // 매물 목록 화면
     @RequestMapping(value = "/viewPropertyMng", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewPropertyMng(Model model) {
+    public String viewPropertyMng(@ParamMap Map<String, Object> paramMap, Model model) {
+        String propType = (String) paramMap.get("propType");
+        if (propType != null && !propType.isEmpty()) {
+            model.addAttribute("initPropType", propType);
+        }
         return "admin/propertyMng/propertyMng";
     }
 

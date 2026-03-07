@@ -32,13 +32,18 @@
         </select>
         <input type="text" name="keyword" value="${keyword}" placeholder="매물명 또는 주소 검색" />
         <button type="submit" class="prop-filter-btn">검색</button>
-        <button type="button" class="prop-filter-reset" onclick="location.href='${ctx}/property/viewPropertyList?type=${type}'">초기화</button>
+        <button type="button" class="prop-filter-reset" onclick="fnReset()">초기화</button>
       </div>
     </form>
 
     <!-- 결과 건수 -->
-    <div class="prop-result-info">
-      <div class="prop-result-cnt">총 <strong>${totalCnt}</strong>건의 매물</div>
+    <div class="board-header">
+      <p class="board-total">총 <strong>${totalCnt}</strong>건의 매물</p>
+      <c:if test="${not empty sessionScope.loginUser}">
+        <div class="board-admin-btns">
+          <button type="button" class="btn-admin" onclick="fnGoAdmin()">⚙ 관리</button>
+        </div>
+      </c:if>
     </div>
 
     <!-- 매물 카드 그리드 -->
@@ -140,16 +145,34 @@
     $('#pageNoInput').val(1);
     $('#filterForm').submit();
   }
+  function fnReset() {
+    $('#filterForm').find('select[name="dealType"]').val('');
+    $('#filterForm').find('input[name="keyword"]').val('');
+    $('#pageNoInput').val(1);
+    $('#filterForm').submit();
+  }
   function fnGoDetail(propType, propCd) {
     $('#detailType').val(propType);
     $('#detailId').val(propCd);
     $('#goDetailForm').submit();
+  }
+  function fnGoAdmin() {
+    // 매물유형 매핑 (FO type → BO propType)
+    var typeMap = { 'apt':'APT', 'officetel':'OFFICETEL', 'villa':'VILLA', 'oneroom':'ONEROOM', 'shop':'SHOP', 'office':'OFFICE' };
+    var foType = '${type}';
+    var boType = typeMap[foType] || 'ALL';
+    $('#adminPropType').val(boType);
+    $('#goAdminForm').submit();
   }
 </script>
 
 <form id="goDetailForm" action="${ctx}/property/viewPropertyDetail" method="post">
   <input type="hidden" name="type" id="detailType" />
   <input type="hidden" name="id" id="detailId" />
+</form>
+
+<form id="goAdminForm" action="${ctx}/propertyMng/viewPropertyMng" method="post" target="_blank">
+  <input type="hidden" name="propType" id="adminPropType" />
 </form>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>

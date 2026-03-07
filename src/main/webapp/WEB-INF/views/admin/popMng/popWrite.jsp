@@ -95,11 +95,12 @@
                   <td>
                     <div class="pop-size-group">
                       <span>가로</span>
-                      <input type="text" name="popWidth" id="popWidth" class="form-control form-control-sm" value="${detail.popWidth}" maxlength="10" />
+                      <input type="text" name="popWidth" id="popWidth" class="form-control form-control-sm" value="${not empty detail.popWidth ? detail.popWidth : '520'}" maxlength="10" />
                       <span>×</span>
                       <span>세로</span>
                       <input type="text" name="popHgt" id="popHgt" class="form-control form-control-sm" value="${detail.popHgt}" maxlength="10" />
                     </div>
+                    <small class="text-muted">* 세로 미입력 시 내용에 맞게 자동 조절됩니다. 모바일에서는 화면에 자동 맞춤됩니다.</small>
                   </td>
                 </tr>
                 <!-- 팝업 위치 -->
@@ -112,6 +113,7 @@
                       <span>Y</span>
                       <input type="text" name="popYLoc" id="popYLoc" class="form-control form-control-sm" value="${detail.popYLoc}" maxlength="10" />
                     </div>
+                    <small class="text-muted">* 미입력 시 화면 중앙에 표시됩니다.</small>
                   </td>
                 </tr>
                 <!-- 시스템구분 (사용자 고정) -->
@@ -214,18 +216,34 @@ function fnDelete() {
   }
 }
 
-/* 미리보기 */
+/* 미리보기 (모달) */
 function fnPreview() {
-  var w = parseInt($('#popWidth').val()) || 500;
-  var h = parseInt($('#popHgt').val()) || 400;
-  var x = parseInt($('#popXLoc').val()) || 100;
-  var y = parseInt($('#popYLoc').val()) || 100;
+  var w = parseInt($('#popWidth').val()) || 520;
+  var h = parseInt($('#popHgt').val()) || 0;
+  var x = parseInt($('#popXLoc').val()) || 0;
+  var y = parseInt($('#popYLoc').val()) || 0;
   var html = snEditor.getData();
   var title = $('#popNm').val() || '팝업 미리보기';
 
-  var popup = window.open('', '_blank', 'width=' + w + ',height=' + h + ',left=' + x + ',top=' + y + ',scrollbars=yes');
-  popup.document.write(fnBuildPopupHtml(title, html));
-  popup.document.close();
+  $('#previewModal').remove();
+
+  var overlayAlign = (x > 0 || y > 0) ? 'justify-content:flex-start;align-items:flex-start;' : 'justify-content:center;align-items:center;';
+  var modalMargin = (x > 0 || y > 0) ? 'margin-left:' + x + 'px;margin-top:' + y + 'px;' : '';
+  var heightStyle = h > 0 ? 'height:' + h + 'px;' : '';
+
+  var modal = '<div id="previewModal" style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);display:flex;padding:20px;' + overlayAlign + '">'
+    + '<div style="background:#fff;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.2);width:' + w + 'px;max-width:100%;' + heightStyle + 'max-height:90vh;display:flex;flex-direction:column;overflow:hidden;' + modalMargin + '">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #eee;flex-shrink:0;">'
+    + '<span style="font-size:16px;font-weight:700;color:#1a2332;">' + escapeHtml(title) + '</span>'
+    + '<button onclick="$(\'#previewModal\').remove()" style="background:none;border:none;font-size:24px;color:#999;cursor:pointer;">&times;</button>'
+    + '</div>'
+    + '<div style="flex:1;overflow-y:auto;padding:24px;font-size:14px;color:#444;line-height:1.7;">' + html + '</div>'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-top:1px solid #eee;background:#fafafa;flex-shrink:0;">'
+    + '<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;"><input type="checkbox" style="width:16px;height:16px;" /><span>오늘 하루 보지 않기</span></label>'
+    + '<button onclick="$(\'#previewModal\').remove()" style="padding:8px 24px;font-size:13px;font-weight:600;color:#fff;background:#1a2332;border:none;border-radius:8px;cursor:pointer;">닫기</button>'
+    + '</div></div></div>';
+  $('body').append(modal);
+  $('#previewModal').on('click', function(e) { if (e.target === this) $(this).remove(); });
 }
 
 /* 목록 */
@@ -233,27 +251,4 @@ function fnGoList() {
   $('#goListForm').submit();
 }
 
-/* 팝업 미리보기 공통 HTML */
-function fnBuildPopupHtml(title, content) {
-  return '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + title + '</title>'
-    + '<style>'
-    + '* { margin:0; padding:0; box-sizing:border-box; }'
-    + 'html, body { height:100%; font-family:"Pretendard","Noto Sans KR","맑은 고딕",sans-serif; }'
-    + 'body { display:flex; flex-direction:column; background:#f4f5f7; }'
-    + '.pop-body { flex:1; overflow-y:auto; padding:28px 24px 20px; }'
-    + '.pop-body img { max-width:100%; height:auto; }'
-    + '.pop-footer { display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:#fff; border-top:1px solid #e0e0e0; font-size:13px; color:#666; }'
-    + '.pop-footer label { cursor:pointer; display:flex; align-items:center; gap:6px; }'
-    + '.pop-footer input[type=checkbox] { width:15px; height:15px; accent-color:#555; }'
-    + '.pop-close { padding:6px 20px; font-size:13px; font-weight:500; color:#fff; background:#333; border:none; border-radius:4px; cursor:pointer; }'
-    + '.pop-close:hover { background:#555; }'
-    + '</style></head>'
-    + '<body>'
-    + '<div class="pop-body">' + content + '</div>'
-    + '<div class="pop-footer">'
-    + '  <label><input type="checkbox" /> 오늘 하루 보지 않기</label>'
-    + '  <button class="pop-close" onclick="window.close()">닫기</button>'
-    + '</div>'
-    + '</body></html>';
-}
 </script>

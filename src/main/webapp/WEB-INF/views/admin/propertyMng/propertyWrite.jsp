@@ -11,6 +11,7 @@
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
             <li class="breadcrumb-item"><a href="${ctx}/propertyMng/viewPropertyMng">매물목록</a></li>
+            <li class="breadcrumb-item"><a href="${ctx}/property/viewPropertySearch" target="_blank">매물관리</a></li>
           </ol>
         </div>
       </div>

@@ -254,7 +254,7 @@ function fnRenderList(list) {
     if (d.floorNo) html += '<span>📐 ' + d.floorNo + '층</span>';
     html += '  </div>';
     html += '  <div class="ps-item-bottom">';
-    html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); location.href=\'' + ctx + '/property/viewPropertyDetail?id=' + d.propCd + '\'">매물 보러가기 →</button>';
+    html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
     html += '  </div>';
     html += '</div>';
   }
@@ -370,6 +370,11 @@ function fnFormatPriceShort(v) {
   return Number(v).toLocaleString();
 }
 
+function fnGoDetail(propCd) {
+  $('#searchDetailId').val(propCd);
+  $('#searchDetailForm').submit();
+}
+
 function fnBadgeHtml(d) {
   if (d.soldYn === 'Y') return '<span class="ps-item-badge sold">거래완료</span>';
   if (d.badgeType === 'URGENT') return '<span class="ps-item-badge urgent">급매</span>';
@@ -382,6 +387,10 @@ function fnBadgeHtml(d) {
   return '';
 }
 </script>
+
+<form id="searchDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
+  <input type="hidden" name="id" id="searchDetailId" />
+</form>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>
 </body>

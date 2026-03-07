@@ -63,7 +63,7 @@
         <p>아파트, 오피스텔, 상가, 사무실까지<br>부천 지역 전문 공인중개사가 함께합니다.</p>
         <div class="slide-actions">
           <a href="${ctx}/property/viewPropertyList" class="btn-primary-primus">매물 둘러보기</a>
-          <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="btn-outline-hero">상담 신청</a>
+          <a href="javascript:fnGoConsult()" class="btn-outline-hero">상담 신청</a>
           <div class="slide-phone"><div class="slide-phone-icon">📞</div>032-327-1277</div>
         </div>
       </div>
@@ -360,6 +360,293 @@
     sliderTimer = setInterval(function() { slideMove(1); }, 5000);
   }
   resetSliderTimer();
+</script>
+
+<!-- ===== 모달 팝업 ===== -->
+<c:if test="${not empty popupList}">
+<c:forEach var="pop" items="${popupList}" varStatus="st">
+<div class="primus-popup-overlay" data-pop-cd="${pop.popCd}" style="display:none;"
+     data-x="${pop.popXLoc}" data-y="${pop.popYLoc}">
+  <div class="primus-popup-modal"
+       style="width:${not empty pop.popWidth ? pop.popWidth : 520}px;
+              <c:if test="${not empty pop.popHgt && pop.popHgt > 0}">height:${pop.popHgt}px;</c:if>
+              max-height:90vh;">
+    <div class="primus-popup-header">
+      <span class="primus-popup-title">${pop.popNm}</span>
+      <button type="button" class="primus-popup-close" onclick="fnClosePopup('${pop.popCd}')">&times;</button>
+    </div>
+    <div class="primus-popup-body">${pop.popCnts}</div>
+    <div class="primus-popup-footer">
+      <label class="primus-popup-today">
+        <input type="checkbox" onchange="fnTodayHide('${pop.popCd}', this.checked)" />
+        <span>오늘 하루 보지 않기</span>
+      </label>
+      <button type="button" class="primus-popup-close-btn" onclick="fnClosePopup('${pop.popCd}')">닫기</button>
+    </div>
+  </div>
+</div>
+</c:forEach>
+</c:if>
+
+<style>
+.primus-popup-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  animation: popOverlayIn 0.25s ease;
+}
+@keyframes popOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+.primus-popup-modal {
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column;
+  overflow: hidden; max-width: 100%;
+  animation: popModalIn 0.3s ease;
+}
+@keyframes popModalIn { from { opacity: 0; transform: translateY(24px) scale(0.97); } to { opacity: 1; transform: none; } }
+
+.primus-popup-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 24px; border-bottom: 1px solid #eee;
+  flex-shrink: 0;
+  cursor: grab; user-select: none;
+}
+.primus-popup-header:active { cursor: grabbing; }
+.primus-popup-header .drag-hint {
+  font-size: 11px; color: #ccc; margin-right: 8px;
+}
+.primus-popup-title {
+  font-size: 16px; font-weight: 700; color: #1a2332;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.primus-popup-close {
+  background: none; border: none; font-size: 24px; color: #999;
+  cursor: pointer; line-height: 1; padding: 0 2px; flex-shrink: 0;
+}
+.primus-popup-close:hover { color: #333; }
+
+.primus-popup-body {
+  flex: 1; overflow-y: auto; padding: 24px;
+  font-size: 14px; color: #444; line-height: 1.7;
+  max-height: 60vh;
+}
+.primus-popup-body img { max-width: 100%; height: auto; border-radius: 8px; }
+
+.primus-popup-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 24px; border-top: 1px solid #eee; background: #fafafa;
+  flex-shrink: 0;
+}
+.primus-popup-today {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px; color: #888; cursor: pointer;
+}
+.primus-popup-today input { width: 16px; height: 16px; accent-color: var(--orange); }
+.primus-popup-close-btn {
+  padding: 8px 24px; font-size: 13px; font-weight: 600;
+  color: #fff; background: var(--navy); border: none; border-radius: 8px;
+  cursor: pointer; font-family: inherit; transition: background 0.15s;
+}
+.primus-popup-close-btn:hover { background: #1a2a4a; }
+
+/* 모바일: 화면 고정 중앙 (위치/드래그 설정 무시) */
+@media (max-width: 768px) {
+  .primus-popup-overlay {
+    padding: 16px;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .primus-popup-modal {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 12px;
+    margin: 0 !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+  }
+  .primus-popup-header { padding: 14px 16px; cursor: default; }
+  .primus-popup-title { font-size: 15px; }
+  .primus-popup-body { padding: 16px; max-height: 50vh; font-size: 13px; }
+  .primus-popup-footer { padding: 10px 16px; }
+  .primus-popup-today span { font-size: 12px; }
+  .primus-popup-close-btn { padding: 7px 18px; font-size: 12px; }
+}
+</style>
+
+<script>
+/* 팝업 순차 표시 (한 번에 하나씩) */
+$(function() {
+  var popups = [];
+  $('.primus-popup-overlay').each(function() {
+    var popCd = $(this).data('pop-cd');
+    if (!fnIsTodayHidden(popCd)) {
+      popups.push(popCd);
+    }
+  });
+
+  if (popups.length > 0) {
+    // 첫 번째 팝업만 표시
+    fnShowPopup(popups[0]);
+    $('body').css('overflow', 'hidden');
+  }
+});
+
+function fnShowPopup(popCd) {
+  var $overlay = $('.primus-popup-overlay[data-pop-cd="' + popCd + '"]');
+  var $modal = $overlay.find('.primus-popup-modal');
+  var x = parseInt($overlay.data('x')) || 0;
+  var y = parseInt($overlay.data('y')) || 0;
+
+  // 모바일이 아닐 때만 위치 적용
+  if ((x > 0 || y > 0) && window.innerWidth > 768) {
+    $overlay.css({ 'justify-content': 'flex-start', 'align-items': 'flex-start' });
+    $modal.css({ 'margin-left': x + 'px', 'margin-top': y + 'px' });
+  }
+  $overlay.show();
+
+  // 드래그 가능하게 설정 (PC만)
+  if (window.innerWidth > 768) {
+    fnMakeDraggable($overlay, $modal);
+  }
+}
+
+/* 모달 드래그 이동 */
+function fnMakeDraggable($overlay, $modal) {
+  var $header = $modal.find('.primus-popup-header');
+  var isDragging = false;
+  var startX, startY, origLeft, origTop;
+
+  // 드래그 시작 시 position 전환
+  function initPosition() {
+    if ($modal.css('position') !== 'absolute' && $modal.css('position') !== 'fixed') {
+      var rect = $modal[0].getBoundingClientRect();
+      $overlay.css({ 'justify-content': 'flex-start', 'align-items': 'flex-start' });
+      $modal.css({
+        'position': 'fixed',
+        'left': rect.left + 'px',
+        'top': rect.top + 'px',
+        'margin': '0'
+      });
+    }
+  }
+
+  $header.on('mousedown', function(e) {
+    if (e.target.closest('.primus-popup-close')) return; // X 버튼 클릭은 무시
+    e.preventDefault();
+    initPosition();
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    origLeft = parseInt($modal.css('left')) || 0;
+    origTop = parseInt($modal.css('top')) || 0;
+  });
+
+  $(document).on('mousemove.popup', function(e) {
+    if (!isDragging) return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+    $modal.css({ 'left': (origLeft + dx) + 'px', 'top': (origTop + dy) + 'px' });
+  });
+
+  $(document).on('mouseup.popup', function() {
+    isDragging = false;
+  });
+
+  // 터치 지원 (태블릿)
+  $header.on('touchstart', function(e) {
+    if (e.target.closest('.primus-popup-close')) return;
+    initPosition();
+    isDragging = true;
+    var touch = e.originalEvent.touches[0];
+    startX = touch.clientX;
+    startY = touch.clientY;
+    origLeft = parseInt($modal.css('left')) || 0;
+    origTop = parseInt($modal.css('top')) || 0;
+  });
+
+  $(document).on('touchmove.popup', function(e) {
+    if (!isDragging) return;
+    var touch = e.originalEvent.touches[0];
+    var dx = touch.clientX - startX;
+    var dy = touch.clientY - startY;
+    $modal.css({ 'left': (origLeft + dx) + 'px', 'top': (origTop + dy) + 'px' });
+  });
+
+  $(document).on('touchend.popup', function() {
+    isDragging = false;
+  });
+}
+
+/* 팝업 닫기 → 다음 팝업 표시 */
+function fnClosePopup(popCd) {
+  var $overlay = $('.primus-popup-overlay[data-pop-cd="' + popCd + '"]');
+  $overlay.fadeOut(200, function() {
+    // 다음에 보여줄 팝업 찾기
+    var nextPopCd = null;
+    $('.primus-popup-overlay').each(function() {
+      var cd = $(this).data('pop-cd');
+      if (cd !== popCd && !$(this).is(':visible') && $(this).css('display') !== 'none' || false) {
+        // 아직 안 닫힌 팝업 찾기
+      }
+    });
+    // 숨겨진 상태(아직 안 보여준)인 팝업 중 다음 것 표시
+    var found = false;
+    $('.primus-popup-overlay').each(function() {
+      if (found) return;
+      var cd = $(this).data('pop-cd');
+      if (cd === popCd) return; // 방금 닫은 것
+      if ($(this).data('closed')) return; // 이미 닫은 것
+      if (!fnIsTodayHidden(cd)) {
+        fnShowPopup(cd);
+        found = true;
+      }
+    });
+    $overlay.data('closed', true);
+
+    if (!found) {
+      $('body').css('overflow', '');
+    }
+  });
+}
+
+/* 오늘 하루 보지 않기 */
+function fnTodayHide(popCd, checked) {
+  if (checked) {
+    var today = new Date();
+    today.setHours(23, 59, 59, 999);
+    document.cookie = 'popHide_' + popCd + '=Y; expires=' + today.toUTCString() + '; path=/';
+    fnClosePopup(popCd);
+  } else {
+    document.cookie = 'popHide_' + popCd + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+  }
+}
+
+function fnIsTodayHidden(popCd) {
+  return document.cookie.indexOf('popHide_' + popCd + '=Y') > -1;
+}
+
+/* ESC로 팝업 닫기 */
+$(document).on('keydown', function(e) {
+  if (e.keyCode === 27) {
+    var $visible = $('.primus-popup-overlay:visible').last();
+    if ($visible.length) fnClosePopup($visible.data('pop-cd'));
+  }
+});
+
+/* 오버레이 클릭으로 닫기 (드래그 중이 아닐 때만) */
+var popMouseDownTarget = null;
+$(document).on('mousedown', '.primus-popup-overlay', function(e) { popMouseDownTarget = e.target; });
+$(document).on('mouseup', '.primus-popup-overlay', function(e) {
+  if (e.target === this && popMouseDownTarget === this) {
+    fnClosePopup($(this).data('pop-cd'));
+  }
+  popMouseDownTarget = null;
+});
 </script>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>

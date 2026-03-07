@@ -150,7 +150,7 @@
         </div>
 
         <c:if test="${prop.soldYn ne 'Y'}">
-        <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="btn-primary-primus" style="margin-top:20px;padding:12px 28px;font-size:14px;">이 매물 문의하기</a>
+        <a href="javascript:fnGoConsult()" class="btn-primary-primus" style="margin-top:20px;padding:12px 28px;font-size:14px;">이 매물 문의하기</a>
         </c:if>
       </div>
     </div>
@@ -218,7 +218,7 @@
         </div>
         <div style="display:flex;gap:10px;align-items:center;">
           <div style="font-size:22px;font-weight:800;color:var(--navy);">032-327-1277</div>
-          <a href="${ctx}/bbs/viewBbsWriteQna?brdCd=3ccd942dfcbf11f08771908d6ec6e544" class="btn-primary-primus" style="padding:11px 24px;font-size:14px;">온라인 문의</a>
+          <a href="javascript:fnGoConsult()" class="btn-primary-primus" style="padding:11px 24px;font-size:14px;">온라인 문의</a>
         </div>
       </div>
     </div>
