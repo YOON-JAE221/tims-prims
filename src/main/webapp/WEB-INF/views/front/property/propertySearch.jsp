@@ -168,9 +168,10 @@
 }
 
 @media (max-width: 768px) {
-  .ps-wrap { flex-direction: column; }
-  .ps-map { height: 50vh; }
-  .ps-panel { width: 100%; height: 50vh; }
+  .ps-wrap { flex-direction: column; height: calc(100vh - 60px); margin-top: 60px; }
+  .ps-map { height: 45vh; flex-shrink: 0; }
+  .ps-panel { width: 100%; flex: 1; min-height: 0; }
+  .primus-footer { display: none; }
 }
 </style>
 
