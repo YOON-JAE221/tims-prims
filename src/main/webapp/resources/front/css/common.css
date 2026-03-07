@@ -1270,6 +1270,22 @@ img { max-width: 100%; display: block; }
   .side-nav { display: none; }
   .content-main { width: 100%; padding-top: 24px; }
 
+  /* ===== 매물 필터 모바일 ===== */
+  .prop-filter {
+    flex-direction: column; gap: 8px;
+  }
+  .prop-filter select,
+  .prop-filter input[type="text"] {
+    width: 100% !important; font-size: 14px;
+  }
+  .prop-filter-btn,
+  .prop-filter-reset {
+    width: 48%; font-size: 13px; padding: 10px;
+  }
+  .prop-filter-btns {
+    display: flex; gap: 8px; width: 100%;
+  }
+
   /* ===== 게시판 테이블 모바일 ===== */
   .board-table { font-size: 13px; }
   .board-table colgroup { display: none; }
@@ -1321,19 +1337,30 @@ img { max-width: 100%; display: block; }
 
   /* ===== FOOTER 모바일 ===== */
   .footer-main {
-    flex-direction: column; gap: 28px;
-    padding: 32px 16px 24px;
+    flex-direction: column; gap: 32px;
+    padding: 36px 20px 28px;
   }
   .footer-left { max-width: 100%; }
-  .footer-right { flex-direction: column; gap: 24px; }
-  .footer-nav-col { display: flex; gap: 16px; flex-wrap: wrap; }
-  .footer-nav-col h4 { width: 100%; margin-bottom: 4px; }
-  .footer-nav-col ul { display: flex; gap: 12px; flex-wrap: wrap; }
-  .footer-nav-col li { margin-bottom: 0; }
-  .footer-bottom-bar {
-    flex-direction: column; gap: 8px;
-    text-align: center; padding: 14px 16px 18px;
+  .footer-logo-row { margin-bottom: 14px; }
+  .footer-info { font-size: 12px; line-height: 1.8; }
+  .footer-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 16px;
   }
+  .footer-nav-col h4 {
+    font-size: 13px; margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-nav-col ul { display: flex; flex-direction: column; gap: 6px; }
+  .footer-nav-col li { margin-bottom: 0; }
+  .footer-nav-col li a { font-size: 13px; }
+  .footer-bottom {
+    padding: 14px 20px 18px;
+  }
+  .footer-bottom-links { justify-content: center; font-size: 12px; }
+  .footer-copyright { text-align: center; font-size: 11px; }
 
   /* 모달 */
   .privacy-modal-content { margin: 20px 16px; max-height: 90vh; }
@@ -1353,11 +1380,13 @@ img { max-width: 100%; display: block; }
 
   .board-header { flex-direction: column; align-items: flex-start; gap: 8px; }
 
-  .footer-info { font-size: 11px; }
+  .footer-info { font-size: 11px; line-height: 1.9; }
+  .footer-right { grid-template-columns: 1fr 1fr; gap: 20px 12px; }
   .footer-contact-tel { font-size: 18px; }
 }
 
 /* ===== btn-admin 강조 ===== */
+.prop-filter-btns { display: flex; gap: 8px; }
 .board-admin-btns .btn-admin {
   background: var(--navy); color: white;
   border-color: var(--navy);

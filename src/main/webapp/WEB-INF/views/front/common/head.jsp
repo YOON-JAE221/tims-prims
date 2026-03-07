@@ -20,6 +20,9 @@
   <meta property="og:title" content="프리머스 부동산" />
   <meta property="og:description" content="부천 중동 전문 공인중개사 - 아파트, 오피스텔, 상가, 사무실" />
   <meta property="og:url" content="http://primusrealestate.co.kr" />
+  <meta property="og:image" content="${ctx}/resources/front/img/logo/og-thumbnail.png" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="400" />
 
   <!-- Favicons -->
   <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">

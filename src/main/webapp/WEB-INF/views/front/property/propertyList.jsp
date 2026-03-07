@@ -31,8 +31,10 @@
           <option value="RENT" ${dealType eq 'RENT' ? 'selected' : ''}>임대</option>
         </select>
         <input type="text" name="keyword" value="${keyword}" placeholder="매물명 또는 주소 검색" />
-        <button type="submit" class="prop-filter-btn">검색</button>
-        <button type="button" class="prop-filter-reset" onclick="fnReset()">초기화</button>
+        <div class="prop-filter-btns">
+          <button type="submit" class="prop-filter-btn">검색</button>
+          <button type="button" class="prop-filter-reset" onclick="fnReset()">초기화</button>
+        </div>
       </div>
     </form>
 
