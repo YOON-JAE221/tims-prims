@@ -136,26 +136,29 @@
 .map-price-label.sold { background: var(--gray-400); }
 .map-price-label.sold::after { border-top-color: var(--gray-400); }
 
-/* 클러스터 (줌 아웃 시 개수 표시) */
+/* 클러스터 (네이버부동산 스타일) */
 .map-cluster {
-  background: var(--orange); color: white;
-  border-radius: 24px; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  box-shadow: 0 3px 12px rgba(232,119,34,0.4);
-  white-space: nowrap; transition: transform 0.15s;
-  text-align: center; line-height: 1.3;
+  background: rgba(66, 133, 244, 0.75); color: white;
+  border: 2px solid rgba(255,255,255,0.9);
+  border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(66,133,244,0.35);
+  transition: all 0.15s;
+  text-align: center; line-height: 1;
+  font-weight: 800;
 }
-.map-cluster:hover { transform: scale(1.08); }
-.map-cluster.sm { padding: 8px 14px; font-size: 12px; font-weight: 700; }
-.map-cluster.md { padding: 10px 16px; font-size: 13px; font-weight: 700; }
-.map-cluster.lg { padding: 12px 18px; font-size: 14px; font-weight: 800; }
-.map-cluster .cl-total {
-  font-size: 20px; font-weight: 800; line-height: 1;
+.map-cluster:hover { transform: scale(1.1); background: rgba(66, 133, 244, 0.9); }
+.map-cluster.active {
+  background: rgba(232, 119, 34, 0.85) !important;
+  border-color: rgba(255,255,255,0.95);
+  box-shadow: 0 3px 10px rgba(232,119,34,0.45);
+  transform: scale(1.12);
 }
-.map-cluster .cl-detail {
-  font-size: 10px; font-weight: 500; opacity: 0.9;
-  margin-top: 2px;
-}
+.map-cluster.sm { width: 40px; height: 40px; font-size: 15px; }
+.map-cluster.md { width: 50px; height: 50px; font-size: 17px; }
+.map-cluster.lg { width: 60px; height: 60px; font-size: 20px; }
+.map-cluster .cl-count { font-weight: 800; }
+.map-cluster .cl-label { display: none; }
 
 /* 선택된 마커 */
 .map-price-label.active {
@@ -264,7 +267,7 @@ function fnRenderList(list) {
     var badgeHtml = fnBadgeHtml(d);
     var isActive = selectedId && selectedId == d.propCd;
 
-    html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnSelectFromList(\'' + d.propCd + '\',' + d.lat + ',' + d.lng + ')">';
+    html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
     html += '    <span class="ps-item-type">' + d.propTypeNm + ' · ' + d.dealTypeNm + '</span>';
     html += '    ' + badgeHtml;
@@ -293,22 +296,18 @@ function fnRenderMarkers(list) {
   for (var i = 0; i < overlays.length; i++) { overlays[i].setMap(null); }
   overlays = [];
 
-  var level = map.getLevel();
-
-  if (level >= 5) {
-    // ===== 줌 아웃: 클러스터 (유형별 개수) =====
-    fnRenderCluster(list);
-  } else {
-    // ===== 줌 인: 개별 가격 마커 =====
-    fnRenderPriceMarkers(list);
-  }
+  // 항상 클러스터 모드 (개수만 표시)
+  fnRenderCluster(list);
 }
 
-/* 줌 아웃: 근접 매물 클러스터링 */
+/* 클러스터 렌더링 */
 function fnRenderCluster(list) {
-  var gridSize = 0.005; // 클러스터 격자 크기 (약 500m)
-  if (map.getLevel() >= 7) gridSize = 0.015;
-  else if (map.getLevel() >= 6) gridSize = 0.01;
+  var level = map.getLevel();
+  var gridSize = 0.002;
+  if (level >= 7) gridSize = 0.015;
+  else if (level >= 6) gridSize = 0.01;
+  else if (level >= 5) gridSize = 0.005;
+  else if (level >= 4) gridSize = 0.003;
 
   var clusters = {};
 
@@ -321,15 +320,12 @@ function fnRenderCluster(list) {
     var key = gx + '_' + gy;
 
     if (!clusters[key]) {
-      clusters[key] = { lat: 0, lng: 0, count: 0, types: {}, items: [] };
+      clusters[key] = { lat: 0, lng: 0, count: 0, items: [] };
     }
     clusters[key].lat += parseFloat(d.lat);
     clusters[key].lng += parseFloat(d.lng);
     clusters[key].count++;
     clusters[key].items.push(d);
-
-    var tNm = d.propTypeNm || '기타';
-    clusters[key].types[tNm] = (clusters[key].types[tNm] || 0) + 1;
   }
 
   for (var key in clusters) {
@@ -337,28 +333,12 @@ function fnRenderCluster(list) {
     var avgLat = c.lat / c.count;
     var avgLng = c.lng / c.count;
 
-    // 유형별 텍스트 (최대 2개 + 나머지)
-    var typeArr = [];
-    for (var t in c.types) typeArr.push({ nm: t, cnt: c.types[t] });
-    typeArr.sort(function(a, b) { return b.cnt - a.cnt; });
-
-    var label = '';
-    if (typeArr.length === 1) {
-      label = typeArr[0].nm + ' ' + typeArr[0].cnt;
-    } else {
-      label = '<span class="cl-total">' + c.count + '</span>';
-      var detail = '';
-      for (var j = 0; j < Math.min(typeArr.length, 3); j++) {
-        detail += typeArr[j].nm + ' ' + typeArr[j].cnt;
-        if (j < Math.min(typeArr.length, 3) - 1) detail += ' · ';
-      }
-      label += '<span class="cl-detail">' + detail + '</span>';
-    }
-
     var size = c.count >= 10 ? 'lg' : (c.count >= 5 ? 'md' : 'sm');
     var content = '<div class="map-cluster ' + size + '" '
-                + 'onclick="fnClusterZoom(' + avgLat + ',' + avgLng + ')">'
-                + label + '</div>';
+                + 'data-cluster-key="' + key + '" '
+                + 'onclick="fnClusterClick(\'' + key + '\')">'
+                + c.count
+                + '</div>';
 
     var overlay = new kakao.maps.CustomOverlay({
       position: new kakao.maps.LatLng(avgLat, avgLng),
@@ -366,94 +346,76 @@ function fnRenderCluster(list) {
       yAnchor: 0.5
     });
     overlay.setMap(map);
+    overlay.clusterKey = key;
+    overlay.clusterItems = c.items;
     overlays.push(overlay);
   }
 }
 
-/* 클러스터 클릭 → 줌인 */
-function fnClusterZoom(lat, lng) {
-  skipReloadUntil = Date.now() + 800;
-  map.setLevel(map.getLevel() - 2);
-  map.panTo(new kakao.maps.LatLng(lat, lng));
-}
-
-/* 줌 인: 개별 가격 마커 */
-function fnRenderPriceMarkers(list) {
-  for (var i = 0; i < list.length; i++) {
-    var d = list[i];
-    if (!d.lat || !d.lng) continue;
-
-    var priceShort = fnPriceShort(d);
-    var typeClass = d.propType ? d.propType.toLowerCase() : '';
-    if (d.soldYn === 'Y') typeClass = 'sold';
-
-    var isActive = selectedId && selectedId == d.propCd;
-    var content = '<div class="map-price-label ' + typeClass + (isActive ? ' active' : '') + '" '
-                + 'data-id="' + d.propCd + '" '
-                + 'onclick="fnSelectProperty(\'' + d.propCd + '\')">'
-                + priceShort + '</div>';
-
-    var overlay = new kakao.maps.CustomOverlay({
-      position: new kakao.maps.LatLng(d.lat, d.lng),
-      content: content,
-      yAnchor: 1.3
-    });
-    overlay.setMap(map);
-    overlay.propData = d;
-    overlays.push(overlay);
-  }
-}
-
-function fnFocusMap(lat, lng) {
-  map.setCenter(new kakao.maps.LatLng(lat, lng));
-  map.setLevel(3);
-}
-
-/* 매물 선택 처리 (지도 마커 클릭) */
-function fnSelectProperty(propCd) {
-  var d = null;
+/* 클러스터 클릭 → 우측 리스트 해당 매물만 표시 */
+function fnClusterClick(key) {
+  // 해당 클러스터의 매물 찾기
+  var items = null;
   for (var i = 0; i < overlays.length; i++) {
-    if (overlays[i].propData && overlays[i].propData.propCd == propCd) {
-      d = overlays[i].propData;
+    if (overlays[i].clusterKey === key) {
+      items = overlays[i].clusterItems;
       break;
     }
   }
-  if (!d) return;
+  if (!items || items.length === 0) return;
 
-  selectedId = propCd;
+  // 클러스터 활성화 표시
+  $('.map-cluster').removeClass('active');
+  $('.map-cluster[data-cluster-key="' + key + '"]').addClass('active');
 
-  // 1) 마커 활성화 표시
-  $('.map-price-label').removeClass('active');
-  $('.map-price-label[data-id="' + propCd + '"]').addClass('active');
+  // 우측 리스트에 해당 매물만 표시
+  fnRenderFilteredList(items);
 
-  // 2) 줌인 + 중심 이동
-  skipReloadUntil = Date.now() + 800;
-  map.setLevel(3);
-  map.panTo(new kakao.maps.LatLng(d.lat, d.lng));
-
-  // 3) 우측 리스트 하이라이트 + 스크롤
-  $('.ps-item').removeClass('active');
-  var $target = $('.ps-item[data-id="' + propCd + '"]');
-  $target.addClass('active');
-  if ($target.length > 0) {
-    var $list = $('#psList');
-    $list.animate({
-      scrollTop: $list.scrollTop() + $target.position().top - $list.position().top - 10
-    }, 300);
+  // 지도 중심 이동
+  var avgLat = 0, avgLng = 0;
+  for (var i = 0; i < items.length; i++) {
+    avgLat += parseFloat(items[i].lat);
+    avgLng += parseFloat(items[i].lng);
   }
+  skipReloadUntil = Date.now() + 800;
+  map.panTo(new kakao.maps.LatLng(avgLat / items.length, avgLng / items.length));
 }
 
-/* 리스트 카드 클릭에서 선택 처리 */
-function fnSelectFromList(propCd, lat, lng) {
-  selectedId = propCd;
-  $('.map-price-label').removeClass('active');
-  $('.map-price-label[data-id="' + propCd + '"]').addClass('active');
-  $('.ps-item').removeClass('active');
-  $('.ps-item[data-id="' + propCd + '"]').addClass('active');
+/* 필터된 매물 리스트 렌더링 */
+function fnRenderFilteredList(items) {
+  var html = '';
+  var cnt = 0;
 
-  skipReloadUntil = Date.now() + 800;
-  map.setLevel(3);
-  map.panTo(new kakao.maps.LatLng(lat, lng));
+  for (var i = 0; i < items.length; i++) {
+    var d = items[i];
+    if (d.soldYn === 'Y') continue;
+    cnt++;
+
+    var priceStr = fnPriceStr(d);
+    var badgeHtml = fnBadgeHtml(d);
+
+    html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
+    html += '  <div class="ps-item-top">';
+    html += '    <span class="ps-item-type">' + d.propTypeNm + ' · ' + d.dealTypeNm + '</span>';
+    html += '    ' + badgeHtml;
+    html += '  </div>';
+    html += '  <div class="ps-item-name">' + d.propNm + '</div>';
+    html += '  <div class="ps-item-addr">' + d.address + '</div>';
+    html += '  <div class="ps-item-price">' + priceStr + '</div>';
+    html += '  <div class="ps-item-info">';
+    html += '    <span>🏠 ' + (d.areaExclusive || '-') + '㎡</span>';
+    if (d.roomCnt > 0) html += '<span>🚪 ' + d.roomCnt + '룸</span>';
+    if (d.floorNo) html += '<span>📐 ' + d.floorNo + '층</span>';
+    html += '  </div>';
+    html += '  <div class="ps-item-bottom">';
+    html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
+    html += '  </div>';
+    html += '</div>';
+  }
+
+  if (cnt === 0) html = '<div class="ps-empty">매물이 없습니다.</div>';
+  $('#psList').html(html);
+  $('#psCount').html('매물 <strong>' + cnt + '</strong>건');
 }
 
 function fnPriceStr(d) {
