@@ -191,8 +191,8 @@
             <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
-                  <label>건축년도</label>
-                  <input type="text" name="buildYear" class="form-control" value="${prop.buildYear}" placeholder="2020" />
+                  <label>사용승인일</label>
+                  <input type="date" name="buildYear" class="form-control" value="${prop.buildYear}" />
                 </div>
               </div>
               <div class="col-md-3">

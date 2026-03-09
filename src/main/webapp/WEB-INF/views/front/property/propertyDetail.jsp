@@ -107,7 +107,7 @@
       <div class="prop-detail-summary">
         <div class="prop-detail-type">${prop.propTypeNm} &middot; ${prop.dealTypeNm}</div>
         <h2 class="prop-detail-title">${prop.propNm}</h2>
-        <div class="prop-detail-loc">${prop.address}<c:if test="${not empty prop.addressDtl}"> ${prop.addressDtl}</c:if></div>
+        <div class="prop-detail-loc">${prop.address}</div>
         <div class="prop-detail-price">
           <c:choose>
             <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/></c:when>
@@ -182,7 +182,7 @@
         <tr><th>입주가능일</th><td>${not empty prop.moveInDate ? prop.moveInDate : '-'}</td><th>주차</th><td>${not empty prop.parking ? prop.parking : '-'}</td></tr>
         </c:if>
         <c:if test="${not empty prop.heating or not empty prop.buildYear}">
-        <tr><th>난방방식</th><td>${not empty prop.heating ? prop.heating : '-'}</td><th>건축년도</th><td>${not empty prop.buildYear ? prop.buildYear : '-'}</td></tr>
+        <tr><th>난방방식</th><td>${not empty prop.heating ? prop.heating : '-'}</td><th>사용승인일</th><td>${not empty prop.buildYear ? prop.buildYear : '-'}</td></tr>
         </c:if>
       </table>
     </div>
@@ -203,7 +203,7 @@
         <div id="propMap" style="width:100%;height:100%;"></div>
       </div>
       <div style="margin-top:10px;font-size:13px;color:var(--gray-400);">
-        ${prop.address}<c:if test="${not empty prop.addressDtl}"> ${prop.addressDtl}</c:if>
+        ${prop.address}
       </div>
     </div>
     </c:if>
