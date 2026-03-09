@@ -136,8 +136,8 @@
 <script>
   $(function () {
     kakao.maps.load(function () {
-      var lat = 37.5038;
-      var lng = 126.7656;
+      var lat = 37.5029;
+      var lng = 126.7732;
       var container = document.getElementById('kakaoMap');
       var map = new kakao.maps.Map(container, {
         center: new kakao.maps.LatLng(lat, lng),

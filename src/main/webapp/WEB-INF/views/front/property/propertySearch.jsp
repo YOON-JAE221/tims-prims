@@ -212,7 +212,7 @@ var ctx = '${ctx}';
 kakao.maps.load(function() {
   var container = document.getElementById('searchMap');
   map = new kakao.maps.Map(container, {
-    center: new kakao.maps.LatLng(37.5038, 126.7656),
+    center: new kakao.maps.LatLng(37.5029, 126.7732),
     level: 5
   });
 
