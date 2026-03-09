@@ -27,21 +27,20 @@
     <div class="loc-section-title">주변 지하철</div>
     <div class="loc-section-body">
       <span class="loc-subway">
-        <span class="loc-subway-num" style="background:#0052A4;">1</span>
-        중동역 1번출구 도보 5분
+        <span class="loc-subway-num" style="background:#747F00;">7</span>
+        신중동역 3번출구 도보 4분
       </span>
       <span class="loc-subway">
         <span class="loc-subway-num" style="background:#747F00;">7</span>
-        신중동역 3번출구 도보 10분
+        부천시청역 5번출구 도보 7분
       </span>
     </div>
 
     <div class="loc-section-title">주변 정류장</div>
     <div class="loc-section-body">
-      <span class="loc-stop"><span class="loc-stop-num">1</span> 중동역</span>
-      <span class="loc-stop"><span class="loc-stop-num">2</span> 롯데시네마부천점</span>
-      <span class="loc-stop"><span class="loc-stop-num">3</span> 부천시청</span>
-      <span class="loc-stop"><span class="loc-stop-num">4</span> 중동역사거리</span>
+      <span class="loc-stop"><span class="loc-stop-num">1</span> 롯데시네마부천점</span>
+      <span class="loc-stop"><span class="loc-stop-num">2</span> 부천시청역</span>
+      <span class="loc-stop"><span class="loc-stop-num">3</span> 경기예고.현대백화점</span>
     </div>
 
     <div class="loc-section-title">주변 버스</div>
@@ -49,11 +48,12 @@
       <div class="loc-bus-row">
         <span class="loc-bus-type" style="background:#33A23D;">지선</span>
         <span class="loc-bus-no">52</span>
-        <span class="loc-bus-no">57</span>
-        <span class="loc-bus-no">60-2</span>
+        <span class="loc-bus-no">53</span>
+        <span class="loc-bus-no">59</span>
       </div>
       <div class="loc-bus-row">
         <span class="loc-bus-type" style="background:#E60012;">간선</span>
+        <span class="loc-bus-no">87</span>
         <span class="loc-bus-no">88</span>
       </div>
     </div>

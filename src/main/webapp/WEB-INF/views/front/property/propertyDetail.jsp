@@ -485,10 +485,14 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; }
-  .prop-gallery-grid { height: 200px; }
+  .prop-gallery-wrap { width: 100%; flex: none; }
+  .prop-gallery-grid { height: auto; min-height: 220px; }
+  .prop-gallery-main { min-height: 220px; }
   .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
+
+  .prop-detail-top { flex-direction: column; gap: 0; }
+  .prop-detail-summary { padding-top: 16px; }
 }
 </style>
 

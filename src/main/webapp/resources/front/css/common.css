@@ -1270,6 +1270,33 @@ img { max-width: 100%; display: block; }
   .side-nav { display: none; }
   .content-main { width: 100%; padding-top: 24px; }
 
+  /* ===== 매물 상세 모바일 ===== */
+  .prop-detail-top { flex-direction: column; gap: 0; }
+  .prop-detail-summary { padding-top: 16px; }
+
+  /* ===== 문의 폼 모바일 ===== */
+  .qna-form-table,
+  .qna-form-table tbody,
+  .qna-form-table tr,
+  .qna-form-table th,
+  .qna-form-table td {
+    display: block; width: 100%;
+  }
+  .qna-form-table colgroup { display: none; }
+  .qna-form-table th {
+    padding: 12px 0 4px; font-size: 14px;
+    border-bottom: none; background: none;
+  }
+  .qna-form-table td {
+    padding: 0 0 12px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .qna-input, .qna-textarea { width: 100% !important; font-size: 14px; }
+  .qna-input-sm, .qna-input-md { width: 100% !important; }
+  .qna-inline { flex-wrap: wrap; gap: 6px; }
+  .qna-inline select { min-width: 80px; }
+  .qna-inline input { flex: 1; min-width: 60px; }
+
   /* ===== 매물 필터 모바일 ===== */
   .prop-filter {
     flex-direction: column; gap: 8px;
@@ -1378,7 +1405,9 @@ img { max-width: 100%; display: block; }
   .page-header { padding: 28px 16px; }
   .page-header h2 { font-size: 20px; }
 
-  .board-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .board-header { flex-direction: row; align-items: center; gap: 8px; }
+  .board-admin-btns { gap: 4px; }
+  .board-admin-btns .btn-admin { padding: 6px 12px; font-size: 12px; }
 
   .footer-info { font-size: 11px; line-height: 1.9; }
   .footer-right { grid-template-columns: 1fr 1fr; gap: 20px 12px; }
