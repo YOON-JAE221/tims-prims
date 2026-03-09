@@ -20,7 +20,6 @@
         <span>조회 : ${pst.viewCnt}</span>
         <c:if test="${not empty sessionScope.loginUser}">
           <c:if test="${not empty pst.rgtPhone}"><span>연락처 : ${pst.rgtPhone}</span></c:if>
-          <c:if test="${not empty pst.rgtEmail}"><span>이메일 : ${pst.rgtEmail}</span></c:if>
         </c:if>
       </div>
     </div>

@@ -41,10 +41,6 @@
                 <td>${qst.rgtPhone}</td>
               </tr>
               <tr>
-                <th class="bg-light">이메일</th>
-                <td><c:out value="${qst.rgtEmail}" default="-" /></td>
-              </tr>
-              <tr>
                 <th class="bg-light">제목</th>
                 <td>${qst.pstNm}</td>
               </tr>

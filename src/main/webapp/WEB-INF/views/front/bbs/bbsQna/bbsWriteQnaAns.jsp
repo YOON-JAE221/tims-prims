@@ -30,7 +30,7 @@
             <span>조회수 : ${parentPst.viewCnt}</span>
             <c:if test="${not empty sessionScope.loginUser}">
               <c:if test="${not empty parentPst.rgtPhone}"><span>연락처 : ${parentPst.rgtPhone}</span></c:if>
-              <c:if test="${not empty parentPst.rgtEmail}"><span>이메일 : ${parentPst.rgtEmail}</span></c:if>
+
             </c:if>
           </div>
         </div>
