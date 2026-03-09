@@ -53,10 +53,23 @@
   color:#111;
 }
 
+.btn-bo-del{
+  background:#fff;
+  border:1px solid #dc3545;
+  color:#dc3545;
+  font-weight:600;
+}
+.btn-bo-del:hover{
+  background:#dc3545;
+  border-color:#dc3545;
+  color:#fff;
+}
+
 /* 포커스 링 통일 */
 .btn-bo-add:focus,
 .btn-bo-save:focus,
 .btn-bo-reset:focus,
+.btn-bo-del:focus,
 .btn-bo-search:focus{
   box-shadow: 0 0 0 .15rem rgba(0,0,0,.15);
 }
@@ -65,6 +78,7 @@
 .btn-bo-add,
 .btn-bo-save,
 .btn-bo-reset,
+.btn-bo-del,
 .btn-bo-search{
   border-radius:10px;
   padding: .35rem .7rem;
@@ -439,6 +453,17 @@
 /* ===============================
  * Container 전체 너비 강제 적용
  * =============================== */
+
+/* BO 폼 테이블 */
+.bo-form-table { margin-bottom: 0; }
+.bo-form-table th { width:150px; background:#f8f9fa; vertical-align:middle; font-size:13px; font-weight:600; white-space:nowrap; }
+.bo-form-table td { font-size:13px; vertical-align:middle; }
+.bo-form-table .form-control-sm { font-size:13px; }
+@media (max-width: 768px) {
+  .bo-form-table th { width:100px; font-size:12px; padding:6px 8px; }
+  .bo-form-table td { font-size:12px; padding:6px 8px; }
+}
+
 .container,
 .content .container,
 .content-wrapper .container {
@@ -457,4 +482,14 @@
 .tabulator,
 #sheet1 .tabulator {
   width: 100% !important;
+}
+
+/* BO 풋터 공백 제거 */
+.content-wrapper + .main-footer,
+.wrapper > .main-footer { display: none !important; }
+.content-wrapper {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: calc(100vh - 57px) !important;
+  background: #f4f6f9 !important;
 }

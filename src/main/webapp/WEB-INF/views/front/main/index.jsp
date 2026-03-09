@@ -103,6 +103,16 @@
         <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${not empty latestProp.floorNo}"><span>${latestProp.floorNo}층</span></c:if></div>
       </div>
       </c:if>
+      <c:if test="${empty latestProp}">
+      <div class="visual-card">
+        <div class="vc-header"><div class="vc-badge" style="background:#0052A4;">인기 매물</div><div class="vc-type">아파트 &middot; 매매</div></div>
+        <div class="vc-img i2">&#127980;</div>
+        <div class="vc-title">매물 준비중</div>
+        <div class="vc-loc">프리머스 부동산</div>
+        <div class="vc-price">- <small>만원</small></div>
+        <div class="vc-stats"><span>-</span></div>
+      </div>
+      </c:if>
     </div>
 
     <div class="float-card" style="right:36%;bottom:12%;animation-delay:1s;">
@@ -155,6 +165,16 @@
           <small>만원</small>
         </div>
         <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${not empty urgentProp.floorNo}"><span>${urgentProp.floorNo}층</span></c:if></div>
+      </div>
+      </c:if>
+      <c:if test="${empty urgentProp}">
+      <div class="visual-card">
+        <div class="vc-header"><div class="vc-badge" style="background:#dc3545;">급매</div><div class="vc-type">아파트 &middot; 매매</div></div>
+        <div class="vc-img i3">&#127968;</div>
+        <div class="vc-title">매물 준비중</div>
+        <div class="vc-loc">프리머스 부동산</div>
+        <div class="vc-price">- <small>만원</small></div>
+        <div class="vc-stats"><span>-</span></div>
       </div>
       </c:if>
     </div>

@@ -29,12 +29,12 @@ public class PropCatMngController {
         return "admin/propCatMng/propCatMng";
     }
 
-    // 소분류 목록 조회 (AJAX)
+    // 소분류 목록 조회 (AJAX - TG.load용)
     @ResponseBody
     @RequestMapping(value = "/getSubCatList", method = RequestMethod.POST)
     public Map<String, Object> getSubCatList(@RequestParam("catCd") String catCd) {
         Map<String, Object> result = new HashMap<>();
-        result.put("list", propCatMngDao.getSubCatList(catCd));
+        result.put("DATA", propCatMngDao.getSubCatList(catCd));
         result.put("result", Constant.OK);
         return result;
     }
@@ -50,6 +50,36 @@ public class PropCatMngController {
         } catch (Exception e) {
             result.put("result", Constant.FAIL);
             result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+    // 소분류 일괄저장 (TG.save용 - mergeRows)
+    @ResponseBody
+    @RequestMapping(value = "/saveSubCatList", method = RequestMethod.POST)
+    public Map<String, Object> saveSubCatList(@RequestParam("catCd") String catCd,
+                                              @RequestParam("mergeRows") String mergeRowsJson) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+            List<Map<String, Object>> rows = om.readValue(mergeRowsJson,
+                    om.getTypeFactory().constructCollectionType(List.class, Map.class));
+
+            int cnt = 0;
+            for (Map<String, Object> row : rows) {
+                row.put("catCd", catCd);
+                // 신규: subCatCd 없으면 자동채번
+                if (row.get("subCatCd") == null || "".equals(row.get("subCatCd"))) {
+                    String nextCd = propCatMngDao.getNextSubCatCd(catCd);
+                    row.put("subCatCd", nextCd);
+                }
+                propCatMngDao.saveSubCat(row);
+                cnt++;
+            }
+            result.put("resultCnt", cnt);
+        } catch (Exception e) {
+            result.put("resultCnt", 0);
+            result.put("Message", e.getMessage());
         }
         return result;
     }
@@ -75,17 +105,17 @@ public class PropCatMngController {
         return result;
     }
 
-    // 소분류 삭제 (AJAX)
+    // 소분류 삭제 (AJAX - TG.delete용)
     @ResponseBody
     @RequestMapping(value = "/deleteSubCat", method = RequestMethod.POST)
     public Map<String, Object> deleteSubCat(@RequestParam Map<String, Object> param) {
         Map<String, Object> result = new HashMap<>();
         try {
-            propCatMngDao.deleteSubCat(param);
-            result.put("result", Constant.OK);
+            int cnt = propCatMngDao.deleteSubCat(param);
+            result.put("resultCnt", cnt);
         } catch (Exception e) {
-            result.put("result", Constant.FAIL);
-            result.put("message", e.getMessage());
+            result.put("resultCnt", 0);
+            result.put("Message", e.getMessage());
         }
         return result;
     }
@@ -102,6 +132,17 @@ public class PropCatMngController {
             result.put("result", Constant.FAIL);
             result.put("message", e.getMessage());
         }
+        return result;
+    }
+
+    // 다음 소분류코드 채번 (AJAX)
+    @ResponseBody
+    @RequestMapping(value = "/getNextSubCatCd", method = RequestMethod.POST)
+    public Map<String, Object> getNextSubCatCd(@RequestParam("catCd") String catCd) {
+        Map<String, Object> result = new HashMap<>();
+        String nextCd = propCatMngDao.getNextSubCatCd(catCd);
+        result.put("subCatCd", nextCd);
+        result.put("result", Constant.OK);
         return result;
     }
 }

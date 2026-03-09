@@ -8,10 +8,13 @@
     <select id="getSelectPropertyList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
-             , A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , A.PROP_FEATURE
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , A.SUB_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE
              , A.DEPOSIT
              , A.MONTHLY_RENT
@@ -21,15 +24,18 @@
              , A.ADDRESS
              , A.BADGE_TYPE
              , CASE A.BADGE_TYPE WHEN 'RECOMMEND' THEN '추천' WHEN 'URGENT' THEN '급매' ELSE '-' END AS BADGE_TYPE_NM
-             , A.MAIN_YN
              , A.SOLD_YN
              , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
+             , A.DISPLAY_YN
+             , A.DISPLAY_START
+             , A.DISPLAY_END
              , A.VIEW_CNT
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
-           <if test="propType != null and propType != '' and propType != 'ALL'">
-           AND A.PROP_TYPE = #{propType}
+           AND A.USE_YN = 'Y'
+           <if test="catCd != null and catCd != '' and catCd != 'ALL'">
+           AND A.CAT_CD = #{catCd}
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -47,39 +53,13 @@
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
          ORDER BY A.RGT_DTM DESC
-         <if test="pageSize != null">
-         LIMIT ${offset}, ${pageSize}
-         </if>
-    </select>
-
-    <!-- 매물 총 건수 -->
-    <select id="getSelectPropertyCount" parameterType="map" resultType="int">
-        SELECT COUNT(*)
-          FROM TB_PROPERTY A
-         WHERE A.DEL_YN = 'N'
-           <if test="propType != null and propType != '' and propType != 'ALL'">
-           AND A.PROP_TYPE = #{propType}
-           </if>
-           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
-           AND A.DEAL_TYPE = #{dealType}
-           </if>
-           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
-             <choose>
-               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
-               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
-             </choose>
-           </if>
-           <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
-           AND A.SOLD_YN = #{soldYn}
-           </if>
-           <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
-           </if>
     </select>
 
     <!-- 매물 상세 -->
     <select id="getSelectPropertyDetail" parameterType="map" resultType="map">
         SELECT A.*
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM_FMT
              , DATE_FORMAT(A.UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM_FMT
           FROM TB_PROPERTY A
@@ -90,86 +70,68 @@
     <!-- 매물 저장 (UPSERT) -->
     <update id="saveProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, PROP_NM, PROP_TYPE, DEAL_TYPE,
-            SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST,
-            AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT,
-            FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE,
-            PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE,
-            ADDRESS, ADDRESS_DTL, LAT, LNG,
-            BADGE_TYPE, MAIN_YN, MAIN_YN_DTM, SOLD_YN,
-            PROP_DESC, ATCH_FILE_KEY,
-            USE_YN, DEL_YN,
-            RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
+            PROP_CD, CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
+            SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
+            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
+            FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
+            BUILD_DATE, ENTRANCE_TYPE, HEATING,
+            DETAIL_CNTS, ATCH_FILE_KEY,
+            DISPLAY_YN, DISPLAY_START, DISPLAY_END,
+            BADGE_TYPE, SOLD_YN, ADMIN_MEMO,
+            USE_YN, DEL_YN, RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
         ) VALUES (
-            #{propCd},
-            #{propNm},
-            #{propType},
-            #{dealType},
-            #{sellPrice},
-            #{deposit},
-            #{monthlyRent},
-            #{mgmtCost},
-            #{areaExclusive},
-            #{areaSupply},
-            #{roomCnt},
-            #{bathCnt},
-            #{floorNo},
-            #{floorTotal},
-            #{direction},
-            #{entranceType},
-            #{parking},
-            #{heating},
-            #{buildYear},
-            #{moveInDate},
-            #{address},
-            #{addressDtl},
-            #{lat},
-            #{lng},
-            #{badgeType},
-            #{mainYn},
-            #{mainYnDtm},
-            #{soldYn},
-            #{propDesc},
-            #{atchFileKey},
-            'Y',
-            'N',
-            #{ssnUsrCd},
-            NOW(),
-            #{ssnUsrCd},
-            NOW()
+            #{propCd}, #{catCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
+            #{address}, #{addressDtl}, #{buildingNm}, #{lat}, #{lng},
+            #{sellPrice}, #{deposit}, #{monthlyRent}, #{loanYn}, #{loanAmount}, #{premium}, #{monthlyMgmt},
+            #{areaSupply}, #{areaExclusive}, #{areaLand},
+            #{floorNo}, #{floorTotal}, #{roomCnt}, #{bathCnt}, #{direction}, #{parkingYn},
+            #{buildDate}, #{entranceType}, #{heating},
+            #{detailCnts}, #{atchFileKey},
+            #{displayYn}, #{displayStart}, #{displayEnd},
+            #{badgeType}, #{soldYn}, #{adminMemo},
+            'Y', 'N', #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
         )
         ON DUPLICATE KEY UPDATE
-            PROP_NM        = #{propNm},
-            PROP_TYPE      = #{propType},
+            CAT_CD         = #{catCd},
+            SUB_CAT_CD     = #{subCatCd},
             DEAL_TYPE      = #{dealType},
+            PROP_NM        = #{propNm},
+            PROP_FEATURE   = #{propFeature},
+            ADDRESS        = #{address},
+            ADDRESS_DTL    = #{addressDtl},
+            BUILDING_NM    = #{buildingNm},
+            LAT            = #{lat},
+            LNG            = #{lng},
             SELL_PRICE     = #{sellPrice},
             DEPOSIT        = #{deposit},
             MONTHLY_RENT   = #{monthlyRent},
-            MGMT_COST      = #{mgmtCost},
-            AREA_EXCLUSIVE = #{areaExclusive},
+            LOAN_YN        = #{loanYn},
+            LOAN_AMOUNT    = #{loanAmount},
+            PREMIUM        = #{premium},
+            MONTHLY_MGMT   = #{monthlyMgmt},
             AREA_SUPPLY    = #{areaSupply},
-            ROOM_CNT       = #{roomCnt},
-            BATH_CNT       = #{bathCnt},
+            AREA_EXCLUSIVE = #{areaExclusive},
+            AREA_LAND      = #{areaLand},
             FLOOR_NO       = #{floorNo},
             FLOOR_TOTAL    = #{floorTotal},
+            ROOM_CNT       = #{roomCnt},
+            BATH_CNT       = #{bathCnt},
             DIRECTION      = #{direction},
+            PARKING_YN     = #{parkingYn},
+            BUILD_DATE     = #{buildDate},
             ENTRANCE_TYPE  = #{entranceType},
-            PARKING        = #{parking},
             HEATING        = #{heating},
-            BUILD_YEAR     = #{buildYear},
-            MOVE_IN_DATE   = #{moveInDate},
-            ADDRESS        = #{address},
-            ADDRESS_DTL    = #{addressDtl},
-            LAT            = #{lat},
-            LNG            = #{lng},
-            BADGE_TYPE     = #{badgeType},
-            MAIN_YN        = #{mainYn},
-            MAIN_YN_DTM    = #{mainYnDtm},
-            SOLD_YN        = #{soldYn},
-            PROP_DESC      = #{propDesc},
+            DETAIL_CNTS    = #{detailCnts},
             <if test="atchFileKey != null and atchFileKey != ''">
             ATCH_FILE_KEY  = #{atchFileKey},
             </if>
+            DISPLAY_YN     = #{displayYn},
+            DISPLAY_START  = #{displayStart},
+            DISPLAY_END    = #{displayEnd},
+            BADGE_TYPE     = #{badgeType},
+            SOLD_YN        = #{soldYn},
+            ADMIN_MEMO     = #{adminMemo},
             UPD_USR_CD     = #{ssnUsrCd},
             UPD_DTM        = NOW()
     </update>
@@ -178,42 +140,53 @@
     <update id="deleteProperty" parameterType="map">
         UPDATE TB_PROPERTY
            SET DEL_YN = 'Y'
-             , USE_YN = 'N'
              , UPD_USR_CD = #{ssnUsrCd}
              , UPD_DTM = NOW()
          WHERE PROP_CD = #{propCd}
-           AND DEL_YN = 'N'
     </update>
 
     <!-- 매물 복사 -->
     <insert id="copyProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, PROP_NM, PROP_TYPE, DEAL_TYPE,
-            SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST,
-            AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT,
-            FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE,
-            PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE,
-            ADDRESS, ADDRESS_DTL, LAT, LNG,
-            BADGE_TYPE, MAIN_YN, MAIN_YN_DTM, SOLD_YN, VIEW_CNT,
-            PROP_DESC, ATCH_FILE_KEY,
-            USE_YN, DEL_YN,
+            PROP_CD, CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
+            SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
+            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
+            FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
+            BUILD_DATE, ENTRANCE_TYPE, HEATING,
+            DETAIL_CNTS,
+            DISPLAY_YN, BADGE_TYPE, SOLD_YN,
+            USE_YN, DEL_YN, VIEW_CNT,
             RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
         )
-        SELECT #{newPropCd}
-             , CONCAT(PROP_NM, '_복사본')
-             , PROP_TYPE, DEAL_TYPE
-             , SELL_PRICE, DEPOSIT, MONTHLY_RENT, MGMT_COST
-             , AREA_EXCLUSIVE, AREA_SUPPLY, ROOM_CNT, BATH_CNT
-             , FLOOR_NO, FLOOR_TOTAL, DIRECTION, ENTRANCE_TYPE
-             , PARKING, HEATING, BUILD_YEAR, MOVE_IN_DATE
-             , ADDRESS, ADDRESS_DTL, LAT, LNG
-             , BADGE_TYPE, 'N', NULL, 'N', 0
-             , PROP_DESC, NULL
-             , 'Y', 'N'
-             , #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
+        SELECT #{newPropCd}, CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
+               ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
+               SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
+               AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
+               FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
+               BUILD_DATE, ENTRANCE_TYPE, HEATING,
+               DETAIL_CNTS,
+               'N', BADGE_TYPE, 'N',
+               'Y', 'N', 0,
+               #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
           FROM TB_PROPERTY
          WHERE PROP_CD = #{propCd}
-           AND DEL_YN = 'N'
     </insert>
+
+    <!-- 대분류 목록 (셀렉트박스용) -->
+    <select id="getCatListForSelect" resultType="map">
+        SELECT CAT_CD, CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE SUB_CAT_CD = '00' AND USE_YN = 'Y'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- 소분류 목록 (셀렉트박스용) -->
+    <select id="getSubCatListForSelect" parameterType="string" resultType="map">
+        SELECT SUB_CAT_CD, CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE CAT_CD = #{catCd} AND SUB_CAT_CD != '00' AND USE_YN = 'Y'
+         ORDER BY SORT_ORDER
+    </select>
 
 </mapper>

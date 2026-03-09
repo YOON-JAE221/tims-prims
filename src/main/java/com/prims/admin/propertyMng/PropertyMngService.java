@@ -49,12 +49,9 @@ public class PropertyMngService {
                 if (delKey == null || delKey.isEmpty()) continue;
                 String[] parts = delKey.split(":");
                 if (parts.length < 2) continue;
-
                 Map<String, Object> fileParam = new HashMap<>();
                 fileParam.put("upldFileCd", parts[0]);
                 fileParam.put("fileSeq", Integer.parseInt(parts[1]));
-
-                // 파일 상세 조회 후 삭제
                 Map<String, Object> fileInfo = fileService.getSelectUpldFileOne(fileParam);
                 if (fileInfo != null) {
                     fileInfo.put("ssnUsrCd", ssnUsrCd);
@@ -84,22 +81,29 @@ public class PropertyMngService {
             paramMap.put("propCd", Utility.getUuidPk32());
         }
 
-        // 숫자 필드 변환 (빈 문자열 → 0)
+        // 숫자 필드 변환
         paramMap.put("sellPrice", toLong(paramMap.get("sellPrice")));
         paramMap.put("deposit", toLong(paramMap.get("deposit")));
         paramMap.put("monthlyRent", toLong(paramMap.get("monthlyRent")));
-        paramMap.put("mgmtCost", toInt(paramMap.get("mgmtCost")));
+        paramMap.put("loanAmount", toLong(paramMap.get("loanAmount")));
+        paramMap.put("premium", toLong(paramMap.get("premium")));
+        paramMap.put("monthlyMgmt", toLong(paramMap.get("monthlyMgmt")));
         paramMap.put("roomCnt", toInt(paramMap.get("roomCnt")));
         paramMap.put("bathCnt", toInt(paramMap.get("bathCnt")));
+        paramMap.put("floorTotal", toInt(paramMap.get("floorTotal")));
         paramMap.put("areaExclusive", toDecimal(paramMap.get("areaExclusive")));
         paramMap.put("areaSupply", toDecimal(paramMap.get("areaSupply")));
+        paramMap.put("areaLand", toDecimal(paramMap.get("areaLand")));
         paramMap.put("lat", toDecimal(paramMap.get("lat")));
         paramMap.put("lng", toDecimal(paramMap.get("lng")));
 
         // 기본값 처리
-        if (paramMap.get("mainYn") == null || "".equals(paramMap.get("mainYn"))) paramMap.put("mainYn", "N");
         if (paramMap.get("soldYn") == null || "".equals(paramMap.get("soldYn"))) paramMap.put("soldYn", "N");
         if (paramMap.get("badgeType") == null || "".equals(paramMap.get("badgeType"))) paramMap.put("badgeType", "NONE");
+        if (paramMap.get("displayYn") == null || "".equals(paramMap.get("displayYn"))) paramMap.put("displayYn", "Y");
+        // 빈 날짜 null 처리
+        if ("".equals(paramMap.get("displayStart"))) paramMap.put("displayStart", null);
+        if ("".equals(paramMap.get("displayEnd"))) paramMap.put("displayEnd", null);
 
         return propertyMngDao.saveProperty(paramMap);
     }
@@ -136,5 +140,13 @@ public class PropertyMngService {
         paramMap.put("newPropCd", newPropCd);
         propertyMngDao.copyProperty(paramMap);
         return newPropCd;
+    }
+
+    public List<Map<String, Object>> getCatListForSelect() {
+        return propertyMngDao.getCatListForSelect();
+    }
+
+    public List<Map<String, Object>> getSubCatListForSelect(String catCd) {
+        return propertyMngDao.getSubCatListForSelect(catCd);
     }
 }

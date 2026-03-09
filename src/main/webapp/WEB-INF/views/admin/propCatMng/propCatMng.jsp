@@ -90,7 +90,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
-            <li class="breadcrumb-item">매물코드관리</li>
+            <li class="breadcrumb-item"><a href="${ctx}/propCatMng/viewPropCatMng">매물코드관리</a></li>
           </ol>
         </div>
       </div>
@@ -106,20 +106,19 @@
           <div class="cat-panel">
             <div class="cat-panel-header">
               대분류
-              <button class="btn btn-sm btn-bo-save" onclick="fnOpenCatModal()">+ 추가</button>
+              <button class="btn btn-sm btn-bo-add" onclick="fnOpenCatModal()">신규</button>
             </div>
             <div class="cat-panel-body" id="catListArea">
               <c:forEach var="cat" items="${catList}">
-                <div class="cat-item" data-cd="${cat.CAT_CD}" onclick="fnSelectCat('${cat.CAT_CD}', this)">
+                <div class="cat-item" data-cd="${cat.catCd}" onclick="fnSelectCat('${cat.catCd}', this)">
                   <div class="cat-item-info">
-                    <span class="cat-item-nm">${cat.CAT_NM}</span>
-                    <span class="cat-item-cd">${cat.CAT_CD}</span>
+                    <span class="cat-item-nm">${cat.catNm}</span>
+                    <span class="cat-item-cd">${cat.catCd}</span>
                   </div>
-                  <span class="cat-item-cnt">${cat.SUB_CNT}</span>
-                  <span class="cat-item-badge ${cat.USE_YN eq 'Y' ? 'y' : 'n'}">${cat.USE_YN eq 'Y' ? '사용' : '미사용'}</span>
+                  <span class="badge ${cat.useYn eq 'Y' ? 'badge-success' : 'badge-danger'}">${cat.useYn eq 'Y' ? '사용' : '미사용'}</span>
                   <div class="cat-item-actions">
-                    <button onclick="event.stopPropagation(); fnOpenCatModal('${cat.CAT_CD}','${cat.CAT_NM}',${cat.SORT_ORDER},'${cat.USE_YN}')" title="수정">✏</button>
-                    <button onclick="event.stopPropagation(); fnDeleteCat('${cat.CAT_CD}','${cat.CAT_NM}')" title="삭제">🗑</button>
+                    <button onclick="event.stopPropagation(); fnOpenCatModal('${cat.catCd}','${cat.catNm}',${cat.sortOrder},'${cat.useYn}')" title="수정">✏</button>
+                    <button onclick="event.stopPropagation(); fnDeleteCat('${cat.catCd}','${cat.catNm}')" title="삭제">🗑</button>
                   </div>
                 </div>
               </c:forEach>
@@ -132,13 +131,23 @@
 
         <!-- ===== 우측: 소분류 ===== -->
         <div class="cat-right">
-          <div class="cat-panel">
-            <div class="cat-panel-header">
-              <span id="subTitle">소분류 (대분류를 선택해주세요)</span>
-              <button class="btn btn-sm btn-bo-save" id="btnAddSub" onclick="fnOpenSubModal()" style="display:none;">+ 추가</button>
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title mb-0" id="subTitle">소분류 (대분류를 선택해주세요)</h5>
+                </div>
+                <div class="col-auto" id="subBtns" style="display:none;">
+                  <div class="d-flex bo-actionbar">
+                    <button type="button" class="btn btn-sm btn-bo-add" onclick="fnAddSubRow()">신규</button>
+                    <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSaveSub()">저장</button>
+                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnReloadSub()">새로고침</button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="cat-panel-body" id="subListArea">
-              <div class="sub-empty">좌측에서 대분류를 선택하면 소분류 목록이 표시됩니다.</div>
+            <div class="card-body">
+              <div id="subGrid"></div>
             </div>
           </div>
         </div>
@@ -183,43 +192,44 @@
   </div>
 </div>
 
-<!-- ===== 소분류 모달 ===== -->
-<div class="cat-modal-bg" id="subModal">
-  <div class="cat-modal">
-    <div class="cat-modal-header" id="subModalTitle">소분류 등록</div>
-    <div class="cat-modal-body">
-      <input type="hidden" id="subModalMode" value="new" />
-      <input type="hidden" id="subCatCd" />
-      <div class="form-group">
-        <label>대분류</label>
-        <input type="text" id="subParentNm" class="form-control" readonly style="background:#f5f5f5;" />
-      </div>
-      <div class="form-group">
-        <label>소분류명 <span class="text-danger">*</span></label>
-        <input type="text" id="subCatNm" class="form-control" maxlength="50" placeholder="예: 주상복합" />
-      </div>
-      <div class="form-group">
-        <label>정렬순서</label>
-        <input type="number" id="subSortOrder" class="form-control" value="0" min="0" style="width:100px;" />
-      </div>
-      <div class="form-group">
-        <label>사용여부</label>
-        <select id="subUseYn" class="form-control" style="width:100px;">
-          <option value="Y">사용</option>
-          <option value="N">미사용</option>
-        </select>
-      </div>
-    </div>
-    <div class="cat-modal-footer">
-      <button class="btn btn-secondary btn-sm" onclick="fnCloseSubModal()">취소</button>
-      <button class="btn btn-bo-save btn-sm" onclick="fnSaveSubCat()">저장</button>
-    </div>
-  </div>
-</div>
+<!-- 소분류 모달 제거됨 - TG 그리드 인라인 편집 사용 -->
 
 <script>
 var selectedCatCd = '';
 var selectedCatNm = '';
+var subTable = null;
+
+/* ========== 소분류 그리드 초기화 ========== */
+$(function() {
+  initSubGrid();
+});
+
+function initSubGrid() {
+  var columns = [
+    { title:"코드", field:"subCatCd", width:100, editor:false },
+    { title:"소분류명", field:"catNm", minWidth:200, editor:"input", validator:["required"] },
+    { title:"정렬순서", field:"sortOrder", width:120, hozAlign:"center", editor:"number", editorEmptyValue:null, validator:["required","integer","min:0"] },
+    { title:"사용여부", field:"useYn", width:120, hozAlign:"center",
+      editor:"list", editorParams:{ values:{ "Y":"사용", "N":"미사용" } },
+      formatter: function(cell) {
+        return cell.getValue() === 'Y'
+          ? '<span class="badge badge-success">사용</span>'
+          : '<span class="badge badge-danger">미사용</span>';
+      }
+    },
+    { title:"삭제", field:"_del", width:100, hozAlign:"center", headerSort:false,
+      formatter: function() { return "<button type='button' class='btn btn-xs btn-bo-reset'>삭제</button>"; },
+      cellClick: function(e, cell) { fnDeleteSubCat(cell.getRow()); }
+    }
+  ];
+
+  subTable = TG.create("subGrid", columns, {
+    height: "auto",
+    pagination: false,
+    validationMode: "highlight",
+    layout: "fitColumns"
+  });
+}
 
 /* ========== 대분류 선택 → 소분류 로드 ========== */
 function fnSelectCat(catCd, el) {
@@ -229,45 +239,53 @@ function fnSelectCat(catCd, el) {
   selectedCatNm = $(el).find('.cat-item-nm').text();
 
   $('#subTitle').text('소분류 ─ ' + selectedCatNm);
-  $('#btnAddSub').show();
+  $('#subBtns').show();
 
-  var res = ajaxCall('${ctx}/propCatMng/getSubCatList', { catCd: catCd }, false);
-  if (res && res.result === 'OK') {
-    fnRenderSubList(res.list);
+  fnReloadSub();
+}
+
+function fnReloadSub() {
+  if (!selectedCatCd || !subTable) return;
+  TG.load(subTable, '${ctx}/propCatMng/getSubCatList', { catCd: selectedCatCd }, false, "DATA");
+}
+
+/* ========== 신규 행 추가 ========== */
+function fnAddSubRow() {
+  if (!subTable || !selectedCatCd) { alert('대분류를 먼저 선택해주세요.'); return; }
+  subTable.addRow({ subCatCd: "", catNm: "", sortOrder: 0, useYn: "Y" }, false);
+}
+
+/* ========== 멀티저장 (TG.save) ========== */
+function fnSaveSub() {
+  if (!subTable) return;
+  if (!TG.validate(subTable)) return;
+
+  var saveRes = TG.save(subTable, '${ctx}/propCatMng/saveSubCatList', {
+    extraParams: { catCd: selectedCatCd }
+  });
+
+  if (saveRes.ok) {
+    alert('저장되었습니다.');
+    fnReloadSub();
+    // 대분류 개수 갱신
+    location.reload();
   }
 }
 
-function fnRenderSubList(list) {
-  if (!list || list.length === 0) {
-    $('#subListArea').html('<div class="sub-empty">등록된 소분류가 없습니다.</div>');
-    return;
-  }
-  var html = '<table class="sub-table"><thead><tr>'
-    + '<th style="width:60px;">코드</th>'
-    + '<th>소분류명</th>'
-    + '<th style="width:70px;">정렬</th>'
-    + '<th style="width:70px;">사용</th>'
-    + '<th style="width:90px;">관리</th>'
-    + '</tr></thead><tbody>';
+/* ========== 삭제 (TG.delete) ========== */
+function fnDeleteSubCat(row) {
+  var d = row.getData();
+  var delRes = TG.delete(row, '${ctx}/propCatMng/deleteSubCat', {
+    catCd: selectedCatCd,
+    subCatCd: d.subCatCd
+  }, false);
 
-  for (var i = 0; i < list.length; i++) {
-    var s = list[i];
-    var badge = s.USE_YN === 'Y'
-      ? '<span class="cat-item-badge y">사용</span>'
-      : '<span class="cat-item-badge n">미사용</span>';
-
-    html += '<tr>'
-      + '<td class="td-mono">' + s.SUB_CAT_CD + '</td>'
-      + '<td>' + s.CAT_NM + '</td>'
-      + '<td class="td-center">' + s.SORT_ORDER + '</td>'
-      + '<td class="td-center">' + badge + '</td>'
-      + '<td class="td-center">'
-      + '<button class="btn btn-xs btn-outline-secondary" onclick="fnOpenSubModal(\'' + s.SUB_CAT_CD + '\',\'' + s.CAT_NM + '\',' + s.SORT_ORDER + ',\'' + s.USE_YN + '\')">수정</button> '
-      + '<button class="btn btn-xs btn-outline-danger" onclick="fnDeleteSubCat(\'' + s.SUB_CAT_CD + '\',\'' + s.CAT_NM + '\')">삭제</button>'
-      + '</td></tr>';
+  if (delRes.ok) {
+    if (delRes.code !== 'LOCAL') {
+      alert('삭제되었습니다.');
+      fnReloadSub();
+    }
   }
-  html += '</tbody></table>';
-  $('#subListArea').html(html);
 }
 
 /* ========== 대분류 모달 ========== */
@@ -326,77 +344,12 @@ function fnDeleteCat(catCd, catNm) {
   }
 }
 
-/* ========== 소분류 모달 ========== */
-function fnOpenSubModal(subCatCd, catNm, sortOrder, useYn) {
-  if (!selectedCatCd) { alert('대분류를 먼저 선택해주세요.'); return; }
-  $('#subParentNm').val(selectedCatNm + ' (' + selectedCatCd + ')');
-
-  if (subCatCd) {
-    $('#subModalMode').val('edit');
-    $('#subModalTitle').text('소분류 수정');
-    $('#subCatCd').val(subCatCd);
-    $('#subCatNm').val(catNm);
-    $('#subSortOrder').val(sortOrder);
-    $('#subUseYn').val(useYn);
-  } else {
-    $('#subModalMode').val('new');
-    $('#subModalTitle').text('소분류 등록');
-    $('#subCatCd').val('');
-    $('#subCatNm').val('');
-    $('#subSortOrder').val(0);
-    $('#subUseYn').val('Y');
-  }
-  $('#subModal').addClass('show');
-  setTimeout(function() { $('#subCatNm').focus(); }, 100);
-}
-
-function fnCloseSubModal() { $('#subModal').removeClass('show'); }
-
-function fnSaveSubCat() {
-  var catNm = $('#subCatNm').val().trim();
-  if (!catNm) { alert('소분류명을 입력해주세요.'); $('#subCatNm').focus(); return; }
-
-  var res = ajaxCall('${ctx}/propCatMng/saveSubCat', {
-    catCd: selectedCatCd,
-    subCatCd: $('#subCatCd').val(),
-    catNm: catNm,
-    sortOrder: $('#subSortOrder').val(),
-    useYn: $('#subUseYn').val()
-  }, false);
-
-  if (res && res.result === 'OK') {
-    alert('저장되었습니다.');
-    fnCloseSubModal();
-    // 소분류 다시 로드
-    fnSelectCat(selectedCatCd, $('.cat-item[data-cd="' + selectedCatCd + '"]')[0]);
-    // 대분류 개수 갱신 위해 리로드
-    location.reload();
-  } else {
-    alert('저장 실패: ' + (res && res.message ? res.message : ''));
-  }
-}
-
-function fnDeleteSubCat(subCatCd, catNm) {
-  if (!confirm('[' + catNm + '] 소분류를 삭제하시겠습니까?')) return;
-  var res = ajaxCall('${ctx}/propCatMng/deleteSubCat', {
-    catCd: selectedCatCd,
-    subCatCd: subCatCd
-  }, false);
-
-  if (res && res.result === 'OK') {
-    alert('삭제되었습니다.');
-    fnSelectCat(selectedCatCd, $('.cat-item[data-cd="' + selectedCatCd + '"]')[0]);
-    location.reload();
-  } else {
-    alert('삭제 실패');
-  }
-}
+/* ========== 소분류 모달 (미사용 - TG 그리드 인라인 편집으로 대체) ========== */
 
 /* ESC 닫기 */
 $(document).keydown(function(e) {
   if (e.keyCode === 27) {
     fnCloseCatModal();
-    fnCloseSubModal();
   }
 });
 </script>

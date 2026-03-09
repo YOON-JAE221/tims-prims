@@ -36,4 +36,12 @@ public class PropertyMngDao {
     public int copyProperty(Map<String, Object> paramMap) {
         return sqlSession.insert("propertyMng.copyProperty", paramMap);
     }
+
+    public List<Map<String, Object>> getCatListForSelect() {
+        return sqlSession.selectList("propertyMng.getCatListForSelect");
+    }
+
+    public List<Map<String, Object>> getSubCatListForSelect(String catCd) {
+        return sqlSession.selectList("propertyMng.getSubCatListForSelect", catCd);
+    }
 }

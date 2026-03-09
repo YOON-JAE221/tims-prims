@@ -31,10 +31,12 @@ public class PropertyMngController {
     // 매물 목록 화면
     @RequestMapping(value = "/viewPropertyMng", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyMng(@ParamMap Map<String, Object> paramMap, Model model) {
-        String propType = (String) paramMap.get("propType");
-        if (propType != null && !propType.isEmpty()) {
-            model.addAttribute("initPropType", propType);
+        String catCd = (String) paramMap.get("catCd");
+        if (catCd != null && !catCd.isEmpty()) {
+            model.addAttribute("initCatCd", catCd);
         }
+        // 대분류 목록
+        model.addAttribute("catList", propertyMngService.getCatListForSelect());
         return "admin/propertyMng/propertyMng";
     }
 
@@ -44,16 +46,8 @@ public class PropertyMngController {
     public Map<String, Object> getSelectPropertyList(@ParamMap Map<String, Object> paramMap) {
         Map<String, Object> result = new HashMap<>();
         try {
-            // 페이징 파라미터 Integer 변환
-            String ps = String.valueOf(paramMap.getOrDefault("pageSize", "20"));
-            String os = String.valueOf(paramMap.getOrDefault("offset", "0"));
-            paramMap.put("pageSize", Integer.parseInt(ps));
-            paramMap.put("offset", Integer.parseInt(os));
-
             List<?> list = propertyMngService.getSelectPropertyList(paramMap);
-            int totalCnt = propertyMngService.getSelectPropertyCount(paramMap);
             result.put("DATA", list);
-            result.put("totalCnt", totalCnt);
             result.put("resultCnt", 1);
         } catch (Exception e) {
             result.put("DATA", new ArrayList<>());
@@ -79,7 +73,19 @@ public class PropertyMngController {
                 model.addAttribute("fileList", propertyMngService.getSelectUpldFileList(fileParam));
             }
         }
+        // 대분류 목록
+        model.addAttribute("catList", propertyMngService.getCatListForSelect());
         return "admin/propertyMng/propertyWrite";
+    }
+
+    // 소분류 목록 (AJAX)
+    @ResponseBody
+    @RequestMapping(value = "/getSubCatList", method = RequestMethod.POST)
+    public Map<String, Object> getSubCatList(@RequestParam("catCd") String catCd) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("DATA", propertyMngService.getSubCatListForSelect(catCd));
+        result.put("result", Constant.OK);
+        return result;
     }
 
     // 매물 저장

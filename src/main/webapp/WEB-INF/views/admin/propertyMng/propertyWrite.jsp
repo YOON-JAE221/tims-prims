@@ -2,16 +2,15 @@
 <%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
 
 <div class="content-wrapper">
-
   <div class="content-header">
     <div class="container">
       <div class="row mb-2">
-        <div class="col-sm-6"><h4>${empty prop ? '매물 등록' : '매물 상세'}</h4></div>
+        <div class="col-sm-6"><h4>${empty prop ? '매물 등록' : '매물 수정'}</h4></div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
-            <li class="breadcrumb-item"><a href="${ctx}/propertyMng/viewPropertyMng">매물목록</a></li>
-            <li class="breadcrumb-item"><a href="${ctx}/property/viewPropertySearch" target="_blank">매물관리</a></li>
+            <li class="breadcrumb-item"><a href="${ctx}/propertyMng/viewPropertyMng">매물관리</a></li>
+            <li class="breadcrumb-item">${empty prop ? '등록' : '수정'}</li>
           </ol>
         </div>
       </div>
@@ -20,612 +19,517 @@
 
   <section class="content">
     <div class="container">
-
       <form id="propForm" enctype="multipart/form-data">
         <input type="hidden" name="propCd" value="${prop.propCd}" />
 
-        <!-- 상단 버튼 -->
-        <div style="text-align:right; margin-bottom:16px;">
-          <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
-          <c:if test="${not empty prop}">
-          <button type="button" class="btn btn-bo-reset ml-2" onclick="fnDelete()">삭제</button>
-          </c:if>
-          <button type="button" class="btn btn-bo-save ml-2" onclick="fnSave()">저장</button>
-          <c:if test="${not empty prop}">
-          <button type="button" class="btn btn-bo-reset ml-2" onclick="fnCopy()">복사</button>
-          </c:if>
-        </div>
-
-        <!-- 기본정보 -->
+        <!-- ===== 1. 기본정보 ===== -->
         <div class="card">
           <div class="card-header"><h5 class="card-title mb-0">기본정보</h5></div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>매물명 <span class="text-danger">*</span></label>
-                  <input type="text" name="propNm" id="propNm" class="form-control" value="${prop.propNm}" placeholder="예: 프리머스타워 32평" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>매물유형 <span class="text-danger">*</span></label>
-                  <select name="propType" id="propType" class="form-control">
-                    <option value="APT" ${prop.propType eq 'APT' ? 'selected' : ''}>아파트</option>
-                    <option value="OFFICETEL" ${prop.propType eq 'OFFICETEL' ? 'selected' : ''}>오피스텔</option>
-                    <option value="VILLA" ${prop.propType eq 'VILLA' ? 'selected' : ''}>빌라/주택</option>
-                    <option value="ONEROOM" ${prop.propType eq 'ONEROOM' ? 'selected' : ''}>원룸/투룸</option>
-                    <option value="SHOP" ${prop.propType eq 'SHOP' ? 'selected' : ''}>상가</option>
-                    <option value="OFFICE" ${prop.propType eq 'OFFICE' ? 'selected' : ''}>사무실</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>거래유형 <span class="text-danger">*</span></label>
-                  <select name="dealType" id="dealType" class="form-control">
-                    <option value="SELL" ${prop.dealType eq 'SELL' ? 'selected' : ''}>매매</option>
-                    <option value="JEONSE" ${prop.dealType eq 'JEONSE' ? 'selected' : ''}>전세</option>
-                    <option value="WOLSE" ${prop.dealType eq 'WOLSE' ? 'selected' : ''}>월세</option>
-                    <option value="RENT" ${prop.dealType eq 'RENT' ? 'selected' : ''}>임대</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 가격정보 -->
-        <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">가격정보</h5></div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>매매가 (만원) <span class="text-danger">*</span></label>
-                  <input type="number" name="sellPrice" class="form-control" value="${prop.sellPrice}" placeholder="0" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>보증금 (만원) <span class="text-danger">*</span></label>
-                  <input type="number" name="deposit" class="form-control" value="${prop.deposit}" placeholder="0" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>월세 (만원) <span class="text-danger">*</span></label>
-                  <input type="number" name="monthlyRent" class="form-control" value="${prop.monthlyRent}" placeholder="0" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>관리비 (만원)</label>
-                  <input type="number" name="mgmtCost" class="form-control" value="${prop.mgmtCost}" placeholder="0" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 면적/구조 -->
-        <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">면적 / 구조</h5></div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>전용면적 (㎡) <span class="text-danger">*</span></label>
-                  <input type="number" step="0.01" name="areaExclusive" class="form-control" value="${prop.areaExclusive}" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>공급면적 (㎡)</label>
-                  <input type="number" step="0.01" name="areaSupply" class="form-control" value="${prop.areaSupply}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>방수 <span class="text-danger">*</span></label>
-                  <input type="number" name="roomCnt" class="form-control" value="${prop.roomCnt}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>욕실수</label>
-                  <input type="number" name="bathCnt" class="form-control" value="${prop.bathCnt}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>방향</label>
-                  <select name="direction" class="form-control">
+            <table class="table table-bordered bo-form-table">
+              <tr>
+                <th>대분류 <span class="text-danger">*</span></th>
+                <td>
+                  <select name="catCd" id="catCd" class="form-control form-control-sm" style="width:200px;" onchange="fnCatChange(this.value)" required>
                     <option value="">선택</option>
-                    <option value="남향" ${prop.direction eq '남향' ? 'selected' : ''}>남향</option>
-                    <option value="동향" ${prop.direction eq '동향' ? 'selected' : ''}>동향</option>
-                    <option value="서향" ${prop.direction eq '서향' ? 'selected' : ''}>서향</option>
-                    <option value="북향" ${prop.direction eq '북향' ? 'selected' : ''}>북향</option>
-                    <option value="남동향" ${prop.direction eq '남동향' ? 'selected' : ''}>남동향</option>
-                    <option value="남서향" ${prop.direction eq '남서향' ? 'selected' : ''}>남서향</option>
+                    <c:forEach var="cat" items="${catList}">
+                      <option value="${cat.catCd}" ${prop.catCd eq cat.catCd ? 'selected' : ''}>${cat.catNm}</option>
+                    </c:forEach>
                   </select>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>해당층 <span class="text-danger">*</span></label>
-                  <input type="text" name="floorNo" class="form-control" value="${prop.floorNo}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>총층</label>
-                  <input type="text" name="floorTotal" class="form-control" value="${prop.floorTotal}" />
-                </div>
-              </div>
-              <div class="col-md-2">
-                <div class="form-group">
-                  <label>현관구조</label>
-                  <select name="entranceType" class="form-control">
+                </td>
+                <th>소분류 <span class="text-danger">*</span></th>
+                <td>
+                  <select name="subCatCd" id="subCatCd" class="form-control form-control-sm" style="width:200px;" required>
                     <option value="">선택</option>
-                    <option value="복도식" ${prop.entranceType eq '복도식' ? 'selected' : ''}>복도식</option>
-                    <option value="계단식" ${prop.entranceType eq '계단식' ? 'selected' : ''}>계단식</option>
                   </select>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>주차</label>
-                  <input type="text" name="parking" class="form-control" value="${prop.parking}" placeholder="세대당 1대" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>난방방식</label>
-                  <input type="text" name="heating" class="form-control" value="${prop.heating}" placeholder="개별난방 (도시가스)" />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>사용승인일</label>
-                  <input type="date" name="buildYear" class="form-control" value="${prop.buildYear}" />
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="form-group">
-                  <label>입주가능일</label>
-                  <input type="text" name="moveInDate" class="form-control" value="${prop.moveInDate}" placeholder="즉시입주 / 2026-04 등" />
-                </div>
-              </div>
-            </div>
+                </td>
+              </tr>
+              <tr>
+                <th>거래종류 <span class="text-danger">*</span></th>
+                <td colspan="3">
+                  <label class="mr-3"><input type="radio" name="dealType" value="SELL" ${empty prop.dealType || prop.dealType eq 'SELL' ? 'checked' : ''} /> 매매</label>
+                  <label class="mr-3"><input type="radio" name="dealType" value="JEONSE" ${prop.dealType eq 'JEONSE' ? 'checked' : ''} /> 전세</label>
+                  <label class="mr-3"><input type="radio" name="dealType" value="WOLSE" ${prop.dealType eq 'WOLSE' ? 'checked' : ''} /> 월세</label>
+                  <label><input type="radio" name="dealType" value="SHORT" ${prop.dealType eq 'SHORT' ? 'checked' : ''} /> 단기임대</label>
+                </td>
+              </tr>
+              <tr>
+                <th>매물명 <span class="text-danger">*</span></th>
+                <td colspan="3"><input type="text" name="propNm" class="form-control form-control-sm" value="${prop.propNm}" maxlength="100" required /></td>
+              </tr>
+              <tr>
+                <th>매물특징</th>
+                <td colspan="3"><input type="text" name="propFeature" class="form-control form-control-sm" value="${prop.propFeature}" maxlength="100" placeholder="리스트에 노출되는 한줄 요약 (40자 권장)" /></td>
+              </tr>
+            </table>
           </div>
         </div>
 
-        <!-- 위치 -->
+        <!-- ===== 2. 매물소재지 ===== -->
         <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">위치정보</h5></div>
+          <div class="card-header"><h5 class="card-title mb-0">매물소재지</h5></div>
           <div class="card-body">
             <div class="row">
-              <!-- 좌측: 주소 입력 -->
-              <div class="col-md-6">
+              <!-- 좌측: 입력 -->
+              <div class="col-lg-6">
                 <div class="form-group">
-                  <label>주소 <span class="text-danger">*</span></label>
-                  <div class="input-group">
-                    <input type="text" name="address" id="address" class="form-control" value="${prop.address}" placeholder="주소 검색 버튼을 클릭하세요" readonly />
-                    <div class="input-group-append">
-                      <button type="button" class="btn btn-bo-save" onclick="fnSearchAddress()">주소 검색</button>
-                    </div>
+                  <label><strong>주소</strong> <span class="text-danger">*</span></label>
+                  <div class="d-flex" style="gap:8px;">
+                    <input type="text" name="address" id="address" class="form-control form-control-sm" value="${prop.address}" placeholder="주소 검색" readonly style="flex:1;" />
+                    <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSearchAddr()">주소 검색</button>
                   </div>
                 </div>
                 <div class="form-group">
                   <label>상세주소</label>
-                  <input type="text" name="addressDtl" id="addressDtl" class="form-control" value="${prop.addressDtl}" placeholder="상세주소 입력 (동/호수 등)" />
+                  <input type="text" name="addressDtl" class="form-control form-control-sm" value="${prop.addressDtl}" placeholder="상세주소 입력 (동/호수 등)" />
                 </div>
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
-                      <label>위도</label>
-                      <input type="text" name="lat" id="lat" class="form-control" value="${prop.lat}" readonly style="background:#f4f4f4;" />
+                      <label><strong>위도</strong></label>
+                      <input type="text" name="lat" id="lat" class="form-control form-control-sm" value="${prop.lat}" />
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
-                      <label>경도</label>
-                      <input type="text" name="lng" id="lng" class="form-control" value="${prop.lng}" readonly style="background:#f4f4f4;" />
+                      <label><strong>경도</strong></label>
+                      <input type="text" name="lng" id="lng" class="form-control form-control-sm" value="${prop.lng}" />
                     </div>
                   </div>
                 </div>
+                <div class="form-group">
+                  <label>건물명</label>
+                  <input type="text" name="buildingNm" class="form-control form-control-sm" value="${prop.buildingNm}" />
+                </div>
               </div>
               <!-- 우측: 지도 미리보기 -->
-              <div class="col-md-6">
-                <label>지도 미리보기</label>
-                <div id="propMapPreview" style="width:100%; height:220px; border:1px solid #ddd; border-radius:8px; overflow:hidden; background:#f4f4f4; display:flex; align-items:center; justify-content:center; color:#999; font-size:13px;">
-                  주소를 검색하면 지도가 표시됩니다
+              <div class="col-lg-6">
+                <label><strong>지도 미리보기</strong></label>
+                <div id="mapPreview" style="width:100%; height:280px; border:1px solid #dee2e6; border-radius:4px; background:#f5f5f5; display:flex; align-items:center; justify-content:center; color:#aaa;">
+                  <c:if test="${empty prop.lat}">주소를 검색하면 지도가 표시됩니다</c:if>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 노출설정 -->
+        <!-- ===== 3. 가격정보 ===== -->
         <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">노출 / 상태</h5></div>
+          <div class="card-header"><h5 class="card-title mb-0">가격정보</h5></div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>뱃지</label>
-                  <select name="badgeType" class="form-control">
-                    <option value="NONE" ${prop.badgeType eq 'NONE' or empty prop.badgeType ? 'selected' : ''}>선택없음</option>
+            <table class="table table-bordered bo-form-table">
+              <tr>
+                <th>매매가 <small class="text-muted">(만원)</small></th>
+                <td><input type="number" name="sellPrice" class="form-control form-control-sm" value="${prop.sellPrice}" /></td>
+                <th>보증금/전세가 <small class="text-muted">(만원)</small></th>
+                <td><input type="number" name="deposit" class="form-control form-control-sm" value="${prop.deposit}" /></td>
+              </tr>
+              <tr>
+                <th>월세 <small class="text-muted">(만원)</small></th>
+                <td><input type="number" name="monthlyRent" class="form-control form-control-sm" value="${prop.monthlyRent}" /></td>
+                <th>월관리비 <small class="text-muted">(원)</small></th>
+                <td><input type="number" name="monthlyMgmt" class="form-control form-control-sm" value="${prop.monthlyMgmt}" /></td>
+              </tr>
+              <tr>
+                <th>권리금 <small class="text-muted">(만원, 상가)</small></th>
+                <td><input type="number" name="premium" class="form-control form-control-sm" value="${prop.premium}" /></td>
+                <th>융자여부</th>
+                <td>
+                  <div class="d-flex" style="gap:8px;">
+                    <select name="loanYn" class="form-control form-control-sm" style="width:100px;">
+                      <option value="NONE" ${prop.loanYn eq 'NONE' || empty prop.loanYn ? 'selected' : ''}>표시안함</option>
+                      <option value="YES" ${prop.loanYn eq 'YES' ? 'selected' : ''}>있음</option>
+                      <option value="NO" ${prop.loanYn eq 'NO' ? 'selected' : ''}>없음</option>
+                    </select>
+                    <input type="number" name="loanAmount" class="form-control form-control-sm" value="${prop.loanAmount}" placeholder="융자금(만원)" style="width:150px;" />
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== 4. 매물정보 ===== -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">매물정보</h5></div>
+          <div class="card-body">
+            <table class="table table-bordered bo-form-table">
+              <tr>
+                <th>공급면적 <small class="text-muted">(㎡)</small></th>
+                <td><input type="number" step="0.01" name="areaSupply" class="form-control form-control-sm" value="${prop.areaSupply}" /></td>
+                <th>전용면적 <small class="text-muted">(㎡)</small></th>
+                <td><input type="number" step="0.01" name="areaExclusive" class="form-control form-control-sm" value="${prop.areaExclusive}" /></td>
+              </tr>
+              <tr>
+                <th>대지면적 <small class="text-muted">(㎡)</small></th>
+                <td><input type="number" step="0.01" name="areaLand" class="form-control form-control-sm" value="${prop.areaLand}" /></td>
+                <th></th><td></td>
+              </tr>
+              <tr>
+                <th>해당층</th>
+                <td><input type="text" name="floorNo" class="form-control form-control-sm" value="${prop.floorNo}" placeholder="예: 5, B1" /></td>
+                <th>총층</th>
+                <td><input type="number" name="floorTotal" class="form-control form-control-sm" value="${prop.floorTotal}" /></td>
+              </tr>
+              <tr>
+                <th>방수</th>
+                <td><input type="number" name="roomCnt" class="form-control form-control-sm" value="${prop.roomCnt}" /></td>
+                <th>욕실수</th>
+                <td><input type="number" name="bathCnt" class="form-control form-control-sm" value="${prop.bathCnt}" /></td>
+              </tr>
+              <tr>
+                <th>방향</th>
+                <td>
+                  <select name="direction" class="form-control form-control-sm" style="width:120px;">
+                    <option value="">선택</option>
+                    <option value="동" ${prop.direction eq '동' ? 'selected' : ''}>동</option>
+                    <option value="서" ${prop.direction eq '서' ? 'selected' : ''}>서</option>
+                    <option value="남" ${prop.direction eq '남' ? 'selected' : ''}>남</option>
+                    <option value="북" ${prop.direction eq '북' ? 'selected' : ''}>북</option>
+                    <option value="남동" ${prop.direction eq '남동' ? 'selected' : ''}>남동</option>
+                    <option value="남서" ${prop.direction eq '남서' ? 'selected' : ''}>남서</option>
+                    <option value="북동" ${prop.direction eq '북동' ? 'selected' : ''}>북동</option>
+                    <option value="북서" ${prop.direction eq '북서' ? 'selected' : ''}>북서</option>
+                  </select>
+                </td>
+                <th>주차</th>
+                <td>
+                  <label class="mr-2"><input type="radio" name="parkingYn" value="Y" ${prop.parkingYn eq 'Y' ? 'checked' : ''} /> 가능</label>
+                  <label><input type="radio" name="parkingYn" value="N" ${prop.parkingYn eq 'N' ? 'checked' : ''} /> 불가</label>
+                </td>
+              </tr>
+              <tr>
+                <th>사용승인일</th>
+                <td><input type="date" name="buildDate" class="form-control form-control-sm" value="${prop.buildDate}" style="width:180px;" /></td>
+                <th>현관유형</th>
+                <td>
+                  <select name="entranceType" class="form-control form-control-sm" style="width:120px;">
+                    <option value="">선택</option>
+                    <option value="복도식" ${prop.entranceType eq '복도식' ? 'selected' : ''}>복도식</option>
+                    <option value="계단식" ${prop.entranceType eq '계단식' ? 'selected' : ''}>계단식</option>
+                    <option value="복합식" ${prop.entranceType eq '복합식' ? 'selected' : ''}>복합식</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <th>난방방식</th>
+                <td>
+                  <select name="heating" class="form-control form-control-sm" style="width:120px;">
+                    <option value="">선택</option>
+                    <option value="개별" ${prop.heating eq '개별' ? 'selected' : ''}>개별난방</option>
+                    <option value="중앙" ${prop.heating eq '중앙' ? 'selected' : ''}>중앙난방</option>
+                    <option value="지역" ${prop.heating eq '지역' ? 'selected' : ''}>지역난방</option>
+                  </select>
+                </td>
+                <th></th><td></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== 5. 상세정보 ===== -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">상세정보</h5></div>
+          <div class="card-body">
+            <textarea id="initCnts" style="display:none;">${prop.detailCnts}</textarea>
+            <textarea id="detailCnts" name="detailCnts"></textarea>
+          </div>
+        </div>
+
+        <!-- ===== 6. 사진 ===== -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">사진</h5></div>
+          <div class="card-body">
+            <!-- 기존 사진 -->
+            <div id="existFileArea" class="d-flex flex-wrap" style="gap:10px; margin-bottom:10px;">
+              <c:if test="${not empty fileList}">
+                <c:forEach var="file" items="${fileList}">
+                  <div class="exist-file-item" id="file_${file.upldFileCd}_${file.fileSeq}">
+                    <img src="${ctx}/common/fileView?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}" />
+                    <button type="button" class="btn btn-xs btn-bo-del" onclick="fnDeleteFile('${file.upldFileCd}','${file.fileSeq}')">×</button>
+                  </div>
+                </c:forEach>
+              </c:if>
+            </div>
+            <!-- 드래그앤드롭 업로드 -->
+            <input type="file" name="atchFile" id="atchFileInput" multiple accept="image/*" style="display:none;" />
+            <div id="dropZone" class="drop-zone">
+              <i class="fas fa-cloud-upload-alt drop-zone-icon"></i>
+              <p class="drop-zone-text">파일을 여기에 드래그하거나 클릭하여 선택</p>
+              <small class="text-muted">여러 장 선택 가능 (최대 20MB)</small>
+            </div>
+            <!-- 새 파일 미리보기 -->
+            <div id="newFilePreview" class="d-flex flex-wrap" style="gap:10px; margin-top:10px;"></div>
+            <div id="deleteFilesArea"></div>
+          </div>
+        </div>
+
+        <!-- ===== 7. 전시/상태 ===== -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">전시/상태</h5></div>
+          <div class="card-body">
+            <table class="table table-bordered bo-form-table">
+              <tr>
+                <th>전시여부</th>
+                <td>
+                  <label class="mr-2"><input type="radio" name="displayYn" value="Y" ${empty prop.displayYn || prop.displayYn eq 'Y' ? 'checked' : ''} /> 전시</label>
+                  <label><input type="radio" name="displayYn" value="N" ${prop.displayYn eq 'N' ? 'checked' : ''} /> 비전시</label>
+                </td>
+                <th>뱃지</th>
+                <td>
+                  <select name="badgeType" class="form-control form-control-sm" style="width:120px;">
+                    <option value="NONE" ${empty prop.badgeType || prop.badgeType eq 'NONE' ? 'selected' : ''}>없음</option>
                     <option value="RECOMMEND" ${prop.badgeType eq 'RECOMMEND' ? 'selected' : ''}>추천</option>
                     <option value="URGENT" ${prop.badgeType eq 'URGENT' ? 'selected' : ''}>급매</option>
                   </select>
-                  <small class="text-muted">추천/급매 설정 시 메인 슬라이더에 자동 노출됩니다.</small>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>거래상태</label>
-                  <select name="soldYn" class="form-control">
-                    <option value="N" ${prop.soldYn ne 'Y' ? 'selected' : ''}>거래중</option>
-                    <option value="Y" ${prop.soldYn eq 'Y' ? 'selected' : ''}>거래완료</option>
-                  </select>
-                </div>
-              </div>
-              <c:if test="${not empty prop}">
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>조회수</label>
-                  <input type="text" class="form-control" value="${prop.viewCnt != null ? prop.viewCnt : 0}" readonly style="background:#f4f4f4;" />
-                </div>
-              </div>
-              </c:if>
-            </div>
+                </td>
+              </tr>
+              <tr>
+                <th>전시 시작일</th>
+                <td><input type="date" name="displayStart" class="form-control form-control-sm" value="${prop.displayStart}" style="width:180px;" /></td>
+                <th>전시 종료일</th>
+                <td><input type="date" name="displayEnd" class="form-control form-control-sm" value="${prop.displayEnd}" style="width:180px;" /></td>
+              </tr>
+              <tr>
+                <th>거래완료</th>
+                <td>
+                  <label class="mr-2"><input type="radio" name="soldYn" value="N" ${empty prop.soldYn || prop.soldYn eq 'N' ? 'checked' : ''} /> 거래중</label>
+                  <label><input type="radio" name="soldYn" value="Y" ${prop.soldYn eq 'Y' ? 'checked' : ''} /> 거래완료</label>
+                </td>
+                <th></th><td></td>
+              </tr>
+              <tr>
+                <th>관리자 메모</th>
+                <td colspan="3"><textarea name="adminMemo" class="form-control form-control-sm" rows="2" placeholder="비공개 메모">${prop.adminMemo}</textarea></td>
+              </tr>
+            </table>
           </div>
         </div>
 
-        <!-- 매물 설명 -->
-        <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">매물 설명</h5></div>
-          <div class="card-body">
-            <textarea id="initPropDesc" style="display:none;"><c:out value="${prop.propDesc}" escapeXml="true"/></textarea>
-            <textarea id="summernote"></textarea>
-            <input type="hidden" name="propDesc" id="propDescHidden" />
-          </div>
+        <!-- ===== 버튼 ===== -->
+        <div style="text-align:center; padding:40px 0 80px;">
+          <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+          <c:if test="${not empty prop}">
+            <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="fnCopy()">복사</button>
+          </c:if>
+          <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
         </div>
-
-        <!-- 첨부파일 -->
-        <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">이미지 첨부</h5></div>
-          <div class="card-body">
-            <c:if test="${not empty fileList}">
-              <div id="existFileWrap" class="mb-3">
-                <c:forEach var="file" items="${fileList}">
-                  <div class="d-flex align-items-center mb-1" data-upld-file-cd="${file.upldFileCd}" data-file-seq="${file.fileSeq}">
-                    <a href="${ctx}/file/download?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}">📎 ${file.fileNm}</a>
-                    <button type="button" class="btn btn-xs btn-outline-danger ml-2" onclick="fnRemoveExistFile(this)">삭제</button>
-                    <button type="button" class="btn btn-xs btn-outline-warning ml-1" onclick="fnRestoreExistFile(this)" style="display:none;">취소</button>
-                  </div>
-                </c:forEach>
-              </div>
-            </c:if>
-
-            <!-- 드래그앤드롭 영역 -->
-            <div id="dropZone" class="drop-zone">
-              <div class="drop-zone-inner">
-                <div class="drop-zone-icon">📷</div>
-                <p class="drop-zone-text">이미지를 여기에 드래그하거나 <span class="drop-zone-browse">클릭하여 선택</span></p>
-                <p class="drop-zone-hint">최대 10개, 파일당 20MB 이하 (JPG, PNG, GIF, WEBP)</p>
-              </div>
-              <input type="file" id="dropFileInput" multiple accept="image/*" style="display:none;" />
-            </div>
-
-            <!-- 추가된 파일 미리보기 -->
-            <div id="newFilePreview" class="file-preview-wrap"></div>
-          </div>
-        </div>
-
       </form>
-
-      <!-- 버튼 -->
-      <!-- 버튼 -->
-      <div style="text-align:center; padding:40px 0 80px;">
-        <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
-        <c:if test="${not empty prop}">
-        <button type="button" class="btn btn-bo-reset ml-2" onclick="fnDelete()">삭제</button>
-        </c:if>
-        <button type="button" class="btn btn-bo-save ml-2" onclick="fnSave()">저장</button>
-        <c:if test="${not empty prop}">
-        <button type="button" class="btn btn-bo-reset ml-2" onclick="fnCopy()">복사</button>
-        </c:if>
-      </div>
-
     </div>
   </section>
 </div>
 
-<form id="goWriteForm" action="${ctx}/propertyMng/viewPropertyWrite" method="post" style="display:none;">
-  <input type="hidden" name="propCd" id="writePropCd" />
-</form>
-
+<!-- 카카오 주소 + 지도 -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d&libraries=services&autoload=false"></script>
-
-<style>
-.drop-zone {
-  border: 2px dashed #ccc; border-radius: 12px; padding: 40px 20px;
-  text-align: center; cursor: pointer; transition: all 0.2s;
-  background: #fafafa;
-}
-.drop-zone:hover, .drop-zone.dragover {
-  border-color: #007bff; background: #f0f7ff;
-}
-.drop-zone.dragover .drop-zone-icon { transform: scale(1.15); }
-.drop-zone-icon { font-size: 36px; margin-bottom: 8px; transition: transform 0.2s; }
-.drop-zone-text { font-size: 14px; color: #555; margin: 0 0 4px; }
-.drop-zone-browse { color: #007bff; font-weight: 600; text-decoration: underline; }
-.drop-zone-hint { font-size: 12px; color: #999; margin: 0; }
-
-.file-preview-wrap { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 16px; }
-.file-preview-item {
-  position: relative; width: 120px; border: 1px solid #e0e0e0; border-radius: 8px;
-  overflow: hidden; background: #fff;
-}
-.file-preview-item img {
-  width: 120px; height: 90px; object-fit: cover; display: block;
-}
-.file-preview-item .fp-name {
-  padding: 4px 6px; font-size: 11px; color: #555;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.file-preview-item .fp-size {
-  padding: 0 6px 4px; font-size: 10px; color: #999;
-}
-.file-preview-item .fp-remove {
-  position: absolute; top: 4px; right: 4px;
-  width: 22px; height: 22px; border-radius: 50%;
-  background: rgba(0,0,0,0.55); color: #fff; border: none;
-  font-size: 14px; line-height: 22px; text-align: center;
-  cursor: pointer; transition: background 0.15s;
-}
-.file-preview-item .fp-remove:hover { background: rgba(220,53,69,0.85); }
-</style>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d&autoload=false"></script>
 
 <script>
-  // 다음 우편번호 + 카카오 Geocoder
-  function fnSearchAddress() {
-    new daum.Postcode({
-      oncomplete: function(data) {
-        var addr = data.roadAddress || data.jibunAddress;
-        console.log('[주소선택]', addr);
-        $('#address').val(addr);
-        $('#addressDtl').val('').focus();
+var previewMap = null;
+var previewMarker = null;
 
-        // 카카오 Geocoder로 좌표 변환
-        kakao.maps.load(function() {
-          var geocoder = new kakao.maps.services.Geocoder();
-          geocoder.addressSearch(addr, function(results, status) {
-            console.log('[Geocoder] status:', status, 'results:', results);
-            if (status === kakao.maps.services.Status.OK) {
-              var lat = results[0].y;
-              var lng = results[0].x;
-              $('#lat').val(lat);
-              $('#lng').val(lng);
-              fnShowMapPreview(lat, lng);
-            } else {
-              $('#lat').prop('readonly', false).css('background', '');
-              $('#lng').prop('readonly', false).css('background', '');
-              alert('좌표를 자동으로 가져올 수 없습니다.\n위도/경도를 직접 입력해주세요.');
-            }
-          });
-        });
-      }
-    }).open();
-  }
-
-  // 지도 미리보기
-  function fnShowMapPreview(lat, lng) {
-    kakao.maps.load(function() {
-      var container = document.getElementById('propMapPreview');
-      container.innerHTML = '';
-      container.style.color = '';
-      container.style.fontSize = '';
-      container.style.display = '';
-      var map = new kakao.maps.Map(container, {
-        center: new kakao.maps.LatLng(lat, lng),
-        level: 3
-      });
-      var marker = new kakao.maps.Marker({ position: new kakao.maps.LatLng(lat, lng) });
-      marker.setMap(map);
-      map.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
-    });
-  }
-
-  // 수정 모드: 기존 좌표 있으면 지도 표시
-  $(function() {
-    var lat = '${prop.lat}';
-    var lng = '${prop.lng}';
-    if (lat && lng && lat !== '' && lng !== '' && lat !== 'null' && lng !== 'null') {
-      fnShowMapPreview(parseFloat(lat), parseFloat(lng));
-    }
-  });
-
-  const editor = EDIT.Summernote.init({
-    el: '#summernote',
+$(function() {
+  // Summernote 초기화 (공지사항과 동일)
+  EDIT.Summernote.init({
+    el: '#detailCnts',
     ctx: '${ctx}',
-    initSelector: '#initPropDesc',
-    height: 350
+    initSelector: '#initCnts',
+    height: 400
   });
 
-  /* ===== 드래그앤드롭 파일 업로드 ===== */
-  var newFiles = []; // { file, id }
-  var fileIdSeq = 0;
-  var MAX_FILES = 10;
-  var MAX_SIZE = 20 * 1024 * 1024;
-  var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+  // 수정모드: 소분류 로드
+  var initCatCd = '${prop.catCd}';
+  var initSubCatCd = '${prop.subCatCd}';
+  if (initCatCd) {
+    fnCatChange(initCatCd, initSubCatCd);
+  }
 
-  var $dropZone = $('#dropZone');
-  var $dropInput = $('#dropFileInput');
+  // 수정모드: 지도 미리보기
+  var initLat = parseFloat('${prop.lat}') || 0;
+  var initLng = parseFloat('${prop.lng}') || 0;
+  if (initLat && initLng) {
+    kakao.maps.load(function() { fnShowMapPreview(initLat, initLng); });
+  }
 
-  // 클릭 → 파일선택
-  $dropZone.on('click', function(e) {
-    if (e.target === $dropInput[0]) return; // input 자체 클릭은 무시
-    $dropInput.trigger('click');
-  });
-  $dropInput.on('click', function(e) { e.stopPropagation(); });
-  $dropInput.on('change', function() {
-    fnHandleFiles(this.files);
-    this.value = '';
-  });
+  // 드래그앤드롭 초기화
+  fnInitDropZone();
+});
 
-  // 드래그 이벤트
-  $dropZone.on('dragenter dragover', function(e) {
+/* 대분류 변경 → 소분류 로드 */
+function fnCatChange(catCd, selectedSubCatCd) {
+  var $sub = $('#subCatCd');
+  $sub.html('<option value="">선택</option>');
+  if (!catCd) return;
+
+  var res = ajaxCall('${ctx}/propertyMng/getSubCatList', { catCd: catCd }, false);
+  if (res && res.DATA) {
+    for (var i = 0; i < res.DATA.length; i++) {
+      var d = res.DATA[i];
+      var sel = (d.subCatCd === selectedSubCatCd) ? ' selected' : '';
+      $sub.append('<option value="' + d.subCatCd + '"' + sel + '>' + d.catNm + '</option>');
+    }
+  }
+}
+
+/* ========== 주소 검색 + 지도 미리보기 ========== */
+function fnSearchAddr() {
+  new daum.Postcode({
+    oncomplete: function(data) {
+      var addr = data.roadAddress || data.jibunAddress;
+      $('#address').val(addr);
+
+      // 카카오 지오코딩 → 좌표 자동 설정
+      kakao.maps.load(function() {
+        var geocoder = new kakao.maps.services.Geocoder();
+        geocoder.addressSearch(addr, function(result, status) {
+          if (status === kakao.maps.services.Status.OK) {
+            var lat = result[0].y;
+            var lng = result[0].x;
+            $('#lat').val(lat);
+            $('#lng').val(lng);
+            fnShowMapPreview(lat, lng);
+          }
+        });
+      });
+    }
+  }).open();
+}
+
+function fnShowMapPreview(lat, lng) {
+  var container = document.getElementById('mapPreview');
+  container.innerHTML = '';
+  container.style.color = '';
+  var latLng = new kakao.maps.LatLng(lat, lng);
+
+  if (!previewMap) {
+    previewMap = new kakao.maps.Map(container, { center: latLng, level: 3 });
+    previewMarker = new kakao.maps.Marker({ position: latLng });
+    previewMarker.setMap(previewMap);
+    previewMap.addControl(new kakao.maps.ZoomControl(), kakao.maps.ControlPosition.RIGHT);
+  } else {
+    previewMap.setCenter(latLng);
+    previewMarker.setPosition(latLng);
+  }
+  setTimeout(function() { previewMap.relayout(); }, 100);
+}
+
+/* ========== 드래그앤드롭 파일 업로드 ========== */
+function fnInitDropZone() {
+  var $zone = $('#dropZone');
+  var $input = $('#atchFileInput');
+
+  $zone.on('click', function() { $input[0].click(); });
+
+  $zone.on('dragover', function(e) { e.preventDefault(); e.stopPropagation(); $zone.addClass('drag-over'); });
+  $zone.on('dragleave', function(e) { e.preventDefault(); e.stopPropagation(); $zone.removeClass('drag-over'); });
+  $zone.on('drop', function(e) {
     e.preventDefault(); e.stopPropagation();
-    $dropZone.addClass('dragover');
-  });
-  $dropZone.on('dragleave drop', function(e) {
-    e.preventDefault(); e.stopPropagation();
-    $dropZone.removeClass('dragover');
-  });
-  $dropZone.on('drop', function(e) {
-    var dt = e.originalEvent.dataTransfer;
-    if (dt && dt.files) fnHandleFiles(dt.files);
+    $zone.removeClass('drag-over');
+    if (e.originalEvent.dataTransfer.files.length) {
+      $input[0].files = e.originalEvent.dataTransfer.files;
+      fnPreviewNewFiles($input[0].files);
+    }
   });
 
-  function fnHandleFiles(fileList) {
-    var existCnt = $('#existFileWrap div[data-upld-file-cd]').length - $('#propForm .deleteFileInput').length;
-    if (existCnt < 0) existCnt = 0;
+  $input.on('change', function() {
+    fnPreviewNewFiles(this.files);
+  });
+}
 
-    for (var i = 0; i < fileList.length; i++) {
-      var f = fileList[i];
+function fnPreviewNewFiles(files) {
+  var $preview = $('#newFilePreview');
+  $preview.empty();
+  for (var i = 0; i < files.length; i++) {
+    (function(file) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        $preview.append(
+          '<div class="exist-file-item">' +
+          '<img src="' + e.target.result + '" />' +
+          '<span class="new-file-label">NEW</span>' +
+          '</div>'
+        );
+      };
+      reader.readAsDataURL(file);
+    })(files[i]);
+  }
+}
 
-      if (existCnt + newFiles.length >= MAX_FILES) {
-        alert('최대 ' + MAX_FILES + '개까지 첨부할 수 있습니다.'); break;
+/* ========== 저장 ========== */
+function fnSave() {
+  var $form = $('#propForm');
+  if (!$form[0].checkValidity()) { $form[0].reportValidity(); return; }
+
+  $('[name=detailCnts]').val($('#detailCnts').summernote('code'));
+
+  var formData = new FormData($form[0]);
+
+  $.ajax({
+    url: '${ctx}/propertyMng/saveProperty',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(res) {
+      if (res.result === 'OK') {
+        alert('저장되었습니다.');
+        location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + res.propCd;
+      } else {
+        alert('저장 실패: ' + (res.message || ''));
       }
-      if (f.size > MAX_SIZE) {
-        alert('"' + f.name + '" 파일이 20MB를 초과합니다.'); continue;
-      }
-      if (ALLOWED_TYPES.indexOf(f.type) === -1) {
-        alert('"' + f.name + '"은 지원하지 않는 파일 형식입니다.\n(JPG, PNG, GIF, WEBP만 가능)'); continue;
-      }
-
-      var id = 'nf_' + (++fileIdSeq);
-      newFiles.push({ file: f, id: id });
-      fnRenderPreview(f, id);
     }
+  });
+}
+
+/* ========== 삭제 ========== */
+function fnDelete() {
+  if (!confirm('삭제하시겠습니까?')) return;
+  var res = ajaxCall('${ctx}/propertyMng/deleteProperty', { propCd: '${prop.propCd}' }, false);
+  if (res && res.result === 'OK') {
+    alert('삭제되었습니다.');
+    fnGoList();
+  } else {
+    alert('삭제 실패');
   }
+}
 
-  function fnRenderPreview(file, id) {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var sizeStr = file.size < 1024 * 1024
-        ? (file.size / 1024).toFixed(0) + 'KB'
-        : (file.size / (1024 * 1024)).toFixed(1) + 'MB';
-
-      var html = '<div class="file-preview-item" data-file-id="' + id + '">'
-        + '<button type="button" class="fp-remove" onclick="fnRemoveNewFile(\'' + id + '\')">&times;</button>'
-        + '<img src="' + e.target.result + '" />'
-        + '<div class="fp-name" title="' + file.name + '">' + file.name + '</div>'
-        + '<div class="fp-size">' + sizeStr + '</div>'
-        + '</div>';
-      $('#newFilePreview').append(html);
-    };
-    reader.readAsDataURL(file);
+/* ========== 복사 ========== */
+function fnCopy() {
+  if (!confirm('매물을 복사하시겠습니까?')) return;
+  var res = ajaxCall('${ctx}/propertyMng/copyProperty', { propCd: '${prop.propCd}' }, false);
+  if (res && res.result === 'OK') {
+    alert('복사되었습니다.');
+    location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + res.newPropCd;
   }
+}
 
-  function fnRemoveNewFile(id) {
-    newFiles = newFiles.filter(function(f) { return f.id !== id; });
-    $('.file-preview-item[data-file-id="' + id + '"]').remove();
-  }
+/* ========== 파일 삭제 ========== */
+function fnDeleteFile(upldFileCd, fileSeq) {
+  if (!confirm('이 사진을 삭제하시겠습니까?')) return;
+  $('#file_' + upldFileCd + '_' + fileSeq).hide();
+  $('#deleteFilesArea').append('<input type="hidden" name="deleteFiles" value="' + upldFileCd + ':' + fileSeq + '" />');
+}
 
-  function fnRemoveExistFile(btn) {
-    var $row = $(btn).closest('div[data-upld-file-cd]');
-    $row.find('a').css({'text-decoration':'line-through','color':'#999'});
-    $(btn).hide(); $row.find('[onclick*="fnRestoreExistFile"]').show();
-    var key = $row.data('upld-file-cd') + ':' + $row.data('file-seq');
-    $('#propForm').append('<input type="hidden" name="deleteFiles" class="deleteFileInput" value="' + key + '" />');
-  }
-
-  function fnRestoreExistFile(btn) {
-    var $row = $(btn).closest('div[data-upld-file-cd]');
-    $row.find('a').css({'text-decoration':'','color':''});
-    $(btn).hide(); $row.find('[onclick*="fnRemoveExistFile"]').show();
-    var key = $row.data('upld-file-cd') + ':' + $row.data('file-seq');
-    $('#propForm .deleteFileInput').filter(function(){ return $(this).val() === key; }).remove();
-  }
-
-  function fnSave() {
-    if (!$('#propNm').val().trim()) { alert('매물명을 입력해주세요.'); $('#propNm').focus(); return; }
-    if (!$('#address').val().trim()) { alert('주소를 입력해주세요.'); $('#address').focus(); return; }
-
-    // 거래유형에 따른 가격 필수 체크
-    var dealType = $('#dealType').val();
-    if (dealType === 'SELL') {
-      if (!$('input[name="sellPrice"]').val() || $('input[name="sellPrice"]').val() == '0') { alert('매매가를 입력해주세요.'); $('input[name="sellPrice"]').focus(); return; }
-    } else if (dealType === 'JEONSE') {
-      if (!$('input[name="deposit"]').val() || $('input[name="deposit"]').val() == '0') { alert('보증금을 입력해주세요.'); $('input[name="deposit"]').focus(); return; }
-    } else {
-      if (!$('input[name="deposit"]').val() && !$('input[name="monthlyRent"]').val()) { alert('보증금 또는 월세를 입력해주세요.'); $('input[name="deposit"]').focus(); return; }
-    }
-
-    // 전용면적
-    if (!$('input[name="areaExclusive"]').val()) { alert('전용면적을 입력해주세요.'); $('input[name="areaExclusive"]').focus(); return; }
-
-    // 방수 (상가/사무실은 0 허용)
-    var propType = $('#propType').val();
-    if ((propType === 'APT' || propType === 'OFFICETEL' || propType === 'VILLA' || propType === 'ONEROOM') && (!$('input[name="roomCnt"]').val() || $('input[name="roomCnt"]').val() == '0')) {
-      alert('방수를 입력해주세요.'); $('input[name="roomCnt"]').focus(); return;
-    }
-
-    // 해당층
-    if (!$('input[name="floorNo"]').val().trim()) { alert('해당층을 입력해주세요.'); $('input[name="floorNo"]').focus(); return; }
-
-    // 에디터 내용 hidden에 세팅
-    $('#propDescHidden').val(editor.getHTML());
-
-    // FormData 빌드 (폼 데이터 + 드래그앤드롭 파일)
-    var formData = new FormData($('#propForm')[0]);
-    for (var i = 0; i < newFiles.length; i++) {
-      formData.append('atchFile', newFiles[i].file);
-    }
-
-    var res = ajaxFormCall('${ctx}/propertyMng/saveProperty', formData, false);
-    if (res && res.result === 'OK') {
-      alert('저장되었습니다.');
-      fnGoList();
-    } else {
-      alert('저장 실패: ' + (res && res.message ? res.message : ''));
-    }
-  }
-
-  function fnGoList() {
-    location.href = '${ctx}/propertyMng/viewPropertyMng';
-  }
-
-  function fnDelete() {
-    if (!confirm('삭제하시겠습니까?\n삭제된 매물은 복구할 수 없습니다.')) return;
-    var res = ajaxCall('${ctx}/propertyMng/deleteProperty', { propCd: '${prop.propCd}' }, false);
-    if (res && res.resultCnt > 0) {
-      alert('삭제되었습니다.');
-      fnGoList();
-    } else {
-      alert('삭제 실패');
-    }
-  }
-
-  function fnCopy() {
-    if (!confirm('이 매물을 복사하시겠습니까?\n매물명 뒤에 "_복사본"이 붙습니다.')) return;
-    var res = ajaxCall('${ctx}/propertyMng/copyProperty', { propCd: '${prop.propCd}' }, false);
-    if (res && res.result === 'OK') {
-      alert('복사되었습니다. 복사된 매물의 수정화면으로 이동합니다.');
-      $('#writePropCd').val(res.newPropCd);
-      $('#goWriteForm').submit();
-    } else {
-      alert('복사 실패: ' + (res && res.message ? res.message : ''));
-    }
-  }
+function fnGoList() {
+  location.href = '${ctx}/propertyMng/viewPropertyMng';
+}
 </script>
+
+<style>
+/* 기존 파일 아이템 */
+.exist-file-item { position:relative; display:inline-block; }
+.exist-file-item img { width:150px; height:100px; object-fit:cover; border-radius:4px; border:1px solid #dee2e6; }
+.exist-file-item .btn { position:absolute; top:4px; right:4px; font-size:14px; padding:0 6px; line-height:20px; background:rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; }
+.exist-file-item .btn:hover { background:rgba(220,53,69,0.9); }
+.new-file-label { position:absolute; bottom:4px; left:4px; background:#28a745; color:#fff; font-size:10px; padding:1px 6px; border-radius:3px; font-weight:700; }
+
+/* 드래그앤드롭 영역 */
+.drop-zone {
+  border:2px dashed #ccc; border-radius:8px; padding:30px; text-align:center; cursor:pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.drop-zone:hover, .drop-zone.drag-over { border-color:#0078ff; background:#f0f7ff; }
+.drop-zone-icon { font-size:36px; color:#0078ff; margin-bottom:10px; display:block; }
+.drop-zone-text { margin:0 0 4px; font-size:15px; color:#333; font-weight:700; }
+.drop-zone p { margin:0; }
+</style>
