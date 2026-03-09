@@ -71,8 +71,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item">
             <a href="/" class="nav-link">Home</a>
           </li>
-          <li class="nav-item">
-            <a href="${ctx}/propertyMng/viewPropertyMng" class="nav-link">매물관리</a>
+          <li class="nav-item dropdown">
+            <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">매물관리</a>
+            <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+              <li><a href="${ctx}/propertyMng/viewPropertyMng" class="dropdown-item">매물관리</a></li>
+              <li><a href="${ctx}/propCatMng/viewPropCatMng" class="dropdown-item">매물코드관리</a></li>
+            </ul>
           </li>
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu3" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">고객지원</a>

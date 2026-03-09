@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="propCatMng">
+
+    <!-- 대분류 목록 -->
+    <select id="getCatList" resultType="map">
+        SELECT CAT_CD, CAT_NM, SORT_ORDER, USE_YN,
+               DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM,
+               (SELECT COUNT(*) FROM TB_PROP_CATEGORY sub
+                WHERE sub.CAT_CD = main.CAT_CD AND sub.SUB_CAT_CD != '00') AS SUB_CNT
+          FROM TB_PROP_CATEGORY main
+         WHERE SUB_CAT_CD = '00'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- 소분류 목록 (대분류코드 기준) -->
+    <select id="getSubCatList" parameterType="string" resultType="map">
+        SELECT CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN,
+               DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM
+          FROM TB_PROP_CATEGORY
+         WHERE CAT_CD = #{catCd}
+           AND SUB_CAT_CD != '00'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- 대분류 저장 (UPSERT) -->
+    <update id="saveCat" parameterType="map">
+        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, RGT_DTM, UPD_DTM)
+        VALUES (#{catCd}, '00', #{catNm}, #{sortOrder}, #{useYn}, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE
+            CAT_NM = #{catNm},
+            SORT_ORDER = #{sortOrder},
+            USE_YN = #{useYn},
+            UPD_DTM = NOW()
+    </update>
+
+    <!-- 소분류 저장 (UPSERT) -->
+    <update id="saveSubCat" parameterType="map">
+        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, RGT_DTM, UPD_DTM)
+        VALUES (#{catCd}, #{subCatCd}, #{catNm}, #{sortOrder}, #{useYn}, NOW(), NOW())
+        ON DUPLICATE KEY UPDATE
+            CAT_NM = #{catNm},
+            SORT_ORDER = #{sortOrder},
+            USE_YN = #{useYn},
+            UPD_DTM = NOW()
+    </update>
+
+    <!-- 소분류 삭제 -->
+    <delete id="deleteSubCat" parameterType="map">
+        DELETE FROM TB_PROP_CATEGORY
+         WHERE CAT_CD = #{catCd}
+           AND SUB_CAT_CD = #{subCatCd}
+           AND SUB_CAT_CD != '00'
+    </delete>
+
+    <!-- 대분류 삭제 (소분류 포함) -->
+    <delete id="deleteCat" parameterType="string">
+        DELETE FROM TB_PROP_CATEGORY
+         WHERE CAT_CD = #{catCd}
+    </delete>
+
+    <!-- 다음 소분류코드 자동채번 -->
+    <select id="getNextSubCatCd" parameterType="string" resultType="string">
+        SELECT LPAD(IFNULL(MAX(CAST(SUB_CAT_CD AS UNSIGNED)), 0) + 1, 2, '0')
+          FROM TB_PROP_CATEGORY
+         WHERE CAT_CD = #{catCd}
+           AND SUB_CAT_CD != '00'
+    </select>
+
+</mapper>
