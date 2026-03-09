@@ -32,11 +32,7 @@
     <h4 class="side-cs-title">매물 문의</h4>
     <p class="side-cs-desc">원하시는 매물이 없으시면 전화 또는 온라인으로 문의해 주세요.</p>
     <p class="side-cs-tel">032-327-1277</p>
-    <div class="side-cs-info">
-      FAX : 032-327-1279<br>
-      운영시간 : 09:00 ~ 18:00<br>
-      (주말·공휴일 휴무)
-    </div>
+    <a href="javascript:fnGoConsult()" class="side-cs-btn">상담 신청하기</a>
   </div>
 </aside>
 

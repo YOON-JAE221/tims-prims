@@ -20,10 +20,6 @@
     <h4 class="side-cs-title">상담 안내</h4>
     <p class="side-cs-desc">부동산에 관한 궁금한 점이 있으시면 언제든지 연락 주세요.</p>
     <p class="side-cs-tel">032-327-1277</p>
-    <div class="side-cs-info">
-      FAX : 032-327-1279<br>
-      운영시간 : 09:00 ~ 18:00<br>
-      (주말·공휴일 휴무)
-    </div>
+    <a href="javascript:fnGoConsult()" class="side-cs-btn">상담 신청하기</a>
   </div>
 </aside>
