@@ -117,7 +117,12 @@
 
   @media (max-width: 1400px) { .dash-cards { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 1200px) { .dash-row { grid-template-columns: 1fr; } }
-  @media (max-width: 768px) { .dash-cards { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 768px) {
+    .dash-cards { grid-template-columns: repeat(2, 1fr); }
+    /* 모바일: 최근 등록 매물 가로 스크롤 */
+    .recent-prop-wrap { overflow-x: auto; }
+    .recent-prop-table { min-width: 600px; }
+  }
 </style>
 
 <div class="content-wrapper">
