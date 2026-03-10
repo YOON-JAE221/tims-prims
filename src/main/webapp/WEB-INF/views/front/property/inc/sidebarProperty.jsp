@@ -10,8 +10,8 @@
       <a href="javascript:fnGoType('all')">전체매물</a>
     </li>
     <c:forEach var="cat" items="${catList}">
-      <li class="${fn:toLowerCase(type) eq fn:toLowerCase(cat.CAT_CD) ? 'active' : ''}">
-        <a href="javascript:fnGoType('${fn:toLowerCase(cat.CAT_CD)}')">${cat.CAT_NM}</a>
+      <li class="${fn:toLowerCase(type) eq fn:toLowerCase(cat.catCd) ? 'active' : ''}">
+        <a href="javascript:fnGoType('${fn:toLowerCase(cat.catCd)}')">${cat.catNm}</a>
       </li>
     </c:forEach>
   </ul>

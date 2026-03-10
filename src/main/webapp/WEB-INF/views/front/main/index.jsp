@@ -263,7 +263,7 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="card-type">${fp.catNm}</div>
+          <div class="card-type">${fp.catNm}<c:if test="${not empty fp.areaExclusive}"> · ${fp.areaExclusive}㎡</c:if></div>
           <div class="card-title">${fp.propNm}</div>
           <div class="card-location">${fp.address}</div>
           <div class="card-price">
@@ -275,11 +275,6 @@
                 <c:otherwise><fmt:formatNumber value="${fp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${fp.monthlyRent}" pattern="#,###"/>만</c:otherwise>
               </c:choose>
             </span>
-          </div>
-          <div class="card-info">
-            <div class="card-info-item">${fp.areaExclusive}&#13217;</div>
-            <c:if test="${fp.roomCnt > 0}"><div class="card-info-item">${fp.roomCnt}룸</div></c:if>
-            <c:if test="${fp.bathCnt > 0}"><div class="card-info-item">욕실${fp.bathCnt}</div></c:if>
           </div>
         </div>
       </div>

@@ -16,7 +16,7 @@
       <select id="psType" onchange="fnReload()">
         <option value="ALL">전체유형</option>
         <c:forEach var="cat" items="${catList}">
-          <option value="${cat.CAT_CD}">${cat.CAT_NM}</option>
+          <option value="${cat.catCd}">${cat.catNm}</option>
         </c:forEach>
       </select>
       <select id="psDeal" onchange="fnReload()">

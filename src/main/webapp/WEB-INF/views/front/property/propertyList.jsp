@@ -5,8 +5,8 @@
 <c:set var="typeNm" value="전체매물" />
 <c:if test="${not empty type and type ne 'all'}">
   <c:forEach var="cat" items="${catList}">
-    <c:if test="${fn:toLowerCase(cat.CAT_CD) eq fn:toLowerCase(type)}">
-      <c:set var="typeNm" value="${cat.CAT_NM}" />
+    <c:if test="${fn:toLowerCase(cat.catCd) eq fn:toLowerCase(type)}">
+      <c:set var="typeNm" value="${cat.catNm}" />
     </c:if>
   </c:forEach>
 </c:if>
@@ -97,7 +97,7 @@
             </c:if>
           </div>
           <div class="prop-card-body">
-            <div class="prop-card-type">${prop.catNm}</div>
+            <div class="prop-card-type">${prop.catNm}<c:if test="${not empty prop.areaExclusive}"> · ${prop.areaExclusive}㎡</c:if></div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-loc">${prop.address}</div>
             <div class="prop-card-price">
@@ -109,11 +109,6 @@
                   <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만</c:otherwise>
                 </c:choose>
               </span>
-            </div>
-            <div class="prop-card-info">
-              <span>${prop.areaExclusive}&#13217;</span>
-              <c:if test="${prop.roomCnt > 0}"><span>${prop.roomCnt}룸</span></c:if>
-              <c:if test="${prop.bathCnt > 0}"><span>욕실${prop.bathCnt}</span></c:if>
             </div>
           </div>
         </div>

@@ -227,7 +227,8 @@
 
     <!-- FO 사이드바용 대분류 목록 (USE_YN=Y만) -->
     <select id="getFrontCatList" resultType="map">
-        SELECT CAT_CD, CAT_NM
+        SELECT CAT_CD
+             , CAT_NM
           FROM TB_PROP_CATEGORY
          WHERE SUB_CAT_CD = '00'
            AND USE_YN = 'Y'
