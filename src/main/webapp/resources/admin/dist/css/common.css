@@ -55,14 +55,14 @@
 
 .btn-bo-del{
   background:#fff;
-  border:1px solid #dc3545;
-  color:#dc3545;
+  border:1px solid rgba(0,0,0,.2);
+  color:#111;
   font-weight:600;
 }
 .btn-bo-del:hover{
-  background:#dc3545;
-  border-color:#dc3545;
-  color:#fff;
+  background:#f7f7f7;
+  border-color: rgba(0,0,0,.28);
+  color:#111;
 }
 
 /* 포커스 링 통일 */
@@ -70,7 +70,8 @@
 .btn-bo-save:focus,
 .btn-bo-reset:focus,
 .btn-bo-del:focus,
-.btn-bo-search:focus{
+.btn-bo-search:focus,
+.btn-bo-copy:focus{
   box-shadow: 0 0 0 .15rem rgba(0,0,0,.15);
 }
 
@@ -79,7 +80,8 @@
 .btn-bo-save,
 .btn-bo-reset,
 .btn-bo-del,
-.btn-bo-search{
+.btn-bo-search,
+.btn-bo-copy{
   border-radius:10px;
   padding: .35rem .7rem;
 }
@@ -94,6 +96,19 @@
 .btn-bo-search:hover{
   background:#22313f;
   border-color:#22313f;
+  color:#fff;
+}
+
+/* 복사 버튼 */
+.btn-bo-copy{
+  background:#555;
+  border:1px solid #555;
+  color:#fff;
+  font-weight:700;
+}
+.btn-bo-copy:hover{
+  background:#444;
+  border-color:#444;
   color:#fff;
 }
 

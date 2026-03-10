@@ -28,12 +28,7 @@
         <div class="vc-title">${sliderProp.propNm}</div>
         <div class="vc-loc">${sliderProp.address}</div>
         <div class="vc-price">
-          <c:choose>
-            <c:when test="${sliderProp.dealType eq 'SELL'}"><fmt:formatNumber value="${sliderProp.sellPrice}" pattern="#,###"/></c:when>
-            <c:when test="${sliderProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${sliderProp.deposit}" pattern="#,###"/></c:when>
-            <c:otherwise><fmt:formatNumber value="${sliderProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${sliderProp.monthlyRent}" pattern="#,###"/></c:otherwise>
-          </c:choose>
-          <small>만원</small>
+          <span class="price-format" data-deal-type="${sliderProp.dealType}" data-sell="${sliderProp.sellPrice}" data-deposit="${sliderProp.deposit}" data-rent="${sliderProp.monthlyRent}"></span>
         </div>
         <div class="vc-stats"><span>${sliderProp.areaExclusive}&#13217;</span><c:if test="${sliderProp.roomCnt > 0}"><span>${sliderProp.roomCnt}룸</span></c:if><c:if test="${not empty sliderProp.floorNo}"><span>${sliderProp.floorNo}층</span></c:if></div>
       </div>
@@ -93,12 +88,7 @@
         <div class="vc-title">${latestProp.propNm}</div>
         <div class="vc-loc">${latestProp.address}</div>
         <div class="vc-price">
-          <c:choose>
-            <c:when test="${latestProp.dealType eq 'SELL'}"><fmt:formatNumber value="${latestProp.sellPrice}" pattern="#,###"/></c:when>
-            <c:when test="${latestProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${latestProp.deposit}" pattern="#,###"/></c:when>
-            <c:otherwise><fmt:formatNumber value="${latestProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${latestProp.monthlyRent}" pattern="#,###"/></c:otherwise>
-          </c:choose>
-          <small>만원</small>
+          <span class="price-format" data-deal-type="${latestProp.dealType}" data-sell="${latestProp.sellPrice}" data-deposit="${latestProp.deposit}" data-rent="${latestProp.monthlyRent}"></span>
         </div>
         <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${not empty latestProp.floorNo}"><span>${latestProp.floorNo}층</span></c:if></div>
       </div>
@@ -157,12 +147,7 @@
         <div class="vc-title">${urgentProp.propNm}</div>
         <div class="vc-loc">${urgentProp.address}</div>
         <div class="vc-price">
-          <c:choose>
-            <c:when test="${urgentProp.dealType eq 'SELL'}"><fmt:formatNumber value="${urgentProp.sellPrice}" pattern="#,###"/></c:when>
-            <c:when test="${urgentProp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${urgentProp.deposit}" pattern="#,###"/></c:when>
-            <c:otherwise><fmt:formatNumber value="${urgentProp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${urgentProp.monthlyRent}" pattern="#,###"/></c:otherwise>
-          </c:choose>
-          <small>만원</small>
+          <span class="price-format" data-deal-type="${urgentProp.dealType}" data-sell="${urgentProp.sellPrice}" data-deposit="${urgentProp.deposit}" data-rent="${urgentProp.monthlyRent}"></span>
         </div>
         <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${not empty urgentProp.floorNo}"><span>${urgentProp.floorNo}층</span></c:if></div>
       </div>
@@ -262,12 +247,7 @@
           <div class="card-location">${fp.address}</div>
           <div class="card-price">
             ${fp.dealTypeNm}
-            <c:choose>
-              <c:when test="${fp.dealType eq 'SELL'}"><fmt:formatNumber value="${fp.sellPrice}" pattern="#,###"/></c:when>
-              <c:when test="${fp.dealType eq 'JEONSE'}"><fmt:formatNumber value="${fp.deposit}" pattern="#,###"/></c:when>
-              <c:otherwise><fmt:formatNumber value="${fp.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${fp.monthlyRent}" pattern="#,###"/></c:otherwise>
-            </c:choose>
-            <span>만원</span>
+            <span class="price-format" data-deal-type="${fp.dealType}" data-sell="${fp.sellPrice}" data-deposit="${fp.deposit}" data-rent="${fp.monthlyRent}"></span>
           </div>
           <div class="card-info">
             <div class="card-info-item">${fp.areaExclusive}&#13217;</div>

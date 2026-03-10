@@ -55,18 +55,7 @@
       </a>
       <ul class="nav-links">
         <li class="nav-item"><a href="${ctx}/about/viewAbout">회사소개</a></li>
-        <li class="nav-item"><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
-        <li class="nav-item">
-          <a href="#">매물유형 ▾</a>
-          <div class="nav-dropdown">
-            <a href="javascript:fnGoPropertyType('apt')">아파트</a>
-            <a href="javascript:fnGoPropertyType('officetel')">오피스텔</a>
-            <a href="javascript:fnGoPropertyType('villa')">빌라/주택</a>
-            <a href="javascript:fnGoPropertyType('oneroom')">원룸/투룸</a>
-            <a href="javascript:fnGoPropertyType('shop')">상가</a>
-            <a href="javascript:fnGoPropertyType('office')">사무실</a>
-          </div>
-        </li>
+        <li class="nav-item"><a href="${ctx}/property/viewPropertySearch">매물유형</a></li>
         <li class="nav-item">
           <a href="#">고객지원 ▾</a>
           <div class="nav-dropdown">

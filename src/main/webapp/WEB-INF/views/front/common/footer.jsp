@@ -36,7 +36,7 @@
         <h4>서비스</h4>
         <ul>
           <li><a href="${ctx}/about/viewAbout">회사소개</a></li>
-          <li><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
+          <li><a href="${ctx}/property/viewPropertySearch">전체매물</a></li>
           <li><a href="${ctx}/locGuide/viewLocGuide">오시는길</a></li>
         </ul>
       </div>

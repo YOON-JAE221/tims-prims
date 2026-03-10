@@ -222,3 +222,66 @@ function escapeHtml(str){
 
 })(window);
 
+/* ===============================
+ * 부동산 금액 포맷 유틸 (원 → 억/만원)
+ * =============================== */
+(function(global) {
+  /**
+   * 원 단위 금액을 한국식 부동산 표기로 변환
+   * formatPrice(385000000) → "3억 8,500만"
+   * formatPrice(280000000) → "2억 8,000만"
+   * formatPrice(15000000)  → "1,500만"
+   * formatPrice(600000)    → "60만"
+   * formatPrice(0)         → "-"
+   */
+  function formatPrice(val) {
+    val = parseInt(val) || 0;
+    if (val <= 0) return '-';
+
+    var eok = Math.floor(val / 100000000);
+    var man = Math.floor((val % 100000000) / 10000);
+    var parts = [];
+
+    if (eok > 0) parts.push(eok + '억');
+    if (man > 0) parts.push(man.toLocaleString() + '만');
+
+    // 억, 만 둘 다 0이면 (1만원 미만)
+    if (parts.length === 0) return val.toLocaleString() + '원';
+
+    return parts.join(' ');
+  }
+
+  /**
+   * 페이지 로드 시 .price-format 요소를 자동 포맷
+   * data-sell, data-deposit, data-rent, data-deal-type 속성 사용
+   */
+  function initPriceFormat() {
+    var els = document.querySelectorAll('.price-format');
+    els.forEach(function(el) {
+      var dealType = el.getAttribute('data-deal-type') || '';
+      var sell = el.getAttribute('data-sell') || '0';
+      var deposit = el.getAttribute('data-deposit') || '0';
+      var rent = el.getAttribute('data-rent') || '0';
+      var html = '';
+
+      if (dealType === 'SELL') {
+        html = '<strong>' + formatPrice(parseInt(sell)) + '</strong>';
+      } else if (dealType === 'JEONSE') {
+        html = '<strong>' + formatPrice(parseInt(deposit)) + '</strong>';
+      } else {
+        html = '<strong>' + formatPrice(parseInt(deposit)) + '/' + formatPrice(parseInt(rent)) + '</strong>';
+      }
+      el.innerHTML = html;
+    });
+  }
+
+  global.PriceUtil = { formatPrice: formatPrice, initPriceFormat: initPriceFormat };
+
+  // DOM 로드 시 자동 실행
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPriceFormat);
+  } else {
+    initPriceFormat();
+  }
+})(window);
+

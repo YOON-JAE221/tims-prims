@@ -109,12 +109,7 @@
         <h2 class="prop-detail-title">${prop.propNm}</h2>
         <div class="prop-detail-loc">${prop.address}</div>
         <div class="prop-detail-price">
-          <c:choose>
-            <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/></c:when>
-            <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/></c:when>
-            <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/></c:otherwise>
-          </c:choose>
-          <span>만원</span>
+          <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}"></span>
         </div>
 
         <div class="prop-detail-tags">
@@ -163,13 +158,9 @@
         <tr>
           <th>가격</th>
           <td>
-            <c:choose>
-              <c:when test="${prop.dealType eq 'SELL'}">매매 <fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만원</c:when>
-              <c:when test="${prop.dealType eq 'JEONSE'}">전세 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만원</c:when>
-              <c:otherwise>보증금 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/> / 월세 <fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만원</c:otherwise>
-            </c:choose>
+            <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}"></span>
           </td>
-          <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>만원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+          <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>
         <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217;</td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply}">${prop.areaSupply}&#13217;</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
         <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">

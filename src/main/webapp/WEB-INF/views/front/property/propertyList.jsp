@@ -99,17 +99,7 @@
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-loc">${prop.address}</div>
             <div class="prop-card-price">
-              <c:choose>
-                <c:when test="${prop.dealType eq 'SELL'}">
-                  <fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/> <span>만원</span>
-                </c:when>
-                <c:when test="${prop.dealType eq 'JEONSE'}">
-                  <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/> <span>만원</span>
-                </c:when>
-                <c:otherwise>
-                  <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/> <span>만원</span>
-                </c:otherwise>
-              </c:choose>
+              <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}"></span>
             </div>
             <div class="prop-card-info">
               <span>${prop.areaExclusive}&#13217;</span>

@@ -22,6 +22,16 @@
       <form id="propForm" enctype="multipart/form-data">
         <input type="hidden" name="propCd" value="${prop.propCd}" />
 
+        <!-- ===== 상단 버튼 ===== -->
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom:16px;">
+          <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+          <c:if test="${not empty prop}">
+            <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
+            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
+          </c:if>
+          <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+        </div>
+
         <!-- ===== 1. 기본정보 ===== -->
         <div class="card">
           <div class="card-header"><h5 class="card-title mb-0">기본정보</h5></div>
@@ -119,19 +129,19 @@
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
               <tr>
-                <th>매매가 <small class="text-muted">(만원)</small></th>
+                <th>매매가 <small class="text-muted">(원)</small></th>
                 <td><input type="number" name="sellPrice" class="form-control form-control-sm" value="${prop.sellPrice}" /></td>
-                <th>보증금/전세가 <small class="text-muted">(만원)</small></th>
+                <th>보증금/전세가 <small class="text-muted">(원)</small></th>
                 <td><input type="number" name="deposit" class="form-control form-control-sm" value="${prop.deposit}" /></td>
               </tr>
               <tr>
-                <th>월세 <small class="text-muted">(만원)</small></th>
+                <th>월세 <small class="text-muted">(원)</small></th>
                 <td><input type="number" name="monthlyRent" class="form-control form-control-sm" value="${prop.monthlyRent}" /></td>
                 <th>월관리비 <small class="text-muted">(원)</small></th>
                 <td><input type="number" name="monthlyMgmt" class="form-control form-control-sm" value="${prop.monthlyMgmt}" /></td>
               </tr>
               <tr>
-                <th>권리금 <small class="text-muted">(만원, 상가)</small></th>
+                <th>권리금 <small class="text-muted">(원, 상가)</small></th>
                 <td><input type="number" name="premium" class="form-control form-control-sm" value="${prop.premium}" /></td>
                 <th>융자여부</th>
                 <td>
@@ -305,12 +315,12 @@
           </div>
         </div>
 
-        <!-- ===== 버튼 ===== -->
-        <div style="text-align:center; padding:40px 0 80px;">
+        <!-- ===== 하단 버튼 ===== -->
+        <div style="display:flex; justify-content:center; gap:8px; padding:40px 0 80px;">
           <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
           <c:if test="${not empty prop}">
             <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
-            <button type="button" class="btn btn-outline-secondary" onclick="fnCopy()">복사</button>
+            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
           </c:if>
           <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
         </div>

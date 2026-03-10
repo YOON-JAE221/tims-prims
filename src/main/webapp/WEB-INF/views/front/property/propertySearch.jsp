@@ -419,27 +419,23 @@ function fnRenderFilteredList(items) {
 }
 
 function fnPriceStr(d) {
-  if (d.dealType === 'SELL') return fnFormatPrice(d.sellPrice) + ' <span>만원</span>';
-  if (d.dealType === 'JEONSE') return fnFormatPrice(d.deposit) + ' <span>만원</span>';
-  return fnFormatPrice(d.deposit) + '/' + (d.monthlyRent || 0) + ' <span>만원</span>';
+  if (d.dealType === 'SELL') return '<strong>' + PriceUtil.formatPrice(d.sellPrice) + '</strong>';
+  if (d.dealType === 'JEONSE') return '<strong>' + PriceUtil.formatPrice(d.deposit) + '</strong>';
+  return '<strong>' + PriceUtil.formatPrice(d.deposit) + '/' + PriceUtil.formatPrice(d.monthlyRent) + '</strong>';
 }
 
 function fnPriceShort(d) {
-  if (d.dealType === 'SELL') return fnFormatPriceShort(d.sellPrice);
-  if (d.dealType === 'JEONSE') return fnFormatPriceShort(d.deposit);
-  return fnFormatPriceShort(d.deposit) + '/' + (d.monthlyRent || 0);
+  if (d.dealType === 'SELL') return PriceUtil.formatPrice(d.sellPrice);
+  if (d.dealType === 'JEONSE') return PriceUtil.formatPrice(d.deposit);
+  return PriceUtil.formatPrice(d.deposit) + '/' + PriceUtil.formatPrice(d.monthlyRent);
 }
 
 function fnFormatPrice(v) {
-  if (!v || v === 0) return '0';
-  if (v >= 10000) return Math.floor(v / 10000) + '억 ' + (v % 10000 > 0 ? (v % 10000).toLocaleString() : '');
-  return Number(v).toLocaleString();
+  return PriceUtil.formatPrice(v);
 }
 
 function fnFormatPriceShort(v) {
-  if (!v || v === 0) return '0';
-  if (v >= 10000) return (v / 10000).toFixed(v % 10000 === 0 ? 0 : 1) + '억';
-  return Number(v).toLocaleString();
+  return PriceUtil.formatPrice(v);
 }
 
 function fnGoDetail(propCd) {
