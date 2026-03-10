@@ -27,7 +27,7 @@ public class LoginController {
     private LoginService loginService;
 
     // LOGIN.jsp
-	@RequestMapping("/loginView")  
+	@RequestMapping(value = "/loginView", method = RequestMethod.POST)
     public String loginView(@RequestParam(value = "returnUrl", required = false) String returnUrl,
                             HttpServletRequest request, Model model) {
         // returnUrl 파라미터가 없으면 Referer 헤더에서 경로만 추출
@@ -102,7 +102,7 @@ public class LoginController {
 	    }
 	}
 	
-	@RequestMapping(value = "/doLogout", method = RequestMethod.GET)
+	@RequestMapping(value = "/doLogout", method = RequestMethod.POST)
 	public String logout(HttpSession session) {
 	    // 로그인 세션 제거
 	    session.invalidate(); // 전체 세션 초기화

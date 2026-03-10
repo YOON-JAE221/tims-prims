@@ -28,7 +28,7 @@ public class BbsController {
 	private BbsService bbsService;
 
 	// ===== 공지사항 =====
-	@RequestMapping(value = "/viewBbsNotice", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/viewBbsNotice", method = RequestMethod.POST)
 	public String viewBbsNotice(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_NOTICE);
@@ -49,7 +49,7 @@ public class BbsController {
 	}
 
 	// ===== FAQ =====
-	@RequestMapping(value = "/viewBbsFaq", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/viewBbsFaq", method = RequestMethod.POST)
 	public String viewBbsFaq(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_FAQ);
@@ -70,7 +70,7 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 =====
-	@RequestMapping(value = "/viewBbsQna", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/viewBbsQna", method = RequestMethod.POST)
 	public String viewBbsQna(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);
@@ -91,7 +91,7 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 글쓰기 =====
-    @RequestMapping(value = "/viewBbsWriteQna", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewBbsWriteQna", method = RequestMethod.POST)
     public String viewBbsWriteQna(@RequestParam(value="brdCd") String brdCd,
                                    @RequestParam(value="pstCd", required=false) String pstCd,
                                    @RequestParam(value="pstNm", required=false) String pstNm,
@@ -134,7 +134,7 @@ public class BbsController {
     }
 
 	// ===== 글 상세 (공통) =====
-	@RequestMapping(value = "/viewBbsDetail", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/viewBbsDetail", method = RequestMethod.POST)
 	public String viewBbsDetail(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
 
 	    String brdCd = (String) paramMap.get("brdCd");
@@ -289,7 +289,7 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 상세 =====
-	@RequestMapping(value = "/viewBbsDetailQna", method = {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "/viewBbsDetailQna", method = RequestMethod.POST)
 	public String viewBbsDetailQna(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
 
 	    String pstCd = (String) paramMap.get("pstCd");

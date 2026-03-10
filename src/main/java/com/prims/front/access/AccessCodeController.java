@@ -22,7 +22,7 @@ public class AccessCodeController {
     private SysConfigDao sysConfigDao;
 
     // 접속코드 입력 페이지
-    @RequestMapping(value = "/accessCode", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/accessCode", method = RequestMethod.POST)
     public String viewAccessCode(HttpSession session) {
         // 이미 인증된 경우 메인으로
         if ("Y".equals(session.getAttribute(AccessCodeInterceptor.SESSION_ACCESS_KEY))) {

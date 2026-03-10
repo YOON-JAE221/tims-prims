@@ -277,11 +277,24 @@ function escapeHtml(str){
 
   global.PriceUtil = { formatPrice: formatPrice, initPriceFormat: initPriceFormat };
 
-  // DOM 로드 시 자동 실행
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initPriceFormat);
-  } else {
+  // DOM 로드 시 자동 실행 (중복 호출 방지)
+  var _priceFormatDone = false;
+  function runOnce() {
+    if (_priceFormatDone) return;
+    _priceFormatDone = true;
     initPriceFormat();
+  }
+
+  // 방법1: DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runOnce);
+  } else {
+    runOnce();
+  }
+
+  // 방법2: jQuery ready (백업)
+  if (typeof jQuery !== 'undefined') {
+    jQuery(function() { runOnce(); });
   }
 })(window);
 

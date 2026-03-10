@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/about")
 public class AboutController {
 
-    @RequestMapping(value = "/viewAbout", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewAbout", method = RequestMethod.POST)
     public String viewAbout() {
         return "front/about/about";
     }

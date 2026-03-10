@@ -37,11 +37,11 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503060002" rel="stylesheet">
-  <link href="${ctx}/resources/front/css/main.css?v=202503050030" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503100001" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/main.css?v=202503100001" rel="stylesheet">
 
   <!-- Common JS -->
-  <script src="${ctx}/resources/common/util/js/common.js" charset="UTF-8"></script>
+  <script src="${ctx}/resources/common/util/js/common.js?v=202503100001" charset="UTF-8"></script>
 
 </head>
 
@@ -55,7 +55,8 @@
       </a>
       <ul class="nav-links">
         <li class="nav-item"><a href="${ctx}/about/viewAbout">회사소개</a></li>
-        <li class="nav-item"><a href="${ctx}/property/viewPropertySearch">매물유형</a></li>
+        <li class="nav-item"><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
+        <li class="nav-item"><a href="${ctx}/property/viewPropertyList">매물안내</a></li>
         <li class="nav-item">
           <a href="#">고객지원 ▾</a>
           <div class="nav-dropdown">

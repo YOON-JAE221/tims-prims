@@ -109,7 +109,13 @@
         <h2 class="prop-detail-title">${prop.propNm}</h2>
         <div class="prop-detail-loc">${prop.address}</div>
         <div class="prop-detail-price">
-          <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}"></span>
+          <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
+            <c:choose>
+              <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>원</c:when>
+              <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>원</c:when>
+              <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>원</c:otherwise>
+            </c:choose>
+          </span>
         </div>
 
         <div class="prop-detail-tags">
@@ -158,7 +164,13 @@
         <tr>
           <th>가격</th>
           <td>
-            <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}"></span>
+            <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
+              <c:choose>
+                <c:when test="${prop.dealType eq 'SELL'}">매매 <fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>원</c:when>
+                <c:when test="${prop.dealType eq 'JEONSE'}">전세 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>원</c:when>
+                <c:otherwise>보증금 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/> / 월세 <fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>원</c:otherwise>
+              </c:choose>
+            </span>
           </td>
           <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>

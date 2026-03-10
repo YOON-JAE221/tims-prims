@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/locGuide")
 public class LocGuideController {
 
-    @RequestMapping(value = "/viewLocGuide", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewLocGuide", method = RequestMethod.POST)
     public String viewLocGuide() {
         return "front/locGuide/locGuide";
     }

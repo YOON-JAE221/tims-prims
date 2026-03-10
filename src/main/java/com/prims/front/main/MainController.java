@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.prims.common.constant.Constant;
 import com.prims.front.property.PropertySearchDao;
@@ -24,7 +25,7 @@ public class MainController {
     @Autowired
     private PropertySearchDao propertySearchDao;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewMain(Model model) {
 
         // FO 활성 팝업 목록

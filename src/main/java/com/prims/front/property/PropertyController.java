@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/property")
 public class PropertyController {
 
-    @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewPropertyList", method = RequestMethod.POST)
     public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -45,7 +45,7 @@ public class PropertyController {
         return "front/property/propertyList";
     }
 
-    @RequestMapping(value = "/viewPropertyDetail", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewPropertyDetail", method = RequestMethod.POST)
     public String viewPropertyDetail(@RequestParam(value = "type", required = false, defaultValue = "apt") String type,
                                      @RequestParam(value = "id", required = false, defaultValue = "") String id,
                                      HttpSession session, Model model) {
@@ -68,13 +68,13 @@ public class PropertyController {
         return "front/property/propertyDetail";
     }
 
-    @RequestMapping(value = "/viewPropertySearch", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/viewPropertySearch", method = RequestMethod.POST)
     public String viewPropertySearch() {
         return "front/property/propertySearch";
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getPropertyMapList")
+    @RequestMapping(value = "/getPropertyMapList", method = RequestMethod.POST)
     public Map<String, Object> getPropertyMapList(@RequestParam(value = "swLat", required = false) String swLat,
                                                    @RequestParam(value = "swLng", required = false) String swLng,
                                                    @RequestParam(value = "neLat", required = false) String neLat,
