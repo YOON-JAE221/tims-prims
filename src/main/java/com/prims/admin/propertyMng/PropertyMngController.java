@@ -35,6 +35,15 @@ public class PropertyMngController {
         if (catCd != null && !catCd.isEmpty()) {
             model.addAttribute("initCatCd", catCd);
         }
+        // 검색조건 초기값
+        String soldYn = (String) paramMap.get("soldYn");
+        String badgeType = (String) paramMap.get("badgeType");
+        if (soldYn != null && !soldYn.isEmpty()) {
+            model.addAttribute("initSoldYn", soldYn);
+        }
+        if (badgeType != null && !badgeType.isEmpty()) {
+            model.addAttribute("initBadgeType", badgeType);
+        }
         // 대분류 목록
         model.addAttribute("catList", propertyMngService.getCatListForSelect());
         return "admin/propertyMng/propertyMng";

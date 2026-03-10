@@ -111,8 +111,9 @@
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center;
   max-width: 1200px; margin: 0 auto; padding: 0 24px; z-index: 5;
+  pointer-events: none;
 }
-.slide-text { max-width: 520px; }
+.slide-text { max-width: 520px; pointer-events: auto; }
 
 /* Slide text animations */
 .slide-text > * {

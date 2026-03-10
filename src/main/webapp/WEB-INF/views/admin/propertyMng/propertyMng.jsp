@@ -93,6 +93,12 @@ $(function() {
   $('#srchCatCd').val('${initCatCd}');
   fnChangeCat();
   </c:if>
+  <c:if test="${not empty initSoldYn}">
+  $('#srchSoldYn').val('${initSoldYn}');
+  </c:if>
+  <c:if test="${not empty initBadgeType}">
+  $('#srchBadgeType').val('${initBadgeType}');
+  </c:if>
 });
 
 function initGrid() {
@@ -141,6 +147,14 @@ function initGrid() {
   });
 
   propTable.on("tableBuilt", function() { fnSearch(); });
+
+  // 초기 검색조건 설정
+  <c:if test="${not empty initSoldYn}">
+  $('#srchSoldYn').val('${initSoldYn}');
+  </c:if>
+  <c:if test="${not empty initBadgeType}">
+  $('#srchBadgeType').val('${initBadgeType}');
+  </c:if>
 
   // 상태 변경 시 _allData 동기화
   propTable.on("cellEdited", function(cell) {

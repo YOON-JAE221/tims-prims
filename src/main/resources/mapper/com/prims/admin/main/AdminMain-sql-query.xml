@@ -7,47 +7,29 @@
     <!-- 매물 현황 요약 (전체/거래중/거래완료/추천/급매) -->
     <select id="getPropSummary" resultType="map">
         SELECT
-            /* 전체 매물 */
-            (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N') AS TOTAL_CNT
-
-            /* 거래중 매물 (SELL_YN = 'N') */
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND SELL_YN = 'N') AS ACTIVE_CNT
-
-            /* 거래완료 매물 (SELL_YN = 'Y') */
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND SELL_YN = 'Y') AS SOLD_CNT
-
-            /* 추천 매물 */
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND BADGE_TYPE = 'RECOMMEND') AS RECOMMEND_CNT
-
-            /* 급매 매물 */
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND BADGE_TYPE = 'URGENT') AS URGENT_CNT
-
-            /* 이번달 신규 등록 */
-          , (SELECT COUNT(*) FROM TB_PROPERTY
-              WHERE DEL_YN = 'N'
-                AND DATE_FORMAT(CRE_DTM, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
-            ) AS MONTH_NEW_CNT
+            (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y') AS TOTAL_CNT
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND SOLD_YN = 'N') AS ACTIVE_CNT
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND SOLD_YN = 'Y') AS SOLD_CNT
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND BADGE_TYPE = 'RECOMMEND') AS RECOMMEND_CNT
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND BADGE_TYPE = 'URGENT') AS URGENT_CNT
     </select>
 
-    <!-- 최근 등록 매물 10건 -->
+    <!-- 최근 등록 매물 15건 -->
     <select id="getRecentPropList" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
              , C.CAT_NM
-             , B.COM_NM AS DEAL_TYPE_NM
-             , A.SELL_YN
+             , (SELECT SC.CAT_NM FROM TB_PROP_CATEGORY SC WHERE SC.CAT_CD = A.CAT_CD AND SC.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' ELSE '' END AS DEAL_TYPE_NM
+             , A.SOLD_YN
              , A.BADGE_TYPE
              , A.VIEW_CNT
-             , A.SELL_PRICE
-             , A.DEPOSIT
-             , A.MONTHLY_RENT
-             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A
-          LEFT JOIN TB_COM B ON B.GRP_CD = 'DEAL_TYPE' AND B.COM_CD = A.DEAL_TYPE AND B.USE_YN = 'Y'
-          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD
-         WHERE A.DEL_YN = 'N'
-         ORDER BY A.CRE_DTM DESC
-         LIMIT 10
+          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00'
+         WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+         ORDER BY A.RGT_DTM DESC
+         LIMIT 15
     </select>
 
     <!-- 인기 매물 TOP 5 (조회수 기준) -->
@@ -56,11 +38,11 @@
              , A.PROP_NM
              , C.CAT_NM
              , A.VIEW_CNT
-             , A.SELL_YN
+             , A.SOLD_YN
           FROM TB_PROPERTY A
-          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD
-         WHERE A.DEL_YN = 'N'
-           AND A.SELL_YN = 'N'
+          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00'
+         WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+           AND A.SOLD_YN = 'N'
          ORDER BY A.VIEW_CNT DESC
          LIMIT 5
     </select>
@@ -68,7 +50,6 @@
     <!-- 문의 통계 (오늘/미답변/이번달/전체) -->
     <select id="getQnaSummary" resultType="map">
         SELECT
-            /* 오늘 문의 */
             (SELECT COUNT(*)
                FROM TB_BBS_PST
               WHERE DEL_YN = 'N' AND USE_YN = 'Y'
@@ -76,8 +57,6 @@
                 AND PST_LVL = 0 AND NOTICE_YN = 'N'
                 AND DATE(RGT_DTM) = CURDATE()
             ) AS TODAY_CNT
-
-            /* 미답변 문의 */
           , (SELECT COUNT(*)
                FROM TB_BBS_PST A
               WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
@@ -89,8 +68,6 @@
                        AND R.PST_LVL > 0 AND R.DEL_YN = 'N' AND R.USE_YN = 'Y'
                 )
             ) AS UNANSWERED_CNT
-
-            /* 이번달 문의 */
           , (SELECT COUNT(*)
                FROM TB_BBS_PST
               WHERE DEL_YN = 'N' AND USE_YN = 'Y'
@@ -98,8 +75,6 @@
                 AND PST_LVL = 0 AND NOTICE_YN = 'N'
                 AND DATE_FORMAT(RGT_DTM, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
             ) AS MONTH_CNT
-
-            /* 전체 문의 */
           , (SELECT COUNT(*)
                FROM TB_BBS_PST
               WHERE DEL_YN = 'N' AND USE_YN = 'Y'
@@ -126,26 +101,6 @@
            AND A.PST_LVL = 0 AND A.NOTICE_YN = 'N'
          ORDER BY REPLY_YN ASC, A.IDX DESC
          LIMIT 10
-    </select>
-
-    <!-- 배치 현황 -->
-    <select id="getBatStatusList" resultType="map">
-        SELECT B.JOB_CD
-             , B.JOB_NM
-             , B.USE_YN
-             , B.LAST_EXEC_RSLT
-             , DATE_FORMAT(B.LAST_EXEC_DTM, '%Y-%m-%d %H:%i') AS LAST_EXEC_DTM
-             , (SELECT H.TGT_CNT FROM TB_BAT_HIST H
-                 WHERE H.JOB_CD = B.JOB_CD
-                 ORDER BY H.EXEC_START_DTM DESC LIMIT 1
-               ) AS LAST_TGT_CNT
-             , (SELECT H.PROC_CNT FROM TB_BAT_HIST H
-                 WHERE H.JOB_CD = B.JOB_CD
-                 ORDER BY H.EXEC_START_DTM DESC LIMIT 1
-               ) AS LAST_PROC_CNT
-          FROM TB_BAT B
-         WHERE B.DEL_YN = 'N'
-         ORDER BY B.CRE_DTM
     </select>
 
 </mapper>
