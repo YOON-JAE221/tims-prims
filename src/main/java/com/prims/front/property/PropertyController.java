@@ -19,6 +19,7 @@ public class PropertyController {
     @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
+                                   @RequestParam(value = "badgeType", required = false, defaultValue = "") String badgeType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                    @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
                                    Model model) {
@@ -27,6 +28,7 @@ public class PropertyController {
         Map<String, Object> param = new HashMap<>();
         param.put("catCd", type);
         param.put("dealType", dealType);
+        param.put("badgeType", badgeType);
         param.put("keyword", keyword);
         param.put("pageSize", Integer.valueOf(pageSize));
         param.put("offset", Integer.valueOf(offset));
@@ -37,6 +39,7 @@ public class PropertyController {
 
         model.addAttribute("type", type);
         model.addAttribute("dealType", dealType);
+        model.addAttribute("badgeType", badgeType);
         model.addAttribute("keyword", keyword);
         model.addAttribute("list", list);
         model.addAttribute("totalCnt", totalCnt);

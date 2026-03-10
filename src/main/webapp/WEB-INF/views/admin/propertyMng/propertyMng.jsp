@@ -99,6 +99,9 @@ $(function() {
   <c:if test="${not empty initBadgeType}">
   $('#srchBadgeType').val('${initBadgeType}');
   </c:if>
+  <c:if test="${not empty initDealType}">
+  $('#srchDealType').val('${initDealType}');
+  </c:if>
 });
 
 function initGrid() {

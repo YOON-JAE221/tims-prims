@@ -151,6 +151,7 @@
   }
   function fnReset() {
     $('#filterForm').find('select[name="dealType"]').val('');
+    $('#filterForm').find('select[name="badgeType"]').val('');
     $('#filterForm').find('input[name="keyword"]').val('');
     $('#pageNoInput').val(1);
     $('#filterForm').submit();
@@ -161,11 +162,14 @@
     $('#goDetailForm').submit();
   }
   function fnGoAdmin() {
-    // 매물유형 매핑 (FO type → BO propType)
-    var typeMap = { 'apt':'APT', 'officetel':'OFFICETEL', 'villa':'VILLA', 'oneroom':'ONEROOM', 'shop':'SHOP', 'office':'OFFICE' };
     var foType = '${type}';
-    var boType = typeMap[foType] || 'ALL';
-    $('#adminPropType').val(boType);
+    var catCd = (foType && foType !== 'all') ? foType.toUpperCase() : '';
+    var dealType = $('select[name="dealType"]').val() || '';
+    var badgeType = $('select[name="badgeType"]').val() || '';
+
+    $('#adminCatCd').val(catCd);
+    $('#adminDealType').val(dealType);
+    $('#adminBadgeType').val(badgeType);
     $('#goAdminForm').submit();
   }
 </script>
@@ -176,7 +180,9 @@
 </form>
 
 <form id="goAdminForm" action="${ctx}/propertyMng/viewPropertyMng" method="post" target="_blank">
-  <input type="hidden" name="propType" id="adminPropType" />
+  <input type="hidden" name="catCd" id="adminCatCd" />
+  <input type="hidden" name="dealType" id="adminDealType" />
+  <input type="hidden" name="badgeType" id="adminBadgeType" />
 </form>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>

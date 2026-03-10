@@ -69,6 +69,9 @@
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
            </if>
+           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
+           AND A.BADGE_TYPE = #{badgeType}
+           </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
@@ -89,6 +92,9 @@
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
+           AND A.BADGE_TYPE = #{badgeType}
            </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
