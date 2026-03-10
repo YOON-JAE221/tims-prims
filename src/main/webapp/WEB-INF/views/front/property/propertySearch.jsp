@@ -234,6 +234,7 @@ function fnReload() {
 
   $.ajax({
     url: ctx + '/property/getPropertyMapList',
+    type: 'POST',
     data: {
       swLat: sw.getLat(), swLng: sw.getLng(),
       neLat: ne.getLat(), neLng: ne.getLng(),
@@ -266,7 +267,7 @@ function fnRenderList(list) {
 
     html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + d.propTypeNm + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + d.catNm + ' · ' + d.dealTypeNm + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
@@ -393,7 +394,7 @@ function fnRenderFilteredList(items) {
 
     html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + d.propTypeNm + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + d.catNm + ' · ' + d.dealTypeNm + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
