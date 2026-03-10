@@ -25,7 +25,7 @@ public class PropertyController {
         int pageSize = 12;
         int offset = (pageNo - 1) * pageSize;
         Map<String, Object> param = new HashMap<>();
-        param.put("propType", type);
+        param.put("catCd", type);
         param.put("dealType", dealType);
         param.put("keyword", keyword);
         param.put("pageSize", Integer.valueOf(pageSize));
@@ -84,7 +84,7 @@ public class PropertyController {
         Map<String, Object> result = new HashMap<>();
         try {
             Map<String, Object> param = new HashMap<>();
-            param.put("propType", propType);
+            param.put("catCd", propType);
             param.put("dealType", dealType);
             if (swLat != null && !swLat.isEmpty()) {
                 param.put("swLat", Double.parseDouble(swLat));

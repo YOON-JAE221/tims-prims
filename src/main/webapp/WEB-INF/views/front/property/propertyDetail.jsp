@@ -74,15 +74,15 @@
           </c:when>
           <c:otherwise>
             <!-- 이미지 없을 때 기존 스타일 유지 -->
-            <div class="prop-detail-img ${fn:toLowerCase(prop.propType)}" style="height:100%;min-height:300px;">
+            <div class="prop-detail-img ${fn:toLowerCase(prop.catCd)}" style="height:100%;min-height:300px;">
               <span class="prop-card-emoji" style="font-size:64px;">
                 <c:choose>
-                  <c:when test="${prop.propType eq 'APT'}">&#127970;</c:when>
-                  <c:when test="${prop.propType eq 'OFFICETEL'}">&#127980;</c:when>
-                  <c:when test="${prop.propType eq 'VILLA'}">&#127968;</c:when>
-                  <c:when test="${prop.propType eq 'ONEROOM'}">&#128682;</c:when>
-                  <c:when test="${prop.propType eq 'SHOP'}">&#127978;</c:when>
-                  <c:when test="${prop.propType eq 'OFFICE'}">&#127963;</c:when>
+                  <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
+                  <c:when test="${prop.catCd eq 'OFFICETEL'}">&#127980;</c:when>
+                  <c:when test="${prop.catCd eq 'VILLA'}">&#127968;</c:when>
+                  <c:when test="${prop.catCd eq 'ONEROOM'}">&#128682;</c:when>
+                  <c:when test="${prop.catCd eq 'SHOP'}">&#127978;</c:when>
+                  <c:when test="${prop.catCd eq 'OFFICE'}">&#127963;</c:when>
                   <c:otherwise>&#127968;</c:otherwise>
                 </c:choose>
               </span>
@@ -105,7 +105,7 @@
         </c:choose>
       </div>
       <div class="prop-detail-summary">
-        <div class="prop-detail-type">${prop.propTypeNm} &middot; ${prop.dealTypeNm}</div>
+        <div class="prop-detail-type">${prop.catNm} &middot; ${prop.dealTypeNm}</div>
         <h2 class="prop-detail-title">${prop.propNm}</h2>
         <div class="prop-detail-loc">${prop.address}</div>
         <div class="prop-detail-price">
@@ -118,7 +118,7 @@
         </div>
 
         <div class="prop-detail-tags">
-          <span class="prop-tag">${prop.propTypeNm}</span>
+          <span class="prop-tag">${prop.catNm}</span>
           <span class="prop-tag">${prop.dealTypeNm}</span>
           <c:if test="${not empty prop.direction}"><span class="prop-tag">${prop.direction}</span></c:if>
           <c:if test="${not empty prop.parking}"><span class="prop-tag">주차 ${prop.parking}</span></c:if>
@@ -159,7 +159,7 @@
     <div class="prop-detail-section">
       <h3 class="prop-detail-section-title">매물 정보</h3>
       <table class="prop-detail-table">
-        <tr><th>매물유형</th><td>${prop.propTypeNm}</td><th>거래유형</th><td>${prop.dealTypeNm}</td></tr>
+        <tr><th>매물유형</th><td>${prop.catNm}</td><th>거래유형</th><td>${prop.dealTypeNm}</td></tr>
         <tr>
           <th>가격</th>
           <td>

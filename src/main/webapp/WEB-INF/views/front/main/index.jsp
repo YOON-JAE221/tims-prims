@@ -18,7 +18,7 @@
     <div class="slide-visual">
       <c:if test="${not empty sliderProp}">
       <div class="visual-card" style="cursor:pointer;" onclick="fnGoSliderDetail()">
-        <div class="vc-header"><div class="vc-badge">${sliderProp.badgeType eq 'RECOMMEND' ? '추천 매물' : sliderProp.badgeType eq 'URGENT' ? '급매' : '추천 매물'}</div><div class="vc-type">${sliderProp.propTypeNm} &middot; ${sliderProp.dealTypeNm}</div></div>
+        <div class="vc-header"><div class="vc-badge">${sliderProp.badgeType eq 'RECOMMEND' ? '추천 매물' : sliderProp.badgeType eq 'URGENT' ? '급매' : '추천 매물'}</div><div class="vc-type">${sliderProp.catNm} &middot; ${sliderProp.dealTypeNm}</div></div>
         <div class="vc-img i1">
           <c:choose>
             <c:when test="${not empty sliderProp.thumbPath}"><img src="/upload/${sliderProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
@@ -83,7 +83,7 @@
     <div class="slide-visual">
       <c:if test="${not empty latestProp}">
       <div class="visual-card" style="cursor:pointer;" onclick="fnGoLatestDetail()">
-        <div class="vc-header"><div class="vc-badge" style="background:#0052A4;">인기 매물</div><div class="vc-type">${latestProp.propTypeNm} &middot; ${latestProp.dealTypeNm}</div></div>
+        <div class="vc-header"><div class="vc-badge" style="background:#0052A4;">인기 매물</div><div class="vc-type">${latestProp.catNm} &middot; ${latestProp.dealTypeNm}</div></div>
         <div class="vc-img i2">
           <c:choose>
             <c:when test="${not empty latestProp.thumbPath}"><img src="/upload/${latestProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
@@ -147,7 +147,7 @@
     <div class="slide-visual">
       <c:if test="${not empty urgentProp}">
       <div class="visual-card" style="cursor:pointer;" onclick="fnGoUrgentDetail()">
-        <div class="vc-header"><div class="vc-badge" style="background:#dc3545;">&#44553;&#47588;</div><div class="vc-type">${urgentProp.propTypeNm} &middot; ${urgentProp.dealTypeNm}</div></div>
+        <div class="vc-header"><div class="vc-badge" style="background:#dc3545;">&#44553;&#47588;</div><div class="vc-type">${urgentProp.catNm} &middot; ${urgentProp.dealTypeNm}</div></div>
         <div class="vc-img" style="background:linear-gradient(135deg,rgba(58,122,106,0.4),rgba(91,181,160,0.25));">
           <c:choose>
             <c:when test="${not empty urgentProp.thumbPath}"><img src="/upload/${urgentProp.thumbPath}" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" /></c:when>
@@ -228,21 +228,21 @@
       <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--gray-400);">추천 매물이 없습니다.</div>
     </c:if>
     <c:forEach var="fp" items="${featuredList}" varStatus="st">
-      <div class="property-card reveal ${st.index == 1 ? 'reveal-delay-1' : ''} ${st.index == 2 ? 'reveal-delay-2' : ''}" style="cursor:pointer;" onclick="fnGoFeaturedDetail('${fp.propType}','${fp.propCd}')">
+      <div class="property-card reveal ${st.index == 1 ? 'reveal-delay-1' : ''} ${st.index == 2 ? 'reveal-delay-2' : ''}" style="cursor:pointer;" onclick="fnGoFeaturedDetail('${fp.catCd}','${fp.propCd}')">
         <div class="card-img">
           <c:choose>
             <c:when test="${not empty fp.thumbPath}">
               <img src="/upload/${fp.thumbPath}" style="width:100%;height:100%;object-fit:cover;" />
             </c:when>
             <c:otherwise>
-              <div class="card-img-placeholder ${fn:toLowerCase(fp.propType)}">
+              <div class="card-img-placeholder ${fn:toLowerCase(fp.catCd)}">
                 <c:choose>
-                  <c:when test="${fp.propType eq 'APT'}">&#127970;</c:when>
-                  <c:when test="${fp.propType eq 'OFFICETEL'}">&#127980;</c:when>
-                  <c:when test="${fp.propType eq 'VILLA'}">&#127968;</c:when>
-                  <c:when test="${fp.propType eq 'ONEROOM'}">&#128682;</c:when>
-                  <c:when test="${fp.propType eq 'SHOP'}">&#127978;</c:when>
-                  <c:when test="${fp.propType eq 'OFFICE'}">&#127963;</c:when>
+                  <c:when test="${fp.catCd eq 'APT'}">&#127970;</c:when>
+                  <c:when test="${fp.catCd eq 'OFFICETEL'}">&#127980;</c:when>
+                  <c:when test="${fp.catCd eq 'VILLA'}">&#127968;</c:when>
+                  <c:when test="${fp.catCd eq 'ONEROOM'}">&#128682;</c:when>
+                  <c:when test="${fp.catCd eq 'SHOP'}">&#127978;</c:when>
+                  <c:when test="${fp.catCd eq 'OFFICE'}">&#127963;</c:when>
                   <c:otherwise>&#127968;</c:otherwise>
                 </c:choose>
               </div>
@@ -257,7 +257,7 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="card-type">${fp.propTypeNm}</div>
+          <div class="card-type">${fp.catNm}</div>
           <div class="card-title">${fp.propNm}</div>
           <div class="card-location">${fp.address}</div>
           <div class="card-price">
@@ -315,15 +315,15 @@
 
 <!-- 슬라이더 JS -->
 <form id="sliderDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
-  <input type="hidden" name="type" value="${sliderProp.propType}" />
+  <input type="hidden" name="type" value="${sliderProp.catCd}" />
   <input type="hidden" name="id" value="${sliderProp.propCd}" />
 </form>
 <form id="latestDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
-  <input type="hidden" name="type" value="${latestProp.propType}" />
+  <input type="hidden" name="type" value="${latestProp.catCd}" />
   <input type="hidden" name="id" value="${latestProp.propCd}" />
 </form>
 <form id="urgentDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
-  <input type="hidden" name="type" value="${urgentProp.propType}" />
+  <input type="hidden" name="type" value="${urgentProp.catCd}" />
   <input type="hidden" name="id" value="${urgentProp.propCd}" />
 </form>
 <form id="featuredDetailForm" action="${ctx}/property/viewPropertyDetail" method="post" style="display:none;">
@@ -398,7 +398,7 @@
     <div class="primus-popup-body">${pop.popCnts}</div>
     <div class="primus-popup-footer">
       <label class="primus-popup-today">
-        <input type="checkbox" onchange="fnTodayHide('${pop.popCd}', this.checked)" />
+        <input type="checkbox" class="pop-today-chk" data-pop-cd="${pop.popCd}" />
         <span>오늘 하루 보지 않기</span>
       </label>
       <button type="button" class="primus-popup-close-btn" onclick="fnClosePopup('${pop.popCd}')">닫기</button>
@@ -602,48 +602,38 @@ function fnMakeDraggable($overlay, $modal) {
   });
 }
 
-/* 팝업 닫기 → 다음 팝업 표시 */
+/* 팝업 닫기 → 체크박스 확인 후 쿠키 세팅 → 다음 팝업 표시 */
 function fnClosePopup(popCd) {
   var $overlay = $('.primus-popup-overlay[data-pop-cd="' + popCd + '"]');
+
+  // 오늘 하루 보지 않기 체크 여부 확인
+  var $chk = $overlay.find('.pop-today-chk');
+  if ($chk.length && $chk.is(':checked')) {
+    var today = new Date();
+    today.setHours(23, 59, 59, 999);
+    document.cookie = 'popHide_' + popCd + '=Y; expires=' + today.toUTCString() + '; path=/';
+  }
+
   $overlay.fadeOut(200, function() {
-    // 다음에 보여줄 팝업 찾기
-    var nextPopCd = null;
-    $('.primus-popup-overlay').each(function() {
-      var cd = $(this).data('pop-cd');
-      if (cd !== popCd && !$(this).is(':visible') && $(this).css('display') !== 'none' || false) {
-        // 아직 안 닫힌 팝업 찾기
-      }
-    });
-    // 숨겨진 상태(아직 안 보여준)인 팝업 중 다음 것 표시
+    $overlay.data('closed', true);
+
+    // 다음 팝업 찾기
     var found = false;
     $('.primus-popup-overlay').each(function() {
       if (found) return;
       var cd = $(this).data('pop-cd');
-      if (cd === popCd) return; // 방금 닫은 것
-      if ($(this).data('closed')) return; // 이미 닫은 것
+      if (cd === popCd) return;
+      if ($(this).data('closed')) return;
       if (!fnIsTodayHidden(cd)) {
         fnShowPopup(cd);
         found = true;
       }
     });
-    $overlay.data('closed', true);
 
     if (!found) {
       $('body').css('overflow', '');
     }
   });
-}
-
-/* 오늘 하루 보지 않기 */
-function fnTodayHide(popCd, checked) {
-  if (checked) {
-    var today = new Date();
-    today.setHours(23, 59, 59, 999);
-    document.cookie = 'popHide_' + popCd + '=Y; expires=' + today.toUTCString() + '; path=/';
-    fnClosePopup(popCd);
-  } else {
-    document.cookie = 'popHide_' + popCd + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-  }
 }
 
 function fnIsTodayHidden(popCd) {

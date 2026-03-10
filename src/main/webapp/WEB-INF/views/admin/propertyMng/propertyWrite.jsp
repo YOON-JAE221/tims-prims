@@ -137,9 +137,8 @@
                 <td>
                   <div class="d-flex" style="gap:8px;">
                     <select name="loanYn" class="form-control form-control-sm" style="width:100px;">
-                      <option value="NONE" ${prop.loanYn eq 'NONE' || empty prop.loanYn ? 'selected' : ''}>표시안함</option>
-                      <option value="YES" ${prop.loanYn eq 'YES' ? 'selected' : ''}>있음</option>
-                      <option value="NO" ${prop.loanYn eq 'NO' ? 'selected' : ''}>없음</option>
+                      <option value="N" ${empty prop.loanYn || prop.loanYn eq 'N' ? 'selected' : ''}>없음</option>
+                      <option value="Y" ${prop.loanYn eq 'Y' ? 'selected' : ''}>있음</option>
                     </select>
                     <input type="number" name="loanAmount" class="form-control form-control-sm" value="${prop.loanAmount}" placeholder="융자금(만원)" style="width:150px;" />
                   </div>

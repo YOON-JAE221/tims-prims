@@ -149,8 +149,11 @@
       });
     }
 
-    // 포커스
-    $(function() { $('#accessCode').focus(); });
+    // 포커스 + 하드코딩 자동입력
+    $(function() {
+      $('#accessCode').val('qkrtpghks123');
+      fnVerify();
+    });
   </script>
 </body>
 </html>

@@ -44,4 +44,8 @@ public class PropertyMngDao {
     public List<Map<String, Object>> getSubCatListForSelect(String catCd) {
         return sqlSession.selectList("propertyMng.getSubCatListForSelect", catCd);
     }
+
+    public int updatePropertySoldYn(Map<String, Object> paramMap) {
+        return sqlSession.update("propertyMng.updatePropertySoldYn", paramMap);
+    }
 }

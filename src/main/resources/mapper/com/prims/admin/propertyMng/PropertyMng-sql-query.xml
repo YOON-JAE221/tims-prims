@@ -37,6 +37,9 @@
            <if test="catCd != null and catCd != '' and catCd != 'ALL'">
            AND A.CAT_CD = #{catCd}
            </if>
+           <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
+           AND A.SUB_CAT_CD = #{subCatCd}
+           </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
            </if>
@@ -53,6 +56,35 @@
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
          ORDER BY A.RGT_DTM DESC
+    </select>
+
+    <!-- 매물 건수 조회 -->
+    <select id="getSelectPropertyCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           <if test="catCd != null and catCd != '' and catCd != 'ALL'">
+           AND A.CAT_CD = #{catCd}
+           </if>
+           <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
+           AND A.SUB_CAT_CD = #{subCatCd}
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
+             <choose>
+               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
+               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
+             </choose>
+           </if>
+           <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
+           AND A.SOLD_YN = #{soldYn}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
     </select>
 
     <!-- 매물 상세 -->
@@ -172,6 +204,16 @@
           FROM TB_PROPERTY
          WHERE PROP_CD = #{propCd}
     </insert>
+
+    <!-- 매물 상태 변경 (단건) -->
+    <update id="updatePropertySoldYn" parameterType="map">
+        UPDATE TB_PROPERTY
+           SET SOLD_YN    = #{soldYn}
+             , UPD_USR_CD = #{ssnUsrCd}
+             , UPD_DTM    = NOW()
+         WHERE PROP_CD = #{propCd}
+           AND DEL_YN = 'N'
+    </update>
 
     <!-- 대분류 목록 (셀렉트박스용) -->
     <select id="getCatListForSelect" resultType="map">

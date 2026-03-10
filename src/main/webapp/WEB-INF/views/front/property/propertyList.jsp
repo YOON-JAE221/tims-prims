@@ -56,8 +56,8 @@
         </div>
       </c:if>
       <c:forEach var="prop" items="${list}">
-        <div class="prop-card ${prop.soldYn eq 'Y' ? 'sold-card' : ''}" onclick="fnGoDetail('${prop.propType}','${prop.propCd}')">
-          <div class="prop-card-img ${fn:toLowerCase(prop.propType)}">
+        <div class="prop-card ${prop.soldYn eq 'Y' ? 'sold-card' : ''}" onclick="fnGoDetail('${prop.catCd}','${prop.propCd}')">
+          <div class="prop-card-img ${fn:toLowerCase(prop.catCd)}">
             <c:choose>
               <c:when test="${not empty prop.thumbPath}">
                 <img src="/upload/${prop.thumbPath}" alt="${prop.propNm}" style="width:100%; height:100%; object-fit:cover;" />
@@ -65,12 +65,12 @@
               <c:otherwise>
                 <span class="prop-card-emoji">
                   <c:choose>
-                    <c:when test="${prop.propType eq 'APT'}">&#127970;</c:when>
-                    <c:when test="${prop.propType eq 'OFFICETEL'}">&#127980;</c:when>
-                    <c:when test="${prop.propType eq 'VILLA'}">&#127968;</c:when>
-                    <c:when test="${prop.propType eq 'ONEROOM'}">&#128682;</c:when>
-                    <c:when test="${prop.propType eq 'SHOP'}">&#127978;</c:when>
-                    <c:when test="${prop.propType eq 'OFFICE'}">&#127963;</c:when>
+                    <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
+                    <c:when test="${prop.catCd eq 'OFFICETEL'}">&#127980;</c:when>
+                    <c:when test="${prop.catCd eq 'VILLA'}">&#127968;</c:when>
+                    <c:when test="${prop.catCd eq 'ONEROOM'}">&#128682;</c:when>
+                    <c:when test="${prop.catCd eq 'SHOP'}">&#127978;</c:when>
+                    <c:when test="${prop.catCd eq 'OFFICE'}">&#127963;</c:when>
                     <c:otherwise>&#127968;</c:otherwise>
                   </c:choose>
                 </span>
@@ -95,7 +95,7 @@
             </c:if>
           </div>
           <div class="prop-card-body">
-            <div class="prop-card-type">${prop.propTypeNm} · ${prop.dealTypeNm}</div>
+            <div class="prop-card-type">${prop.catNm} · ${prop.dealTypeNm}</div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-loc">${prop.address}</div>
             <div class="prop-card-price">

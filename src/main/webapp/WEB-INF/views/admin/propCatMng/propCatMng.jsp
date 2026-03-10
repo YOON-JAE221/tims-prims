@@ -212,12 +212,12 @@ function initSubGrid() {
     { title:"사용여부", field:"useYn", width:120, hozAlign:"center",
       editor:"list", editorParams:{ values:{ "Y":"사용", "N":"미사용" } },
       formatter: function(cell) {
-        return cell.getValue() === 'Y'
-          ? '<span class="badge badge-success">사용</span>'
-          : '<span class="badge badge-danger">미사용</span>';
+        var v = cell.getValue();
+        if (v === 'Y') return '<span class="badge badge-success">사용</span> <span style="color:#aaa;font-size:10px;">▼</span>';
+        return '<span class="badge badge-danger">미사용</span> <span style="color:#aaa;font-size:10px;">▼</span>';
       }
     },
-    { title:"삭제", field:"_del", width:100, hozAlign:"center", headerSort:false,
+    { title:"삭제", field:"_del", width:100, headerSort:false,
       formatter: function() { return "<button type='button' class='btn btn-xs btn-bo-reset'>삭제</button>"; },
       cellClick: function(e, cell) { fnDeleteSubCat(cell.getRow()); }
     }

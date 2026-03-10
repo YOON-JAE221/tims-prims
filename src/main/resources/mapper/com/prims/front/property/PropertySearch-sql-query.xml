@@ -7,22 +7,17 @@
     <select id="getPropertyMapList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
-             , A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , A.SUB_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
-             , A.SELL_PRICE
-             , A.DEPOSIT
-             , A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE
-             , A.ROOM_CNT
-             , A.FLOOR_NO
-             , A.ADDRESS
-             , A.ADDRESS_DTL
-             , A.LAT
-             , A.LNG
-             , A.BADGE_TYPE
-             , A.SOLD_YN
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
+             , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.ADDRESS, A.ADDRESS_DTL
+             , A.LAT, A.LNG
+             , A.BADGE_TYPE, A.SOLD_YN
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
@@ -34,8 +29,8 @@
            AND A.LAT BETWEEN #{swLat} AND #{neLat}
            AND A.LNG BETWEEN #{swLng} AND #{neLng}
            </if>
-           <if test="propType != null and propType != '' and propType != 'ALL'">
-           AND A.PROP_TYPE = #{propType}
+           <if test="catCd != null and catCd != '' and catCd != 'ALL'">
+           AND A.CAT_CD = #{catCd}
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -44,23 +39,19 @@
          LIMIT 100
     </select>
 
-    <!-- 매물유형 목록 -->
+    <!-- 매물 목록 -->
     <select id="getPropertyTypeList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
-             , A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , A.SUB_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
-             , A.SELL_PRICE
-             , A.DEPOSIT
-             , A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE
-             , A.ROOM_CNT
-             , A.FLOOR_NO
-             , A.ADDRESS
-             , A.BADGE_TYPE
-             , A.SOLD_YN
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
+             , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.ADDRESS, A.BADGE_TYPE, A.SOLD_YN
              , A.ATCH_FILE_KEY
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -72,8 +63,8 @@
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-           <if test="propType != null and propType != '' and propType != 'all' and propType != 'ALL'">
-           AND A.PROP_TYPE = UPPER(#{propType})
+           <if test="catCd != null and catCd != '' and catCd != 'all' and catCd != 'ALL'">
+           AND A.CAT_CD = UPPER(#{catCd})
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -87,14 +78,14 @@
          LIMIT ${offset}, ${pageSize}
     </select>
 
-    <!-- 매물유형 건수 -->
+    <!-- 매물 건수 -->
     <select id="getPropertyTypeCount" parameterType="map" resultType="int">
         SELECT COUNT(*)
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-           <if test="propType != null and propType != '' and propType != 'all' and propType != 'ALL'">
-           AND A.PROP_TYPE = UPPER(#{propType})
+           <if test="catCd != null and catCd != '' and catCd != 'all' and catCd != 'ALL'">
+           AND A.CAT_CD = UPPER(#{catCd})
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -104,12 +95,13 @@
            </if>
     </select>
 
-    <!-- 메인 슬라이더 추천매물 (RECOMMEND, 최신 등록 1건) -->
+    <!-- 메인 슬라이더 추천매물 (RECOMMEND, 최신 1건) -->
     <select id="getMainSliderProperty" resultType="map">
-        SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+        SELECT A.PROP_CD, A.PROP_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
@@ -127,12 +119,13 @@
          LIMIT 1
     </select>
 
-    <!-- 메인 신규매물 → 조회수 높은 매물 (거래중, 최신 1건) -->
+    <!-- 메인 인기매물 (조회수 높은 순, 거래중 1건) -->
     <select id="getMainLatestProperty" resultType="map">
-        SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+        SELECT A.PROP_CD, A.PROP_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
@@ -149,12 +142,13 @@
          LIMIT 1
     </select>
 
-    <!-- 메인 급매매물 (URGENT, 최신 등록 1건) -->
+    <!-- 메인 급매매물 (URGENT, 최신 1건) -->
     <select id="getMainUrgentProperty" resultType="map">
-        SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+        SELECT A.PROP_CD, A.PROP_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
@@ -172,12 +166,13 @@
          LIMIT 1
     </select>
 
-    <!-- 메인 주목할 매물 (최신 등록순 3건) -->
+    <!-- 메인 주목할 매물 (최신 3건) -->
     <select id="getMainFeaturedList" resultType="map">
-        SELECT A.PROP_CD, A.PROP_NM, A.PROP_TYPE
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
+        SELECT A.PROP_CD, A.PROP_NM
+             , A.CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
              , A.DEAL_TYPE
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
@@ -197,8 +192,9 @@
     <!-- 매물 상세 -->
     <select id="getPropertyDetail" parameterType="map" resultType="map">
         SELECT A.*
-             , CASE A.PROP_TYPE WHEN 'APT' THEN '아파트' WHEN 'OFFICETEL' THEN '오피스텔' WHEN 'VILLA' THEN '빌라/주택' WHEN 'ONEROOM' THEN '원룸/투룸' WHEN 'SHOP' THEN '상가' WHEN 'OFFICE' THEN '사무실' ELSE '' END AS PROP_TYPE_NM
-             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'RENT' THEN '임대' ELSE '' END AS DEAL_TYPE_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY

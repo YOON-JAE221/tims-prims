@@ -149,4 +149,14 @@ public class PropertyMngService {
     public List<Map<String, Object>> getSubCatListForSelect(String catCd) {
         return propertyMngDao.getSubCatListForSelect(catCd);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int updatePropertySoldYnList(List<Map<String, Object>> mergeRows, String ssnUsrCd) {
+        int cnt = 0;
+        for (Map<String, Object> row : mergeRows) {
+            row.put("ssnUsrCd", ssnUsrCd);
+            cnt += propertyMngDao.updatePropertySoldYn(row);
+        }
+        return cnt;
+    }
 }
