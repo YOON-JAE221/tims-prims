@@ -13,18 +13,28 @@ public class AdminMainDao {
     @Autowired
     private SqlSession sqlSession;
 
+    /** 매물 현황 요약 */
+    public Map<String, Object> getPropSummary() {
+        return sqlSession.selectOne("adminMain.getPropSummary");
+    }
+
     /** 문의 통계 (오늘/미답변/이번달/전체) */
     public Map<String, Object> getQnaSummary() {
         return sqlSession.selectOne("adminMain.getQnaSummary");
     }
 
+    /** 최근 등록 매물 10건 */
+    public List<Map<String, Object>> getRecentPropList() {
+        return sqlSession.selectList("adminMain.getRecentPropList");
+    }
+
+    /** 인기 매물 TOP 5 */
+    public List<Map<String, Object>> getTopPropList() {
+        return sqlSession.selectList("adminMain.getTopPropList");
+    }
+
     /** 최근 문의 10건 */
     public List<Map<String, Object>> getRecentQnaList() {
         return sqlSession.selectList("adminMain.getRecentQnaList");
-    }
-
-    /** 배치 현황 */
-    public List<Map<String, Object>> getBatStatusList() {
-        return sqlSession.selectList("adminMain.getBatStatusList");
     }
 }

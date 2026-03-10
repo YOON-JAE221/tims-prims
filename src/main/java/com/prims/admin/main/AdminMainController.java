@@ -26,6 +26,14 @@ public class AdminMainController {
 	public String viewAdminMain(Model model) {
 
 		try {
+			// 매물 현황 요약
+			Map<String, Object> propSummary = adminMainService.getPropSummary();
+			model.addAttribute("propSummary", propSummary);
+		} catch (Exception e) {
+			model.addAttribute("propSummary", new HashMap<>());
+		}
+
+		try {
 			// 문의 통계
 			Map<String, Object> qnaSummary = adminMainService.getQnaSummary();
 			model.addAttribute("qna", qnaSummary);
@@ -36,30 +44,44 @@ public class AdminMainController {
 		return "admin/main/index";
 	}
 
-	// 최근 문의 목록 (AJAX)
+	// 최근 등록 매물 목록 (AJAX)
 	@ResponseBody
-	@RequestMapping(value = "/getRecentQnaList")
-	public Map<String, Object> getRecentQnaList() {
+	@RequestMapping(value = "/getRecentPropList", method = RequestMethod.POST)
+	public Map<String, Object> getRecentPropList() {
 		Map<String, Object> result = new HashMap<>();
 		try {
-			List<?> list = adminMainService.getRecentQnaList();
-			result.put("DATA", list);
+			List<?> list = adminMainService.getRecentPropList();
+			result.put("data", list);
 		} catch (Exception e) {
-			result.put("DATA", new ArrayList<>());
+			result.put("data", new ArrayList<>());
 		}
 		return result;
 	}
 
-	// 배치 현황 (AJAX)
+	// 인기 매물 TOP 5 (AJAX)
 	@ResponseBody
-	@RequestMapping(value = "/getBatStatusList")
-	public Map<String, Object> getBatStatusList() {
+	@RequestMapping(value = "/getTopPropList", method = RequestMethod.POST)
+	public Map<String, Object> getTopPropList() {
 		Map<String, Object> result = new HashMap<>();
 		try {
-			List<?> list = adminMainService.getBatStatusList();
-			result.put("DATA", list);
+			List<?> list = adminMainService.getTopPropList();
+			result.put("data", list);
 		} catch (Exception e) {
-			result.put("DATA", new ArrayList<>());
+			result.put("data", new ArrayList<>());
+		}
+		return result;
+	}
+
+	// 최근 문의 목록 (AJAX)
+	@ResponseBody
+	@RequestMapping(value = "/getRecentQnaList", method = RequestMethod.POST)
+	public Map<String, Object> getRecentQnaList() {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			List<?> list = adminMainService.getRecentQnaList();
+			result.put("data", list);
+		} catch (Exception e) {
+			result.put("data", new ArrayList<>());
 		}
 		return result;
 	}

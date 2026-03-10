@@ -4,6 +4,67 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="adminMain">
 
+    <!-- 매물 현황 요약 (전체/거래중/거래완료/추천/급매) -->
+    <select id="getPropSummary" resultType="map">
+        SELECT
+            /* 전체 매물 */
+            (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N') AS TOTAL_CNT
+
+            /* 거래중 매물 (SELL_YN = 'N') */
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND SELL_YN = 'N') AS ACTIVE_CNT
+
+            /* 거래완료 매물 (SELL_YN = 'Y') */
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND SELL_YN = 'Y') AS SOLD_CNT
+
+            /* 추천 매물 */
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND BADGE_TYPE = 'RECOMMEND') AS RECOMMEND_CNT
+
+            /* 급매 매물 */
+          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND BADGE_TYPE = 'URGENT') AS URGENT_CNT
+
+            /* 이번달 신규 등록 */
+          , (SELECT COUNT(*) FROM TB_PROPERTY
+              WHERE DEL_YN = 'N'
+                AND DATE_FORMAT(CRE_DTM, '%Y%m') = DATE_FORMAT(NOW(), '%Y%m')
+            ) AS MONTH_NEW_CNT
+    </select>
+
+    <!-- 최근 등록 매물 10건 -->
+    <select id="getRecentPropList" resultType="map">
+        SELECT A.PROP_CD
+             , A.PROP_NM
+             , C.CAT_NM
+             , B.COM_NM AS DEAL_TYPE_NM
+             , A.SELL_YN
+             , A.BADGE_TYPE
+             , A.VIEW_CNT
+             , A.SELL_PRICE
+             , A.DEPOSIT
+             , A.MONTHLY_RENT
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
+          FROM TB_PROPERTY A
+          LEFT JOIN TB_COM B ON B.GRP_CD = 'DEAL_TYPE' AND B.COM_CD = A.DEAL_TYPE AND B.USE_YN = 'Y'
+          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD
+         WHERE A.DEL_YN = 'N'
+         ORDER BY A.CRE_DTM DESC
+         LIMIT 10
+    </select>
+
+    <!-- 인기 매물 TOP 5 (조회수 기준) -->
+    <select id="getTopPropList" resultType="map">
+        SELECT A.PROP_CD
+             , A.PROP_NM
+             , C.CAT_NM
+             , A.VIEW_CNT
+             , A.SELL_YN
+          FROM TB_PROPERTY A
+          LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD
+         WHERE A.DEL_YN = 'N'
+           AND A.SELL_YN = 'N'
+         ORDER BY A.VIEW_CNT DESC
+         LIMIT 5
+    </select>
+
     <!-- 문의 통계 (오늘/미답변/이번달/전체) -->
     <select id="getQnaSummary" resultType="map">
         SELECT
