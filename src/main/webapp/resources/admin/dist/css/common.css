@@ -460,23 +460,20 @@
 .bo-form-table td { font-size:13px; vertical-align:middle; }
 .bo-form-table .form-control-sm { font-size:13px; }
 @media (max-width: 768px) {
-  .bo-form-table { table-layout: fixed; width: 100%; }
-  .bo-form-table th { width: auto; font-size:12px; padding:8px 8px; white-space:normal; }
-  .bo-form-table td { font-size:12px; padding:8px 8px; word-break:break-all; }
-  /* 4컬럼 → 2컬럼 블록 */
+  .bo-form-table { table-layout: auto; width: 100%; }
+  /* 모바일: 모든 셀 블록 → 세로 1열 나열 */
   .bo-form-table,
   .bo-form-table tbody,
   .bo-form-table tr { display:block; width:100%; }
-  .bo-form-table tr { display:flex; flex-wrap:wrap; border-bottom:1px solid #dee2e6; }
+  .bo-form-table tr { border-bottom:1px solid #dee2e6; }
   .bo-form-table th,
-  .bo-form-table td { display:block; border:none; }
-  .bo-form-table th { width:100%; background:#f8f9fa; padding:8px 10px 4px; font-size:12px; }
-  .bo-form-table td { width:100%; padding:4px 10px 10px; }
-  .bo-form-table td[colspan] { width:100%; }
+  .bo-form-table td { display:block; width:100% !important; border:none; box-sizing:border-box; }
+  .bo-form-table th { background:#f8f9fa; padding:8px 10px 4px; font-size:12px; white-space:normal; }
+  .bo-form-table td { padding:4px 10px 10px; font-size:12px; }
+  .bo-form-table td[colspan] { width:100% !important; }
   .bo-form-table td .form-control-sm,
-  .bo-form-table td select.form-control-sm { width:100% !important; }
+  .bo-form-table td select.form-control-sm { width:100% !important; max-width:100% !important; }
   .bo-form-table td .d-flex { flex-wrap:wrap; }
-  /* 라디오/체크박스 줄바꿈 */
   .bo-form-table td label { display:inline-block; margin-right:12px; margin-bottom:4px; white-space:nowrap; }
 }
 

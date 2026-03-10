@@ -449,23 +449,50 @@ function fnInitDropZone() {
   });
 }
 
+var _newFiles = []; // 새 파일 목록 관리
+
 function fnPreviewNewFiles(files) {
+  // 기존 목록에 추가
+  for (var i = 0; i < files.length; i++) {
+    _newFiles.push(files[i]);
+  }
+  fnRenderNewFiles();
+  fnSyncFileInput();
+}
+
+function fnRemoveNewFile(idx) {
+  _newFiles.splice(idx, 1);
+  fnRenderNewFiles();
+  fnSyncFileInput();
+}
+
+function fnRenderNewFiles() {
   var $preview = $('#newFilePreview');
   $preview.empty();
-  for (var i = 0; i < files.length; i++) {
-    (function(file) {
+  for (var i = 0; i < _newFiles.length; i++) {
+    (function(file, idx) {
       var reader = new FileReader();
       reader.onload = function(e) {
         $preview.append(
-          '<div class="exist-file-item">' +
+          '<div class="exist-file-item" id="newFile_' + idx + '">' +
           '<img src="' + e.target.result + '" />' +
+          '<button type="button" class="btn btn-xs btn-bo-del" onclick="fnRemoveNewFile(' + idx + ')">×</button>' +
           '<span class="new-file-label">NEW</span>' +
           '</div>'
         );
       };
       reader.readAsDataURL(file);
-    })(files[i]);
+    })(_newFiles[i], i);
   }
+}
+
+function fnSyncFileInput() {
+  // DataTransfer로 input.files를 동기화
+  var dt = new DataTransfer();
+  for (var i = 0; i < _newFiles.length; i++) {
+    dt.items.add(_newFiles[i]);
+  }
+  document.getElementById('atchFileInput').files = dt.files;
 }
 
 /* ========== 저장 ========== */
