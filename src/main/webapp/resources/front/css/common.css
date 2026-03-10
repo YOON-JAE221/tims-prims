@@ -197,6 +197,9 @@ img { max-width: 100%; display: block; }
 .prop-deal-label {
   font-size: 14px; font-weight: 700; color: var(--gray-500);
 }
+.prop-card-area {
+  font-size: 12px; color: var(--gray-400); margin-top: 8px;
+}
 .prop-card-info {
   display: flex; gap: 12px; margin-top: 12px;
   padding-top: 12px; border-top: 1px solid var(--gray-100);

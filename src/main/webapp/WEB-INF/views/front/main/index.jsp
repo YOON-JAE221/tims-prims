@@ -37,7 +37,9 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${sliderProp.areaExclusive}&#13217;</span><c:if test="${sliderProp.roomCnt > 0}"><span>${sliderProp.roomCnt}룸</span></c:if><c:if test="${sliderProp.bathCnt > 0}"><span>욕실${sliderProp.bathCnt}</span></c:if></div>
+        <c:if test="${not empty sliderProp.areaExclusive}">
+          <div class="vc-area">${sliderProp.areaExclusive}㎡</div>
+        </c:if>
       </div>
       </c:if>
       <c:if test="${empty sliderProp}">
@@ -104,7 +106,9 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${latestProp.bathCnt > 0}"><span>욕실${latestProp.bathCnt}</span></c:if></div>
+        <c:if test="${not empty latestProp.areaExclusive}">
+          <div class="vc-area">${latestProp.areaExclusive}㎡</div>
+        </c:if>
       </div>
       </c:if>
       <c:if test="${empty latestProp}">
@@ -170,7 +174,9 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${urgentProp.bathCnt > 0}"><span>욕실${urgentProp.bathCnt}</span></c:if></div>
+        <c:if test="${not empty urgentProp.areaExclusive}">
+          <div class="vc-area">${urgentProp.areaExclusive}㎡</div>
+        </c:if>
       </div>
       </c:if>
       <c:if test="${empty urgentProp}">
@@ -263,7 +269,7 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="card-type">${fp.catNm}<c:if test="${not empty fp.areaExclusive}"> · ${fp.areaExclusive}㎡</c:if></div>
+          <div class="card-type">${fp.catNm}</div>
           <div class="card-title">${fp.propNm}</div>
           <div class="card-location">${fp.address}</div>
           <div class="card-price">
@@ -276,6 +282,9 @@
               </c:choose>
             </span>
           </div>
+          <c:if test="${not empty fp.areaExclusive}">
+            <div class="card-area">${fp.areaExclusive}㎡</div>
+          </c:if>
         </div>
       </div>
     </c:forEach>

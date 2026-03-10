@@ -97,7 +97,7 @@
             </c:if>
           </div>
           <div class="prop-card-body">
-            <div class="prop-card-type">${prop.catNm}<c:if test="${not empty prop.areaExclusive}"> · ${prop.areaExclusive}㎡</c:if></div>
+            <div class="prop-card-type">${prop.catNm}</div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-loc">${prop.address}</div>
             <div class="prop-card-price">
@@ -110,6 +110,9 @@
                 </c:choose>
               </span>
             </div>
+            <c:if test="${not empty prop.areaExclusive}">
+              <div class="prop-card-area">${prop.areaExclusive}㎡</div>
+            </c:if>
           </div>
         </div>
       </c:forEach>
