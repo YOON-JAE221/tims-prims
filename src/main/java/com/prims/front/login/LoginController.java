@@ -27,7 +27,7 @@ public class LoginController {
     private LoginService loginService;
 
     // LOGIN.jsp
-	@RequestMapping(value = "/loginView", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginView", method = {RequestMethod.GET, RequestMethod.POST})
     public String loginView(@RequestParam(value = "returnUrl", required = false) String returnUrl,
                             HttpServletRequest request, Model model) {
         // returnUrl 파라미터가 없으면 Referer 헤더에서 경로만 추출

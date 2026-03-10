@@ -138,24 +138,23 @@ img { max-width: 100%; display: block; }
   background: var(--navy-light); color: white;
 }
 
-/* ===== 매물 카드 그리드 ===== */
+/* ===== 매물 카드 그리드 (메인 추천매물과 동일) ===== */
 .prop-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
 }
 .prop-card {
-  border: 1px solid var(--gray-200); border-radius: 12px;
-  overflow: hidden; cursor: pointer;
-  transition: all 0.25s; background: white;
+  background: var(--white); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--gray-200); transition: all 0.3s; cursor: pointer;
 }
 .prop-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.08);
   border-color: transparent;
 }
 .prop-card-img {
-  height: 140px; position: relative;
+  height: 220px; position: relative;
   display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
 .prop-card-img.apt { background: linear-gradient(135deg, #2c3e6b, #4a6fa5); }
 .prop-card-img.officetel { background: linear-gradient(135deg, #5a4a8a, #7b6cb5); }
@@ -163,42 +162,45 @@ img { max-width: 100%; display: block; }
 .prop-card-img.oneroom { background: linear-gradient(135deg, #3b5e6b, #5a9aaa); }
 .prop-card-img.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
 .prop-card-img.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
-.prop-card-emoji { font-size: 40px; }
+.prop-card-emoji { font-size: 48px; color: white; }
 .prop-card-noimg {
   font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.6);
   letter-spacing: 2px;
 }
 .prop-card-badge {
-  position: absolute; top: 10px; left: 10px;
+  position: absolute; top: 14px; left: 14px;
   background: var(--orange); color: white;
-  padding: 3px 10px; border-radius: 5px;
-  font-size: 11px; font-weight: 700;
+  padding: 5px 12px; border-radius: 6px;
+  font-size: 12px; font-weight: 700;
 }
-.prop-card-body { padding: 14px; }
+.prop-card-body { padding: 20px; }
 .prop-card-type {
-  font-size: 11px; color: var(--orange); font-weight: 700;
-  margin-bottom: 4px;
+  font-size: 12px; color: var(--orange); font-weight: 700;
+  margin-bottom: 6px;
 }
 .prop-card-title {
-  font-size: 15px; font-weight: 700; color: var(--navy);
-  margin-bottom: 4px;
+  font-size: 18px; font-weight: 700; color: var(--navy);
+  margin-bottom: 8px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .prop-card-loc {
-  font-size: 12px; color: var(--gray-400); margin-bottom: 10px;
+  font-size: 13px; color: var(--gray-500); margin-bottom: 16px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .prop-card-price {
-  font-size: 14px; font-weight: 700; color: var(--gray-500);
+  font-size: 22px; font-weight: 800; color: var(--navy);
+  display: flex; align-items: baseline; gap: 8px;
 }
-.prop-card-price strong { font-weight: 800; color: var(--navy); }
 .prop-card-price span {
-  font-size: 18px; font-weight: 800; color: var(--navy); margin-left: 4px;
+  font-size: 22px; font-weight: 800; color: var(--navy);
+}
+.prop-deal-label {
+  font-size: 15px; font-weight: 700; color: var(--gray-500);
 }
 .prop-card-info {
-  display: flex; gap: 10px; margin-top: 10px;
-  padding-top: 10px; border-top: 1px solid var(--gray-100);
-  font-size: 12px; color: var(--gray-500);
+  display: flex; gap: 16px; margin-top: 14px;
+  padding-top: 14px; border-top: 1px solid var(--gray-100);
+  font-size: 13px; color: var(--gray-500);
 }
 .prop-card.sold-card { opacity: 0.6; }
 .prop-card.sold-card:hover { opacity: 0.8; }
@@ -255,11 +257,15 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 1024px) {
-  .prop-grid { grid-template-columns: repeat(2, 1fr); }
+  .prop-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
 }
 @media (max-width: 768px) {
-  .prop-grid { grid-template-columns: 1fr; }
-  .prop-card-img { height: 160px; }
+  .prop-grid { grid-template-columns: 1fr; gap: 16px; }
+  .prop-card-img { height: 200px; }
+  .prop-card-title { font-size: 16px; }
+  .prop-card-price { font-size: 20px; }
+  .prop-card-price span { font-size: 20px; }
+  .prop-deal-label { font-size: 14px; }
   .prop-filter { flex-direction: column; }
   .prop-filter select, .prop-filter input[type="text"] { width: 100%; }
 }

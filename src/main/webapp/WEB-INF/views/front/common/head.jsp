@@ -37,11 +37,11 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503100001" rel="stylesheet">
-  <link href="${ctx}/resources/front/css/main.css?v=202503100001" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503100002" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/main.css?v=202503100002" rel="stylesheet">
 
   <!-- Common JS -->
-  <script src="${ctx}/resources/common/util/js/common.js?v=202503100001" charset="UTF-8"></script>
+  <script src="${ctx}/resources/common/util/js/common.js?v=202503100002" charset="UTF-8"></script>
 
 </head>
 

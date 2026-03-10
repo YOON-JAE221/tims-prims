@@ -28,7 +28,7 @@ public class BbsController {
 	private BbsService bbsService;
 
 	// ===== 공지사항 =====
-	@RequestMapping(value = "/viewBbsNotice", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewBbsNotice", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewBbsNotice(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_NOTICE);
@@ -49,7 +49,7 @@ public class BbsController {
 	}
 
 	// ===== FAQ =====
-	@RequestMapping(value = "/viewBbsFaq", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewBbsFaq", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewBbsFaq(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_FAQ);
@@ -70,7 +70,7 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 =====
-	@RequestMapping(value = "/viewBbsQna", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewBbsQna", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewBbsQna(@ParamMap Map<String, Object> paramMap, Model model) {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);

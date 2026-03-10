@@ -16,7 +16,7 @@ import java.util.Map;
 @RequestMapping("/property")
 public class PropertyController {
 
-    @RequestMapping(value = "/viewPropertyList", method = RequestMethod.POST)
+    @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -68,7 +68,7 @@ public class PropertyController {
         return "front/property/propertyDetail";
     }
 
-    @RequestMapping(value = "/viewPropertySearch", method = RequestMethod.POST)
+    @RequestMapping(value = "/viewPropertySearch", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertySearch() {
         return "front/property/propertySearch";
     }
