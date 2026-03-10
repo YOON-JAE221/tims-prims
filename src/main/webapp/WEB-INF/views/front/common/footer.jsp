@@ -17,27 +17,16 @@
 
     <div class="footer-right">
       <div class="footer-nav-col">
-        <h4>주거매물</h4>
+        <h4>매물</h4>
         <ul>
-          <li><a href="javascript:fnFooterType('apt')">아파트</a></li>
-          <li><a href="javascript:fnFooterType('officetel')">오피스텔</a></li>
-          <li><a href="javascript:fnFooterType('villa')">빌라/주택</a></li>
-          <li><a href="javascript:fnFooterType('oneroom')">원룸/투룸</a></li>
+          <li><a href="${ctx}/property/viewPropertyList">매물안내</a></li>
+          <li><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
         </ul>
       </div>
       <div class="footer-nav-col">
-        <h4>상업매물</h4>
-        <ul>
-          <li><a href="javascript:fnFooterType('shop')">상가</a></li>
-          <li><a href="javascript:fnFooterType('office')">사무실</a></li>
-        </ul>
-      </div>
-      <div class="footer-nav-col">
-        <h4>서비스</h4>
+        <h4>회사소개</h4>
         <ul>
           <li><a href="${ctx}/about/viewAbout">회사소개</a></li>
-          <li><a href="${ctx}/property/viewPropertySearch">매물검색</a></li>
-          <li><a href="${ctx}/property/viewPropertyList">매물안내</a></li>
           <li><a href="${ctx}/locGuide/viewLocGuide">오시는길</a></li>
         </ul>
       </div>
@@ -102,16 +91,8 @@
   $(document).on('keydown', function(e) {
     if (e.keyCode === 27 && $('#privacyModal').is(':visible')) fnClosePrivacyModal();
   });
-
-  function fnFooterType(t) {
-    document.getElementById('footerTypeVal').value = t;
-    document.getElementById('footerTypeForm').submit();
-  }
 </script>
 
-<form id="footerTypeForm" action="${ctx}/property/viewPropertyList" method="post" style="display:none;">
-  <input type="hidden" name="type" id="footerTypeVal" />
-</form>
 <script>
   var revealObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
