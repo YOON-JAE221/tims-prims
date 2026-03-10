@@ -59,4 +59,9 @@ public class PropertySearchDao {
     public List<Map<String, Object>> getPropertyImageList(Map<String, Object> paramMap) {
         return sqlSession.selectList("propertySearch.getPropertyImageList", paramMap);
     }
+
+    /** FO 사이드바용 대분류 목록 */
+    public List<Map<String, Object>> getFrontCatList() {
+        return sqlSession.selectList("propertySearch.getFrontCatList");
+    }
 }

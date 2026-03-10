@@ -37,7 +37,7 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${sliderProp.areaExclusive}&#13217;</span><c:if test="${sliderProp.roomCnt > 0}"><span>${sliderProp.roomCnt}룸</span></c:if><c:if test="${not empty sliderProp.floorNo}"><span>${sliderProp.floorNo}층</span></c:if></div>
+        <div class="vc-stats"><span>${sliderProp.areaExclusive}&#13217;</span><c:if test="${sliderProp.roomCnt > 0}"><span>${sliderProp.roomCnt}룸</span></c:if><c:if test="${sliderProp.bathCnt > 0}"><span>욕실${sliderProp.bathCnt}</span></c:if></div>
       </div>
       </c:if>
       <c:if test="${empty sliderProp}">
@@ -104,7 +104,7 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${not empty latestProp.floorNo}"><span>${latestProp.floorNo}층</span></c:if></div>
+        <div class="vc-stats"><span>${latestProp.areaExclusive}&#13217;</span><c:if test="${latestProp.roomCnt > 0}"><span>${latestProp.roomCnt}룸</span></c:if><c:if test="${latestProp.bathCnt > 0}"><span>욕실${latestProp.bathCnt}</span></c:if></div>
       </div>
       </c:if>
       <c:if test="${empty latestProp}">
@@ -170,7 +170,7 @@
             </c:choose>
           </span>
         </div>
-        <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${not empty urgentProp.floorNo}"><span>${urgentProp.floorNo}층</span></c:if></div>
+        <div class="vc-stats"><span>${urgentProp.areaExclusive}&#13217;</span><c:if test="${urgentProp.roomCnt > 0}"><span>${urgentProp.roomCnt}룸</span></c:if><c:if test="${urgentProp.bathCnt > 0}"><span>욕실${urgentProp.bathCnt}</span></c:if></div>
       </div>
       </c:if>
       <c:if test="${empty urgentProp}">
@@ -279,7 +279,7 @@
           <div class="card-info">
             <div class="card-info-item">${fp.areaExclusive}&#13217;</div>
             <c:if test="${fp.roomCnt > 0}"><div class="card-info-item">${fp.roomCnt}룸</div></c:if>
-            <c:if test="${not empty fp.floorNo}"><div class="card-info-item">${fp.floorNo}층</div></c:if>
+            <c:if test="${fp.bathCnt > 0}"><div class="card-info-item">욕실${fp.bathCnt}</div></c:if>
           </div>
         </div>
       </div>

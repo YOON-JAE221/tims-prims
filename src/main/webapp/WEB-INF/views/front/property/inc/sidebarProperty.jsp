@@ -1,31 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 
 <aside class="side-nav">
   <h3 class="side-nav-title">매물유형</h3>
   <ul class="side-nav-menu">
-    <li class="${type eq 'all' ? 'active' : ''}">
+    <li class="${empty type or type eq 'all' ? 'active' : ''}">
       <a href="javascript:fnGoType('all')">전체매물</a>
     </li>
-    <li class="${type eq 'apt' ? 'active' : ''}">
-      <a href="javascript:fnGoType('apt')">아파트</a>
-    </li>
-    <li class="${type eq 'officetel' ? 'active' : ''}">
-      <a href="javascript:fnGoType('officetel')">오피스텔</a>
-    </li>
-    <li class="${type eq 'villa' ? 'active' : ''}">
-      <a href="javascript:fnGoType('villa')">빌라/주택</a>
-    </li>
-    <li class="${type eq 'oneroom' ? 'active' : ''}">
-      <a href="javascript:fnGoType('oneroom')">원룸/투룸</a>
-    </li>
-    <li class="${type eq 'shop' ? 'active' : ''}">
-      <a href="javascript:fnGoType('shop')">상가</a>
-    </li>
-    <li class="${type eq 'office' ? 'active' : ''}">
-      <a href="javascript:fnGoType('office')">사무실</a>
-    </li>
+    <c:forEach var="cat" items="${catList}">
+      <li class="${fn:toLowerCase(type) eq fn:toLowerCase(cat.CAT_CD) ? 'active' : ''}">
+        <a href="javascript:fnGoType('${fn:toLowerCase(cat.CAT_CD)}')">${cat.CAT_NM}</a>
+      </li>
+    </c:forEach>
   </ul>
 
   <div class="side-cs">

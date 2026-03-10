@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/front/common/head.jsp" %>
 
+<%-- 대분류명 동적 설정 --%>
 <c:set var="typeNm" value="전체매물" />
-<c:if test="${type eq 'apt'}"><c:set var="typeNm" value="아파트" /></c:if>
-<c:if test="${type eq 'officetel'}"><c:set var="typeNm" value="오피스텔" /></c:if>
-<c:if test="${type eq 'villa'}"><c:set var="typeNm" value="빌라/주택" /></c:if>
-<c:if test="${type eq 'oneroom'}"><c:set var="typeNm" value="원룸/투룸" /></c:if>
-<c:if test="${type eq 'shop'}"><c:set var="typeNm" value="상가" /></c:if>
-<c:if test="${type eq 'office'}"><c:set var="typeNm" value="사무실" /></c:if>
+<c:if test="${not empty type and type ne 'all'}">
+  <c:forEach var="cat" items="${catList}">
+    <c:if test="${fn:toLowerCase(cat.CAT_CD) eq fn:toLowerCase(type)}">
+      <c:set var="typeNm" value="${cat.CAT_NM}" />
+    </c:if>
+  </c:forEach>
+</c:if>
 
 <div class="page-header">
   <h2>${typeNm}</h2>
@@ -95,7 +97,7 @@
             </c:if>
           </div>
           <div class="prop-card-body">
-            <div class="prop-card-type">${prop.catNm} · ${prop.dealTypeNm}</div>
+            <div class="prop-card-type">${prop.catNm}</div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-loc">${prop.address}</div>
             <div class="prop-card-price">
@@ -111,7 +113,7 @@
             <div class="prop-card-info">
               <span>${prop.areaExclusive}&#13217;</span>
               <c:if test="${prop.roomCnt > 0}"><span>${prop.roomCnt}룸</span></c:if>
-              <c:if test="${not empty prop.floorNo}"><span>${prop.floorNo}층</span></c:if>
+              <c:if test="${prop.bathCnt > 0}"><span>욕실${prop.bathCnt}</span></c:if>
             </div>
           </div>
         </div>

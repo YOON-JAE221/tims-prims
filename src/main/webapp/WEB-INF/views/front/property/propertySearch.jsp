@@ -15,12 +15,9 @@
     <div class="ps-filter">
       <select id="psType" onchange="fnReload()">
         <option value="ALL">전체유형</option>
-        <option value="APT">아파트</option>
-        <option value="OFFICETEL">오피스텔</option>
-        <option value="VILLA">빌라/주택</option>
-        <option value="ONEROOM">원룸/투룸</option>
-        <option value="SHOP">상가</option>
-        <option value="OFFICE">사무실</option>
+        <c:forEach var="cat" items="${catList}">
+          <option value="${cat.CAT_CD}">${cat.CAT_NM}</option>
+        </c:forEach>
       </select>
       <select id="psDeal" onchange="fnReload()">
         <option value="ALL">전체거래</option>

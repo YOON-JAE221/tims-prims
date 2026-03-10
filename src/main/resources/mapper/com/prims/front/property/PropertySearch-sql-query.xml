@@ -14,7 +14,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.ADDRESS_DTL
              , A.LAT, A.LNG
              , A.BADGE_TYPE, A.SOLD_YN
@@ -50,7 +50,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE, A.SOLD_YN
              , A.ATCH_FILE_KEY
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
@@ -103,7 +103,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -127,7 +127,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -150,7 +150,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -174,7 +174,7 @@
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
-             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.FLOOR_NO
+             , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.BADGE_TYPE
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -224,5 +224,14 @@
            SET VIEW_CNT = VIEW_CNT + 1
          WHERE PROP_CD = #{id}
     </update>
+
+    <!-- FO 사이드바용 대분류 목록 (USE_YN=Y만) -->
+    <select id="getFrontCatList" resultType="map">
+        SELECT CAT_CD, CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE SUB_CAT_CD = '00'
+           AND USE_YN = 'Y'
+         ORDER BY SORT_ORDER
+    </select>
 
 </mapper>

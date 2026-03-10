@@ -42,6 +42,7 @@ public class PropertyController {
         model.addAttribute("totalCnt", totalCnt);
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("totalPage", totalPage);
+        model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertyList";
     }
 
@@ -65,11 +66,13 @@ public class PropertyController {
             List<Map<String, Object>> imgList = propertySearchDao.getPropertyImageList(param);
             model.addAttribute("imgList", imgList);
         }
+        model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertyDetail";
     }
 
     @RequestMapping(value = "/viewPropertySearch", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewPropertySearch() {
+    public String viewPropertySearch(Model model) {
+        model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertySearch";
     }
 
