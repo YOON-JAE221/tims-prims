@@ -86,6 +86,11 @@
     <input type="hidden" name="type" id="navPropertyType" />
   </form>
 
+  <!-- 매물 뱃지별 이동 -->
+  <form id="goPropListBadgeForm" action="${ctx}/property/viewPropertyList" method="post">
+    <input type="hidden" name="badgeType" id="navBadgeType" />
+  </form>
+
   <!-- 상담신청 이동 -->
   <form id="goConsultForm" action="${ctx}/bbs/viewBbsWriteQna" method="post">
     <input type="hidden" name="brdCd" value="3ccd942dfcbf11f08771908d6ec6e544" />
@@ -104,6 +109,11 @@
     function fnGoPropertyType(t) {
       document.getElementById('navPropertyType').value = t;
       document.getElementById('goPropertyTypeForm').submit();
+    }
+
+    function fnGoPropListBadge(badgeType) {
+      document.getElementById('navBadgeType').value = badgeType;
+      document.getElementById('goPropListBadgeForm').submit();
     }
 
     function fnGoConsult() {

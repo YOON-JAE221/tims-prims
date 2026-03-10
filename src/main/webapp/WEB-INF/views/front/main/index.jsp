@@ -135,7 +135,7 @@
         <h1>믿을 수 있는<br><em>부동산 파트너</em></h1>
         <p>풍부한 경험과 정확한 시세 분석으로<br>최적의 매물을 추천해 드립니다.</p>
         <div class="slide-actions">
-          <a href="${ctx}/property/viewPropertyList" class="btn-primary-primus">추천매물 보기</a>
+          <a href="javascript:fnGoPropListBadge('RECOMMEND')" class="btn-primary-primus">추천매물 보기</a>
           <a href="${ctx}/about/viewAbout" class="btn-outline-hero">회사소개</a>
         </div>
       </div>
