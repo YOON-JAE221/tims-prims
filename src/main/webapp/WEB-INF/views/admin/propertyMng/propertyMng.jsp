@@ -33,7 +33,7 @@
                 <select id="srchSubCatCd" class="form-control form-control-sm" style="width:120px;" onchange="fnSearch()">
                   <option value="ALL">전체소분류</option>
                 </select>
-                <select id="srchDealType" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
+                <select id="srchDealType" class="form-control form-control-sm" style="width:120px;" onchange="fnSearch()">
                   <option value="ALL">전체거래</option>
                   <option value="SELL">매매</option>
                   <option value="JEONSE">전세</option>
@@ -73,7 +73,7 @@
         </div>
 
         <!-- 페이징 -->
-        <div class="card-footer d-flex justify-content-center" style="padding:20px 0;">
+        <div class="card-footer d-flex justify-content-center" style="padding:12px 0;">
           <div id="gridPaging"></div>
         </div>
       </div>
@@ -99,7 +99,7 @@ function initGrid() {
   var columns = [
     { title:"대분류", field:"catNm", width:100 },
     { title:"소분류", field:"subCatNm", width:100 },
-    { title:"거래", field:"dealTypeNm", width:80 },
+    { title:"거래", field:"dealTypeNm", width:100 },
     { title:"매물명", field:"propNm", minWidth:200,
       formatter: function(cell) {
         return '<span style="color:#1B2A4A;font-weight:600;text-decoration:underline;cursor:pointer;">' + (cell.getValue() || '') + '</span>';

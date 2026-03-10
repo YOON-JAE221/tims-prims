@@ -251,11 +251,11 @@
               </c:if>
             </div>
             <!-- 드래그앤드롭 업로드 -->
-            <input type="file" name="atchFile" id="atchFileInput" multiple accept="image/*" style="display:none;" />
+            <input type="file" name="atchFile" id="atchFileInput" multiple accept=".jpg,.jpeg,.png,.gif,.webp" style="display:none;" />
             <div id="dropZone" class="drop-zone">
-              <i class="fas fa-cloud-upload-alt drop-zone-icon"></i>
-              <p class="drop-zone-text">파일을 여기에 드래그하거나 클릭하여 선택</p>
-              <small class="text-muted">여러 장 선택 가능 (최대 20MB)</small>
+              <span class="drop-zone-icon">&#128247;</span>
+              <p class="drop-zone-text">이미지를 여기에 드래그하거나 <a href="javascript:void(0)" class="drop-zone-link" id="dropZoneLink">클릭하여 선택</a></p>
+              <small class="text-muted">최대 10개, 파일당 20MB 이하 (JPG, PNG, GIF, WEBP)</small>
             </div>
             <!-- 새 파일 미리보기 -->
             <div id="newFilePreview" class="d-flex flex-wrap" style="gap:10px; margin-top:10px;"></div>
@@ -329,12 +329,14 @@ var previewMarker = null;
 
 $(function() {
   // Summernote 초기화 (공지사항과 동일)
-  EDIT.Summernote.init({
-    el: '#detailCnts',
-    ctx: '${ctx}',
-    initSelector: '#initCnts',
-    height: 400
-  });
+  try {
+    EDIT.Summernote.init({
+      el: '#detailCnts',
+      ctx: '${ctx}',
+      initSelector: '#initCnts',
+      height: 400
+    });
+  } catch(e) { console.error('Summernote init error', e); }
 
   // 수정모드: 소분류 로드
   var initCatCd = '${prop.catCd}';
@@ -347,11 +349,15 @@ $(function() {
   var initLat = parseFloat('${prop.lat}') || 0;
   var initLng = parseFloat('${prop.lng}') || 0;
   if (initLat && initLng) {
-    kakao.maps.load(function() { fnShowMapPreview(initLat, initLng); });
+    try {
+      if (typeof kakao !== 'undefined' && kakao.maps && kakao.maps.load) {
+        kakao.maps.load(function() { fnShowMapPreview(initLat, initLng); });
+      }
+    } catch(e) { console.error('Kakao map init error', e); }
   }
 
-  // 드래그앤드롭 초기화
-  fnInitDropZone();
+  // 드래그앤드롭 초기화 (별도 블록으로 분리하여 에러 격리)
+  try { fnInitDropZone(); } catch(e) { console.error('dropzone init error', e); }
 });
 
 /* 대분류 변경 → 소분류 로드 */
@@ -378,18 +384,20 @@ function fnSearchAddr() {
       $('#address').val(addr);
 
       // 카카오 지오코딩 → 좌표 자동 설정
-      kakao.maps.load(function() {
-        var geocoder = new kakao.maps.services.Geocoder();
-        geocoder.addressSearch(addr, function(result, status) {
-          if (status === kakao.maps.services.Status.OK) {
-            var lat = result[0].y;
-            var lng = result[0].x;
-            $('#lat').val(lat);
-            $('#lng').val(lng);
-            fnShowMapPreview(lat, lng);
-          }
+      if (typeof kakao !== 'undefined' && kakao.maps && kakao.maps.load) {
+        kakao.maps.load(function() {
+          var geocoder = new kakao.maps.services.Geocoder();
+          geocoder.addressSearch(addr, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+              var lat = result[0].y;
+              var lng = result[0].x;
+              $('#lat').val(lat);
+              $('#lng').val(lng);
+              fnShowMapPreview(lat, lng);
+            }
+          });
         });
-      });
+      }
     }
   }).open();
 }
@@ -417,8 +425,14 @@ function fnInitDropZone() {
   var $zone = $('#dropZone');
   var $input = $('#atchFileInput');
 
-  $zone.on('click', function() { $input[0].click(); });
+  // 영역 전체 클릭 → 파일 선택
+  $zone.on('click', function(e) {
+    // 이미 input click이 진행중이면 무시 (이중 호출 방지)
+    if (e.target === $input[0]) return;
+    $input.trigger('click');
+  });
 
+  // 드래그 오버
   $zone.on('dragover', function(e) { e.preventDefault(); e.stopPropagation(); $zone.addClass('drag-over'); });
   $zone.on('dragleave', function(e) { e.preventDefault(); e.stopPropagation(); $zone.removeClass('drag-over'); });
   $zone.on('drop', function(e) {
@@ -524,11 +538,14 @@ function fnGoList() {
 
 /* 드래그앤드롭 영역 */
 .drop-zone {
-  border:2px dashed #ccc; border-radius:8px; padding:30px; text-align:center; cursor:pointer;
+  border:2px dashed #b8d4f0; border-radius:8px; padding:40px 30px; text-align:center; cursor:pointer;
   transition: border-color 0.2s, background 0.2s;
+  background: #fbfdff;
 }
 .drop-zone:hover, .drop-zone.drag-over { border-color:#0078ff; background:#f0f7ff; }
-.drop-zone-icon { font-size:36px; color:#0078ff; margin-bottom:10px; display:block; }
-.drop-zone-text { margin:0 0 4px; font-size:15px; color:#333; font-weight:700; }
+.drop-zone-icon { font-size:36px; color:#888; margin-bottom:12px; display:block; }
+.drop-zone-text { margin:0 0 6px; font-size:14px; color:#555; font-weight:500; }
+.drop-zone-link { color:#0078ff; font-weight:700; text-decoration:underline; cursor:pointer; }
+.drop-zone-link:hover { color:#005ec7; }
 .drop-zone p { margin:0; }
 </style>

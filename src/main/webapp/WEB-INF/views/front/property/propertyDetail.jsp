@@ -493,6 +493,35 @@
 
   .prop-detail-top { flex-direction: column; gap: 0; }
   .prop-detail-summary { padding-top: 16px; }
+
+  /* 매물 정보 테이블 모바일 - 4칸 → 2칸 세로 정렬 */
+  .prop-detail-table tr {
+    display: flex; flex-wrap: wrap;
+  }
+  .prop-detail-table th,
+  .prop-detail-table td {
+    display: block; box-sizing: border-box;
+  }
+  .prop-detail-table th {
+    width: 35%; font-size: 13px; padding: 10px 12px;
+  }
+  .prop-detail-table td {
+    width: 65%; font-size: 13px; padding: 10px 12px;
+  }
+
+  /* 하단 CTA 세로 정렬 */
+  .prop-detail-cta {
+    flex-direction: column; text-align: center; gap: 16px; padding: 20px 16px;
+  }
+  .prop-detail-cta > div:last-child {
+    flex-direction: column; width: 100%;
+  }
+  .prop-detail-cta > div:last-child .btn-primary-primus {
+    width: 100%; text-align: center;
+  }
+
+  /* 위치 지도 높이 조절 */
+  #propMap { min-height: 200px; }
 }
 </style>
 
