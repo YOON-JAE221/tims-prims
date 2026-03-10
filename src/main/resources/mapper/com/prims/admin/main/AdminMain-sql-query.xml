@@ -14,7 +14,7 @@
           , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND BADGE_TYPE = 'URGENT') AS URGENT_CNT
     </select>
 
-    <!-- 최근 등록 매물 15건 -->
+    <!-- 최근 등록 매물 9건 -->
     <select id="getRecentPropList" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
@@ -29,7 +29,7 @@
           LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00'
          WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
          ORDER BY A.RGT_DTM DESC
-         LIMIT 15
+         LIMIT 9
     </select>
 
     <!-- 인기 매물 TOP 5 (조회수 기준) -->
