@@ -42,4 +42,17 @@
 	     ORDER BY A.CRE_DTM DESC
 	</select>
 
+	<!-- FO 메인 뉴스 목록 (사용중, 최대 5건) -->
+	<select id="getSelectMainNewsList" resultType="map">
+	    SELECT NEWS_CD
+	         , NEWS_TITLE
+	         , NEWS_URL
+	         , CONCAT(SUBSTRING(RGT_DT,1,4),'.',SUBSTRING(RGT_DT,5,2),'.',SUBSTRING(RGT_DT,7,2)) AS RGT_DT
+	      FROM TB_NEWS
+	     WHERE USE_YN = 'Y'
+	       AND DEL_YN = 'N'
+	     ORDER BY RGT_DT DESC
+	     LIMIT 5
+	</select>
+
 	</mapper>

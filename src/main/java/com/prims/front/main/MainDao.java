@@ -22,4 +22,9 @@ public class MainDao {
     public List<Map<String, Object>> getSelectActivePopList(Map<String, Object> paramMap) {
         return sqlSession.selectList("frontMain.getSelectActivePopList", paramMap);
     }
+
+    // FO 메인 뉴스 목록
+    public List<Map<String, Object>> getSelectMainNewsList() {
+        return sqlSession.selectList("frontMain.getSelectMainNewsList");
+    }
 }

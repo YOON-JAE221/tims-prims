@@ -1,4 +1,5 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.prims.common.constant.Constant" %>
 <%@ include file="/WEB-INF/views/common/taglibs.jsp" %>
 
 <!DOCTYPE html>
@@ -38,10 +39,15 @@
 
   <!-- CSS -->
   <link href="${ctx}/resources/front/css/common.css?v=202503100005" rel="stylesheet">
-  <link href="${ctx}/resources/front/css/main.css?v=202503100007" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/main.css?v=202503110006" rel="stylesheet">
 
   <!-- Common JS -->
   <script src="${ctx}/resources/common/util/js/common.js?v=202503100005" charset="UTF-8"></script>
+
+  <!-- Global Config -->
+  <script>
+    var KAKAO_MAP_API_KEY = '<%= Constant.KAKAO_MAP_API_KEY %>';
+  </script>
 
 </head>
 

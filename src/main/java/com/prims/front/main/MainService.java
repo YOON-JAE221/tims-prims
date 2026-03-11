@@ -17,4 +17,9 @@ public class MainService {
     public List<Map<String, Object>> getSelectActivePopList() {
         return mainDao.getSelectActivePopList(new HashMap<>());
     }
+
+    // FO 메인 뉴스 목록
+    public List<Map<String, Object>> getSelectMainNewsList() {
+        return mainDao.getSelectMainNewsList();
+    }
 }

@@ -132,7 +132,7 @@
 }
 </style>
 
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d53f71f3d9ea4c5c59f5f63df52a5c0d"></script>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=<%= Constant.KAKAO_MAP_API_KEY %>"></script>
 <script>
   $(function () {
     kakao.maps.load(function () {

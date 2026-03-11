@@ -32,11 +32,6 @@
           <option value="WOLSE" ${dealType eq 'WOLSE' ? 'selected' : ''}>월세</option>
           <option value="RENT" ${dealType eq 'RENT' ? 'selected' : ''}>임대</option>
         </select>
-        <select name="badgeType" onchange="fnFilter()">
-          <option value="">전체뱃지</option>
-          <option value="RECOMMEND" ${badgeType eq 'RECOMMEND' ? 'selected' : ''}>추천</option>
-          <option value="URGENT" ${badgeType eq 'URGENT' ? 'selected' : ''}>급매</option>
-        </select>
         <input type="text" name="keyword" value="${keyword}" placeholder="매물명 또는 주소 검색" />
         <div class="prop-filter-btns">
           <button type="submit" class="prop-filter-btn">검색</button>

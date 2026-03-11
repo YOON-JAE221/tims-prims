@@ -173,6 +173,34 @@
   </div>
 </section>
 
+<!-- ===== 부동산 뉴스 ===== -->
+<section class="news-section">
+  <div class="news-inner">
+    <div class="news-header">
+      <div class="news-title-area">
+        <span class="news-icon">📰</span>
+        <h3 class="news-title">부동산 뉴스</h3>
+      </div>
+    </div>
+    <div class="news-list">
+      <c:choose>
+        <c:when test="${not empty newsList}">
+          <c:forEach var="news" items="${newsList}" varStatus="st">
+            <a href="${news.newsUrl}" target="_blank" class="news-item" rel="noopener noreferrer">
+              <span class="news-item-title">${news.newsTitle}</span>
+              <span class="news-item-date">${news.rgtDt}</span>
+              <span class="news-item-arrow">→</span>
+            </a>
+          </c:forEach>
+        </c:when>
+        <c:otherwise>
+          <div class="news-empty">등록된 뉴스가 없습니다.</div>
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </div>
+</section>
+
 <!-- 슬라이더 JS -->
 <script>
   var currentSlide = 0;

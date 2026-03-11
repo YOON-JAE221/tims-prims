@@ -29,6 +29,14 @@ public class MainController {
             e.printStackTrace();
         }
 
+        // FO 메인 뉴스 목록
+        try {
+            List<Map<String, Object>> newsList = mainService.getSelectMainNewsList();
+            model.addAttribute("newsList", newsList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "front/main/index";
     }
 }

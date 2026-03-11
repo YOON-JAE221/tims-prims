@@ -14,12 +14,12 @@
     <div class="container">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h4>팝업관리 - <c:choose><c:when test="${not empty detail}">수정</c:when><c:otherwise>등록</c:otherwise></c:choose></h4>
+          <h4>팝업공지관리 - <c:choose><c:when test="${not empty detail}">수정</c:when><c:otherwise>등록</c:otherwise></c:choose></h4>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active">시스템관리</li>
-            <li class="breadcrumb-item"><a href="${ctx}/popMng/viewPopMng">팝업관리</a></li>
+            <li class="breadcrumb-item active">전시관리</li>
+            <li class="breadcrumb-item"><a href="${ctx}/popMng/viewPopMng">팝업공지관리</a></li>
           </ol>
         </div>
       </div>

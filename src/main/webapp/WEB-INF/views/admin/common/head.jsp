@@ -87,10 +87,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
           </li>
           <li class="nav-item dropdown">
+            <a id="dropdownSubMenu5" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">전시관리</a>
+            <ul aria-labelledby="dropdownSubMenu5" class="dropdown-menu border-0 shadow">
+              <li><a href="${ctx}/popMng/viewPopMng" class="dropdown-item">팝업공지관리</a></li>
+              <li><a href="${ctx}/newsMng/viewNewsMng" class="dropdown-item">부동산뉴스관리</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
             <a id="dropdownSubMenu4" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">시스템관리</a>
             <ul aria-labelledby="dropdownSubMenu4" class="dropdown-menu border-0 shadow">
               <li><a href="${ctx}/sysMenuMng/viewSysMenuMng" class="dropdown-item">메뉴관리</a></li>
-              <li><a href="${ctx}/popMng/viewPopMng" class="dropdown-item">팝업관리</a></li>
               <li><a href="${ctx}/batMng/viewBatMng" class="dropdown-item">배치관리</a></li>
               <li><a href="${ctx}/bbsBrdMng/viewBbsBrdMng" class="dropdown-item">게시판관리</a></li>
               <li><a href="${ctx}/sendLogMng/viewSendLogMng" class="dropdown-item">발송내역</a></li>

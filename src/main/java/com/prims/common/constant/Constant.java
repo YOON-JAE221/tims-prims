@@ -124,4 +124,9 @@ public final class Constant {
     public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE";
     public static final String CFG_PROP_LIST_ACCESS_CODE = "PROP_LIST_ACCESS_CODE";
 
+    /* =========================
+     * 외부 API 키
+     * ========================= */
+    public static final String KAKAO_MAP_API_KEY = "d53f71f3d9ea4c5c59f5f63df52a5c0d";
+
 }
