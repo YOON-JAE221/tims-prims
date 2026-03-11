@@ -118,16 +118,24 @@
   @media (max-width: 1400px) { .dash-cards { grid-template-columns: repeat(3, 1fr); } }
   @media (max-width: 1200px) { .dash-row { grid-template-columns: 1fr; } }
   @media (max-width: 768px) {
-    .dash-cards { grid-template-columns: repeat(2, 1fr); }
-    .recent-prop-wrap { overflow-x: auto; }
-    .recent-prop-table { min-width: 600px; }
+    .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .dash-row { grid-template-columns: 1fr; gap: 16px; }
+    .recent-prop-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .recent-prop-table { min-width: 550px; }
   }
-  @media (max-width: 480px) { .dash-cards { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) {
+    .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .dash-card { padding: 14px; }
+    .dash-card-icon { width: 36px; height: 36px; font-size: 16px; margin-bottom: 10px; }
+    .dash-card-label { font-size: 11px; }
+    .dash-card-value { font-size: 20px; }
+    .dash-card-value small { font-size: 12px; }
+  }
 </style>
 
 <div class="content-wrapper">
   <section class="content" style="padding-top:32px;">
-    <div class="container">
+    <div class="container-fluid">
 
       <!-- 상단 요약 카드 -->
       <div class="dash-cards">

@@ -8,8 +8,14 @@ public final class Constant {
 
     private Constant() {
         throw new UnsupportedOperationException("Constant class");
-    }
+        /* =========================
+     * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)
+     * ========================= */
+    public static final String CFG_SITE_ACCESS_CODE        = "SITE_ACCESS_CODE";        // 사이트 접속코드
+    public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE"; // 매물검색 접근코드
+    public static final String CFG_PROP_LIST_ACCESS_CODE   = "PROP_LIST_ACCESS_CODE";   // 매물안내 접근코드
 
+}
     /* =========================
      * 공통 세션 키
      * ========================= */
@@ -116,5 +122,12 @@ public final class Constant {
     public static final String BADGE_NONE      = "NONE";       // 없음
     public static final String BADGE_RECOMMEND = "RECOMMEND";  // 추천
     public static final String BADGE_URGENT    = "URGENT";     // 급매
+
+    /* =========================
+     * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)
+     * ========================= */
+    public static final String CFG_SITE_ACCESS_CODE        = "SITE_ACCESS_CODE";        // 사이트 접속코드
+    public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE"; // 매물검색 접근코드
+    public static final String CFG_PROP_LIST_ACCESS_CODE   = "PROP_LIST_ACCESS_CODE";   // 매물안내 접근코드
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.prims.common.config.SysConfigDao;
+import com.prims.common.constant.Constant;
 import com.prims.common.interceptor.AccessCodeInterceptor;
 
 @Controller
@@ -31,20 +32,30 @@ public class AccessCodeController {
         return "front/access/accessCode";
     }
 
-    // 접속코드 확인 (AJAX)
+    // 접속코드 확인 (AJAX) - 암호화 비교
     @ResponseBody
     @RequestMapping(value = "/verifyAccessCode", method = RequestMethod.POST)
     public Map<String, Object> verifyAccessCode(@RequestParam("code") String code, HttpSession session) {
         Map<String, Object> result = new HashMap<>();
 
-        String accessCode = sysConfigDao.getConfigValue(AccessCodeInterceptor.CONFIG_KEY);
+        try {
+            Map<String, Object> param = new HashMap<>();
+            param.put("configKey", Constant.CFG_SITE_ACCESS_CODE);
+            param.put("accessCode", code.trim());
+            param.put("encryptKey", Constant.ENCRYPT_KEY);
 
-        if (accessCode != null && accessCode.equals(code.trim())) {
-            session.setAttribute(AccessCodeInterceptor.SESSION_ACCESS_KEY, "Y");
-            result.put("result", "OK");
-        } else {
+            int cnt = sysConfigDao.verifyAccessCode(param);
+
+            if (cnt > 0) {
+                session.setAttribute(AccessCodeInterceptor.SESSION_ACCESS_KEY, "Y");
+                result.put("result", "OK");
+            } else {
+                result.put("result", "FAIL");
+                result.put("message", "접속코드가 올바르지 않습니다.");
+            }
+        } catch (Exception e) {
             result.put("result", "FAIL");
-            result.put("message", "접속코드가 올바르지 않습니다.");
+            result.put("message", "오류가 발생했습니다.");
         }
 
         return result;

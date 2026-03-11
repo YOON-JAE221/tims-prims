@@ -94,7 +94,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <li><a href="${ctx}/batMng/viewBatMng" class="dropdown-item">배치관리</a></li>
               <li><a href="${ctx}/bbsBrdMng/viewBbsBrdMng" class="dropdown-item">게시판관리</a></li>
               <li><a href="${ctx}/sendLogMng/viewSendLogMng" class="dropdown-item">발송내역</a></li>
-              <li><a href="${ctx}/accessCodeMng/viewAccessCodeMng" class="dropdown-item">접속코드</a></li>
+              <li><a href="${ctx}/accessCodeMng/viewAccessCodeMng" class="dropdown-item">환경설정</a></li>
             </ul>
           </li>
           <li class="nav-item">

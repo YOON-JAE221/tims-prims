@@ -4,20 +4,78 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="sysConfig">
 
-    <!-- 설정값 조회 -->
+    <!-- 설정값 조회 (값만) -->
     <select id="getConfigValue" parameterType="string" resultType="string">
         SELECT CONFIG_VALUE
           FROM TB_SYS_CONFIG
          WHERE CONFIG_KEY = #{configKey}
+           AND DEL_YN = 'N'
     </select>
 
-    <!-- 설정값 저장 (UPSERT) -->
+    <!-- 설정 상세 조회 (USE_YN 포함, 복호화) -->
+    <select id="getConfigOne" parameterType="map" resultType="map">
+        SELECT CONFIG_KEY
+             , F_COM_DECRYPT(CONFIG_VALUE, #{encryptKey}) AS CONFIG_VALUE
+             , CONFIG_DESC
+             , SORT_ORDER
+             , USE_YN
+          FROM TB_SYS_CONFIG
+         WHERE CONFIG_KEY = #{configKey}
+           AND DEL_YN = 'N'
+    </select>
+
+    <!-- 설정 리스트 조회 -->
+    <select id="getConfigList" parameterType="map" resultType="map">
+        SELECT CONFIG_KEY
+             , CONFIG_VALUE
+             , CONFIG_DESC
+             , SORT_ORDER
+             , USE_YN
+          FROM TB_SYS_CONFIG
+         WHERE DEL_YN = 'N'
+         ORDER BY SORT_ORDER ASC
+    </select>
+
+    <!-- 설정값 저장 (UPSERT) - 기존 호환 -->
     <update id="saveConfigValue" parameterType="map">
-        INSERT INTO TB_SYS_CONFIG (CONFIG_KEY, CONFIG_VALUE, CONFIG_DESC, UPD_DTM)
-        VALUES (#{configKey}, #{configValue}, #{configDesc}, NOW())
+        INSERT INTO TB_SYS_CONFIG (CONFIG_KEY, CONFIG_VALUE, CONFIG_DESC, CRE_USR_CD, CRE_DTM, UPD_DTM, DEL_YN)
+        VALUES (#{configKey}, #{configValue}, #{configDesc}, #{ssnUsrCd}, NOW(), NOW(), 'N')
         ON DUPLICATE KEY UPDATE
             CONFIG_VALUE = #{configValue},
+            UPD_USR_CD = #{ssnUsrCd},
             UPD_DTM = NOW()
     </update>
+
+    <!-- 환경설정 저장 (USE_YN + 암호화) -->
+    <update id="saveConfig" parameterType="map">
+        UPDATE TB_SYS_CONFIG
+           SET USE_YN = #{useYn}
+             , CONFIG_VALUE = F_COM_ENCRYPT(TRIM(#{configValue}), #{encryptKey})
+             , UPD_USR_CD = #{ssnUsrCd}
+             , UPD_DTM = NOW()
+         WHERE CONFIG_KEY = #{configKey}
+           AND DEL_YN = 'N'
+    </update>
+
+    <!-- 접근코드 검증 (암호화 비교) -->
+    <select id="verifyAccessCode" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_SYS_CONFIG
+         WHERE CONFIG_KEY = #{configKey}
+           AND USE_YN = 'Y'
+           AND CONFIG_VALUE = F_COM_ENCRYPT(TRIM(#{accessCode}), #{encryptKey})
+           AND DEL_YN = 'N'
+    </select>
+
+    <!-- 접근 필요 여부 확인 (USE_YN = 'Y' 이고 값이 있는지) -->
+    <select id="isAccessRequired" parameterType="string" resultType="int">
+        SELECT COUNT(*)
+          FROM TB_SYS_CONFIG
+         WHERE CONFIG_KEY = #{configKey}
+           AND USE_YN = 'Y'
+           AND CONFIG_VALUE IS NOT NULL
+           AND CONFIG_VALUE != ''
+           AND DEL_YN = 'N'
+    </select>
 
 </mapper>

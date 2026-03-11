@@ -65,7 +65,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 접속코드 인터셉터 (FO 전체)
+        // 사이트 접속코드 인터셉터 (FO 전체 - USE_YN = 'Y'일 때만 동작)
         registry.addInterceptor(accessCodeInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
