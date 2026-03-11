@@ -13,6 +13,44 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>프리머스 부동산 관리자</title>
   
+  <!-- 모바일 접근 차단 -->
+  <script>
+  (function() {
+    var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 1024;
+    if (isMobile) {
+      document.write('\
+        <!DOCTYPE html>\
+        <html lang="ko">\
+        <head>\
+          <meta charset="utf-8">\
+          <meta name="viewport" content="width=device-width, initial-scale=1">\
+          <title>접근 불가</title>\
+          <style>\
+            * { margin:0; padding:0; box-sizing:border-box; }\
+            body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; background:#f5f5f5; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:20px; }\
+            .block-wrap { background:#fff; border-radius:16px; padding:40px 30px; text-align:center; max-width:360px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }\
+            .block-icon { font-size:60px; margin-bottom:20px; }\
+            .block-title { font-size:20px; font-weight:700; color:#1a2332; margin-bottom:12px; }\
+            .block-msg { font-size:14px; color:#666; line-height:1.6; margin-bottom:24px; }\
+            .block-btn { display:inline-block; padding:12px 28px; background:#E8830C; color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px; }\
+          </style>\
+        </head>\
+        <body>\
+          <div class="block-wrap">\
+            <div class="block-icon">🖥️</div>\
+            <div class="block-title">PC에서 접속해주세요</div>\
+            <div class="block-msg">관리자 페이지는 PC 환경에서만<br>이용하실 수 있습니다.</div>\
+            <a href="/" class="block-btn">메인으로 이동</a>\
+          </div>\
+        </body>\
+        </html>\
+      ');
+      document.close();
+      throw new Error('Mobile blocked');
+    }
+  })();
+  </script>
+
   <c:set var="ctx" value="${pageContext.request.contextPath}" />
   
   <!-- Favicons -->

@@ -86,6 +86,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(
                     "/login/**",
                     "/resources/**",
+                    "/admin/mobileBlock",
                     "/bbs/viewBbsWriteQna",
                     "/bbs/saveBbsPstQna",
                     "/bbs/checkSecretPwd",

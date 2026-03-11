@@ -22,6 +22,12 @@ public class AdminMainController {
 	@Named("AdminMainService")
 	private AdminMainService adminMainService;
 
+	// 모바일 차단 페이지
+	@RequestMapping(value = "/mobileBlock", method = {RequestMethod.GET, RequestMethod.POST})
+	public String mobileBlock() {
+		return "admin/main/mobileBlock";
+	}
+
 	@RequestMapping(value = "/viewAdminMain", method = {RequestMethod.GET, RequestMethod.POST})
 	public String viewAdminMain(Model model) {
 
