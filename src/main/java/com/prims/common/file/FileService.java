@@ -158,7 +158,7 @@ public class FileService {
     }
     
     
-    //파일 물리 삭제 및 파일테이블 삭제
+    //파일 물리 삭제 및 파일테이블 논리삭제 (게시판용)
     @Transactional(rollbackFor = Exception.class)
     public int deleteCommonFile(Map<String, Object> fileMap) throws Exception {
 
@@ -190,6 +190,37 @@ public class FileService {
         map.put("ssnUsrCd", ssnUsrCd);
 
         return fileDao.updateUpldFileDelYn(map);
+    }
+
+    /**
+     * 파일 물리 삭제 및 파일테이블 물리삭제 (매물관리용)
+     * - 물리파일 삭제 + DB에서 완전 삭제
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteCommonFilePhysical(Map<String, Object> fileMap) throws Exception {
+
+        String upldFileCd = String.valueOf(fileMap.get("upldFileCd"));
+        int fileSeq       = Integer.parseInt(String.valueOf(fileMap.get("fileSeq")));
+        String savePath   = String.valueOf(fileMap.get("savePath"));
+        String saveFileNm = String.valueOf(fileMap.get("saveFileNm"));
+
+        // 1) 물리 파일 삭제
+        String relPath = savePath.replace("\\", "/");
+        Path target = Paths.get(appProperties.getUploadBaseDir(), relPath, saveFileNm).normalize();
+
+        Path base = Paths.get(appProperties.getUploadBaseDir()).normalize();
+        if (!target.startsWith(base)) {
+            throw new IllegalArgumentException("invalid path");
+        }
+
+        Files.deleteIfExists(target);
+
+        // 2) TB_UPLD_FILE 물리 삭제 (DELETE)
+        Map<String, Object> map = new HashMap<>();
+        map.put("upldFileCd", upldFileCd);
+        map.put("fileSeq", fileSeq);
+
+        return fileDao.deleteUpldFile(map);
     }
    
     

@@ -153,14 +153,11 @@
             UPD_DTM        = NOW()
     </update>
 
-    <!-- 매물 삭제 (논리) -->
-    <update id="deleteProperty" parameterType="map">
-        UPDATE TB_PROPERTY
-           SET DEL_YN = 'Y'
-             , UPD_USR_CD = #{ssnUsrCd}
-             , UPD_DTM = NOW()
+    <!-- 매물 삭제 (물리삭제) -->
+    <delete id="deleteProperty" parameterType="map">
+        DELETE FROM TB_PROPERTY
          WHERE PROP_CD = #{propCd}
-    </update>
+    </delete>
 
     <!-- 매물 복사 -->
     <insert id="copyProperty" parameterType="map">

@@ -137,6 +137,10 @@ img { max-width: 100%; display: block; }
 .nav-admin-btn:hover {
   background: var(--navy-light); color: white;
 }
+/* 모바일에서 관리자 버튼 숨김 */
+@media (max-width: 768px) {
+  .nav-admin-btn { display: none !important; }
+}
 
 /* ===== 매물 카드 그리드 ===== */
 .prop-grid {
@@ -718,6 +722,57 @@ img { max-width: 100%; display: block; }
 .footer-copyright {
   font-size: 11px; color: rgba(255,255,255,0.15);
   text-transform: uppercase; letter-spacing: 0.3px;
+}
+
+/* Footer 모바일 반응형 */
+@media (max-width: 768px) {
+  .footer-main {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 36px 20px 28px;
+  }
+  .footer-left {
+    max-width: 100%;
+    text-align: center;
+  }
+  .footer-logo-row {
+    justify-content: center;
+  }
+  .footer-info {
+    font-size: 11px;
+    line-height: 1.9;
+  }
+  .footer-right {
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-nav-col {
+    min-width: 80px;
+    text-align: center;
+  }
+  .footer-nav-col h4 {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+  .footer-nav-col li {
+    margin-bottom: 8px;
+  }
+  .footer-nav-col a {
+    font-size: 12px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 20px;
+    text-align: center;
+  }
+  .footer-bottom-links {
+    justify-content: center;
+  }
+  .footer-copyright {
+    font-size: 10px;
+  }
 }
   display: flex; align-items: center; gap: 6px;
 }

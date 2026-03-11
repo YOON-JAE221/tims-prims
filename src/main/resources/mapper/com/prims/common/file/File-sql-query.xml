@@ -76,6 +76,19 @@
 	       AND FILE_SEQ = #{fileSeq}
 	       AND DEL_YN = 'N'
 	</select>
+
+	<!-- 첨부파일 물리삭제 (단건) -->
+	<delete id="deleteUpldFile" parameterType="map">
+	    DELETE FROM TB_UPLD_FILE
+	     WHERE UPLD_FILE_CD = #{upldFileCd}
+	       AND FILE_SEQ = #{fileSeq}
+	</delete>
+
+	<!-- 첨부파일 물리삭제 (해당 키 전체) -->
+	<delete id="deleteUpldFileByKey" parameterType="string">
+	    DELETE FROM TB_UPLD_FILE
+	     WHERE UPLD_FILE_CD = #{upldFileCd}
+	</delete>
 	</mapper>
 	
 	

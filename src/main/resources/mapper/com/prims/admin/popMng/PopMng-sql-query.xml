@@ -68,13 +68,10 @@
 	      , UPD_DTM       = SYSDATE()
 	</update>
 
-	<!-- 팝업 삭제 -->
-	<update id="deletePop" parameterType="map">
-	    UPDATE TB_POP
-	       SET DEL_YN = 'Y'
-	         , UPD_USR_CD = #{ssnUsrCd}
-	         , UPD_DTM = SYSDATE()
+	<!-- 팝업 삭제 (물리삭제) -->
+	<delete id="deletePop" parameterType="map">
+	    DELETE FROM TB_POP
 	     WHERE POP_CD = #{popCd}
-	</update>
+	</delete>
 
 	</mapper>

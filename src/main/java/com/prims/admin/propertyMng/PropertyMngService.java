@@ -53,7 +53,6 @@ public class PropertyMngService {
 
         // 기존 첨부파일 삭제 처리
         if (deleteFiles != null && deleteFiles.length > 0) {
-            String ssnUsrCd = String.valueOf(paramMap.getOrDefault("ssnUsrCd", ""));
             for (String delKey : deleteFiles) {
                 if (delKey == null || delKey.isEmpty()) continue;
                 String[] parts = delKey.split(":");
@@ -63,8 +62,7 @@ public class PropertyMngService {
                 fileParam.put("fileSeq", Integer.parseInt(parts[1]));
                 Map<String, Object> fileInfo = fileService.getSelectUpldFileOne(fileParam);
                 if (fileInfo != null) {
-                    fileInfo.put("ssnUsrCd", ssnUsrCd);
-                    fileService.deleteCommonFile(fileInfo);
+                    fileService.deleteCommonFilePhysical(fileInfo);
                 }
             }
         }
@@ -150,10 +148,8 @@ public class PropertyMngService {
                 List<Map<String, Object>> fileList = fileService.getSelectUpldFileList(fileParam);
                 
                 // 3. 각 파일 물리 삭제
-                String ssnUsrCd = String.valueOf(paramMap.getOrDefault("ssnUsrCd", "ADMIN"));
                 for (Map<String, Object> fileInfo : fileList) {
-                    fileInfo.put("ssnUsrCd", ssnUsrCd);
-                    fileService.deleteCommonFile(fileInfo);
+                    fileService.deleteCommonFilePhysical(fileInfo);
                 }
             }
         }
@@ -196,10 +192,8 @@ public class PropertyMngService {
             List<Map<String, Object>> fileList = fileService.getSelectUpldFileList(fileParam);
             
             // 3. 각 파일 물리 삭제
-            String ssnUsrCd = String.valueOf(paramMap.getOrDefault("ssnUsrCd", "ADMIN"));
             for (Map<String, Object> fileInfo : fileList) {
-                fileInfo.put("ssnUsrCd", ssnUsrCd);
-                fileService.deleteCommonFile(fileInfo);
+                fileService.deleteCommonFilePhysical(fileInfo);
             }
         }
         

@@ -29,4 +29,14 @@ public class FileDao {
         return sqlSession.selectOne("file.getSelectUpldFileOne", paramMap);
     }
 
+    // 첨부파일 물리삭제 (단건)
+    public int deleteUpldFile(Map<String, Object> param) {
+        return sqlSession.delete("file.deleteUpldFile", param);
+    }
+
+    // 첨부파일 물리삭제 (해당 키 전체)
+    public int deleteUpldFileByKey(String upldFileCd) {
+        return sqlSession.delete("file.deleteUpldFileByKey", upldFileCd);
+    }
+
 }

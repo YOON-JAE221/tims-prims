@@ -63,15 +63,11 @@
            AND DEL_YN = 'N'
     </update>
 
-    <!-- 배치 삭제 (논리삭제) -->
-    <update id="deleteBat" parameterType="map">
-        UPDATE TB_BAT
-           SET DEL_YN = 'Y'
-             , USE_YN = 'N'
-             , UPD_USR_CD = #{ssnUsrCd}
-             , UPD_DTM = NOW()
+    <!-- 배치 삭제 (물리삭제) -->
+    <delete id="deleteBat" parameterType="map">
+        DELETE FROM TB_BAT
          WHERE JOB_CD = #{jobCd}
-    </update>
+    </delete>
 
     <!-- 실행 이력 목록 (최근 50건) -->
     <select id="getSelectBatHistList" parameterType="map" resultType="map">

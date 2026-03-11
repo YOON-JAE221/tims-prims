@@ -101,12 +101,12 @@ function initGrid() {
         return v || '';
       }
     },
-    { title:"사용여부", field:"useYn", width:90, hozAlign:"center", headerSort:false,
+    { title:"사용여부", field:"useYn", width:100, hozAlign:"center", headerSort:false,
       editor:"list", editorParams:{ values:{ "Y":"사용", "N":"미사용" } },
       formatter: function(cell) {
         var v = cell.getValue();
-        if (v === 'Y') return '<span class="badge bg-success">사용</span>';
-        return '<span class="badge bg-secondary">미사용</span>';
+        var badge = v === 'Y' ? '<span class="badge bg-success">사용</span>' : '<span class="badge bg-secondary">미사용</span>';
+        return badge + ' <span style="color:#999;font-size:10px;">▼</span>';
       }
     },
     { title:"삭제", field:"_del", width:80, hozAlign:"center", headerSort:false,
