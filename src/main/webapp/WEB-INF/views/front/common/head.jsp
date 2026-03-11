@@ -20,10 +20,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="프리머스 부동산" />
   <meta property="og:description" content="부천 중동 전문 공인중개사 - 아파트, 오피스텔, 상가, 사무실" />
-  <meta property="og:url" content="http://primusrealestate.co.kr" />
-  <meta property="og:image" content="${ctx}/resources/front/img/logo/og-thumbnail.png" />
+  <meta property="og:url" content="https://primusproperty.co.kr" />
+  <meta property="og:image" content="https://primusproperty.co.kr/resources/front/img/logo/og-thumbnail.png" />
   <meta property="og:image:width" content="800" />
   <meta property="og:image:height" content="400" />
+
+  <!-- Kakao -->
+  <meta property="og:site_name" content="프리머스 부동산" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="프리머스 부동산" />
+  <meta name="twitter:description" content="부천 중동 전문 공인중개사 - 아파트, 오피스텔, 상가, 사무실" />
+  <meta name="twitter:image" content="https://primusproperty.co.kr/resources/front/img/logo/og-thumbnail.png" />
 
   <!-- Favicons -->
   <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">
