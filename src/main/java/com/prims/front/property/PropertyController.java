@@ -1,11 +1,15 @@
 package com.prims.front.property;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.prims.common.config.SysConfigDao;
+import com.prims.common.constant.Constant;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -16,13 +20,35 @@ import java.util.Map;
 @RequestMapping("/property")
 public class PropertyController {
 
+    // 세션 키
+    public static final String PROP_SEARCH_VERIFIED = "PROP_SEARCH_VERIFIED";
+    public static final String PROP_LIST_VERIFIED = "PROP_LIST_VERIFIED";
+
+    @Autowired
+    private PropertySearchDao propertySearchDao;
+
+    @Autowired
+    private SysConfigDao sysConfigDao;
+
+    /**
+     * 매물안내 (리스트)
+     */
     @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
                                    @RequestParam(value = "badgeType", required = false, defaultValue = "") String badgeType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
                                    @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
-                                   Model model) {
+                                   HttpSession session, Model model) {
+
+        // 접근 코드 체크
+        if (isAccessRequired(Constant.CFG_PROP_LIST_ACCESS_CODE)) {
+            if (!"Y".equals(session.getAttribute(PROP_LIST_VERIFIED))) {
+                model.addAttribute("codeType", "PROP_LIST");
+                return "front/property/propertyAccessCode";
+            }
+        }
+
         int pageSize = 12;
         int offset = (pageNo - 1) * pageSize;
         Map<String, Object> param = new HashMap<>();
@@ -49,6 +75,9 @@ public class PropertyController {
         return "front/property/propertyList";
     }
 
+    /**
+     * 매물 상세
+     */
     @RequestMapping(value = "/viewPropertyDetail", method = RequestMethod.POST)
     public String viewPropertyDetail(@RequestParam(value = "type", required = false, defaultValue = "apt") String type,
                                      @RequestParam(value = "id", required = false, defaultValue = "") String id,
@@ -73,12 +102,27 @@ public class PropertyController {
         return "front/property/propertyDetail";
     }
 
+    /**
+     * 매물검색 (지도)
+     */
     @RequestMapping(value = "/viewPropertySearch", method = {RequestMethod.GET, RequestMethod.POST})
-    public String viewPropertySearch(Model model) {
+    public String viewPropertySearch(HttpSession session, Model model) {
+
+        // 접근 코드 체크
+        if (isAccessRequired(Constant.CFG_PROP_SEARCH_ACCESS_CODE)) {
+            if (!"Y".equals(session.getAttribute(PROP_SEARCH_VERIFIED))) {
+                model.addAttribute("codeType", "PROP_SEARCH");
+                return "front/property/propertyAccessCode";
+            }
+        }
+
         model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertySearch";
     }
 
+    /**
+     * 지도 매물 조회 (AJAX)
+     */
     @ResponseBody
     @RequestMapping(value = "/getPropertyMapList", method = RequestMethod.POST)
     public Map<String, Object> getPropertyMapList(@RequestParam(value = "swLat", required = false) String swLat,
@@ -109,6 +153,53 @@ public class PropertyController {
         return result;
     }
 
-    @org.springframework.beans.factory.annotation.Autowired
-    private PropertySearchDao propertySearchDao;
+    /**
+     * 접근코드 검증 (AJAX)
+     */
+    @ResponseBody
+    @RequestMapping(value = "/verifyAccessCode", method = RequestMethod.POST)
+    public Map<String, Object> verifyAccessCode(@RequestParam("codeType") String codeType,
+                                                 @RequestParam("accessCode") String accessCode,
+                                                 HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            String configKey = "PROP_SEARCH".equals(codeType) 
+                ? Constant.CFG_PROP_SEARCH_ACCESS_CODE 
+                : Constant.CFG_PROP_LIST_ACCESS_CODE;
+            String sessionKey = "PROP_SEARCH".equals(codeType) 
+                ? PROP_SEARCH_VERIFIED 
+                : PROP_LIST_VERIFIED;
+
+            Map<String, Object> param = new HashMap<>();
+            param.put("configKey", configKey);
+            param.put("accessCode", accessCode.trim());
+            param.put("encryptKey", Constant.ENCRYPT_KEY);
+
+            int cnt = sysConfigDao.verifyAccessCode(param);
+
+            if (cnt > 0) {
+                session.setAttribute(sessionKey, "Y");
+                result.put("result", "OK");
+            } else {
+                result.put("result", "FAIL");
+                result.put("message", "접근코드가 일치하지 않습니다.");
+            }
+        } catch (Exception e) {
+            result.put("result", "FAIL");
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 접근 제한 필요 여부 체크
+     */
+    private boolean isAccessRequired(String configKey) {
+        try {
+            int cnt = sysConfigDao.isAccessRequired(configKey);
+            return cnt > 0;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

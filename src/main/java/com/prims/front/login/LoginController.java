@@ -102,7 +102,7 @@ public class LoginController {
 	    }
 	}
 	
-	@RequestMapping(value = "/doLogout", method = RequestMethod.POST)
+	@RequestMapping(value = "/doLogout", method = {RequestMethod.GET, RequestMethod.POST})
 	public String logout(HttpSession session) {
 	    // 로그인 세션 제거
 	    session.invalidate(); // 전체 세션 초기화

@@ -8,14 +8,8 @@ public final class Constant {
 
     private Constant() {
         throw new UnsupportedOperationException("Constant class");
-        /* =========================
-     * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)
-     * ========================= */
-    public static final String CFG_SITE_ACCESS_CODE        = "SITE_ACCESS_CODE";        // 사이트 접속코드
-    public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE"; // 매물검색 접근코드
-    public static final String CFG_PROP_LIST_ACCESS_CODE   = "PROP_LIST_ACCESS_CODE";   // 매물안내 접근코드
+    }
 
-}
     /* =========================
      * 공통 세션 키
      * ========================= */
@@ -43,18 +37,18 @@ public final class Constant {
     /* =========================
      * 게시판 코드 (TB_BBS_BRD)
      * ========================= */
-    public static final String BRD_CD_ABOUT   = "1216aff3025611f18771908d6ec6e544"; // 회사소개
-    public static final String BRD_CD_NOTICE  = "38f5e73ffcbf11f08771908d6ec6e544"; // 공지사항
-    public static final String BRD_CD_QNA     = "3ccd942dfcbf11f08771908d6ec6e544"; // 문의게시판
-    public static final String BRD_CD_FAQ     = "3f9cdc5efcbf11f08771908d6ec6e544"; // FAQ
+    public static final String BRD_CD_ABOUT = "1216aff3025611f18771908d6ec6e544"; // 회사소개
+    public static final String BRD_CD_NOTICE = "38f5e73ffcbf11f08771908d6ec6e544"; // 공지사항
+    public static final String BRD_CD_QNA = "3ccd942dfcbf11f08771908d6ec6e544"; // 문의게시판
+    public static final String BRD_CD_FAQ = "3f9cdc5efcbf11f08771908d6ec6e544"; // FAQ
 
     /* =========================
      * 게시판 속성 (BRD_PROP_BINARY)
      * ========================= */
     public static final String BRD_PROP_IDIV = "A"; // 등록구분
-    public static final String BRD_PROP_QNA  = "Q"; // 문의게시판
+    public static final String BRD_PROP_QNA = "Q"; // 문의게시판
     public static final String BRD_PROP_FILE = "F"; // 첨부파일
-    public static final String BRD_PROP_IMG  = "S"; // 썸네일 이미지
+    public static final String BRD_PROP_IMG = "S"; // 썸네일 이미지
 
     /* =========================
      * 암호화 키
@@ -73,61 +67,61 @@ public final class Constant {
     /* =========================
      * 이메일 발송 설정
      * ========================= */
-    public static final String MAIL_FROM_EMAIL  = "minwook8507@gmail.com";   // 발신자 이메일 (추후 변경)
-    public static final String MAIL_FROM_NAME   = "프리머스 부동산";
-    public static final String MAIL_ADMIN_EMAIL = "minuk94@naver.com";       // 관리자 수신 이메일 (추후 변경)
-    public static final String SITE_URL         = "http://primusrealestate.co.kr"; // 사이트 URL
+    public static final String MAIL_FROM_EMAIL = "minwook8507@gmail.com";
+    public static final String MAIL_FROM_NAME = "프리머스 부동산";
+    public static final String MAIL_ADMIN_EMAIL = "minuk94@naver.com";
+    public static final String SITE_URL = "http://primusrealestate.co.kr";
 
     /* =========================
      * 발송 유형 (TB_SEND_LOG.SEND_TYPE)
      * ========================= */
-    public static final String SEND_TYPE_EMAIL    = "E";  // 이메일
-    public static final String SEND_TYPE_SMS      = "S";  // SMS
+    public static final String SEND_TYPE_EMAIL = "E";  // 이메일
+    public static final String SEND_TYPE_SMS = "S";  // SMS
     public static final String SEND_TYPE_ALIMTALK = "A";  // 알림톡
 
     /* =========================
      * 발송 결과 (TB_SEND_LOG.SEND_RSLT)
      * ========================= */
     public static final String SEND_RSLT_SUCCESS = "SUCCESS";
-    public static final String SEND_RSLT_FAIL    = "FAIL";
+    public static final String SEND_RSLT_FAIL = "FAIL";
 
     /* =========================
      * NHN Cloud SMS 설정
      * ========================= */
-    public static final String SMS_APP_KEY    = "";
+    public static final String SMS_APP_KEY = "";
     public static final String SMS_SECRET_KEY = "";
-    public static final String SMS_SENDER_NO  = "";
+    public static final String SMS_SENDER_NO = "";
 
     /* =========================
      * 매물유형 (TB_PROPERTY.PROP_TYPE)
      * ========================= */
-    public static final String PROP_TYPE_APT       = "APT";        // 아파트
-    public static final String PROP_TYPE_OFFICETEL  = "OFFICETEL";  // 오피스텔
-    public static final String PROP_TYPE_VILLA      = "VILLA";      // 빌라/주택
-    public static final String PROP_TYPE_ONEROOM    = "ONEROOM";    // 원룸/투룸
-    public static final String PROP_TYPE_SHOP       = "SHOP";       // 상가
-    public static final String PROP_TYPE_OFFICE     = "OFFICE";     // 사무실
+    public static final String PROP_TYPE_APT = "APT";
+    public static final String PROP_TYPE_OFFICETEL = "OFFICETEL";
+    public static final String PROP_TYPE_VILLA = "VILLA";
+    public static final String PROP_TYPE_ONEROOM = "ONEROOM";
+    public static final String PROP_TYPE_SHOP = "SHOP";
+    public static final String PROP_TYPE_OFFICE = "OFFICE";
 
     /* =========================
      * 거래유형 (TB_PROPERTY.DEAL_TYPE)
      * ========================= */
-    public static final String DEAL_TYPE_SELL    = "SELL";    // 매매
-    public static final String DEAL_TYPE_JEONSE  = "JEONSE";  // 전세
-    public static final String DEAL_TYPE_WOLSE   = "WOLSE";   // 월세
-    public static final String DEAL_TYPE_RENT    = "RENT";     // 임대
+    public static final String DEAL_TYPE_SELL = "SELL";
+    public static final String DEAL_TYPE_JEONSE = "JEONSE";
+    public static final String DEAL_TYPE_WOLSE = "WOLSE";
+    public static final String DEAL_TYPE_RENT = "RENT";
 
     /* =========================
      * 매물 뱃지 (TB_PROPERTY.BADGE_TYPE)
      * ========================= */
-    public static final String BADGE_NONE      = "NONE";       // 없음
-    public static final String BADGE_RECOMMEND = "RECOMMEND";  // 추천
-    public static final String BADGE_URGENT    = "URGENT";     // 급매
+    public static final String BADGE_NONE = "NONE";
+    public static final String BADGE_RECOMMEND = "RECOMMEND";
+    public static final String BADGE_URGENT = "URGENT";
 
     /* =========================
      * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)
      * ========================= */
-    public static final String CFG_SITE_ACCESS_CODE        = "SITE_ACCESS_CODE";        // 사이트 접속코드
-    public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE"; // 매물검색 접근코드
-    public static final String CFG_PROP_LIST_ACCESS_CODE   = "PROP_LIST_ACCESS_CODE";   // 매물안내 접근코드
+    public static final String CFG_SITE_ACCESS_CODE = "SITE_ACCESS_CODE";
+    public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE";
+    public static final String CFG_PROP_LIST_ACCESS_CODE = "PROP_LIST_ACCESS_CODE";
 
 }
