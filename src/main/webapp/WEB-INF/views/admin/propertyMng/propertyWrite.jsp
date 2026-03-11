@@ -27,9 +27,15 @@
           <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
           <c:if test="${not empty prop}">
             <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
-            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
           </c:if>
-          <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+          <c:if test="${not empty prop and prop.soldYn ne 'Y'}">
+            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
+            <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+            <button type="button" class="btn btn-danger" onclick="fnComplete()">거래완료</button>
+          </c:if>
+          <c:if test="${empty prop}">
+            <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+          </c:if>
         </div>
 
         <!-- ===== 1. 기본정보 ===== -->
@@ -284,28 +290,14 @@
                   <label class="mr-2"><input type="radio" name="displayYn" value="Y" ${empty prop.displayYn || prop.displayYn eq 'Y' ? 'checked' : ''} /> 전시</label>
                   <label><input type="radio" name="displayYn" value="N" ${prop.displayYn eq 'N' ? 'checked' : ''} /> 비전시</label>
                 </td>
-                <th>뱃지</th>
-                <td>
-                  <select name="badgeType" class="form-control form-control-sm" style="width:120px;">
-                    <option value="NONE" ${empty prop.badgeType || prop.badgeType eq 'NONE' ? 'selected' : ''}>없음</option>
-                    <option value="RECOMMEND" ${prop.badgeType eq 'RECOMMEND' ? 'selected' : ''}>추천</option>
-                    <option value="URGENT" ${prop.badgeType eq 'URGENT' ? 'selected' : ''}>급매</option>
-                  </select>
-                </td>
+                <th></th>
+                <td></td>
               </tr>
               <tr>
                 <th>전시 시작일</th>
                 <td><input type="date" name="displayStart" class="form-control form-control-sm" value="${prop.displayStart}" style="width:180px;" /></td>
                 <th>전시 종료일</th>
                 <td><input type="date" name="displayEnd" class="form-control form-control-sm" value="${prop.displayEnd}" style="width:180px;" /></td>
-              </tr>
-              <tr>
-                <th>거래완료</th>
-                <td>
-                  <label class="mr-2"><input type="radio" name="soldYn" value="N" ${empty prop.soldYn || prop.soldYn eq 'N' ? 'checked' : ''} /> 거래중</label>
-                  <label><input type="radio" name="soldYn" value="Y" ${prop.soldYn eq 'Y' ? 'checked' : ''} /> 거래완료</label>
-                </td>
-                <th></th><td></td>
               </tr>
               <tr>
                 <th>관리자 메모</th>
@@ -320,9 +312,15 @@
           <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
           <c:if test="${not empty prop}">
             <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
-            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
           </c:if>
-          <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+          <c:if test="${not empty prop and prop.soldYn ne 'Y'}">
+            <button type="button" class="btn btn-bo-copy" onclick="fnCopy()">복사</button>
+            <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+            <button type="button" class="btn btn-danger" onclick="fnComplete()">거래완료</button>
+          </c:if>
+          <c:if test="${empty prop}">
+            <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
+          </c:if>
         </div>
       </form>
     </div>
@@ -338,6 +336,13 @@ var previewMap = null;
 var previewMarker = null;
 
 $(function() {
+  // 거래완료 상태면 폼 전체 readonly 처리
+  <c:if test="${prop.soldYn eq 'Y'}">
+  $('#propForm').find('input, select, textarea').prop('disabled', true);
+  $('#dropZone').hide();
+  $('.card-header').first().after('<div class="alert alert-secondary m-3" style="margin-bottom:0 !important;"><strong>📋 거래완료된 매물입니다.</strong> 조회만 가능합니다.</div>');
+  </c:if>
+
   // Summernote 초기화 (공지사항과 동일)
   try {
     EDIT.Summernote.init({
@@ -550,6 +555,24 @@ function fnCopy() {
   if (res && res.result === 'OK') {
     alert('복사되었습니다.');
     location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + res.newPropCd;
+  }
+}
+
+/* ========== 거래완료 처리 ========== */
+function fnComplete() {
+  var msg = "거래완료 처리하시겠습니까?\n\n";
+  msg += "⚠️ 주의:\n";
+  msg += "- 첨부된 사진이 모두 삭제됩니다\n";
+  msg += "- 되돌릴 수 없습니다";
+
+  if (!confirm(msg)) return;
+
+  var res = ajaxCall('${ctx}/propertyMng/completeProperty', { propCd: '${prop.propCd}' }, false);
+  if (res && res.result === 'OK') {
+    alert('거래완료 처리되었습니다.');
+    fnGoList();
+  } else {
+    alert('처리 실패: ' + (res && res.message ? res.message : ''));
   }
 }
 

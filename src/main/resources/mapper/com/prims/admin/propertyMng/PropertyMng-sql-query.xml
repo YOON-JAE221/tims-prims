@@ -22,8 +22,6 @@
              , A.ROOM_CNT
              , A.FLOOR_NO
              , A.ADDRESS
-             , A.BADGE_TYPE
-             , CASE A.BADGE_TYPE WHEN 'RECOMMEND' THEN '추천' WHEN 'URGENT' THEN '급매' ELSE '-' END AS BADGE_TYPE_NM
              , A.SOLD_YN
              , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
              , A.DISPLAY_YN
@@ -42,12 +40,6 @@
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
-           </if>
-           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
-             <choose>
-               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
-               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
-             </choose>
            </if>
            <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
            AND A.SOLD_YN = #{soldYn}
@@ -72,12 +64,6 @@
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
-           </if>
-           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
-             <choose>
-               <when test="badgeType == 'NONE'">AND A.BADGE_TYPE = 'NONE'</when>
-               <otherwise>AND A.BADGE_TYPE = #{badgeType}</otherwise>
-             </choose>
            </if>
            <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
            AND A.SOLD_YN = #{soldYn}
@@ -110,7 +96,7 @@
             BUILD_DATE, ENTRANCE_TYPE, HEATING,
             DETAIL_CNTS, ATCH_FILE_KEY,
             DISPLAY_YN, DISPLAY_START, DISPLAY_END,
-            BADGE_TYPE, SOLD_YN, ADMIN_MEMO,
+            SOLD_YN, ADMIN_MEMO,
             USE_YN, DEL_YN, RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
         ) VALUES (
             #{propCd}, #{catCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
@@ -121,7 +107,7 @@
             #{buildDate}, #{entranceType}, #{heating},
             #{detailCnts}, #{atchFileKey},
             #{displayYn}, #{displayStart}, #{displayEnd},
-            #{badgeType}, #{soldYn}, #{adminMemo},
+            #{soldYn}, #{adminMemo},
             'Y', 'N', #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
         )
         ON DUPLICATE KEY UPDATE
@@ -161,7 +147,6 @@
             DISPLAY_YN     = #{displayYn},
             DISPLAY_START  = #{displayStart},
             DISPLAY_END    = #{displayEnd},
-            BADGE_TYPE     = #{badgeType},
             SOLD_YN        = #{soldYn},
             ADMIN_MEMO     = #{adminMemo},
             UPD_USR_CD     = #{ssnUsrCd},
@@ -187,7 +172,7 @@
             FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
             BUILD_DATE, ENTRANCE_TYPE, HEATING,
             DETAIL_CNTS,
-            DISPLAY_YN, BADGE_TYPE, SOLD_YN,
+            DISPLAY_YN, SOLD_YN,
             USE_YN, DEL_YN, VIEW_CNT,
             RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
         )
@@ -198,7 +183,7 @@
                FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
                BUILD_DATE, ENTRANCE_TYPE, HEATING,
                DETAIL_CNTS,
-               'N', BADGE_TYPE, 'N',
+               'N', 'N',
                'Y', 'N', 0,
                #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
           FROM TB_PROPERTY
@@ -215,6 +200,18 @@
            AND DEL_YN = 'N'
     </update>
 
+    <!-- 거래완료 처리 -->
+    <update id="completeProperty" parameterType="map">
+        UPDATE TB_PROPERTY
+           SET SOLD_YN       = 'Y'
+             , ATCH_FILE_KEY = NULL
+             , UPD_USR_CD    = #{ssnUsrCd}
+             , UPD_DTM       = NOW()
+         WHERE PROP_CD = #{propCd}
+           AND DEL_YN = 'N'
+           AND SOLD_YN = 'N'
+    </update>
+
     <!-- 대분류 목록 (셀렉트박스용) -->
     <select id="getCatListForSelect" resultType="map">
         SELECT CAT_CD, CAT_NM
@@ -229,6 +226,59 @@
           FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd} AND SUB_CAT_CD != '00' AND USE_YN = 'Y'
          ORDER BY SORT_ORDER
+    </select>
+
+    <!-- 엑셀 다운로드용 목록 -->
+    <select id="getPropertyListForExcel" parameterType="map" resultType="map">
+        SELECT A.PROP_CD
+             , A.PROP_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
+             , A.PROP_FEATURE
+             , A.ADDRESS
+             , A.ADDRESS_DTL
+             , A.BUILDING_NM
+             , A.SELL_PRICE
+             , A.DEPOSIT
+             , A.MONTHLY_RENT
+             , CASE A.LOAN_YN WHEN 'Y' THEN '있음' ELSE '없음' END AS LOAN_YN_NM
+             , A.LOAN_AMOUNT
+             , A.PREMIUM
+             , A.MONTHLY_MGMT
+             , A.AREA_SUPPLY
+             , A.AREA_EXCLUSIVE
+             , A.AREA_LAND
+             , A.FLOOR_NO
+             , A.FLOOR_TOTAL
+             , A.ROOM_CNT
+             , A.BATH_CNT
+             , A.DIRECTION
+             , CASE A.PARKING_YN WHEN 'Y' THEN '가능' ELSE '불가' END AS PARKING_YN_NM
+             , A.BUILD_DATE
+             , A.ENTRANCE_TYPE
+             , A.HEATING
+             , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
+             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+          FROM TB_PROPERTY A
+         WHERE A.DEL_YN = 'N'
+           AND A.USE_YN = 'Y'
+           <if test="catCd != null and catCd != '' and catCd != 'ALL'">
+           AND A.CAT_CD = #{catCd}
+           </if>
+           <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
+           AND A.SUB_CAT_CD = #{subCatCd}
+           </if>
+           <if test="dealType != null and dealType != '' and dealType != 'ALL'">
+           AND A.DEAL_TYPE = #{dealType}
+           </if>
+           <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
+           AND A.SOLD_YN = #{soldYn}
+           </if>
+           <if test="keyword != null and keyword != ''">
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
+         ORDER BY A.RGT_DTM DESC
     </select>
 
 </mapper>

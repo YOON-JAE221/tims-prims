@@ -74,8 +74,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <li class="nav-item dropdown">
             <a id="dropdownSubMenu2" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">매물관리</a>
             <ul aria-labelledby="dropdownSubMenu2" class="dropdown-menu border-0 shadow">
+              <li><a href="${ctx}/propCatMng/viewPropCatMng" class="dropdown-item">카테고리관리</a></li>
               <li><a href="${ctx}/propertyMng/viewPropertyMng" class="dropdown-item">매물관리</a></li>
-              <li><a href="${ctx}/propCatMng/viewPropCatMng" class="dropdown-item">매물코드관리</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

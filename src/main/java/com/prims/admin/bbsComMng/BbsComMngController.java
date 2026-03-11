@@ -139,7 +139,6 @@ public class BbsComMngController {
 	    if (Constant.BRD_CD_NOTICE.equals(brdCd)) return "고객지원";
 	    if (Constant.BRD_CD_FAQ.equals(brdCd))    return "고객지원";
 	    if (Constant.BRD_CD_QNA.equals(brdCd))    return "고객지원";
-	    if (Constant. BRD_CD_ABOUT.equals(brdCd))  return "회사소개";
 	    return "게시판관리";
 	}
 	

@@ -72,9 +72,6 @@
   .badge-status { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .badge-status.active { background: #e8f5e9; color: #43a047; }
   .badge-status.sold { background: #f5f5f5; color: #888; }
-  .badge-prop { padding: 2px 6px; border-radius: 3px; font-size: 10px; font-weight: 600; margin-right: 4px; }
-  .badge-prop.recommend { background: #fff3e0; color: #fb8c00; }
-  .badge-prop.urgent { background: #ffebee; color: #e53935; }
 
   /* ===== 우측 컬럼 ===== */
   .dash-col-right { display: flex; flex-direction: column; gap: 16px; }
@@ -115,8 +112,7 @@
   .top-prop-views { font-size: 12px; color: #E8830C; font-weight: 600; flex-shrink: 0; }
 
   /* ===== 반응형 ===== */
-  @media (max-width: 1400px) { .dash-cards { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 1200px) { .dash-row { grid-template-columns: 1fr; } }
+  @media (max-width: 1200px) { .dash-cards { grid-template-columns: repeat(2, 1fr) !important; } .dash-row { grid-template-columns: 1fr; } }
   @media (max-width: 768px) {
     .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .dash-row { grid-template-columns: 1fr; gap: 16px; }
@@ -138,31 +134,21 @@
     <div class="container-fluid">
 
       <!-- 상단 요약 카드 -->
-      <div class="dash-cards">
-        <div class="dash-card primary clickable" onclick="fnGoPropMng('', '')">
+      <div class="dash-cards" style="grid-template-columns: repeat(4, 1fr);">
+        <div class="dash-card primary clickable" onclick="fnGoPropMng('')">
           <div class="dash-card-icon"><i class="fas fa-home"></i></div>
           <div class="dash-card-label">전체 매물</div>
           <div class="dash-card-value">${not empty propSummary.totalCnt ? propSummary.totalCnt : 0}<small> 건</small></div>
         </div>
-        <div class="dash-card success clickable" onclick="fnGoPropMng('N', '')">
+        <div class="dash-card success clickable" onclick="fnGoPropMng('N')">
           <div class="dash-card-icon"><i class="fas fa-handshake"></i></div>
           <div class="dash-card-label">거래중</div>
           <div class="dash-card-value">${not empty propSummary.activeCnt ? propSummary.activeCnt : 0}<small> 건</small></div>
         </div>
-        <div class="dash-card info clickable" onclick="fnGoPropMng('Y', '')">
+        <div class="dash-card info clickable" onclick="fnGoPropMng('Y')">
           <div class="dash-card-icon"><i class="fas fa-check-circle"></i></div>
           <div class="dash-card-label">거래완료</div>
           <div class="dash-card-value">${not empty propSummary.soldCnt ? propSummary.soldCnt : 0}<small> 건</small></div>
-        </div>
-        <div class="dash-card warning clickable" onclick="fnGoPropMng('', 'RECOMMEND')">
-          <div class="dash-card-icon"><i class="fas fa-star"></i></div>
-          <div class="dash-card-label">추천 매물</div>
-          <div class="dash-card-value">${not empty propSummary.recommendCnt ? propSummary.recommendCnt : 0}<small> 건</small></div>
-        </div>
-        <div class="dash-card dark clickable" onclick="fnGoPropMng('', 'URGENT')">
-          <div class="dash-card-icon"><i class="fas fa-bolt"></i></div>
-          <div class="dash-card-label">급매 매물</div>
-          <div class="dash-card-value">${not empty propSummary.urgentCnt ? propSummary.urgentCnt : 0}<small> 건</small></div>
         </div>
         <div class="dash-card danger clickable" onclick="location.href='${ctx}/bbsComQnaMng/viewBbsComQnaMng'">
           <div class="dash-card-icon"><i class="fas fa-exclamation-circle"></i></div>
@@ -235,7 +221,6 @@
 
 <form id="goPropMngForm" action="${ctx}/propertyMng/viewPropertyMng" method="post">
   <input type="hidden" name="soldYn" id="soldYnVal" />
-  <input type="hidden" name="badgeType" id="badgeTypeVal" />
 </form>
 
 <script>
@@ -255,12 +240,9 @@ function loadRecentPropList() {
         var p = list[i];
         var statusClass = p.soldYn === 'Y' ? 'sold' : 'active';
         var statusText = p.soldYn === 'Y' ? '거래완료' : '거래중';
-        var badge = '';
-        if (p.badgeType === 'RECOMMEND') badge = '<span class="badge-prop recommend">추천</span>';
-        else if (p.badgeType === 'URGENT') badge = '<span class="badge-prop urgent">급매</span>';
         html += '<tr onclick="fnGoPropEdit(\'' + p.propCd + '\')">';
         html += '<td style="text-align:center;"><span class="badge-status ' + statusClass + '">' + statusText + '</span></td>';
-        html += '<td style="text-align:left;">' + badge + '<span class="prop-name">' + (p.propNm || '') + '</span></td>';
+        html += '<td style="text-align:left;"><span class="prop-name">' + (p.propNm || '') + '</span></td>';
         html += '<td style="text-align:center;">' + (p.catNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.subCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.dealTypeNm || '-') + '</td>';
@@ -299,9 +281,8 @@ function fnGoPropEdit(propCd) {
   $('#goPropForm').submit();
 }
 
-function fnGoPropMng(soldYn, badgeType) {
+function fnGoPropMng(soldYn) {
   $('#soldYnVal').val(soldYn);
-  $('#badgeTypeVal').val(badgeType);
   $('#goPropMngForm').submit();
 }
 </script>

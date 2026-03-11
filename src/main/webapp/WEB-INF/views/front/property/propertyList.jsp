@@ -78,18 +78,10 @@
                 </span>
               </c:otherwise>
             </c:choose>
-            <%-- 뱃지: 거래완료 > 급매 > 추천 > 신규(7일) --%>
-            <c:choose>
-              <c:when test="${prop.soldYn eq 'Y'}">
-                <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
-              </c:when>
-              <c:when test="${prop.badgeType eq 'URGENT'}">
-                <span class="prop-card-badge" style="background:#dc3545;">급매</span>
-              </c:when>
-              <c:when test="${prop.badgeType eq 'RECOMMEND'}">
-                <span class="prop-card-badge">추천</span>
-              </c:when>
-            </c:choose>
+            <%-- 거래완료 뱃지 --%>
+            <c:if test="${prop.soldYn eq 'Y'}">
+              <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
+            </c:if>
             <c:if test="${prop.soldYn eq 'Y'}">
               <div style="position:absolute; inset:0; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center;">
                 <span style="color:white; font-size:18px; font-weight:800; letter-spacing:2px;">거래완료</span>
@@ -146,7 +138,6 @@
   }
   function fnReset() {
     $('#filterForm').find('select[name="dealType"]').val('');
-    $('#filterForm').find('select[name="badgeType"]').val('');
     $('#filterForm').find('input[name="keyword"]').val('');
     $('#pageNoInput').val(1);
     $('#filterForm').submit();
@@ -160,11 +151,9 @@
     var foType = '${type}';
     var catCd = (foType && foType !== 'all') ? foType.toUpperCase() : '';
     var dealType = $('select[name="dealType"]').val() || '';
-    var badgeType = $('select[name="badgeType"]').val() || '';
 
     $('#adminCatCd').val(catCd);
     $('#adminDealType').val(dealType);
-    $('#adminBadgeType').val(badgeType);
     $('#goAdminForm').submit();
   }
 </script>
@@ -177,7 +166,6 @@
 <form id="goAdminForm" action="${ctx}/propertyMng/viewPropertyMng" method="post" target="_blank">
   <input type="hidden" name="catCd" id="adminCatCd" />
   <input type="hidden" name="dealType" id="adminDealType" />
-  <input type="hidden" name="badgeType" id="adminBadgeType" />
 </form>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>

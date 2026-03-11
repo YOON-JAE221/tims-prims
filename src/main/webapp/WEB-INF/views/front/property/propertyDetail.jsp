@@ -32,18 +32,10 @@
               <!-- 메인 이미지 -->
               <div class="prop-gallery-main" onclick="openGallerySlider(0)">
                 <img src="/upload/${imgList[0].imgPath}" alt="매물 대표 이미지" />
-                <c:choose>
-                  <c:when test="${prop.soldYn eq 'Y'}">
+                <c:if test="${prop.soldYn eq 'Y'}">
                     <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
                     <div class="prop-gallery-sold-overlay"><span>거래완료</span></div>
-                  </c:when>
-                  <c:when test="${prop.badgeType eq 'URGENT'}">
-                    <span class="prop-card-badge" style="background:#dc3545;">급매</span>
-                  </c:when>
-                  <c:when test="${prop.badgeType eq 'RECOMMEND'}">
-                    <span class="prop-card-badge">추천</span>
-                  </c:when>
-                </c:choose>
+                  </c:if>
               </div>
 
               <!-- 우측 썸네일 (2장 이상일 때만) -->
@@ -86,20 +78,12 @@
                   <c:otherwise>&#127968;</c:otherwise>
                 </c:choose>
               </span>
-              <c:choose>
-                <c:when test="${prop.soldYn eq 'Y'}">
+              <c:if test="${prop.soldYn eq 'Y'}">
                   <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
                   <div style="position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;">
                     <span style="color:white;font-size:24px;font-weight:800;letter-spacing:3px;">거래완료</span>
                   </div>
-                </c:when>
-                <c:when test="${prop.badgeType eq 'URGENT'}">
-                  <span class="prop-card-badge" style="background:#dc3545;">급매</span>
-                </c:when>
-                <c:when test="${prop.badgeType eq 'RECOMMEND'}">
-                  <span class="prop-card-badge">추천</span>
-                </c:when>
-              </c:choose>
+                </c:if>
             </div>
           </c:otherwise>
         </c:choose>

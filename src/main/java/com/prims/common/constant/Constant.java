@@ -37,7 +37,6 @@ public final class Constant {
     /* =========================
      * 게시판 코드 (TB_BBS_BRD)
      * ========================= */
-    public static final String BRD_CD_ABOUT = "1216aff3025611f18771908d6ec6e544"; // 회사소개
     public static final String BRD_CD_NOTICE = "38f5e73ffcbf11f08771908d6ec6e544"; // 공지사항
     public static final String BRD_CD_QNA = "3ccd942dfcbf11f08771908d6ec6e544"; // 문의게시판
     public static final String BRD_CD_FAQ = "3f9cdc5efcbf11f08771908d6ec6e544"; // FAQ
@@ -109,13 +108,6 @@ public final class Constant {
     public static final String DEAL_TYPE_JEONSE = "JEONSE";
     public static final String DEAL_TYPE_WOLSE = "WOLSE";
     public static final String DEAL_TYPE_RENT = "RENT";
-
-    /* =========================
-     * 매물 뱃지 (TB_PROPERTY.BADGE_TYPE)
-     * ========================= */
-    public static final String BADGE_NONE = "NONE";
-    public static final String BADGE_RECOMMEND = "RECOMMEND";
-    public static final String BADGE_URGENT = "URGENT";
 
     /* =========================
      * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)

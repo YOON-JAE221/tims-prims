@@ -27,6 +27,11 @@ public class AccessCodeInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
 
+        // 관리자 로그인 상태이면 무조건 통과
+        if (session.getAttribute(Constant.SESSION_LOGIN_USER) != null) {
+            return true;
+        }
+
         // 이미 인증된 세션이면 통과
         if ("Y".equals(session.getAttribute(SESSION_ACCESS_KEY))) {
             return true;

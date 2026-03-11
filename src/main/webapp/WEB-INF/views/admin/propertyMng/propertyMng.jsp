@@ -41,24 +41,17 @@
                   <option value="SHORT">단기임대</option>
                 </select>
                 <select id="srchSoldYn" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
-                  <option value="ALL">전체상태</option>
-                  <option value="N">거래중</option>
+                  <option value="N" selected>거래중</option>
                   <option value="Y">거래완료</option>
-                </select>
-                <select id="srchBadgeType" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
-                  <option value="ALL">전체뱃지</option>
-                  <option value="NONE">없음</option>
-                  <option value="RECOMMEND">추천</option>
-                  <option value="URGENT">급매</option>
                 </select>
                 <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:180px;" placeholder="매물명/주소 검색" onkeypress="if(event.keyCode===13) fnSearch();" />
                 <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
               </div>
             </div>
             <div class="col-12 col-lg-auto">
-              <div class="d-flex justify-content-lg-end bo-actionbar">
+              <div class="d-flex justify-content-lg-end bo-actionbar" style="gap:8px;">
                 <button type="button" class="btn btn-sm btn-bo-add" onclick="fnGoWrite()">신규</button>
-                <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSaveStatus()">저장</button>
+                <button type="button" class="btn btn-sm" style="background:#217346; border-color:#217346; color:#fff;" onclick="fnExcelDownload()"><i class="fas fa-file-excel"></i> 엑셀</button>
               </div>
             </div>
           </div>
@@ -96,9 +89,6 @@ $(function() {
   <c:if test="${not empty initSoldYn}">
   $('#srchSoldYn').val('${initSoldYn}');
   </c:if>
-  <c:if test="${not empty initBadgeType}">
-  $('#srchBadgeType').val('${initBadgeType}');
-  </c:if>
   <c:if test="${not empty initDealType}">
   $('#srchDealType').val('${initDealType}');
   </c:if>
@@ -119,19 +109,10 @@ function initGrid() {
       }
     },
     { title:"주소", field:"address", minWidth:180 },
-    { title:"뱃지", field:"badgeType", width:90,
+    { title:"상태", field:"soldYn", width:100, hozAlign:"center",
       formatter: function(cell) {
-        var v = cell.getValue();
-        if (v === 'RECOMMEND') return '<span class="badge" style="background:#E8830C;color:#fff;">추천</span>';
-        if (v === 'URGENT') return '<span class="badge" style="background:#dc3545;color:#fff;">급매</span>';
-        return '-';
-      }
-    },
-    { title:"상태", field:"soldYn", width:100,
-      editor:"list", editorParams:{ values:{ "N":"거래중", "Y":"거래완료" } },
-      formatter: function(cell) {
-        if (cell.getValue() === 'Y') return '<span class="badge badge-secondary">거래완료</span> <span style="color:#aaa;font-size:10px;">▼</span>';
-        return '<span class="badge badge-success">거래중</span> <span style="color:#aaa;font-size:10px;">▼</span>';
+        if (cell.getValue() === 'Y') return '<span class="badge badge-secondary">거래완료</span>';
+        return '<span class="badge badge-success">거래중</span>';
       }
     },
     { title:"조회수", field:"viewCnt", width:100, hozAlign:"center" },
@@ -145,31 +126,10 @@ function initGrid() {
     height: "600px",
     pagination: false,
     layout: "fitColumns",
-    trackDirty: true,
     selectable: 1
   });
 
   propTable.on("tableBuilt", function() { fnSearch(); });
-
-  // 초기 검색조건 설정
-  <c:if test="${not empty initSoldYn}">
-  $('#srchSoldYn').val('${initSoldYn}');
-  </c:if>
-  <c:if test="${not empty initBadgeType}">
-  $('#srchBadgeType').val('${initBadgeType}');
-  </c:if>
-
-  // 상태 변경 시 _allData 동기화
-  propTable.on("cellEdited", function(cell) {
-    var d = cell.getRow().getData();
-    for (var i = 0; i < _allData.length; i++) {
-      if (_allData[i].propCd === d.propCd) {
-        _allData[i].soldYn = d.soldYn;
-        _allData[i]._tgDirty = true;
-        break;
-      }
-    }
-  });
 }
 
 function fnSearch() {
@@ -179,7 +139,6 @@ function fnSearch() {
     subCatCd: $('#srchSubCatCd').val(),
     dealType: $('#srchDealType').val(),
     soldYn: $('#srchSoldYn').val(),
-    badgeType: $('#srchBadgeType').val(),
     keyword: $('#srchKeyword').val()
   }, false);
   _allData = (res && res.DATA) ? res.DATA : [];
@@ -239,29 +198,6 @@ function fnChangeCat() {
   fnSearch();
 }
 
-// 상태 멀티저장
-function fnSaveStatus() {
-  var dirtyRows = [];
-  for (var i = 0; i < _allData.length; i++) {
-    if (_allData[i]._tgDirty) {
-      dirtyRows.push({ propCd: _allData[i].propCd, soldYn: _allData[i].soldYn });
-    }
-  }
-  if (dirtyRows.length === 0) { alert('변경된 데이터가 없습니다.'); return; }
-  if (!confirm(dirtyRows.length + '건의 상태를 저장하시겠습니까?')) return;
-
-  var res = ajaxCall('${ctx}/propertyMng/savePropertySoldYnList', {
-    mergeRows: JSON.stringify(dirtyRows)
-  }, false);
-
-  if (res && res.resultCnt > 0) {
-    alert('저장되었습니다.');
-    fnSearch();
-  } else {
-    alert('저장 실패: ' + (res && res.Message ? res.Message : ''));
-  }
-}
-
 function fnDeleteProp(row) {
   var d = row.getData();
   if (!confirm('[' + d.propNm + '] 매물을 삭제하시겠습니까?')) return;
@@ -272,5 +208,17 @@ function fnDeleteProp(row) {
   } else {
     alert('삭제 실패');
   }
+}
+
+// 엑셀 다운로드
+function fnExcelDownload() {
+  var params = $.param({
+    catCd: $('#srchCatCd').val(),
+    subCatCd: $('#srchSubCatCd').val(),
+    dealType: $('#srchDealType').val(),
+    soldYn: $('#srchSoldYn').val(),
+    keyword: $('#srchKeyword').val()
+  });
+  location.href = '${ctx}/propertyMng/excelDownload?' + params;
 }
 </script>

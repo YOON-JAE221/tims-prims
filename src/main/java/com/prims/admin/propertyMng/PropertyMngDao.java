@@ -48,4 +48,12 @@ public class PropertyMngDao {
     public int updatePropertySoldYn(Map<String, Object> paramMap) {
         return sqlSession.update("propertyMng.updatePropertySoldYn", paramMap);
     }
+
+    public int completeProperty(Map<String, Object> paramMap) {
+        return sqlSession.update("propertyMng.completeProperty", paramMap);
+    }
+
+    public List<Map<String, Object>> getPropertyListForExcel(Map<String, Object> paramMap) {
+        return sqlSession.selectList("propertyMng.getPropertyListForExcel", paramMap);
+    }
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,13 +37,9 @@ public class PropertyMngController {
         }
         // 검색조건 초기값
         String soldYn = (String) paramMap.get("soldYn");
-        String badgeType = (String) paramMap.get("badgeType");
         String dealType = (String) paramMap.get("dealType");
         if (soldYn != null && !soldYn.isEmpty()) {
             model.addAttribute("initSoldYn", soldYn);
-        }
-        if (badgeType != null && !badgeType.isEmpty()) {
-            model.addAttribute("initBadgeType", badgeType);
         }
         if (dealType != null && !dealType.isEmpty()) {
             model.addAttribute("initDealType", dealType);
@@ -151,6 +147,21 @@ public class PropertyMngController {
         return result;
     }
 
+    // 거래완료 처리
+    @RequestMapping(value = "/completeProperty", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> completeProperty(@ParamMap Map<String, Object> paramMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            int cnt = propertyMngService.completeProperty(paramMap);
+            result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
+        } catch (Exception e) {
+            result.put("result", Constant.FAIL);
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
     // 매물 상태 멀티저장 (TG.save용)
     @ResponseBody
     @RequestMapping(value = "/savePropertySoldYnList", method = RequestMethod.POST)
@@ -169,5 +180,15 @@ public class PropertyMngController {
             result.put("Message", e.getMessage());
         }
         return result;
+    }
+
+    // 엑셀 다운로드
+    @RequestMapping(value = "/excelDownload", method = RequestMethod.GET)
+    public void excelDownload(@ParamMap Map<String, Object> paramMap, HttpServletResponse response) {
+        try {
+            propertyMngService.downloadPropertyExcel(paramMap, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

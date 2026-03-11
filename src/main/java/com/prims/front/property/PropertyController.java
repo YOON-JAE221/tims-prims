@@ -41,8 +41,11 @@ public class PropertyController {
                                    @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
                                    HttpSession session, Model model) {
 
-        // 접근 코드 체크
-        if (isAccessRequired(Constant.CFG_PROP_LIST_ACCESS_CODE)) {
+        // 관리자 로그인 시 접근코드 체크 스킵
+        boolean isAdmin = session.getAttribute(Constant.SESSION_LOGIN_USER) != null;
+
+        // 접근 코드 체크 (관리자가 아닐 때만)
+        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_LIST_ACCESS_CODE)) {
             if (!"Y".equals(session.getAttribute(PROP_LIST_VERIFIED))) {
                 model.addAttribute("codeType", "PROP_LIST");
                 return "front/property/propertyAccessCode";
@@ -108,8 +111,11 @@ public class PropertyController {
     @RequestMapping(value = "/viewPropertySearch", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertySearch(HttpSession session, Model model) {
 
-        // 접근 코드 체크
-        if (isAccessRequired(Constant.CFG_PROP_SEARCH_ACCESS_CODE)) {
+        // 관리자 로그인 시 접근코드 체크 스킵
+        boolean isAdmin = session.getAttribute(Constant.SESSION_LOGIN_USER) != null;
+
+        // 접근 코드 체크 (관리자가 아닐 때만)
+        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_SEARCH_ACCESS_CODE)) {
             if (!"Y".equals(session.getAttribute(PROP_SEARCH_VERIFIED))) {
                 model.addAttribute("codeType", "PROP_SEARCH");
                 return "front/property/propertyAccessCode";

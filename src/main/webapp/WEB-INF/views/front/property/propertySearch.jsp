@@ -93,9 +93,6 @@
 .ps-item-badge {
   font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: white;
 }
-.ps-item-badge.recommend { background: var(--orange); }
-.ps-item-badge.urgent { background: #dc3545; }
-.ps-item-badge.new { background: #0052A4; }
 .ps-item-badge.sold { background: var(--gray-400); }
 .ps-item-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
 .ps-item-addr { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; }
@@ -443,13 +440,6 @@ function fnGoDetail(propCd) {
 
 function fnBadgeHtml(d) {
   if (d.soldYn === 'Y') return '<span class="ps-item-badge sold">거래완료</span>';
-  if (d.badgeType === 'URGENT') return '<span class="ps-item-badge urgent">급매</span>';
-  if (d.badgeType === 'RECOMMEND') return '<span class="ps-item-badge recommend">추천</span>';
-  // 7일 이내 신규
-  var rgtDate = new Date(d.rgtDtm);
-  var now = new Date();
-  var diff = (now - rgtDate) / (1000 * 60 * 60 * 24);
-  if (diff <= 7) return '<span class="ps-item-badge new">신규</span>';
   return '';
 }
 </script>

@@ -4,14 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="adminMain">
 
-    <!-- 매물 현황 요약 (전체/거래중/거래완료/추천/급매) -->
+    <!-- 매물 현황 요약 (전체/거래중/거래완료) - BADGE_TYPE 제거됨 -->
     <select id="getPropSummary" resultType="map">
         SELECT
             (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y') AS TOTAL_CNT
           , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND SOLD_YN = 'N') AS ACTIVE_CNT
           , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND SOLD_YN = 'Y') AS SOLD_CNT
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND BADGE_TYPE = 'RECOMMEND') AS RECOMMEND_CNT
-          , (SELECT COUNT(*) FROM TB_PROPERTY WHERE DEL_YN = 'N' AND USE_YN = 'Y' AND BADGE_TYPE = 'URGENT') AS URGENT_CNT
     </select>
 
     <!-- 최근 등록 매물 9건 -->
@@ -22,7 +20,6 @@
              , (SELECT SC.CAT_NM FROM TB_PROP_CATEGORY SC WHERE SC.CAT_CD = A.CAT_CD AND SC.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' ELSE '' END AS DEAL_TYPE_NM
              , A.SOLD_YN
-             , A.BADGE_TYPE
              , A.VIEW_CNT
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A

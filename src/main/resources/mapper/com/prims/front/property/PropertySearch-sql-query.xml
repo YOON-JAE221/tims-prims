@@ -17,7 +17,7 @@
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
              , A.ADDRESS, A.ADDRESS_DTL
              , A.LAT, A.LNG
-             , A.BADGE_TYPE, A.SOLD_YN
+             , A.SOLD_YN
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
@@ -51,7 +51,7 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
-             , A.ADDRESS, A.BADGE_TYPE, A.SOLD_YN
+             , A.ADDRESS, A.SOLD_YN
              , A.ATCH_FILE_KEY
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -68,9 +68,6 @@
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
-           </if>
-           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
-           AND A.BADGE_TYPE = #{badgeType}
            </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
@@ -93,15 +90,12 @@
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
            </if>
-           <if test="badgeType != null and badgeType != '' and badgeType != 'ALL'">
-           AND A.BADGE_TYPE = #{badgeType}
-           </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
     </select>
 
-    <!-- 메인 슬라이더 추천매물 (RECOMMEND, 최신 1건) -->
+    <!-- 메인 슬라이더 추천매물 (최신 1건) - BADGE_TYPE 제거됨 -->
     <select id="getMainSliderProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
@@ -110,15 +104,14 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
-             , A.ADDRESS, A.BADGE_TYPE
+             , A.ADDRESS
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
                    AND F.DEL_YN = 'N'
                  ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
           FROM TB_PROPERTY A
-         WHERE A.BADGE_TYPE = 'RECOMMEND'
-           AND A.SOLD_YN = 'N'
+         WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
          ORDER BY A.RGT_DTM DESC
@@ -134,7 +127,7 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
-             , A.ADDRESS, A.BADGE_TYPE
+             , A.ADDRESS
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
@@ -148,7 +141,7 @@
          LIMIT 1
     </select>
 
-    <!-- 메인 급매매물 (URGENT, 최신 1건) -->
+    <!-- 메인 급매매물 (최신 1건) - BADGE_TYPE 제거됨 -->
     <select id="getMainUrgentProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
@@ -157,15 +150,14 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
-             , A.ADDRESS, A.BADGE_TYPE
+             , A.ADDRESS
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
                    AND F.DEL_YN = 'N'
                  ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
           FROM TB_PROPERTY A
-         WHERE A.BADGE_TYPE = 'URGENT'
-           AND A.SOLD_YN = 'N'
+         WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
          ORDER BY A.RGT_DTM DESC
@@ -181,7 +173,7 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO
-             , A.ADDRESS, A.BADGE_TYPE
+             , A.ADDRESS
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY

@@ -86,11 +86,11 @@
   <div class="content-header">
     <div class="container">
       <div class="row mb-2">
-        <div class="col-sm-6"><h4>매물코드관리</h4></div>
+        <div class="col-sm-6"><h4>카테고리관리</h4></div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
-            <li class="breadcrumb-item"><a href="${ctx}/propCatMng/viewPropCatMng">매물코드관리</a></li>
+            <li class="breadcrumb-item"><a href="${ctx}/propCatMng/viewPropCatMng">카테고리관리</a></li>
           </ol>
         </div>
       </div>
