@@ -97,6 +97,16 @@ public class PropertyMngController {
         return result;
     }
 
+    // 중분류 목록 (AJAX)
+    @ResponseBody
+    @RequestMapping(value = "/getMidCatList", method = RequestMethod.POST)
+    public Map<String, Object> getMidCatList(@RequestParam("catCd") String catCd) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("DATA", propertyMngService.getMidCatListForSelect(catCd));
+        result.put("result", Constant.OK);
+        return result;
+    }
+
     // 매물 저장
     @RequestMapping(value = "/saveProperty", method = RequestMethod.POST)
     @ResponseBody

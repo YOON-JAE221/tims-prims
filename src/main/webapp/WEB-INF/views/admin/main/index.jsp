@@ -117,7 +117,7 @@
     .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .dash-row { grid-template-columns: 1fr; gap: 16px; }
     .recent-prop-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .recent-prop-table { min-width: 550px; }
+    .recent-prop-table { min-width: 650px; }
   }
   @media (max-width: 480px) {
     .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -169,17 +169,18 @@
             <table class="recent-prop-table">
               <thead>
                 <tr>
-                  <th style="width:70px;">상태</th>
                   <th style="text-align:left;">매물명</th>
-                  <th style="width:70px;">대분류</th>
+                  <th style="text-align:left; width:150px;">주소</th>
+                  <th style="width:65px;">대분류</th>
+                  <th style="width:80px;">중분류</th>
                   <th style="width:70px;">소분류</th>
-                  <th style="width:55px;">거래</th>
-                  <th style="width:45px;">조회</th>
-                  <th style="width:90px;">등록일</th>
+                  <th style="width:50px;">거래</th>
+                  <th style="width:50px;">조회수</th>
+                  <th style="width:80px;">등록일</th>
                 </tr>
               </thead>
               <tbody id="recentPropBody">
-                <tr><td colspan="7" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
+                <tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
               </tbody>
             </table>
           </div>
@@ -234,16 +235,15 @@ function loadRecentPropList() {
     var list = res.data || [];
     var html = '';
     if (list.length === 0) {
-      html = '<tr><td colspan="7" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
+      html = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
     } else {
       for (var i = 0; i < list.length; i++) {
         var p = list[i];
-        var statusClass = p.soldYn === 'Y' ? 'sold' : 'active';
-        var statusText = p.soldYn === 'Y' ? '거래완료' : '거래중';
         html += '<tr onclick="fnGoPropEdit(\'' + p.propCd + '\')">';
-        html += '<td style="text-align:center;"><span class="badge-status ' + statusClass + '">' + statusText + '</span></td>';
         html += '<td style="text-align:left;"><span class="prop-name">' + (p.propNm || '') + '</span></td>';
+        html += '<td style="text-align:left;">' + (p.address || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.catNm || '-') + '</td>';
+        html += '<td style="text-align:center;">' + (p.midCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.subCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.dealTypeNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.viewCnt || 0) + '</td>';

@@ -205,8 +205,12 @@ public class PropertyMngService {
         return propertyMngDao.getCatListForSelect();
     }
 
-    public List<Map<String, Object>> getSubCatListForSelect(String catCd) {
-        return propertyMngDao.getSubCatListForSelect(catCd);
+    public List<Map<String, Object>> getMidCatListForSelect(String catCd) {
+        return propertyMngDao.getMidCatListForSelect(catCd);
+    }
+
+    public List<Map<String, Object>> getSubCatListForSelect(String midCatCd) {
+        return propertyMngDao.getSubCatListForSelect(midCatCd);
     }
 
     @Transactional(rollbackFor = Exception.class)

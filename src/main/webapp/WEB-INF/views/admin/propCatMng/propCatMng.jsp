@@ -54,7 +54,7 @@
                 <div class="col-auto">
                   <div class="d-flex bo-actionbar">
                     <button type="button" id="btnNew" class="btn btn-sm btn-bo-add" onclick="fnNewCat()">신규</button>
-                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnLoadTree()">새로고침</button>
+                    <button type="button" class="btn btn-sm" style="background:#217346; border-color:#217346; color:#fff;" onclick="fnExcelDown()"><i class="fas fa-file-excel"></i> 엑셀</button>
                   </div>
                 </div>
               </div>
@@ -74,8 +74,7 @@
                 <div class="col-auto">
                   <div class="d-flex bo-actionbar">
                     <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSave()">저장</button>
-                    <button type="button" class="btn btn-sm btn-bo-delete" onclick="fnDelete()">삭제</button>
-                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnNewCat()">초기화</button>
+                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnDelete()">삭제</button>
                   </div>
                 </div>
               </div>
@@ -161,7 +160,7 @@ function initTree() {
     height: "580px",
     layout: "fitColumns",
     dataTree: true,
-    dataTreeStartExpanded: true,
+    dataTreeStartExpanded: false,
     dataTreeChildField: "_children",
     selectable: false,
     columns: [
@@ -482,5 +481,10 @@ function fnGetFormData() {
 
 function fnIsFormDirty() {
   return _formSnapshot !== fnGetFormData();
+}
+
+/* ===================== 엑셀 다운로드 ===================== */
+function fnExcelDown() {
+  location.href = '${ctx}/propCatMng/excelDown';
 }
 </script>

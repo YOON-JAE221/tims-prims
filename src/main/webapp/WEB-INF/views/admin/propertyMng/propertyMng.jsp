@@ -24,27 +24,30 @@
           <div class="row align-items-center">
             <div class="col-12 col-lg mb-2 mb-lg-0">
               <div class="d-flex flex-wrap align-items-center" style="gap:8px;">
-                <select id="srchCatCd" class="form-control form-control-sm" style="width:120px;" onchange="fnChangeCat()">
-                  <option value="ALL">전체분류</option>
+                <select id="srchCatCd" class="form-control form-control-sm" style="width:100px;" onchange="fnChangeCat()">
+                  <option value="ALL">대분류</option>
                   <c:forEach var="cat" items="${catList}">
                     <option value="${cat.catCd}">${cat.catNm}</option>
                   </c:forEach>
                 </select>
-                <select id="srchSubCatCd" class="form-control form-control-sm" style="width:120px;" onchange="fnSearch()">
-                  <option value="ALL">전체소분류</option>
+                <select id="srchMidCatCd" class="form-control form-control-sm" style="width:100px;" onchange="fnChangeMidCat()">
+                  <option value="ALL">중분류</option>
                 </select>
-                <select id="srchDealType" class="form-control form-control-sm" style="width:120px;" onchange="fnSearch()">
-                  <option value="ALL">전체거래</option>
+                <select id="srchSubCatCd" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
+                  <option value="ALL">소분류</option>
+                </select>
+                <select id="srchDealType" class="form-control form-control-sm" style="width:90px;" onchange="fnSearch()">
+                  <option value="ALL">거래유형</option>
                   <option value="SELL">매매</option>
                   <option value="JEONSE">전세</option>
                   <option value="WOLSE">월세</option>
                   <option value="SHORT">단기임대</option>
                 </select>
-                <select id="srchSoldYn" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
+                <select id="srchSoldYn" class="form-control form-control-sm" style="width:90px;" onchange="fnSearch()">
                   <option value="N" selected>거래중</option>
                   <option value="Y">거래완료</option>
                 </select>
-                <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:180px;" placeholder="매물명/주소 검색" onkeypress="if(event.keyCode===13) fnSearch();" />
+                <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:150px;" placeholder="매물명/주소" onkeypress="if(event.keyCode===13) fnSearch();" />
                 <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
               </div>
             </div>
@@ -96,10 +99,11 @@ $(function() {
 
 function initGrid() {
   var columns = [
-    { title:"대분류", field:"catNm", width:100 },
-    { title:"소분류", field:"subCatNm", width:100 },
-    { title:"거래", field:"dealTypeNm", width:100 },
-    { title:"매물명", field:"propNm", minWidth:200,
+    { title:"대분류", field:"catNm", width:100, headerSort:false },
+    { title:"중분류", field:"midCatNm", width:120, headerSort:false },
+    { title:"소분류", field:"subCatNm", width:110, headerSort:false },
+    { title:"거래", field:"dealTypeNm", width:100, headerSort:false },
+    { title:"매물명", field:"propNm", widthGrow:2,
       formatter: function(cell) {
         return '<span style="color:#1B2A4A;font-weight:600;text-decoration:underline;cursor:pointer;">' + (cell.getValue() || '') + '</span>';
       },
@@ -108,15 +112,9 @@ function initGrid() {
         location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + d.propCd;
       }
     },
-    { title:"주소", field:"address", minWidth:180 },
-    { title:"상태", field:"soldYn", width:100, hozAlign:"center",
-      formatter: function(cell) {
-        if (cell.getValue() === 'Y') return '<span class="badge badge-secondary">거래완료</span>';
-        return '<span class="badge badge-success">거래중</span>';
-      }
-    },
-    { title:"조회수", field:"viewCnt", width:100, hozAlign:"center" },
-    { title:"삭제", field:"_del", width:80, headerSort:false,
+    { title:"주소", field:"address", widthGrow:2, headerSort:false },
+    { title:"조회수", field:"viewCnt", width:100, hozAlign:"center", headerSort:false },
+    { title:"삭제", field:"_del", width:100, headerSort:false,
       formatter: function() { return "<button type='button' class='btn btn-xs btn-bo-reset'>삭제</button>"; },
       cellClick: function(e, cell) { fnDeleteProp(cell.getRow()); }
     }
@@ -136,6 +134,7 @@ function fnSearch() {
   currentPage = 1;
   var res = ajaxCall('${ctx}/propertyMng/getSelectPropertyList', {
     catCd: $('#srchCatCd').val(),
+    midCatCd: $('#srchMidCatCd').val(),
     subCatCd: $('#srchSubCatCd').val(),
     dealType: $('#srchDealType').val(),
     soldYn: $('#srchSoldYn').val(),
@@ -182,13 +181,31 @@ function fnGoWrite() {
   location.href = '${ctx}/propertyMng/viewPropertyWrite';
 }
 
-// 대분류 변경 시 소분류 연동 + 즉시조회
+// 대분류 변경 → 중분류 로드
 function fnChangeCat() {
   var catCd = $('#srchCatCd').val();
+  var $mid = $('#srchMidCatCd');
   var $sub = $('#srchSubCatCd');
-  $sub.html('<option value="ALL">전체소분류</option>');
+  $mid.html('<option value="ALL">중분류</option>');
+  $sub.html('<option value="ALL">소분류</option>');
   if (catCd && catCd !== 'ALL') {
-    var res = ajaxCall('${ctx}/propertyMng/getSubCatList', { catCd: catCd }, false);
+    var res = ajaxCall('${ctx}/propertyMng/getMidCatList', { catCd: catCd }, false);
+    if (res && res.DATA) {
+      $.each(res.DATA, function(i, item) {
+        $mid.append('<option value="' + item.midCatCd + '">' + item.catNm + '</option>');
+      });
+    }
+  }
+  fnSearch();
+}
+
+// 중분류 변경 → 소분류 로드
+function fnChangeMidCat() {
+  var midCatCd = $('#srchMidCatCd').val();
+  var $sub = $('#srchSubCatCd');
+  $sub.html('<option value="ALL">소분류</option>');
+  if (midCatCd && midCatCd !== 'ALL') {
+    var res = ajaxCall('${ctx}/propertyMng/getSubCatList', { catCd: midCatCd }, false);
     if (res && res.DATA) {
       $.each(res.DATA, function(i, item) {
         $sub.append('<option value="' + item.subCatCd + '">' + item.catNm + '</option>');
@@ -214,6 +231,7 @@ function fnDeleteProp(row) {
 function fnExcelDownload() {
   var params = $.param({
     catCd: $('#srchCatCd').val(),
+    midCatCd: $('#srchMidCatCd').val(),
     subCatCd: $('#srchSubCatCd').val(),
     dealType: $('#srchDealType').val(),
     soldYn: $('#srchSoldYn').val(),

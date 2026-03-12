@@ -10,9 +10,11 @@
              , A.PROP_NM
              , A.PROP_FEATURE
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.CAT_LVL = 0) AS CAT_NM
+             , A.MID_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , A.SUB_CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE
@@ -34,6 +36,9 @@
            AND A.USE_YN = 'Y'
            <if test="catCd != null and catCd != '' and catCd != 'ALL'">
            AND A.CAT_CD = #{catCd}
+           </if>
+           <if test="midCatCd != null and midCatCd != '' and midCatCd != 'ALL'">
+           AND A.MID_CAT_CD = #{midCatCd}
            </if>
            <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
            AND A.SUB_CAT_CD = #{subCatCd}
@@ -59,6 +64,9 @@
            <if test="catCd != null and catCd != '' and catCd != 'ALL'">
            AND A.CAT_CD = #{catCd}
            </if>
+           <if test="midCatCd != null and midCatCd != '' and midCatCd != 'ALL'">
+           AND A.MID_CAT_CD = #{midCatCd}
+           </if>
            <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
            AND A.SUB_CAT_CD = #{subCatCd}
            </if>
@@ -76,8 +84,9 @@
     <!-- 매물 상세 -->
     <select id="getSelectPropertyDetail" parameterType="map" resultType="map">
         SELECT A.*
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.CAT_LVL = 0) AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM_FMT
              , DATE_FORMAT(A.UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM_FMT
           FROM TB_PROPERTY A
@@ -88,7 +97,7 @@
     <!-- 매물 저장 (UPSERT) -->
     <update id="saveProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            PROP_CD, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
             AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
@@ -99,7 +108,7 @@
             SOLD_YN, ADMIN_MEMO,
             USE_YN, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         ) VALUES (
-            #{propCd}, #{catCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
+            #{propCd}, #{catCd}, #{midCatCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
             #{address}, #{addressDtl}, #{buildingNm}, #{lat}, #{lng},
             #{sellPrice}, #{deposit}, #{monthlyRent}, #{loanYn}, #{loanAmount}, #{premium}, #{monthlyMgmt},
             #{areaSupply}, #{areaExclusive}, #{areaLand},
@@ -112,6 +121,7 @@
         )
         ON DUPLICATE KEY UPDATE
             CAT_CD         = #{catCd},
+            MID_CAT_CD     = #{midCatCd},
             SUB_CAT_CD     = #{subCatCd},
             DEAL_TYPE      = #{dealType},
             PROP_NM        = #{propNm},
@@ -162,7 +172,7 @@
     <!-- 매물 복사 -->
     <insert id="copyProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            PROP_CD, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
             AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
@@ -173,7 +183,7 @@
             USE_YN, DEL_YN, VIEW_CNT,
             CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         )
-        SELECT #{newPropCd}, CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
+        SELECT #{newPropCd}, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
                ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
                SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
                AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
@@ -209,19 +219,27 @@
            AND SOLD_YN = 'N'
     </update>
 
-    <!-- 대분류 목록 (셀렉트박스용) -->
+    <!-- 대분류 목록 (셀렉트박스용) - 계층형 -->
     <select id="getCatListForSelect" resultType="map">
         SELECT CAT_CD, CAT_NM
           FROM TB_PROP_CATEGORY
-         WHERE SUB_CAT_CD = '00' AND USE_YN = 'Y' AND DEL_YN = 'N'
+         WHERE CAT_LVL = 0 AND USE_YN = 'Y'
          ORDER BY SORT_ORDER
     </select>
 
-    <!-- 소분류 목록 (셀렉트박스용) -->
-    <select id="getSubCatListForSelect" parameterType="string" resultType="map">
-        SELECT SUB_CAT_CD, CAT_NM
+    <!-- 중분류 목록 (셀렉트박스용) - 계층형 -->
+    <select id="getMidCatListForSelect" parameterType="string" resultType="map">
+        SELECT CAT_CD AS MID_CAT_CD, CAT_NM
           FROM TB_PROP_CATEGORY
-         WHERE CAT_CD = #{catCd} AND SUB_CAT_CD != '00' AND USE_YN = 'Y' AND DEL_YN = 'N'
+         WHERE UPR_CAT_CD = #{catCd} AND CAT_LVL = 1 AND USE_YN = 'Y'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- 소분류 목록 (셀렉트박스용) - 계층형 -->
+    <select id="getSubCatListForSelect" parameterType="string" resultType="map">
+        SELECT CAT_CD AS SUB_CAT_CD, CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE UPR_CAT_CD = #{midCatCd} AND CAT_LVL = 2 AND USE_YN = 'Y'
          ORDER BY SORT_ORDER
     </select>
 
@@ -229,8 +247,9 @@
     <select id="getPropertyListForExcel" parameterType="map" resultType="map">
         SELECT A.PROP_CD
              , A.PROP_NM
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.CAT_LVL = 0) AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.PROP_FEATURE
              , A.ADDRESS
@@ -262,6 +281,9 @@
            AND A.USE_YN = 'Y'
            <if test="catCd != null and catCd != '' and catCd != 'ALL'">
            AND A.CAT_CD = #{catCd}
+           </if>
+           <if test="midCatCd != null and midCatCd != '' and midCatCd != 'ALL'">
+           AND A.MID_CAT_CD = #{midCatCd}
            </if>
            <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
            AND A.SUB_CAT_CD = #{subCatCd}

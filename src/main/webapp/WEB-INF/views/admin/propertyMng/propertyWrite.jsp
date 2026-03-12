@@ -44,20 +44,31 @@
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
               <tr>
-                <th>대분류 <span class="text-danger">*</span></th>
-                <td>
-                  <select name="catCd" id="catCd" class="form-control form-control-sm" style="width:200px;" onchange="fnCatChange(this.value)" required>
-                    <option value="">선택</option>
-                    <c:forEach var="cat" items="${catList}">
-                      <option value="${cat.catCd}" ${prop.catCd eq cat.catCd ? 'selected' : ''}>${cat.catNm}</option>
-                    </c:forEach>
-                  </select>
-                </td>
-                <th>소분류 <span class="text-danger">*</span></th>
-                <td>
-                  <select name="subCatCd" id="subCatCd" class="form-control form-control-sm" style="width:200px;" required>
-                    <option value="">선택</option>
-                  </select>
+                <th style="width:100px;">분류 <span class="text-danger">*</span></th>
+                <td colspan="3">
+                  <div class="d-flex align-items-center" style="gap:12px;">
+                    <div class="d-flex align-items-center" style="gap:4px;">
+                      <span style="font-size:12px; color:#666;">대분류</span>
+                      <select name="catCd" id="catCd" class="form-control form-control-sm" style="width:130px;" onchange="fnCatChange(this.value)" required>
+                        <option value="">선택</option>
+                        <c:forEach var="cat" items="${catList}">
+                          <option value="${cat.catCd}" ${prop.catCd eq cat.catCd ? 'selected' : ''}>${cat.catNm}</option>
+                        </c:forEach>
+                      </select>
+                    </div>
+                    <div class="d-flex align-items-center" style="gap:4px;">
+                      <span style="font-size:12px; color:#666;">중분류</span>
+                      <select name="midCatCd" id="midCatCd" class="form-control form-control-sm" style="width:130px;" onchange="fnMidCatChange(this.value)" required>
+                        <option value="">선택</option>
+                      </select>
+                    </div>
+                    <div class="d-flex align-items-center" style="gap:4px;">
+                      <span style="font-size:12px; color:#666;">소분류</span>
+                      <select name="subCatCd" id="subCatCd" class="form-control form-control-sm" style="width:130px;" required>
+                        <option value="">선택</option>
+                      </select>
+                    </div>
+                  </div>
                 </td>
               </tr>
               <tr>
@@ -353,11 +364,12 @@ $(function() {
     });
   } catch(e) { console.error('Summernote init error', e); }
 
-  // 수정모드: 소분류 로드
+  // 수정모드: 카테고리 로드
   var initCatCd = '${prop.catCd}';
+  var initMidCatCd = '${prop.midCatCd}';
   var initSubCatCd = '${prop.subCatCd}';
   if (initCatCd) {
-    fnCatChange(initCatCd, initSubCatCd);
+    fnCatChange(initCatCd, initMidCatCd, initSubCatCd);
   }
 
   // 수정모드: 지도 미리보기
@@ -375,13 +387,35 @@ $(function() {
   try { fnInitDropZone(); } catch(e) { console.error('dropzone init error', e); }
 });
 
-/* 대분류 변경 → 소분류 로드 */
-function fnCatChange(catCd, selectedSubCatCd) {
+/* 대분류 변경 → 중분류 로드 */
+function fnCatChange(catCd, selectedMidCatCd, selectedSubCatCd) {
+  var $mid = $('#midCatCd');
   var $sub = $('#subCatCd');
+  $mid.html('<option value="">선택</option>');
   $sub.html('<option value="">선택</option>');
   if (!catCd) return;
 
-  var res = ajaxCall('${ctx}/propertyMng/getSubCatList', { catCd: catCd }, false);
+  var res = ajaxCall('${ctx}/propertyMng/getMidCatList', { catCd: catCd }, false);
+  if (res && res.DATA) {
+    for (var i = 0; i < res.DATA.length; i++) {
+      var d = res.DATA[i];
+      var sel = (d.midCatCd === selectedMidCatCd) ? ' selected' : '';
+      $mid.append('<option value="' + d.midCatCd + '"' + sel + '>' + d.catNm + '</option>');
+    }
+    // 중분류 선택값 있으면 소분류도 로드
+    if (selectedMidCatCd) {
+      fnMidCatChange(selectedMidCatCd, selectedSubCatCd);
+    }
+  }
+}
+
+/* 중분류 변경 → 소분류 로드 */
+function fnMidCatChange(midCatCd, selectedSubCatCd) {
+  var $sub = $('#subCatCd');
+  $sub.html('<option value="">선택</option>');
+  if (!midCatCd) return;
+
+  var res = ajaxCall('${ctx}/propertyMng/getSubCatList', { catCd: midCatCd }, false);
   if (res && res.DATA) {
     for (var i = 0; i < res.DATA.length; i++) {
       var d = res.DATA[i];
