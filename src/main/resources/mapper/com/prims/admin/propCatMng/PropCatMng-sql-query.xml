@@ -4,73 +4,61 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="propCatMng">
 
-    <!-- 대분류 목록 -->
-    <select id="getCatList" resultType="map">
-        SELECT CAT_CD, CAT_NM, SORT_ORDER, USE_YN,
-               DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM,
-               (SELECT COUNT(*) FROM TB_PROP_CATEGORY sub
-                WHERE sub.CAT_CD = main.CAT_CD AND sub.SUB_CAT_CD != '00' AND sub.DEL_YN = 'N') AS SUB_CNT
-          FROM TB_PROP_CATEGORY main
-         WHERE SUB_CAT_CD = '00'
-           AND DEL_YN = 'N'
-         ORDER BY SORT_ORDER
-    </select>
-
-    <!-- 소분류 목록 (대분류코드 기준) -->
-    <select id="getSubCatList" parameterType="string" resultType="map">
-        SELECT CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN,
-               DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM
+    <!-- 카테고리 전체 리스트 (트리 구성용) -->
+    <select id="getCatList" parameterType="map" resultType="map">
+        SELECT CAT_CD
+             , UPR_CAT_CD
+             , CAT_NM
+             , CAT_LVL
+             , SORT_ORDER
+             , USE_YN
+             , BIGO
+             , DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM
           FROM TB_PROP_CATEGORY
-         WHERE CAT_CD = #{catCd}
-           AND SUB_CAT_CD != '00'
-           AND DEL_YN = 'N'
-         ORDER BY SORT_ORDER
+         WHERE DEL_YN = 'N'
+         ORDER BY CAT_LVL, SORT_ORDER
     </select>
 
-    <!-- 대분류 저장 (UPSERT) -->
+    <!-- 카테고리 저장 (등록/수정 머지) -->
     <update id="saveCat" parameterType="map">
-        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM, DEL_YN)
-        VALUES (#{catCd}, '00', #{catNm}, #{sortOrder}, #{useYn}, #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW(), 'N')
+        INSERT INTO TB_PROP_CATEGORY (
+            CAT_CD, UPR_CAT_CD, CAT_NM, CAT_LVL, SORT_ORDER
+          , USE_YN, BIGO, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
+        ) VALUES (
+            #{catCd}, #{uprCatCd}, #{catNm}, #{catLvl}, #{sortOrder}
+          , #{useYn}, #{bigo}, 'N', #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
+        )
         ON DUPLICATE KEY UPDATE
-            CAT_NM = #{catNm},
-            SORT_ORDER = #{sortOrder},
-            USE_YN = #{useYn},
-            UPD_USR_CD = #{ssnUsrCd},
-            UPD_DTM = NOW()
+            UPR_CAT_CD  = #{uprCatCd}
+          , CAT_NM      = #{catNm}
+          , CAT_LVL     = #{catLvl}
+          , SORT_ORDER  = #{sortOrder}
+          , USE_YN      = #{useYn}
+          , BIGO        = #{bigo}
+          , UPD_USR_CD  = #{ssnUsrCd}
+          , UPD_DTM     = NOW()
     </update>
 
-    <!-- 소분류 저장 (UPSERT) -->
-    <update id="saveSubCat" parameterType="map">
-        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM, DEL_YN)
-        VALUES (#{catCd}, #{subCatCd}, #{catNm}, #{sortOrder}, #{useYn}, #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW(), 'N')
-        ON DUPLICATE KEY UPDATE
-            CAT_NM = #{catNm},
-            SORT_ORDER = #{sortOrder},
-            USE_YN = #{useYn},
-            UPD_USR_CD = #{ssnUsrCd},
-            UPD_DTM = NOW()
-    </update>
-
-    <!-- 소분류 삭제 (물리삭제) -->
-    <delete id="deleteSubCat" parameterType="map">
+    <!-- 카테고리 삭제 (자기 + 하위 전부 물리삭제) -->
+    <delete id="deleteCat" parameterType="map">
         DELETE FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd}
-           AND SUB_CAT_CD = #{subCatCd}
-           AND SUB_CAT_CD != '00'
+            OR UPR_CAT_CD = #{catCd}
+            OR UPR_CAT_CD IN (SELECT t.CAT_CD FROM (SELECT CAT_CD FROM TB_PROP_CATEGORY WHERE UPR_CAT_CD = #{catCd}) t)
     </delete>
 
-    <!-- 대분류 삭제 (소분류 포함, 물리삭제) -->
-    <delete id="deleteCat" parameterType="string">
-        DELETE FROM TB_PROP_CATEGORY
-         WHERE CAT_CD = #{catCd}
-    </delete>
+    <!-- 카테고리코드 중복 체크 -->
+    <select id="getCountByCatCd" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM TB_PROP_CATEGORY WHERE CAT_CD = #{catCd}
+    </select>
 
-    <!-- 다음 소분류코드 자동채번 -->
-    <select id="getNextSubCatCd" parameterType="string" resultType="string">
-        SELECT LPAD(IFNULL(MAX(CAST(SUB_CAT_CD AS UNSIGNED)), 0) + 1, 2, '0')
+    <!-- 다음 카테고리코드 자동채번 (레벨 1 이상) -->
+    <select id="getNextCatCd" parameterType="map" resultType="string">
+        SELECT CONCAT(#{uprCatCd}, '_', LPAD(IFNULL(MAX(
+            CAST(SUBSTRING_INDEX(CAT_CD, '_', -1) AS UNSIGNED)
+        ), 0) + 1, 3, '0'))
           FROM TB_PROP_CATEGORY
-         WHERE CAT_CD = #{catCd}
-           AND SUB_CAT_CD != '00'
+         WHERE UPR_CAT_CD = #{uprCatCd}
            AND DEL_YN = 'N'
     </select>
 

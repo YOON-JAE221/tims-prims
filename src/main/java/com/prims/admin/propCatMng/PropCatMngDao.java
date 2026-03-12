@@ -13,31 +13,28 @@ public class PropCatMngDao {
     @Autowired
     private SqlSession sqlSession;
 
+    // 카테고리 전체 목록 (트리용)
     public List<Map<String, Object>> getCatList() {
         return sqlSession.selectList("propCatMng.getCatList");
     }
 
-    public List<Map<String, Object>> getSubCatList(String catCd) {
-        return sqlSession.selectList("propCatMng.getSubCatList", catCd);
-    }
-
+    // 카테고리 저장 (등록/수정)
     public int saveCat(Map<String, Object> param) {
         return sqlSession.update("propCatMng.saveCat", param);
     }
 
-    public int saveSubCat(Map<String, Object> param) {
-        return sqlSession.update("propCatMng.saveSubCat", param);
+    // 카테고리 삭제 (하위 포함)
+    public int deleteCat(Map<String, Object> param) {
+        return sqlSession.delete("propCatMng.deleteCat", param);
     }
 
-    public int deleteSubCat(Map<String, Object> param) {
-        return sqlSession.delete("propCatMng.deleteSubCat", param);
+    // 카테고리코드 중복 체크
+    public int getCountByCatCd(Map<String, Object> param) {
+        return sqlSession.selectOne("propCatMng.getCountByCatCd", param);
     }
 
-    public int deleteCat(String catCd) {
-        return sqlSession.delete("propCatMng.deleteCat", catCd);
-    }
-
-    public String getNextSubCatCd(String catCd) {
-        return sqlSession.selectOne("propCatMng.getNextSubCatCd", catCd);
+    // 다음 카테고리코드 자동채번
+    public String getNextCatCd(Map<String, Object> param) {
+        return sqlSession.selectOne("propCatMng.getNextCatCd", param);
     }
 }
