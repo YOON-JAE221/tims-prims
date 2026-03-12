@@ -727,36 +727,26 @@ img { max-width: 100%; display: block; }
 /* Footer 모바일 반응형 */
 @media (max-width: 768px) {
   .footer-main {
-    grid-template-columns: 1fr;
-    gap: 0;
-    padding: 36px 20px 28px;
-  }
-  .footer-left {
-    max-width: 100%;
-    text-align: center;
-  }
-  .footer-logo-row {
-    justify-content: center;
-  }
-  .footer-info {
-    font-size: 11px;
-    line-height: 1.9;
-  }
-  /* 모바일에서 메뉴 영역 숨김 */
-  .footer-right {
     display: none;
   }
   .footer-bottom {
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
     padding: 16px 20px;
     text-align: center;
   }
   .footer-bottom-links {
-    justify-content: center;
+    display: none;
   }
   .footer-copyright {
-    font-size: 10px;
+    font-size: 11px;
+  }
+  /* 모바일 전용 심플 푸터 */
+  .primus-footer::before {
+    content: '© 2026 프리머스 부동산';
+    display: none;
   }
 }
   display: flex; align-items: center; gap: 6px;
