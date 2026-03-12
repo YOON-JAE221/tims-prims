@@ -247,7 +247,7 @@ function loadRecentPropList() {
         html += '<td style="text-align:center;">' + (p.subCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.dealTypeNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.viewCnt || 0) + '</td>';
-        html += '<td style="text-align:center;">' + (p.rgtDtm || '-') + '</td>';
+        html += '<td style="text-align:center;">' + (p.creDtm || '-') + '</td>';
         html += '</tr>';
       }
     }

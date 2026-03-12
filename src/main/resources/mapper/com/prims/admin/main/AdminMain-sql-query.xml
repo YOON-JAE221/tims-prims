@@ -21,11 +21,11 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' ELSE '' END AS DEAL_TYPE_NM
              , A.SOLD_YN
              , A.VIEW_CNT
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
           LEFT JOIN TB_PROP_CATEGORY C ON C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00'
          WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
          LIMIT 9
     </select>
 
