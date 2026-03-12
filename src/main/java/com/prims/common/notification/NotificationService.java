@@ -23,6 +23,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.prims.common.constant.Constant;
+import com.prims.common.config.AppProperties;
 
 @Service("NotificationService")
 public class NotificationService {
@@ -40,6 +41,9 @@ public class NotificationService {
 
     @Autowired
     private SendLogDao sendLogDao;
+
+    @Autowired
+    private AppProperties appProperties;
 
     @PreDestroy
     public void destroy() {
@@ -356,7 +360,7 @@ public class NotificationService {
         sb.append(safeContent);
         sb.append("</div></div>");
 
-        String qnaUrl = Constant.SITE_URL + "/bbs/viewBbsQna";
+        String qnaUrl = appProperties.getSiteUrl() + "/bbs/viewBbsQna";
         sb.append("<div style='text-align:center;margin-top:24px;'>");
         sb.append("<a href='").append(qnaUrl).append("' style='display:inline-block;padding:12px 32px;background:#2c3e50;color:#fff;font-size:14px;font-weight:700;text-decoration:none;border-radius:6px;'>답변 보러가기</a>");
         sb.append("</div>");
@@ -407,7 +411,7 @@ public class NotificationService {
         sb.append(safeContent);
         sb.append("</div></div>");
 
-        String qnaUrl = Constant.SITE_URL + "/bbs/viewBbsQna";
+        String qnaUrl = appProperties.getSiteUrl() + "/bbs/viewBbsQna";
         sb.append("<div style='text-align:center;margin-top:24px;'>");
         sb.append("<a href='").append(qnaUrl).append("' style='display:inline-block;padding:12px 32px;background:#2c3e50;color:#fff;font-size:14px;font-weight:700;text-decoration:none;border-radius:6px;'>답변하러 가기</a>");
         sb.append("</div>");
