@@ -18,7 +18,7 @@
              , A.ADDRESS, A.ADDRESS_DTL
              , A.LAT, A.LNG
              , A.SOLD_YN
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
@@ -35,7 +35,7 @@
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
            </if>
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
          LIMIT 100
     </select>
 
@@ -59,7 +59,7 @@
                    AND F.DEL_YN = 'N'
                  ORDER BY F.FILE_SEQ ASC
                  LIMIT 1) AS THUMB_PATH
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
@@ -74,7 +74,7 @@
            </if>
          ORDER BY
            CASE A.SOLD_YN WHEN 'N' THEN 0 ELSE 1 END ASC,
-           A.RGT_DTM DESC
+           A.CRE_DTM DESC
          LIMIT ${offset}, ${pageSize}
     </select>
 
@@ -114,7 +114,7 @@
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
          LIMIT 1
     </select>
 
@@ -137,7 +137,7 @@
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.VIEW_CNT DESC, A.RGT_DTM DESC
+         ORDER BY A.VIEW_CNT DESC, A.CRE_DTM DESC
          LIMIT 1
     </select>
 
@@ -160,7 +160,7 @@
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
          LIMIT 1
     </select>
 
@@ -183,7 +183,7 @@
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
          LIMIT 3
     </select>
 
@@ -198,7 +198,7 @@
                  WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
                    AND F.DEL_YN = 'N'
                  ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM_FMT
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM_FMT
           FROM TB_PROPERTY A
          WHERE A.PROP_CD = #{id}
            AND A.DEL_YN = 'N'
@@ -230,6 +230,7 @@
           FROM TB_PROP_CATEGORY
          WHERE SUB_CAT_CD = '00'
            AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
          ORDER BY SORT_ORDER
     </select>
 
