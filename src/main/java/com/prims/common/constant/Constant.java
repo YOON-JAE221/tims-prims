@@ -52,7 +52,7 @@ public final class Constant {
     /* =========================
      * 암호화 키
      * ========================= */
-    public static final String ENCRYPT_KEY = "PARKSE";
+    public static final String ENCRYPT_KEY = "PRIMUS_PARK";
 
     /* =========================
      * 파일 업로드 경로

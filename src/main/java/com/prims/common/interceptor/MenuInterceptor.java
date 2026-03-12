@@ -8,15 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.prims.admin.sys.menuMng.MenuMngService;
-
 public class MenuInterceptor implements HandlerInterceptor {
-
-    @Autowired
-    private MenuMngService menuMngService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

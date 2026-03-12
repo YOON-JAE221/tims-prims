@@ -5,9 +5,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.prims.admin.sys.usrMng.UsrMngDao;
-
-
 import com.prims.common.constant.Constant;
 
 
