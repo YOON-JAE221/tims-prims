@@ -7,9 +7,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://db.mwkim-dev.com:3306/dbmwkim?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
-    username: mwkim
-    password: thsqjatndprps12
+    url: jdbc:mysql://db.primushome.gabia.io:3306/dbprimushome?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
+    username: primushome
+    password: vmflajtm12@@
 
 upload:
   base:
