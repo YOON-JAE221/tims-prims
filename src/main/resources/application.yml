@@ -47,6 +47,10 @@ upload:
   base:
     web: /upload
 
+# 사이트 URL (환경별 오버라이드)
+site:
+  url: http://localhost:28080
+
 # 로깅
 logging:
   level:

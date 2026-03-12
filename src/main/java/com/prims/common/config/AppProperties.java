@@ -21,11 +21,19 @@ public class AppProperties {
     @Value("${upload.base.web}")
     private String uploadBaseWeb;
 
+    /** 사이트 URL (OG 태그용) */
+    @Value("${site.url}")
+    private String siteUrl;
+
     public String getUploadBaseDir() {
         return uploadBaseDir;
     }
 
     public String getUploadBaseWeb() {
         return uploadBaseWeb;
+    }
+
+    public String getSiteUrl() {
+        return siteUrl;
     }
 }

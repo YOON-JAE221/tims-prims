@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import com.prims.common.interceptor.LoginCheckInterceptor;
 import com.prims.common.interceptor.AccessCodeInterceptor;
+import com.prims.common.interceptor.CommonInterceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private AccessCodeInterceptor accessCodeInterceptor;
+
+    @Autowired
+    private CommonInterceptor commonInterceptor;
 
     /** JSP 뷰 리졸버 명시 등록 */
     @Bean
@@ -65,6 +69,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 공통 인터셉터 (siteUrl 등 공통 속성 설정)
+        registry.addInterceptor(commonInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/resources/**", "/upload/**");
+
         // 사이트 접속코드 인터셉터 (FO 전체 - USE_YN = 'Y'일 때만 동작)
         registry.addInterceptor(accessCodeInterceptor)
                 .addPathPatterns("/**")

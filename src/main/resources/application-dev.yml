@@ -15,6 +15,9 @@ upload:
   base:
     dir: /web/upload/
 
+site:
+  url: http://mwkim-dev.com
+
 logging:
   level:
     com.prims: INFO
