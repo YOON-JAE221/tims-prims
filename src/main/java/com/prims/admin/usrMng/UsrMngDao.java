@@ -32,4 +32,8 @@ public class UsrMngDao {
     public int resetPassword(Map<String, Object> paramMap) {
         return sqlSession.update("usrMng.resetPassword", paramMap);
     }
+
+    public int changeMyPassword(Map<String, Object> paramMap) {
+        return sqlSession.update("usrMng.changeMyPassword", paramMap);
+    }
 }

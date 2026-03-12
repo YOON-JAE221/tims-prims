@@ -55,7 +55,6 @@
              , EML = #{eml}
              , PHONE_NO = F_COM_ENCRYPT(#{phoneNo}, 'PRIMUS_PARK')
              , GNDR = #{gndr}
-             , BRTH_DT = #{brthDt}
              , USE_YN = #{useYn}
              , UPD_USR_CD = #{ssnUsrCd}
              , UPD_DTM = NOW()
@@ -78,6 +77,16 @@
              , UPD_USR_CD = #{ssnUsrCd}
              , UPD_DTM = NOW()
          WHERE USR_CD = #{usrCd}
+           AND DEL_YN = 'N'
+    </update>
+
+    <!-- 내 비밀번호 변경 (현재 비밀번호 확인 후 변경) -->
+    <update id="changeMyPassword" parameterType="map">
+        UPDATE TB_USR
+           SET LOGIN_PWD = F_COM_ENCRYPT(#{newPwd}, 'PRIMUS_PARK')
+             , UPD_DTM = NOW()
+         WHERE USR_CD = #{usrCd}
+           AND LOGIN_PWD = F_COM_ENCRYPT(#{currentPwd}, 'PRIMUS_PARK')
            AND DEL_YN = 'N'
     </update>
 

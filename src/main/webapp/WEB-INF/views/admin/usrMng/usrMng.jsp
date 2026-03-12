@@ -19,20 +19,9 @@
   <section class="content">
     <div class="container">
       <div class="card">
-        <!-- 검색영역 -->
         <div class="card-header">
           <div class="row align-items-center">
-            <div class="col-12 col-lg mb-2 mb-lg-0">
-              <div class="d-flex flex-wrap align-items-center" style="gap:8px;">
-                <select id="srchUseYn" class="form-control form-control-sm" style="width:100px;" onchange="fnSearch()">
-                  <option value="ALL">전체상태</option>
-                  <option value="Y" selected>사용</option>
-                  <option value="N">미사용</option>
-                </select>
-                <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:200px;" placeholder="회원명/로그인ID 검색" onkeypress="if(event.keyCode===13) fnSearch();" />
-                <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
-              </div>
-            </div>
+            <div class="col-12 col-lg mb-2 mb-lg-0"></div>
             <div class="col-12 col-lg-auto">
               <div class="d-flex justify-content-lg-end bo-actionbar">
                 <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnSearch()">새로고침</button>
@@ -41,17 +30,8 @@
           </div>
         </div>
 
-        <!-- 그리드 -->
-        <div class="card-body p-0">
-          <div class="p-2">
-            <span id="totalCntTxt" style="font-size:13px; color:#666;">총 0건</span>
-          </div>
-          <div id="usrGrid"></div>
-        </div>
-
-        <!-- 페이징 -->
-        <div class="card-footer d-flex justify-content-center" style="padding:12px 0;">
-          <div id="gridPaging"></div>
+        <div class="card-body">
+          <div id="sheet1"></div>
         </div>
       </div>
     </div>
@@ -59,18 +39,13 @@
 </div>
 
 <script>
-var usrTable = null;
-var _allData = [];
-var currentPage = 1;
-var pageSize = 20;
-
 $(function() {
-  initGrid();
+  initSheet();
 });
 
-function initGrid() {
+function initSheet() {
   var columns = [
-    { title:"로그인ID", field:"loginId", minWidth:120,
+    { title:"로그인ID", field:"loginId", minWidth:140, headerSort:false,
       formatter: function(cell) {
         return '<span style="color:#1B2A4A;font-weight:600;text-decoration:underline;cursor:pointer;">' + (cell.getValue() || '') + '</span>';
       },
@@ -79,79 +54,43 @@ function initGrid() {
         location.href = '${ctx}/usrMng/viewUsrWrite?usrCd=' + d.usrCd;
       }
     },
-    { title:"회원명", field:"usrNm", width:120 },
-    { title:"이메일", field:"eml", minWidth:180 },
-    { title:"핸드폰", field:"phoneNo", width:130, hozAlign:"center",
+    { title:"회원명", field:"usrNm", width:140, headerSort:false },
+    { title:"이메일", field:"eml", minWidth:200, headerSort:false },
+    { title:"핸드폰", field:"phoneNo", width:160, hozAlign:"center", headerSort:false,
       formatter: function(cell) {
         var v = cell.getValue();
         if (!v) return '';
-        // 마스킹: 010-****-5678
-        if (v.length >= 8) {
-          return v.substring(0,3) + '-****-' + v.substring(v.length-4);
+        v = v.replace(/-/g, '');
+        if (v.length === 11) {
+          return v.substring(0,3) + '-' + v.substring(3,7) + '-' + v.substring(7);
+        } else if (v.length === 10) {
+          return v.substring(0,3) + '-' + v.substring(3,6) + '-' + v.substring(6);
         }
         return v;
       }
     },
-    { title:"성별", field:"gndrNm", width:80, hozAlign:"center" },
-    { title:"사용여부", field:"useYn", width:90, hozAlign:"center",
+    { title:"성별", field:"gndrNm", width:80, hozAlign:"left", headerSort:false },
+    { title:"사용여부", field:"useYn", width:120, hozAlign:"center", headerSort:false,
       formatter: function(cell) {
-        if (cell.getValue() === 'Y') return '<span class="badge badge-success">사용</span>';
-        return '<span class="badge badge-secondary">미사용</span>';
+        if (cell.getValue() === 'Y') return '<span class="badge bg-success">사용</span>';
+        return '<span class="badge bg-secondary">미사용</span>';
       }
     },
-    { title:"마지막로그인", field:"lastLoginDtm", width:140, hozAlign:"center" }
+    { title:"마지막 로그인 일시", field:"lastLoginDtm", width:180, hozAlign:"left", headerSort:false }
   ];
 
-  usrTable = TG.create("usrGrid", columns, {
+  window.sheet1 = TG.create("sheet1", columns, {
     height: "600px",
     pagination: false,
-    layout: "fitColumns",
-    selectable: 1
+    layout: "fitColumns"
   });
 
-  usrTable.on("tableBuilt", function() { fnSearch(); });
+  window.sheet1.on("tableBuilt", function() {
+    fnSearch();
+  });
 }
 
 function fnSearch() {
-  currentPage = 1;
-  var res = ajaxCall('${ctx}/usrMng/getUsrList', {
-    useYn: $('#srchUseYn').val(),
-    keyword: $('#srchKeyword').val()
-  }, false);
-  _allData = (res && res.DATA) ? res.DATA : [];
-  fnLoadPage();
-}
-
-function fnLoadPage() {
-  var totalCnt = _allData.length;
-  var start = (currentPage - 1) * pageSize;
-  var pageData = _allData.slice(start, start + pageSize);
-  TG.bind(usrTable, pageData);
-  $('#totalCntTxt').text('총 ' + totalCnt + '건');
-  fnDrawPaging(totalCnt);
-}
-
-function fnDrawPaging(totalCnt) {
-  var totalPage = Math.ceil(totalCnt / pageSize);
-  if (totalPage < 1) totalPage = 1;
-  var startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
-  var endPage = Math.min(startPage + 9, totalPage);
-
-  var html = '<nav><ul class="pagination pagination-sm">';
-  html += '<li class="page-item ' + (currentPage <= 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + (currentPage - 1) + ')">이전</a></li>';
-  for (var p = startPage; p <= endPage; p++) {
-    html += '<li class="page-item ' + (p === currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + p + ')">' + p + '</a></li>';
-  }
-  html += '<li class="page-item ' + (currentPage >= totalPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + (currentPage + 1) + ')">다음</a></li>';
-  html += '</ul></nav>';
-  $('#gridPaging').html(html);
-}
-
-function fnGoPage(page) {
-  if (page < 1) return;
-  var totalPage = Math.ceil(_allData.length / pageSize);
-  if (page > totalPage) return;
-  currentPage = page;
-  fnLoadPage();
+  TG.load(window.sheet1, '${ctx}/usrMng/getUsrList', {}, false, "DATA");
 }
 </script>

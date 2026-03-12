@@ -135,11 +135,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <a id="dropdownSubMenu4" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">시스템관리</a>
             <ul aria-labelledby="dropdownSubMenu4" class="dropdown-menu border-0 shadow">
               <li><a href="${ctx}/sysMenuMng/viewSysMenuMng" class="dropdown-item">메뉴관리</a></li>
+              <li><a href="${ctx}/usrMng/viewUsrMng" class="dropdown-item">회원관리</a></li>
               <li><a href="${ctx}/batMng/viewBatMng" class="dropdown-item">배치관리</a></li>
               <li><a href="${ctx}/bbsBrdMng/viewBbsBrdMng" class="dropdown-item">게시판관리</a></li>
               <li><a href="${ctx}/sendLogMng/viewSendLogMng" class="dropdown-item">발송내역</a></li>
               <li><a href="${ctx}/accessCodeMng/viewAccessCodeMng" class="dropdown-item">환경설정</a></li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:fnOpenPwdModal()" class="nav-link">비밀번호변경</a>
           </li>
           <li class="nav-item">
             <a href="${ctx}/login/doLogout" class="nav-link">LOGOUT</a>
@@ -156,6 +160,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	  <input type="hidden" name="brdCd" id="mngBrdCd" />
 	</form>
 
+  <!-- 비밀번호 변경 모달 -->
+  <div class="modal fade" id="pwdChangeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">비밀번호 변경</h5>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>현재 비밀번호 <span class="text-danger">*</span></label>
+            <input type="password" id="currentPwd" class="form-control form-control-sm" />
+          </div>
+          <div class="form-group">
+            <label>새 비밀번호 <span class="text-danger">*</span></label>
+            <input type="password" id="newPwd" class="form-control form-control-sm" />
+          </div>
+          <div class="form-group mb-0">
+            <label>새 비밀번호 확인 <span class="text-danger">*</span></label>
+            <input type="password" id="confirmPwd" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">취소</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="fnChangePassword()">변경</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- /.content-wrapper -->
 </div>
 <!-- ./wrapper -->
@@ -165,6 +199,52 @@ scratch. This page gets rid of all links and provides the needed markup only.
     $('#mngBrdCd').val(brdCd);
     $('#goMngForm').attr('action', '${ctx}/bbsComMng/viewBbsComMng');
     $('#goMngForm').submit();
+  }
+
+  function fnOpenPwdModal() {
+    $('#currentPwd').val('');
+    $('#newPwd').val('');
+    $('#confirmPwd').val('');
+    $('#pwdChangeModal').modal('show');
+  }
+
+  function fnChangePassword() {
+    var currentPwd = $('#currentPwd').val().trim();
+    var newPwd = $('#newPwd').val().trim();
+    var confirmPwd = $('#confirmPwd').val().trim();
+
+    if (!currentPwd) {
+      alert('현재 비밀번호를 입력해주세요.');
+      $('#currentPwd').focus();
+      return;
+    }
+    if (!newPwd) {
+      alert('새 비밀번호를 입력해주세요.');
+      $('#newPwd').focus();
+      return;
+    }
+    if (newPwd.length < 4) {
+      alert('새 비밀번호는 4자 이상 입력해주세요.');
+      $('#newPwd').focus();
+      return;
+    }
+    if (newPwd !== confirmPwd) {
+      alert('새 비밀번호가 일치하지 않습니다.');
+      $('#confirmPwd').focus();
+      return;
+    }
+
+    var res = ajaxCall('${ctx}/usrMng/changeMyPassword', {
+      currentPwd: currentPwd,
+      newPwd: newPwd
+    }, false);
+
+    if (res && res.result === 'OK') {
+      alert('비밀번호가 변경되었습니다.');
+      $('#pwdChangeModal').modal('hide');
+    } else {
+      alert(res.message || '비밀번호 변경에 실패했습니다.');
+    }
   }
 </script>
 

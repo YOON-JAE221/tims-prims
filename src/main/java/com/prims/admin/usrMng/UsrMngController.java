@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,6 +98,36 @@ public class UsrMngController {
             result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
             if (cnt > 0) {
                 result.put("message", "비밀번호가 'primus1234'로 초기화되었습니다.");
+            }
+        } catch (Exception e) {
+            result.put("result", Constant.FAIL);
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+    // 내 비밀번호 변경
+    @ResponseBody
+    @RequestMapping(value = "/changeMyPassword", method = RequestMethod.POST)
+    public Map<String, Object> changeMyPassword(@ParamMap Map<String, Object> paramMap, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            // 세션에서 로그인 사용자 정보 가져오기
+            Map<String, Object> loginUser = (Map<String, Object>) session.getAttribute("loginUser");
+            if (loginUser == null) {
+                result.put("result", Constant.FAIL);
+                result.put("message", "로그인 정보가 없습니다.");
+                return result;
+            }
+
+            paramMap.put("usrCd", loginUser.get("usrCd"));
+            int cnt = usrMngService.changeMyPassword(paramMap);
+
+            if (cnt > 0) {
+                result.put("result", Constant.OK);
+            } else {
+                result.put("result", Constant.FAIL);
+                result.put("message", "현재 비밀번호가 일치하지 않습니다.");
             }
         } catch (Exception e) {
             result.put("result", Constant.FAIL);

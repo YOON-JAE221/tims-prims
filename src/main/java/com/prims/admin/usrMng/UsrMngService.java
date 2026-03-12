@@ -37,4 +37,9 @@ public class UsrMngService {
         paramMap.put("newPassword", "primus1234");
         return usrMngDao.resetPassword(paramMap);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int changeMyPassword(Map<String, Object> paramMap) {
+        return usrMngDao.changeMyPassword(paramMap);
+    }
 }

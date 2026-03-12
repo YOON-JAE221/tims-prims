@@ -19,11 +19,11 @@
   <section class="content">
     <div class="container">
       <!-- 버튼 상단 -->
-      <div class="d-flex justify-content-end mb-2 bo-actionbar">
-        <button type="button" class="btn btn-sm btn-bo-list" onclick="fnGoList()">목록</button>
-        <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnResetPassword()">비밀번호 초기화</button>
-        <button type="button" class="btn btn-sm btn-bo-delete" onclick="fnDelete()">삭제</button>
-        <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSave()">저장</button>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom:16px;">
+        <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+        <button type="button" class="btn btn-bo-reset" onclick="fnResetPassword()">비밀번호 초기화</button>
+        <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
+        <button type="button" class="btn btn-bo-save" onclick="fnSave()">저장</button>
       </div>
 
       <form id="usrForm">
@@ -32,17 +32,20 @@
         <!-- 기본정보 -->
         <div class="card">
           <div class="card-header"><strong>기본정보</strong></div>
-          <div class="card-body">
-            <table class="table-form">
-              <colgroup><col style="width:150px;"><col></colgroup>
+          <div class="card-body p-0">
+            <table class="table table-bordered table-form mb-0">
+              <colgroup>
+                <col style="width:150px;">
+                <col style="width:350px;">
+                <col style="width:150px;">
+                <col>
+              </colgroup>
               <tbody>
                 <tr>
                   <th>로그인ID</th>
                   <td>
                     <input type="text" class="form-control form-control-sm" style="width:200px;" value="${usr.loginId}" readonly disabled />
                   </td>
-                </tr>
-                <tr>
                   <th><span class="text-danger">*</span> 회원명</th>
                   <td>
                     <input type="text" name="usrNm" class="form-control form-control-sm" style="width:200px;" value="${usr.usrNm}" required />
@@ -53,8 +56,6 @@
                   <td>
                     <input type="email" name="eml" class="form-control form-control-sm" style="width:300px;" value="${usr.eml}" />
                   </td>
-                </tr>
-                <tr>
                   <th>핸드폰번호</th>
                   <td>
                     <input type="text" name="phoneNo" class="form-control form-control-sm" style="width:200px;" value="${usr.phoneNo}" placeholder="01012345678" maxlength="11" />
@@ -72,15 +73,6 @@
                       <label class="form-check-label" for="gndrF">여자</label>
                     </div>
                   </td>
-                </tr>
-                <tr>
-                  <th>생년월일</th>
-                  <td>
-                    <input type="date" name="brthDt" class="form-control form-control-sm" style="width:180px;"
-                      value="${not empty usr.brthDt ? usr.brthDt.substring(0,4).concat('-').concat(usr.brthDt.substring(4,6)).concat('-').concat(usr.brthDt.substring(6,8)) : ''}" />
-                  </td>
-                </tr>
-                <tr>
                   <th>사용여부</th>
                   <td>
                     <div class="form-check form-check-inline">
@@ -101,9 +93,14 @@
         <!-- 계정정보 -->
         <div class="card mt-3">
           <div class="card-header"><strong>계정정보</strong></div>
-          <div class="card-body">
-            <table class="table-form">
-              <colgroup><col style="width:150px;"><col><col style="width:150px;"><col></colgroup>
+          <div class="card-body p-0">
+            <table class="table table-bordered table-form mb-0">
+              <colgroup>
+                <col style="width:150px;">
+                <col style="width:350px;">
+                <col style="width:150px;">
+                <col>
+              </colgroup>
               <tbody>
                 <tr>
                   <th>마지막 로그인</th>
@@ -129,13 +126,6 @@
         </div>
       </form>
 
-      <!-- 버튼 하단 -->
-      <div class="d-flex justify-content-end mt-3 bo-actionbar">
-        <button type="button" class="btn btn-sm btn-bo-list" onclick="fnGoList()">목록</button>
-        <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnResetPassword()">비밀번호 초기화</button>
-        <button type="button" class="btn btn-sm btn-bo-delete" onclick="fnDelete()">삭제</button>
-        <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSave()">저장</button>
-      </div>
     </div>
   </section>
 </div>
@@ -157,19 +147,12 @@ function fnSave() {
 
   if (!confirm('저장하시겠습니까?')) return;
 
-  // 생년월일 YYYYMMDD 변환
-  var brthDt = $('input[name="brthDt"]').val();
-  if (brthDt) {
-    brthDt = brthDt.replace(/-/g, '');
-  }
-
   var param = {
     usrCd: usrCd,
     usrNm: usrNm,
     eml: $('input[name="eml"]').val(),
     phoneNo: $('input[name="phoneNo"]').val().replace(/-/g, ''),
     gndr: $('input[name="gndr"]:checked').val() || '',
-    brthDt: brthDt,
     useYn: $('input[name="useYn"]:checked').val() || 'Y'
   };
 
