@@ -25,6 +25,7 @@
         <!-- ===== 상단 버튼 ===== -->
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom:16px;">
           <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+          <button type="button" class="btn btn-bo-reset" onclick="fnRefresh()">새로고침</button>
           <c:if test="${not empty prop}">
             <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
           </c:if>
@@ -321,6 +322,7 @@
         <!-- ===== 하단 버튼 ===== -->
         <div style="display:flex; justify-content:center; gap:8px; padding:40px 0 80px;">
           <button type="button" class="btn btn-bo-reset" onclick="fnGoList()">목록</button>
+          <button type="button" class="btn btn-bo-reset" onclick="fnRefresh()">새로고침</button>
           <c:if test="${not empty prop}">
             <button type="button" class="btn btn-bo-del" onclick="fnDelete()">삭제</button>
           </c:if>
@@ -619,6 +621,10 @@ function fnDeleteFile(upldFileCd, fileSeq) {
 
 function fnGoList() {
   location.href = '${ctx}/propertyMng/viewPropertyMng';
+}
+
+function fnRefresh() {
+  location.reload();
 }
 </script>
 

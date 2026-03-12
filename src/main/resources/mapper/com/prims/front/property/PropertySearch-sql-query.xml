@@ -8,9 +8,9 @@
         SELECT A.PROP_CD
              , A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.SUB_CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -44,9 +44,9 @@
         SELECT A.PROP_CD
              , A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.SUB_CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -99,7 +99,7 @@
     <select id="getMainSliderProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -122,7 +122,7 @@
     <select id="getMainLatestProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -145,7 +145,7 @@
     <select id="getMainUrgentProperty" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -168,7 +168,7 @@
     <select id="getMainFeaturedList" resultType="map">
         SELECT A.PROP_CD, A.PROP_NM
              , A.CAT_CD
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
              , A.DEAL_TYPE
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
@@ -190,8 +190,8 @@
     <!-- 매물 상세 -->
     <select id="getPropertyDetail" parameterType="map" resultType="map">
         SELECT A.*
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
-             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
                   FROM TB_UPLD_FILE F
@@ -223,12 +223,12 @@
          WHERE PROP_CD = #{id}
     </update>
 
-    <!-- FO 사이드바용 대분류 목록 (USE_YN=Y만) -->
+    <!-- FO 사이드바용 대분류 목록 (USE_YN=Y만, 계층형) -->
     <select id="getFrontCatList" resultType="map">
         SELECT CAT_CD
              , CAT_NM
           FROM TB_PROP_CATEGORY
-         WHERE SUB_CAT_CD = '00'
+         WHERE CAT_LVL = 0
            AND USE_YN = 'Y'
            AND DEL_YN = 'N'
          ORDER BY SORT_ORDER

@@ -48,7 +48,7 @@
   }
   .dash-section-header {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 18px; border-bottom: 1px solid #f0f0f0;
+    padding: 12px 18px; border-bottom: 1px solid #f0f0f0;
   }
   .dash-section-title { font-size: 15px; font-weight: 700; color: #1a2332; display: flex; align-items: center; gap: 8px; }
   .dash-section-title i { color: #E8830C; }
@@ -56,19 +56,24 @@
   .dash-section-link:hover { color: #E8830C; }
 
   /* ===== 최근 매물 테이블 ===== */
-  .recent-prop-table { width: 100%; border-collapse: collapse; }
+  .recent-prop-table { width: 100%; border-collapse: collapse; table-layout: fixed; background: #fff; }
   .recent-prop-table th {
-    padding: 12px 8px; text-align: center; font-size: 12px; font-weight: 600;
-    color: #888; background: #fafafa; border-bottom: 1px solid #f0f0f0;
+    padding: 12px 10px; text-align: center; font-size: 12px; font-weight: 600;
+    color: #666; background: #f8f9fa; border-bottom: 2px solid #e0e0e0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  .recent-prop-table th:first-child { padding-left: 16px; }
   .recent-prop-table td {
-    padding: 14px 8px; font-size: 13px; color: #333;
-    border-bottom: 1px solid #f5f5f5; vertical-align: middle;
+    padding: 12px 10px; font-size: 12px; color: #333;
+    border-bottom: 1px solid #f0f0f0; vertical-align: middle;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
+  .recent-prop-table td:first-child { padding-left: 16px; }
   .recent-prop-table tbody tr { cursor: pointer; transition: background 0.15s; }
-  .recent-prop-table tbody tr:hover { background: #fafafa; }
+  .recent-prop-table tbody tr:hover { background: #f5f8ff; }
+  .recent-prop-table tbody tr:last-child td { border-bottom: none; }
 
-  .prop-name { font-weight: 500; color: #1a2332; font-size: 13px; }
+  .prop-name { font-weight: 600; color: #1a2332; font-size: 13px; }
   .badge-status { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: 600; }
   .badge-status.active { background: #e8f5e9; color: #43a047; }
   .badge-status.sold { background: #f5f5f5; color: #888; }
@@ -77,10 +82,10 @@
   .dash-col-right { display: flex; flex-direction: column; gap: 16px; }
 
   /* ===== 빠른 바로가기 (세로) ===== */
-  .quick-links { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .quick-links { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
   .quick-link {
     display: flex; align-items: center; gap: 10px;
-    padding: 14px 16px; border-radius: 8px;
+    padding: 12px 16px; border-radius: 8px;
     background: #f8f9fa; border: 1px solid #eee;
     color: #1a2332; font-size: 13px; font-weight: 600;
     transition: all 0.2s; text-decoration: none;
@@ -89,10 +94,10 @@
   .quick-link i { font-size: 15px; width: 20px; text-align: center; }
 
   /* ===== 인기매물 리스트 ===== */
-  .top-prop-list { padding: 12px 16px; }
+  .top-prop-list { padding: 10px 16px; }
   .top-prop-item {
     display: flex; align-items: center; gap: 12px;
-    padding: 12px 0; border-bottom: 1px solid #f5f5f5;
+    padding: 10px 0; border-bottom: 1px solid #f5f5f5;
     cursor: pointer; transition: background 0.15s;
   }
   .top-prop-item:last-child { border-bottom: none; }
@@ -165,18 +170,18 @@
             <span class="dash-section-title"><i class="fas fa-clipboard-list"></i> 최근 등록 매물</span>
             <a href="${ctx}/propertyMng/viewPropertyMng" class="dash-section-link">전체보기 →</a>
           </div>
-          <div class="recent-prop-wrap" style="overflow-x:auto;">
-            <table class="recent-prop-table">
+          <div class="recent-prop-wrap" style="overflow-x:auto; padding:16px;">
+            <table class="recent-prop-table" style="border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;">
               <thead>
                 <tr>
-                  <th style="text-align:left;">매물명</th>
-                  <th style="text-align:left; width:150px;">주소</th>
-                  <th style="width:65px;">대분류</th>
-                  <th style="width:80px;">중분류</th>
-                  <th style="width:70px;">소분류</th>
-                  <th style="width:50px;">거래</th>
-                  <th style="width:50px;">조회수</th>
-                  <th style="width:80px;">등록일</th>
+                  <th style="text-align:left; width:24%;">매물명</th>
+                  <th style="text-align:left; width:20%;">주소</th>
+                  <th style="width:8%;">대분류</th>
+                  <th style="width:10%;">중분류</th>
+                  <th style="width:9%;">소분류</th>
+                  <th style="width:7%;">거래</th>
+                  <th style="width:7%;">조회수</th>
+                  <th style="width:12%;">등록일</th>
                 </tr>
               </thead>
               <tbody id="recentPropBody">

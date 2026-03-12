@@ -27,7 +27,7 @@
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
          ORDER BY A.CRE_DTM DESC
-         LIMIT 9
+         LIMIT 10
     </select>
 
     <!-- 인기 매물 TOP 5 (조회수 기준, 계층형 카테고리) -->
