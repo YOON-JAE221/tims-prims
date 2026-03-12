@@ -108,8 +108,10 @@ public class BbsComQnaMngController {
             paramMap.put("brdCd", Constant.BRD_CD_QNA);
             int cnt = bbsComQnaMngService.deleteQnaPst(paramMap);
             result.put("result", cnt > 0 ? Constant.OK : Constant.FAIL);
+            result.put("resultCnt", cnt);
         } catch (Exception e) {
             result.put("result", Constant.FAIL);
+            result.put("resultCnt", 0);
             result.put("message", e.getMessage());
         }
         return result;

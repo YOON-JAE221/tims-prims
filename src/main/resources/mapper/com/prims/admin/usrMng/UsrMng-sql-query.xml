@@ -10,7 +10,7 @@
              , A.LOGIN_ID
              , A.USR_NM
              , A.EML
-             , F_COM_DECRYPT(A.PHONE_NO, 'PRIMUS_PARK') AS PHONE_NO
+             , F_COM_DECRYPT(A.PHONE_NO, #{encryptKey}) AS PHONE_NO
              , A.GNDR
              , CASE A.GNDR WHEN 'M' THEN '남자' WHEN 'F' THEN '여자' ELSE '' END AS GNDR_NM
              , A.USE_YN
@@ -33,7 +33,7 @@
              , A.LOGIN_ID
              , A.USR_NM
              , A.EML
-             , F_COM_DECRYPT(A.PHONE_NO, 'PRIMUS_PARK') AS PHONE_NO
+             , F_COM_DECRYPT(A.PHONE_NO, #{encryptKey}) AS PHONE_NO
              , A.GNDR
              , A.BRTH_DT
              , A.USE_YN
@@ -53,7 +53,7 @@
         UPDATE TB_USR
            SET USR_NM = #{usrNm}
              , EML = #{eml}
-             , PHONE_NO = F_COM_ENCRYPT(#{phoneNo}, 'PRIMUS_PARK')
+             , PHONE_NO = F_COM_ENCRYPT(#{phoneNo}, #{encryptKey})
              , GNDR = #{gndr}
              , USE_YN = #{useYn}
              , UPD_USR_CD = #{ssnUsrCd}
@@ -71,7 +71,7 @@
     <!-- 비밀번호 초기화 -->
     <update id="resetPassword" parameterType="map">
         UPDATE TB_USR
-           SET LOGIN_PWD = F_COM_ENCRYPT(#{newPassword}, 'PRIMUS_PARK')
+           SET LOGIN_PWD = F_COM_ENCRYPT(#{newPassword}, #{encryptKey})
              , LOGIN_ERR_CNT = '0'
              , LOGIN_LIMIT_START_DTM = NULL
              , UPD_USR_CD = #{ssnUsrCd}
@@ -83,10 +83,10 @@
     <!-- 내 비밀번호 변경 (현재 비밀번호 확인 후 변경) -->
     <update id="changeMyPassword" parameterType="map">
         UPDATE TB_USR
-           SET LOGIN_PWD = F_COM_ENCRYPT(#{newPwd}, 'PRIMUS_PARK')
+           SET LOGIN_PWD = F_COM_ENCRYPT(#{newPwd}, #{encryptKey})
              , UPD_DTM = NOW()
          WHERE USR_CD = #{usrCd}
-           AND LOGIN_PWD = F_COM_ENCRYPT(#{currentPwd}, 'PRIMUS_PARK')
+           AND LOGIN_PWD = F_COM_ENCRYPT(#{currentPwd}, #{encryptKey})
            AND DEL_YN = 'N'
     </update>
 

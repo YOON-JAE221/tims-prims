@@ -15,12 +15,12 @@
       <div class="login-field">
         <label for="loginId">아이디</label>
         <input type="text" id="loginId" name="loginId" placeholder="아이디를 입력해 주세요."
-               value="${not empty cookie.savedLoginId.value ? cookie.savedLoginId.value : 'admin'}">
+               value="${not empty cookie.savedLoginId.value ? cookie.savedLoginId.value : ''}">
       </div>
 
       <div class="login-field">
         <label for="loginPw">비밀번호</label>
-        <input type="password" id="loginPw" name="loginPw" placeholder="비밀번호를 입력해 주세요." value="1">
+        <input type="password" id="loginPw" name="loginPw" placeholder="비밀번호를 입력해 주세요.">
       </div>
 
       <div class="login-options">

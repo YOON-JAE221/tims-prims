@@ -70,7 +70,7 @@ function initSheet() {
       }
     },
     { title:"성별", field:"gndrNm", width:80, hozAlign:"left", headerSort:false },
-    { title:"사용여부", field:"useYn", width:120, hozAlign:"center", headerSort:false,
+    { title:"사용여부", field:"useYn", width:120, hozAlign:"left", headerSort:false,
       formatter: function(cell) {
         if (cell.getValue() === 'Y') return '<span class="badge bg-success">사용</span>';
         return '<span class="badge bg-secondary">미사용</span>';

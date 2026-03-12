@@ -42,13 +42,13 @@
                   <option value="FAIL">실패</option>
                 </select>
                 <input type="text" id="searchKeyword" class="form-control form-control-sm" style="width:200px;" placeholder="수신자/주소/제목 검색" />
+                <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
               </div>
             </div>
 
             <!-- 버튼 영역 -->
             <div class="col-12 col-lg-auto">
               <div class="d-flex justify-content-lg-end bo-actionbar">
-                <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">조회</button>
                 <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnReset()">초기화</button>
               </div>
             </div>
@@ -58,6 +58,11 @@
 
         <div class="card-body">
           <div id="sheet1"></div>
+        </div>
+
+        <!-- 페이징 -->
+        <div class="card-footer d-flex justify-content-center" style="padding:12px 0;">
+          <div id="gridPaging"></div>
         </div>
 
       </div>
@@ -81,6 +86,10 @@
 </div>
 
 <script>
+var _allData = [];
+var currentPage = 1;
+var pageSize = 20;
+
 $(function() {
   initSheet();
 });
@@ -127,8 +136,8 @@ function initSheet() {
     {
       title:"수신자",
       field:"recvNm",
-      width:100,
-      headerHozAlign:"center",
+      width:120,
+      hozAlign:"left",
       headerSort:false,
       formatter: function(cell) {
         return cell.getValue() || '-';
@@ -137,8 +146,8 @@ function initSheet() {
     {
       title:"수신주소",
       field:"recvAddr",
-      minWidth:160,
-      headerHozAlign:"center",
+      minWidth:180,
+      hozAlign:"left",
       headerSort:false,
       formatter: function(cell) {
         return cell.getValue() || '-';
@@ -147,8 +156,8 @@ function initSheet() {
     {
       title:"제목",
       field:"sendTitle",
-      minWidth:200,
-      headerHozAlign:"center",
+      minWidth:250,
+      hozAlign:"left",
       headerSort:false,
       formatter: function(cell) {
         var v = cell.getValue();
@@ -157,22 +166,10 @@ function initSheet() {
       }
     },
     {
-      title:"요청자",
-      field:"creUsrCd",
-      width:90,
-      hozAlign:"center",
-      headerHozAlign:"center",
-      headerSort:false,
-      formatter: function(cell) {
-        return cell.getValue() || '-';
-      }
-    },
-    {
       title:"발송일시",
       field:"creDtm",
       width:170,
       hozAlign:"center",
-      headerHozAlign:"center",
       headerSort:false
     }
   ];
@@ -189,12 +186,47 @@ function initSheet() {
 }
 
 function fnSearch() {
+  currentPage = 1;
   var param = {
     searchSendType: $('#searchSendType').val(),
     searchRslt:     $('#searchRslt').val(),
     searchKeyword:  $('#searchKeyword').val().trim()
   };
-  TG.load(window.sheet1, "${ctx}/sendLogMng/getSelectSendLogList", param, false, "DATA");
+  var res = ajaxCall("${ctx}/sendLogMng/getSelectSendLogList", param, false);
+  _allData = (res && res.DATA) ? res.DATA : [];
+  fnLoadPage();
+}
+
+function fnLoadPage() {
+  var totalCnt = _allData.length;
+  var start = (currentPage - 1) * pageSize;
+  var pageData = _allData.slice(start, start + pageSize);
+  TG.bind(window.sheet1, pageData);
+  fnDrawPaging(totalCnt);
+}
+
+function fnDrawPaging(totalCnt) {
+  var totalPage = Math.ceil(totalCnt / pageSize);
+  if (totalPage < 1) totalPage = 1;
+  var startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
+  var endPage = Math.min(startPage + 9, totalPage);
+
+  var html = '<nav><ul class="pagination pagination-sm">';
+  html += '<li class="page-item ' + (currentPage <= 1 ? 'disabled' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + (currentPage - 1) + ')">이전</a></li>';
+  for (var p = startPage; p <= endPage; p++) {
+    html += '<li class="page-item ' + (p === currentPage ? 'active' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + p + ')">' + p + '</a></li>';
+  }
+  html += '<li class="page-item ' + (currentPage >= totalPage ? 'disabled' : '') + '"><a class="page-link" href="javascript:fnGoPage(' + (currentPage + 1) + ')">다음</a></li>';
+  html += '</ul></nav>';
+  $('#gridPaging').html(html);
+}
+
+function fnGoPage(page) {
+  if (page < 1) return;
+  var totalPage = Math.ceil(_allData.length / pageSize);
+  if (page > totalPage) return;
+  currentPage = page;
+  fnLoadPage();
 }
 
 function fnReset() {
