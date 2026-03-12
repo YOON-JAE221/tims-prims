@@ -1390,6 +1390,14 @@ img { max-width: 100%; display: block; }
     justify-content: center;
     gap: 28px;
   }
+  .footer-nav-col {
+    padding-left: 28px;
+    border-left: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-nav-col:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
   .footer-nav-col h4 {
     font-size: 11px; margin-bottom: 6px;
     padding-bottom: 0;
