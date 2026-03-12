@@ -728,7 +728,7 @@ img { max-width: 100%; display: block; }
 @media (max-width: 768px) {
   .footer-main {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 0;
     padding: 36px 20px 28px;
   }
   .footer-left {
@@ -742,24 +742,9 @@ img { max-width: 100%; display: block; }
     font-size: 11px;
     line-height: 1.9;
   }
+  /* 모바일에서 메뉴 영역 숨김 */
   .footer-right {
-    justify-content: center;
-    gap: 32px;
-    flex-wrap: wrap;
-  }
-  .footer-nav-col {
-    min-width: 80px;
-    text-align: center;
-  }
-  .footer-nav-col h4 {
-    font-size: 11px;
-    margin-bottom: 12px;
-  }
-  .footer-nav-col li {
-    margin-bottom: 8px;
-  }
-  .footer-nav-col a {
-    font-size: 12px;
+    display: none;
   }
   .footer-bottom {
     flex-direction: column;
