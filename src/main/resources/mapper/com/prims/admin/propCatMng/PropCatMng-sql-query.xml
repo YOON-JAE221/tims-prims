@@ -9,9 +9,10 @@
         SELECT CAT_CD, CAT_NM, SORT_ORDER, USE_YN,
                DATE_FORMAT(UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM,
                (SELECT COUNT(*) FROM TB_PROP_CATEGORY sub
-                WHERE sub.CAT_CD = main.CAT_CD AND sub.SUB_CAT_CD != '00') AS SUB_CNT
+                WHERE sub.CAT_CD = main.CAT_CD AND sub.SUB_CAT_CD != '00' AND sub.DEL_YN = 'N') AS SUB_CNT
           FROM TB_PROP_CATEGORY main
          WHERE SUB_CAT_CD = '00'
+           AND DEL_YN = 'N'
          ORDER BY SORT_ORDER
     </select>
 
@@ -22,32 +23,35 @@
           FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd}
            AND SUB_CAT_CD != '00'
+           AND DEL_YN = 'N'
          ORDER BY SORT_ORDER
     </select>
 
     <!-- 대분류 저장 (UPSERT) -->
     <update id="saveCat" parameterType="map">
-        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, RGT_DTM, UPD_DTM)
-        VALUES (#{catCd}, '00', #{catNm}, #{sortOrder}, #{useYn}, NOW(), NOW())
+        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM, DEL_YN)
+        VALUES (#{catCd}, '00', #{catNm}, #{sortOrder}, #{useYn}, #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW(), 'N')
         ON DUPLICATE KEY UPDATE
             CAT_NM = #{catNm},
             SORT_ORDER = #{sortOrder},
             USE_YN = #{useYn},
+            UPD_USR_CD = #{ssnUsrCd},
             UPD_DTM = NOW()
     </update>
 
     <!-- 소분류 저장 (UPSERT) -->
     <update id="saveSubCat" parameterType="map">
-        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, RGT_DTM, UPD_DTM)
-        VALUES (#{catCd}, #{subCatCd}, #{catNm}, #{sortOrder}, #{useYn}, NOW(), NOW())
+        INSERT INTO TB_PROP_CATEGORY (CAT_CD, SUB_CAT_CD, CAT_NM, SORT_ORDER, USE_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM, DEL_YN)
+        VALUES (#{catCd}, #{subCatCd}, #{catNm}, #{sortOrder}, #{useYn}, #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW(), 'N')
         ON DUPLICATE KEY UPDATE
             CAT_NM = #{catNm},
             SORT_ORDER = #{sortOrder},
             USE_YN = #{useYn},
+            UPD_USR_CD = #{ssnUsrCd},
             UPD_DTM = NOW()
     </update>
 
-    <!-- 소분류 삭제 -->
+    <!-- 소분류 삭제 (물리삭제) -->
     <delete id="deleteSubCat" parameterType="map">
         DELETE FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd}
@@ -55,7 +59,7 @@
            AND SUB_CAT_CD != '00'
     </delete>
 
-    <!-- 대분류 삭제 (소분류 포함) -->
+    <!-- 대분류 삭제 (소분류 포함, 물리삭제) -->
     <delete id="deleteCat" parameterType="string">
         DELETE FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd}
@@ -67,6 +71,7 @@
           FROM TB_PROP_CATEGORY
          WHERE CAT_CD = #{catCd}
            AND SUB_CAT_CD != '00'
+           AND DEL_YN = 'N'
     </select>
 
 </mapper>

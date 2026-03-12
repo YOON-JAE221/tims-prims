@@ -1392,7 +1392,7 @@ img { max-width: 100%; display: block; }
   .footer-right {
     display: flex;
     justify-content: center;
-    gap: 28px;
+    gap: 40px;
   }
   .footer-nav-col h4 {
     font-size: 11px; margin-bottom: 6px;

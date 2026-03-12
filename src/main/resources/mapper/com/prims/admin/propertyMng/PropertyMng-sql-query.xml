@@ -28,7 +28,7 @@
              , A.DISPLAY_START
              , A.DISPLAY_END
              , A.VIEW_CNT
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
@@ -47,7 +47,7 @@
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
     </select>
 
     <!-- 매물 건수 조회 -->
@@ -78,7 +78,7 @@
         SELECT A.*
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = '00') AS CAT_NM
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.SUB_CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM_FMT
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM_FMT
              , DATE_FORMAT(A.UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM_FMT
           FROM TB_PROPERTY A
          WHERE A.PROP_CD = #{propCd}
@@ -97,7 +97,7 @@
             DETAIL_CNTS, ATCH_FILE_KEY,
             DISPLAY_YN, DISPLAY_START, DISPLAY_END,
             SOLD_YN, ADMIN_MEMO,
-            USE_YN, DEL_YN, RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
+            USE_YN, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         ) VALUES (
             #{propCd}, #{catCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
             #{address}, #{addressDtl}, #{buildingNm}, #{lat}, #{lng},
@@ -171,7 +171,7 @@
             DETAIL_CNTS,
             DISPLAY_YN, SOLD_YN,
             USE_YN, DEL_YN, VIEW_CNT,
-            RGT_USR_CD, RGT_DTM, UPD_USR_CD, UPD_DTM
+            CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         )
         SELECT #{newPropCd}, CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
                ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
@@ -213,7 +213,7 @@
     <select id="getCatListForSelect" resultType="map">
         SELECT CAT_CD, CAT_NM
           FROM TB_PROP_CATEGORY
-         WHERE SUB_CAT_CD = '00' AND USE_YN = 'Y'
+         WHERE SUB_CAT_CD = '00' AND USE_YN = 'Y' AND DEL_YN = 'N'
          ORDER BY SORT_ORDER
     </select>
 
@@ -221,7 +221,7 @@
     <select id="getSubCatListForSelect" parameterType="string" resultType="map">
         SELECT SUB_CAT_CD, CAT_NM
           FROM TB_PROP_CATEGORY
-         WHERE CAT_CD = #{catCd} AND SUB_CAT_CD != '00' AND USE_YN = 'Y'
+         WHERE CAT_CD = #{catCd} AND SUB_CAT_CD != '00' AND USE_YN = 'Y' AND DEL_YN = 'N'
          ORDER BY SORT_ORDER
     </select>
 
@@ -256,7 +256,7 @@
              , A.ENTRANCE_TYPE
              , A.HEATING
              , CASE A.SOLD_YN WHEN 'Y' THEN '거래완료' ELSE '거래중' END AS SOLD_YN_NM
-             , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
@@ -275,7 +275,7 @@
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
-         ORDER BY A.RGT_DTM DESC
+         ORDER BY A.CRE_DTM DESC
     </select>
 
 </mapper>
