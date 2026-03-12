@@ -118,6 +118,7 @@ public final class Constant {
     /* =========================
      * 외부 API 키
      * ========================= */
-    public static final String KAKAO_MAP_API_KEY = "d53f71f3d9ea4c5c59f5f63df52a5c0d";
+    //public static final String KAKAO_MAP_API_KEY = "d53f71f3d9ea4c5c59f5f63df52a5c0d";
+    public static final String KAKAO_MAP_API_KEY = "0edd70d43145415f91b5b2bc1cdb2830";
 
 }
