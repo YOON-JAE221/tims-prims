@@ -75,6 +75,7 @@
                   <div class="d-flex bo-actionbar">
                     <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSave()">저장</button>
                     <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnDelete()">삭제</button>
+                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="location.reload()">새로고침</button>
                   </div>
                 </div>
               </div>
