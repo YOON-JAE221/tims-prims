@@ -724,33 +724,7 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase; letter-spacing: 0.3px;
 }
 
-/* Footer 모바일 반응형 */
-@media (max-width: 768px) {
-  .footer-main {
-    display: none;
-  }
-  .footer-bottom {
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    text-align: center;
-  }
-  .footer-bottom-links {
-    display: none;
-  }
-  .footer-copyright {
-    font-size: 11px;
-  }
-  /* 모바일 전용 심플 푸터 */
-  .primus-footer::before {
-    content: '© 2026 프리머스 부동산';
-    display: none;
-  }
-}
-  display: flex; align-items: center; gap: 6px;
-}
+
 .footer-nav-group a:hover { color: var(--orange); transform: translateX(3px); }
 .footer-nav-group a::before {
   content: ''; width: 4px; height: 4px; border-radius: 50%;
@@ -1405,25 +1379,25 @@ img { max-width: 100%; display: block; }
 
   /* ===== FOOTER 모바일 ===== */
   .footer-main {
-    flex-direction: column; gap: 32px;
-    padding: 36px 20px 28px;
+    flex-direction: column; gap: 20px;
+    padding: 28px 20px 20px;
   }
-  .footer-left { max-width: 100%; }
-  .footer-logo-row { margin-bottom: 14px; }
-  .footer-info { font-size: 12px; line-height: 1.8; }
+  .footer-left { max-width: 100%; text-align: center; }
+  .footer-logo-row { margin-bottom: 14px; justify-content: center; }
+  .footer-info { font-size: 11px; line-height: 1.8; }
   .footer-right {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px 16px;
+    display: flex;
+    justify-content: center;
+    gap: 28px;
   }
   .footer-nav-col h4 {
-    font-size: 13px; margin-bottom: 10px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px; margin-bottom: 6px;
+    padding-bottom: 0;
+    border-bottom: none;
   }
-  .footer-nav-col ul { display: flex; flex-direction: column; gap: 6px; }
+  .footer-nav-col ul { display: flex; flex-direction: column; gap: 3px; }
   .footer-nav-col li { margin-bottom: 0; }
-  .footer-nav-col li a { font-size: 13px; }
+  .footer-nav-col li a { font-size: 11px; }
   .footer-bottom {
     padding: 14px 20px 18px;
   }
@@ -1451,7 +1425,7 @@ img { max-width: 100%; display: block; }
   .board-admin-btns .btn-admin { padding: 6px 12px; font-size: 12px; }
 
   .footer-info { font-size: 11px; line-height: 1.9; }
-  .footer-right { grid-template-columns: 1fr 1fr; gap: 20px 12px; }
+  .footer-right { gap: 20px; }
   .footer-contact-tel { font-size: 18px; }
 }
 
