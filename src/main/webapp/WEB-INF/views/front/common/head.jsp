@@ -20,17 +20,17 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="프리머스 부동산" />
   <meta property="og:description" content="부천 중동 전문 공인중개사 - 아파트, 오피스텔, 상가, 사무실" />
-  <meta property="og:url" content="https://primusproperty.co.kr" />
-  <meta property="og:image" content="https://primusproperty.co.kr/resources/front/img/logo/og-thumbnail.png" />
-  <meta property="og:image:width" content="800" />
-  <meta property="og:image:height" content="400" />
+  <meta property="og:url" content="http://mwkim-dev.com" />
+  <meta property="og:image" content="http://mwkim-dev.com/resources/front/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
   <!-- Kakao -->
   <meta property="og:site_name" content="프리머스 부동산" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="프리머스 부동산" />
   <meta name="twitter:description" content="부천 중동 전문 공인중개사 - 아파트, 오피스텔, 상가, 사무실" />
-  <meta name="twitter:image" content="https://primusproperty.co.kr/resources/front/img/logo/og-thumbnail.png" />
+  <meta name="twitter:image" content="http://mwkim-dev.com/resources/front/img/og-image.png" />
 
   <!-- Favicons -->
   <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">
@@ -45,7 +45,7 @@
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
 
   <!-- CSS -->
-  <link href="${ctx}/resources/front/css/common.css?v=202503120009" rel="stylesheet">
+  <link href="${ctx}/resources/front/css/common.css?v=202503120010" rel="stylesheet">
   <link href="${ctx}/resources/front/css/main.css?v=202503110006" rel="stylesheet">
 
   <!-- Common JS -->

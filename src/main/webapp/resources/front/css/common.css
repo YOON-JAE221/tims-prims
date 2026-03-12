@@ -1381,7 +1381,9 @@ img { max-width: 100%; display: block; }
 
   /* ===== FOOTER 모바일 ===== */
   .footer-main {
-    flex-direction: column-reverse; gap: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 20px;
     padding: 28px 20px 20px;
   }
   .footer-left { max-width: 100%; text-align: center; }
