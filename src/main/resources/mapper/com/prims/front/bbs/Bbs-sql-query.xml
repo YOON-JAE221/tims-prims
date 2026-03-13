@@ -251,7 +251,7 @@
 	                 AND T.ROT_PST_CD = A.PST_CD AND T.PST_LVL > 0)
 	           ELSE 0 END AS REPLY_CNT
 	      FROM TB_BBS_PST A
-	      LEFT JOIN TB_BBS_PST P ON P.PST_CD = A.ROT_PST_CD AND P.DEL_YN = 'N'
+	      LEFT JOIN TB_BBS_PST P ON P.PST_CD = IFNULL(NULLIF(A.ROT_PST_CD, ''), A.PST_CD) AND P.DEL_YN = 'N'
 	     WHERE A.DEL_YN = 'N'
 	       AND A.USE_YN = 'Y'
 	       AND A.BRD_CD = #{brdCd}
