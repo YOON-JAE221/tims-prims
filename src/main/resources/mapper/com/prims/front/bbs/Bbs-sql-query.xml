@@ -235,7 +235,7 @@
 	     ORDER BY A.RGT_DTM ASC
 	</select>
 
-	<!-- 문의게시판 전용 리스트 (계층형 정렬) -->
+	<!-- 문의게시판 전용 리스트 (계층형 정렬 - 최신 원글 위로, 답변은 원글 밑에) -->
 	<select id="getSelectBbsQnaPstList" parameterType="map" resultType="map">
 	    SELECT A.PST_CD
 	         , A.PST_NM
@@ -247,38 +247,24 @@
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
 	         , CASE WHEN A.PST_LVL = 0 THEN
 	             (SELECT COUNT(*) FROM TB_BBS_PST T
-	              WHERE T.BRD_CD = A.BRD_CD AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
-	                AND T.NOTICE_YN = 'N' AND T.PST_LVL = 0 AND T.IDX <![CDATA[<=]]> A.IDX)
-	           ELSE NULL END AS ROW_NUM
-	         , CASE WHEN A.PST_LVL = 0 THEN
-	             (SELECT COUNT(*) FROM TB_BBS_PST T
-	              WHERE T.BRD_CD = A.BRD_CD AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
-	                AND T.ROT_PST_CD = A.PST_CD AND T.PST_LVL > 0)
+	               WHERE T.BRD_CD = A.BRD_CD AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
+	                 AND T.ROT_PST_CD = A.PST_CD AND T.PST_LVL > 0)
 	           ELSE 0 END AS REPLY_CNT
 	      FROM TB_BBS_PST A
+	      LEFT JOIN TB_BBS_PST P ON P.PST_CD = A.ROT_PST_CD AND P.DEL_YN = 'N'
 	     WHERE A.DEL_YN = 'N'
 	       AND A.USE_YN = 'Y'
 	       AND A.BRD_CD = #{brdCd}
 	       AND A.NOTICE_YN = 'N'
 	       <if test="searchType == 'title' and keyword != null and keyword != ''">
-	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
-	            OR A.ROT_PST_CD IN (
-	                SELECT T.PST_CD FROM TB_BBS_PST T
-	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
-	                   AND T.PST_NM LIKE CONCAT('%', #{keyword}, '%')
-	            ))
+	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
 	       </if>
 	       <if test="searchType == 'content' and keyword != null and keyword != ''">
-	       AND (A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
-	            OR A.ROT_PST_CD IN (
-	                SELECT T.PST_CD FROM TB_BBS_PST T
-	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
-	                   AND T.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
-	            ))
+	       AND A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
 	       </if>
-	     ORDER BY (SELECT T.RGT_DTM FROM TB_BBS_PST T WHERE T.PST_CD = A.ROT_PST_CD AND T.DEL_YN = 'N' LIMIT 1) DESC
+	     ORDER BY P.RGT_DTM DESC
 	            , A.PST_LVL ASC
-	            , A.RGT_DTM DESC
+	            , A.RGT_DTM ASC
 	     LIMIT #{offset}, #{pageSize}
 	</select>
 
@@ -291,20 +277,10 @@
 	       AND A.BRD_CD = #{brdCd}
 	       AND A.NOTICE_YN = 'N'
 	       <if test="searchType == 'title' and keyword != null and keyword != ''">
-	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
-	            OR A.ROT_PST_CD IN (
-	                SELECT T.PST_CD FROM TB_BBS_PST T
-	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
-	                   AND T.PST_NM LIKE CONCAT('%', #{keyword}, '%')
-	            ))
+	       AND A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
 	       </if>
 	       <if test="searchType == 'content' and keyword != null and keyword != ''">
-	       AND (A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
-	            OR A.ROT_PST_CD IN (
-	                SELECT T.PST_CD FROM TB_BBS_PST T
-	                 WHERE T.BRD_CD = #{brdCd} AND T.DEL_YN = 'N' AND T.PST_LVL = 0
-	                   AND T.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
-	            ))
+	       AND A.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
 	       </if>
 	</select>
 
