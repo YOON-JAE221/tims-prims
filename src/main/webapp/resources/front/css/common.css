@@ -1443,6 +1443,13 @@ img { max-width: 100%; display: block; }
 }
 .side-cs-btn:hover { background: var(--orange-hover); color: white; }
 
+/* ===== 모바일 전용 요소 ===== */
+.mo-only { display: none; }
+@media (max-width: 768px) {
+  .mo-only { display: block; }
+  select.mo-only { display: block; width: 100% !important; }
+}
+
 /* ===== btn-admin 강조 ===== */
 .prop-filter-btns { display: flex; gap: 8px; }
 .board-admin-btns .btn-admin {

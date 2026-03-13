@@ -22,9 +22,14 @@
 
     <!-- 검색 필터 -->
     <form id="filterForm" method="post" action="${ctx}/property/viewPropertyList">
-      <input type="hidden" name="type" value="${type}" />
       <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}" />
       <div class="prop-filter">
+        <select name="type" class="mo-only" onchange="fnFilter()">
+          <option value="all">전체매물</option>
+          <c:forEach var="cat" items="${catList}">
+            <option value="${fn:toLowerCase(cat.catCd)}" ${fn:toLowerCase(type) eq fn:toLowerCase(cat.catCd) ? 'selected' : ''}>${cat.catNm}</option>
+          </c:forEach>
+        </select>
         <select name="dealType" onchange="fnFilter()">
           <option value="">전체거래</option>
           <option value="SELL" ${dealType eq 'SELL' ? 'selected' : ''}>매매</option>

@@ -16,7 +16,7 @@ upload:
     dir: /web/upload/
 
 site:
-  url: https://primusproperty.co.kr
+  url: https://primus-property.co.kr/
 
 logging:
   level:
