@@ -11,7 +11,11 @@
 	         , A.BRD_CD
 	         , A.RGT_USR_NM
 	         , A.RGT_EMAIL
-	         , F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}) AS RGT_PHONE
+	         , CONCAT(
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 1, 3), '-',
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 4, 4), '-',
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 8, 4)
+	           ) AS RGT_PHONE
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
 	         , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
 	         , (SELECT COUNT(*) FROM TB_BBS_PST T
@@ -58,7 +62,11 @@
 	<select id="getSelectQnaPstDetail" parameterType="map" resultType="map">
 	    SELECT A.PST_CD, A.PST_NM, A.PST_CNTS, A.BRD_CD, A.PST_LVL
 	         , A.RGT_USR_NM, A.RGT_EMAIL
-	         , F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}) AS RGT_PHONE
+	         , CONCAT(
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 1, 3), '-',
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 4, 4), '-',
+	             SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 8, 4)
+	           ) AS RGT_PHONE
 	         , A.ATCH_FILE_KEY, IFNULL(A.VIEW_CNT,0) AS VIEW_CNT
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
 	      FROM TB_BBS_PST A

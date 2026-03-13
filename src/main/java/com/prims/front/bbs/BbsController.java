@@ -252,6 +252,7 @@ public class BbsController {
 	public String viewBbsWriteQnaAns(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);
+	    paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
 
 	    Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);
 	    model.addAttribute("brd", bbsBrd);
@@ -299,6 +300,7 @@ public class BbsController {
 	    }
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);
+	    paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
 
 	    Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);
 	    model.addAttribute("brd", bbsBrd);
