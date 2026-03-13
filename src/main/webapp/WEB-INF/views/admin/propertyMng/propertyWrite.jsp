@@ -1,6 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
 
+<!-- Summernote (이 페이지에서만 로드) -->
+<link rel="stylesheet" href="${ctx}/resources/common/summernote/css/admin/summernote-bs4.min.css" />
+<script src="${ctx}/resources/common/summernote/js/admin/summernote-bs4.min.js" charset="UTF-8"></script>
+<script src="${ctx}/resources/common/summernote/js/summernote-ko-KR.min.js" charset="UTF-8"></script>
+<script src="${ctx}/resources/common/summernote/js/summernote-editor-common.js" charset="UTF-8"></script>
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container">

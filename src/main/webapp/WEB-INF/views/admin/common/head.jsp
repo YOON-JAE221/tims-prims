@@ -58,8 +58,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="icon" type="image/png" sizes="16x16" href="${ctx}/resources/front/img/favicon/favicon-16x16.png?v=20260305">
   <link rel="icon" type="image/png" sizes="32x32" href="${ctx}/resources/front/img/favicon/favicon-32x32.png?v=20260305">
 
-  	<!-- Font Awesome Icons -->
-  	<link rel="stylesheet" href="${ctx}/resources/admin/plugins/fontawesome-free/css/all.min.css">
+  	<!-- Font Awesome Icons - 제거 (약 400KB 절약) -->
+  	<!-- <link rel="stylesheet" href="${ctx}/resources/admin/plugins/fontawesome-free/css/all.min.css"> -->
   	<!-- Theme style -->
   	<link rel="stylesheet" href="${ctx}/resources/admin/dist/css/adminlte.min.css">
   
@@ -75,11 +75,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	<link rel="stylesheet" href="${ctx}/resources/common/tabulator/css/tabulator_bootstrap4.min.css"/>
 	<script src="${ctx}/resources/common/tabulator/js/tabulator.min.js" charset="UTF-8"></script>
 	
-	<!-- summernote -->
+	<!-- summernote - 필요한 페이지에서 개별 로드 -->
+	<!--
 	<link rel="stylesheet" href="${ctx}/resources/common/summernote/css/admin/summernote-bs4.min.css" />
 	<script src="${ctx}/resources/common/summernote/js/admin/summernote-bs4.min.js" charset="UTF-8"></script>
 	<script src="${ctx}/resources/common/summernote/js/summernote-ko-KR.min.js" charset="UTF-8"></script>
 	<script src="${ctx}/resources/common/summernote/js/summernote-editor-common.js" charset="UTF-8"></script>
+	-->
 	
 	<!-- common -->
 	<link rel="stylesheet" href="${ctx}/resources/admin/dist/css/common.css">

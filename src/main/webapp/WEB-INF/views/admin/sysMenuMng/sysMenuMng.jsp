@@ -49,7 +49,6 @@
                 <div class="col-auto">
                   <div class="d-flex bo-actionbar">
                     <button type="button" id="btnNew" class="btn btn-sm btn-bo-add" onclick="fnNewMenu()">신규</button>
-                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnLoadTree()">새로고침</button>
                   </div>
                 </div>
               </div>
@@ -69,8 +68,8 @@
                 <div class="col-auto">
                   <div class="d-flex bo-actionbar">
                     <button type="button" class="btn btn-sm btn-bo-save" onclick="fnSave()">저장</button>
-                    <button type="button" class="btn btn-sm btn-bo-delete" onclick="fnDelete()">삭제</button>
-                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnNewMenu()">초기화</button>
+                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnDelete()">삭제</button>
+                    <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnLoadTree()">새로고침</button>
                   </div>
                 </div>
               </div>

@@ -51,7 +51,6 @@
     padding: 12px 18px; border-bottom: 1px solid #f0f0f0;
   }
   .dash-section-title { font-size: 15px; font-weight: 700; color: #1a2332; display: flex; align-items: center; gap: 8px; }
-  .dash-section-title i { color: #E8830C; }
   .dash-section-link { font-size: 12px; color: #888; transition: color 0.15s; }
   .dash-section-link:hover { color: #E8830C; }
 
@@ -91,7 +90,6 @@
     transition: all 0.2s; text-decoration: none;
   }
   .quick-link:hover { background: #E8830C; color: #fff; border-color: #E8830C; }
-  .quick-link i { font-size: 15px; width: 20px; text-align: center; }
 
   /* ===== 인기매물 리스트 ===== */
   .top-prop-list { padding: 10px 16px; }
@@ -141,22 +139,22 @@
       <!-- 상단 요약 카드 -->
       <div class="dash-cards" style="grid-template-columns: repeat(4, 1fr);">
         <div class="dash-card primary clickable" onclick="fnGoPropMng('')">
-          <div class="dash-card-icon"><i class="fas fa-home"></i></div>
+          <div class="dash-card-icon">🏠</div>
           <div class="dash-card-label">전체 매물</div>
           <div class="dash-card-value">${not empty propSummary.totalCnt ? propSummary.totalCnt : 0}<small> 건</small></div>
         </div>
         <div class="dash-card success clickable" onclick="fnGoPropMng('N')">
-          <div class="dash-card-icon"><i class="fas fa-handshake"></i></div>
+          <div class="dash-card-icon">🤝</div>
           <div class="dash-card-label">거래중</div>
           <div class="dash-card-value">${not empty propSummary.activeCnt ? propSummary.activeCnt : 0}<small> 건</small></div>
         </div>
         <div class="dash-card info clickable" onclick="fnGoPropMng('Y')">
-          <div class="dash-card-icon"><i class="fas fa-check-circle"></i></div>
+          <div class="dash-card-icon">✅</div>
           <div class="dash-card-label">거래완료</div>
           <div class="dash-card-value">${not empty propSummary.soldCnt ? propSummary.soldCnt : 0}<small> 건</small></div>
         </div>
         <div class="dash-card danger clickable" onclick="location.href='${ctx}/bbsComQnaMng/viewBbsComQnaMng'">
-          <div class="dash-card-icon"><i class="fas fa-exclamation-circle"></i></div>
+          <div class="dash-card-icon">⚠️</div>
           <div class="dash-card-label">미답변 문의</div>
           <div class="dash-card-value">${not empty qna.unansweredCnt ? qna.unansweredCnt : 0}<small> 건</small></div>
         </div>
@@ -167,7 +165,7 @@
         <!-- 좌측: 최근 등록 매물 -->
         <div class="dash-section">
           <div class="dash-section-header">
-            <span class="dash-section-title"><i class="fas fa-clipboard-list"></i> 최근 등록 매물</span>
+            <span class="dash-section-title">📋 최근 등록 매물</span>
             <a href="${ctx}/propertyMng/viewPropertyMng" class="dash-section-link">전체보기 →</a>
           </div>
           <div class="recent-prop-wrap" style="overflow-x:auto; padding:16px;">
@@ -196,19 +194,19 @@
           <!-- 빠른 바로가기 (세로 3개) -->
           <div class="dash-section">
             <div class="dash-section-header">
-              <span class="dash-section-title"><i class="fas fa-bolt"></i> 빠른 바로가기</span>
+              <span class="dash-section-title">⚡ 빠른 바로가기</span>
             </div>
             <div class="quick-links">
-              <a href="${ctx}/propertyMng/viewPropertyWrite" class="quick-link"><i class="fas fa-plus-circle"></i> 매물 등록</a>
-              <a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="quick-link"><i class="fas fa-envelope"></i> 문의 게시판</a>
-              <a href="${ctx}/bbsComNoticeMng/viewBbsComNoticeMng" class="quick-link"><i class="fas fa-bullhorn"></i> 공지사항</a>
+              <a href="${ctx}/propertyMng/viewPropertyWrite" class="quick-link">➕ 매물 등록</a>
+              <a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="quick-link">📩 문의 게시판</a>
+              <a href="${ctx}/bbsComNoticeMng/viewBbsComNoticeMng" class="quick-link">📢 공지사항</a>
             </div>
           </div>
 
           <!-- 인기 매물 TOP 5 -->
           <div class="dash-section">
             <div class="dash-section-header">
-              <span class="dash-section-title"><i class="fas fa-fire"></i> 인기 매물 TOP 5</span>
+              <span class="dash-section-title">🔥 인기 매물 TOP 5</span>
             </div>
             <div class="top-prop-list" id="topPropList">
               <div style="padding:20px; text-align:center; color:#aaa;">로딩중...</div>

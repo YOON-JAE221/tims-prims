@@ -54,7 +54,7 @@
             <div class="col-12 col-lg-auto">
               <div class="d-flex justify-content-lg-end bo-actionbar" style="gap:8px;">
                 <button type="button" class="btn btn-sm btn-bo-add" onclick="fnGoWrite()">신규</button>
-                <button type="button" class="btn btn-sm" style="background:#217346; border-color:#217346; color:#fff;" onclick="fnExcelDownload()"><i class="fas fa-file-excel"></i> 엑셀</button>
+                <button type="button" class="btn btn-sm" style="background:#217346; border-color:#217346; color:#fff;" onclick="fnExcelDownload()">📥 엑셀</button>
               </div>
             </div>
           </div>
