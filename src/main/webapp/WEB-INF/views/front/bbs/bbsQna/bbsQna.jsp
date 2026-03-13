@@ -24,30 +24,25 @@
 
     <table class="board-table">
       <colgroup>
-        <col style="width:70px;"><col><col style="width:100px;"><col style="width:120px;"><col style="width:80px;">
+        <col><col style="width:100px;"><col style="width:120px;"><col style="width:80px;">
       </colgroup>
       <thead>
-        <tr><th>번호</th><th class="td-left">제목</th><th>글쓴이</th><th>등록일</th><th>조회</th></tr>
+        <tr><th class="td-left">제목</th><th>글쓴이</th><th>등록일</th><th>조회</th></tr>
       </thead>
       <tbody>
         <c:if test="${empty list}">
-          <tr><td colspan="5" class="board-empty">등록된 문의가 없습니다.</td></tr>
+          <tr><td colspan="4" class="board-empty">등록된 문의가 없습니다.</td></tr>
         </c:if>
         <c:forEach var="row" items="${list}">
           <tr <c:choose>
                 <c:when test="${row.pstLvl == 0}">onclick="fnGoDetail('${row.pstCd}')"</c:when>
                 <c:otherwise>onclick="fnGoDetail('${row.rotPstCd}')"</c:otherwise>
               </c:choose>>
-            <td>
-              <c:choose>
-                <c:when test="${row.pstLvl == 0}">${row.rowNum}</c:when>
-                <c:otherwise><span style="color:var(--orange);">↳</span></c:otherwise>
-              </c:choose>
-            </td>
             <td class="td-left td-title">
               <c:if test="${row.pstLvl > 0}"><span style="padding-left:16px; color:var(--orange);">↳ </span></c:if>
               ${row.pstNm}
               <c:if test="${row.pstLvl == 0}"><span style="color:var(--gray-400); font-size:12px; margin-left:4px;">🔒</span></c:if>
+              <c:if test="${row.pstLvl == 0 and row.replyCnt > 0}"><span style="color:var(--orange); font-size:12px; margin-left:4px;">답변완료</span></c:if>
             </td>
             <td class="td-muted">${row.rgtUsrNm}</td>
             <td class="td-muted">${row.rgtDtm}</td>

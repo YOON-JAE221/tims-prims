@@ -1,6 +1,12 @@
 ﻿<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
 
+<!-- Summernote (이 페이지에서만 로드) -->
+<link rel="stylesheet" href="${ctx}/resources/common/summernote/css/admin/summernote-bs4.min.css" />
+<script src="${ctx}/resources/common/summernote/js/admin/summernote-bs4.min.js" charset="UTF-8"></script>
+<script src="${ctx}/resources/common/summernote/js/summernote-ko-KR.min.js" charset="UTF-8"></script>
+<script src="${ctx}/resources/common/summernote/js/summernote-editor-common.js" charset="UTF-8"></script>
+
 <!-- Content Wrapper -->
 <div class="content-wrapper">
 
@@ -63,7 +69,7 @@
                   <c:forEach var="file" items="${qstFileList}">
                     <div class="mb-1">
                       <a href="${ctx}/file/download?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}">
-                        <i class="fas fa-paperclip"></i> ${file.fileNm}
+                        📎 ${file.fileNm}
                       </a>
                     </div>
                   </c:forEach>
@@ -128,7 +134,7 @@
                         <c:forEach var="file" items="${ans.fileList}">
                           <div class="d-flex align-items-center mb-1" data-upld-file-cd="${file.upldFileCd}" data-file-seq="${file.fileSeq}">
                             <a href="${ctx}/file/download?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}">
-                              <i class="fas fa-paperclip"></i> ${file.fileNm}
+                              📎 ${file.fileNm}
                             </a>
                             <button type="button" class="btn btn-xs btn-bo-reset ml-2" onclick="fnRemoveExistFile(this)">삭제</button>
                             <button type="button" class="btn btn-xs btn-bo-reset ml-2" onclick="fnRestoreExistFile(this)" style="display:none;">취소</button>
