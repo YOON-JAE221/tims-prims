@@ -278,7 +278,7 @@
 	       </if>
 	     ORDER BY (SELECT T.RGT_DTM FROM TB_BBS_PST T WHERE T.PST_CD = A.ROT_PST_CD AND T.DEL_YN = 'N' LIMIT 1) DESC
 	            , A.PST_LVL ASC
-	            , A.RGT_DTM ASC
+	            , A.RGT_DTM DESC
 	     LIMIT #{offset}, #{pageSize}
 	</select>
 
