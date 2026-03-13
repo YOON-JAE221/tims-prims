@@ -60,11 +60,13 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 환경별 업로드 경로 자동 적용 (local: C:/upload/, dev/prod: /web/upload/)
         registry.addResourceHandler("/upload/**")
-                .addResourceLocations("file:" + appProperties.getUploadBaseDir());
+                .addResourceLocations("file:" + appProperties.getUploadBaseDir())
+                .setCachePeriod(86400);  // 1일 캐싱
 
-        // 정적 리소스 (CSS, JS, 이미지 등)
+        // 정적 리소스 (CSS, JS, 이미지 등) - 7일 캐싱
         registry.addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
+                .addResourceLocations("/resources/")
+                .setCachePeriod(604800);
     }
 
     @Override

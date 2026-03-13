@@ -3,6 +3,15 @@
 # ===========================================
 server:
   port: 8080
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    connection-timeout: 5000
 
 spring:
   datasource:
@@ -10,6 +19,12 @@ spring:
     url: jdbc:mysql://db.primushome.gabia.io:3306/dbprimushome?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&autoReconnect=true
     username: primushome
     password: vmflajtm12@@
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 30000
+      connection-timeout: 20000
+      max-lifetime: 1800000
 
 upload:
   base:
