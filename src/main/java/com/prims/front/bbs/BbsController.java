@@ -100,6 +100,7 @@ public class BbsController {
         Map<String, Object> paramMap = new HashMap<>();
 
         paramMap.put("brdCd", brdCd);
+        paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
         if (pstCd != null) paramMap.put("pstCd", pstCd);
 
         Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);

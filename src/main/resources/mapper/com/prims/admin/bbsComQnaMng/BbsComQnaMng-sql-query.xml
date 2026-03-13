@@ -11,7 +11,7 @@
 	         , A.BRD_CD
 	         , A.RGT_USR_NM
 	         , A.RGT_EMAIL
-	         , A.RGT_PHONE
+	         , F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}) AS RGT_PHONE
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
 	         , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
 	         , (SELECT COUNT(*) FROM TB_BBS_PST T
@@ -57,7 +57,8 @@
 	<!-- 문의글 상세 -->
 	<select id="getSelectQnaPstDetail" parameterType="map" resultType="map">
 	    SELECT A.PST_CD, A.PST_NM, A.PST_CNTS, A.BRD_CD, A.PST_LVL
-	         , A.RGT_USR_NM, A.RGT_EMAIL, A.RGT_PHONE
+	         , A.RGT_USR_NM, A.RGT_EMAIL
+	         , F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}) AS RGT_PHONE
 	         , A.ATCH_FILE_KEY, IFNULL(A.VIEW_CNT,0) AS VIEW_CNT
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
 	      FROM TB_BBS_PST A

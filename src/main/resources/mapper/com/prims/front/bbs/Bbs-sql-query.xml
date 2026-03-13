@@ -90,7 +90,9 @@
              , A.ROT_PST_CD
              , A.RGT_USR_NM
              , A.RGT_EMAIL
-             , A.RGT_PHONE
+             , CASE WHEN #{encryptKey} IS NOT NULL AND #{encryptKey} != ''
+                    THEN F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey})
+                    ELSE A.RGT_PHONE END AS RGT_PHONE
              , A.ATCH_FILE_KEY
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
           FROM TB_BBS_PST A
@@ -153,7 +155,7 @@
 		    , #{rgtEmail}
 		    </if>
 		    <if test="rgtPhone != null and rgtPhone != ''">
-		    , #{rgtPhone}
+		    , F_COM_ENCRYPT(#{rgtPhone}, #{encryptKey})
 		    </if>
 		    <if test="secretYn != null and secretYn != ''">
 		    , #{secretYn}
@@ -183,7 +185,7 @@
 		    , RGT_EMAIL     = #{rgtEmail}
 		    </if>
 		    <if test="rgtPhone != null and rgtPhone != ''">
-		    , RGT_PHONE     = #{rgtPhone}
+		    , RGT_PHONE     = F_COM_ENCRYPT(#{rgtPhone}, #{encryptKey})
 		    </if>
 		    <if test="secretPwd != null and secretPwd != ''">
 		    , SECRET_PWD    = F_COM_ENCRYPT(TRIM(#{secretPwd}), #{encryptKey})

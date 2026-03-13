@@ -44,7 +44,14 @@
               <c:if test="${row.pstLvl == 0}"><span style="color:var(--gray-400); font-size:12px; margin-left:4px;">🔒</span></c:if>
               <c:if test="${row.pstLvl == 0 and row.replyCnt > 0}"><span style="color:var(--orange); font-size:12px; margin-left:4px;">답변완료</span></c:if>
             </td>
-            <td class="td-muted">${row.rgtUsrNm}</td>
+            <td class="td-muted">
+              <c:choose>
+                <c:when test="${row.pstLvl > 0}">관리자</c:when>
+                <c:when test="${fn:length(row.rgtUsrNm) == 2}">${fn:substring(row.rgtUsrNm, 0, 1)}*</c:when>
+                <c:when test="${fn:length(row.rgtUsrNm) >= 3}">${fn:substring(row.rgtUsrNm, 0, 1)}*${fn:substring(row.rgtUsrNm, fn:length(row.rgtUsrNm)-1, fn:length(row.rgtUsrNm))}</c:when>
+                <c:otherwise>${row.rgtUsrNm}</c:otherwise>
+              </c:choose>
+            </td>
             <td class="td-muted">${row.rgtDtm}</td>
             <td class="td-muted">${row.pstLvl == 0 ? row.viewCnt : '-'}</td>
           </tr>

@@ -37,6 +37,7 @@ public class BbsComQnaMngController {
     public String viewBbsComWriteQna(@ParamMap Map<String, Object> paramMap, Model model) {
 
         paramMap.put("brdCd", Constant.BRD_CD_QNA);
+        paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
 
         // 게시판 정보
         Map<String, Object> bbsBrd = bbsComQnaMngService.selectBbsBrdOne(paramMap);
@@ -86,6 +87,7 @@ public class BbsComQnaMngController {
         Map<String, Object> result = new HashMap<>();
         try {
             paramMap.put("brdCd", Constant.BRD_CD_QNA);
+            paramMap.put("encryptKey", Constant.ENCRYPT_KEY);
             List<?> list = bbsComQnaMngService.getSelectQnaPstList(paramMap);
             result.put("DATA", list);
             result.put("resultCnt", 1);
