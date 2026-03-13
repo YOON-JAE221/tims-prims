@@ -32,7 +32,7 @@
 	       AND (A.PST_NM LIKE CONCAT('%', #{keyword}, '%')
 	            OR A.RGT_USR_NM LIKE CONCAT('%', #{keyword}, '%'))
 	       </if>
-	     ORDER BY A.IDX DESC
+	     ORDER BY A.RGT_DTM DESC
 	</select>
 
 	<!-- 문의글 삭제 (답변도 함께) -->
@@ -75,7 +75,7 @@
 	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
 	       AND A.BRD_CD = #{brdCd} AND A.ROT_PST_CD = #{pstCd}
 	       AND A.PST_LVL > 0
-	     ORDER BY A.IDX ASC
+	     ORDER BY A.RGT_DTM ASC
 	</select>
 
 	<!-- 첨부파일 목록 -->

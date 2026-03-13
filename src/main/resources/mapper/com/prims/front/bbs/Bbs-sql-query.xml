@@ -232,7 +232,7 @@
 	       AND A.BRD_CD = #{brdCd}
 	       AND A.ROT_PST_CD = #{pstCd}
 	       AND A.PST_LVL > 0
-	     ORDER BY A.IDX ASC
+	     ORDER BY A.RGT_DTM ASC
 	</select>
 
 	<!-- 문의게시판 전용 리스트 (계층형 정렬) -->
@@ -276,9 +276,9 @@
 	                   AND T.PST_CNTS LIKE CONCAT('%', #{keyword}, '%')
 	            ))
 	       </if>
-	     ORDER BY (SELECT T.IDX FROM TB_BBS_PST T WHERE T.PST_CD = A.ROT_PST_CD AND T.DEL_YN = 'N' LIMIT 1) DESC
+	     ORDER BY (SELECT T.RGT_DTM FROM TB_BBS_PST T WHERE T.PST_CD = A.ROT_PST_CD AND T.DEL_YN = 'N' LIMIT 1) DESC
 	            , A.PST_LVL ASC
-	            , A.IDX ASC
+	            , A.RGT_DTM ASC
 	     LIMIT #{offset}, #{pageSize}
 	</select>
 
