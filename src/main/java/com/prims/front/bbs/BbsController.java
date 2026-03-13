@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -135,13 +136,15 @@ public class BbsController {
     }
 
 	// ===== 글 상세 (공통) =====
-	@RequestMapping(value = "/viewBbsDetail", method = RequestMethod.POST)
-	public String viewBbsDetail(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
+	@RequestMapping(value = "/viewBbsDetail", method = {RequestMethod.GET, RequestMethod.POST})
+	public String viewBbsDetail(@ParamMap Map<String, Object> paramMap, Model model, HttpServletRequest request) throws Exception {
 
 	    String brdCd = (String) paramMap.get("brdCd");
 	    String pstCd = (String) paramMap.get("pstCd");
-	    if (brdCd == null || brdCd.isEmpty() || pstCd == null || pstCd.isEmpty()) {
-	        return "redirect:/";
+	    
+	    // GET 요청이거나 필수값 없으면 목록으로
+	    if ("GET".equalsIgnoreCase(request.getMethod()) || brdCd == null || brdCd.isEmpty() || pstCd == null || pstCd.isEmpty()) {
+	        return "redirect:/bbs/viewBbsNotice";
 	    }
 
 	    Map<String, Object> bbsBrd = bbsService.selectBbsBrdOne(paramMap);
@@ -291,11 +294,13 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 상세 =====
-	@RequestMapping(value = "/viewBbsDetailQna", method = RequestMethod.POST)
-	public String viewBbsDetailQna(@ParamMap Map<String, Object> paramMap, Model model) throws Exception {
+	@RequestMapping(value = "/viewBbsDetailQna", method = {RequestMethod.GET, RequestMethod.POST})
+	public String viewBbsDetailQna(@ParamMap Map<String, Object> paramMap, Model model, HttpServletRequest request) throws Exception {
 
 	    String pstCd = (String) paramMap.get("pstCd");
-	    if (pstCd == null || pstCd.isEmpty()) {
+	    
+	    // GET 요청이거나 필수값 없으면 목록으로
+	    if ("GET".equalsIgnoreCase(request.getMethod()) || pstCd == null || pstCd.isEmpty()) {
 	        return "redirect:/bbs/viewBbsQna";
 	    }
 
