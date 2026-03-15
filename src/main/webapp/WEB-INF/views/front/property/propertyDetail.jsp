@@ -159,8 +159,8 @@
           </td>
           <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>
-        <c:if test="${(not empty prop.premium and prop.premium > 0) or (not empty prop.PREMIUM and prop.PREMIUM > 0)}">
-        <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${not empty prop.premium ? prop.premium : prop.PREMIUM}" pattern="#,###"/>원</td></tr>
+        <c:if test="${not empty prop.premium and prop.premium > 0}">
+        <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${prop.premium}" pattern="#,###"/>원</td></tr>
         </c:if>
         <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217; <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">(<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:if></td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
         <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">

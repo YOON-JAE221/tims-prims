@@ -92,11 +92,21 @@ public class BbsController {
 	}
 
 	// ===== 문의게시판 글쓰기 =====
-    @RequestMapping(value = "/viewBbsWriteQna", method = RequestMethod.POST)
-    public String viewBbsWriteQna(@RequestParam(value="brdCd") String brdCd,
+    @RequestMapping(value = "/viewBbsWriteQna", method = {RequestMethod.GET, RequestMethod.POST})
+    public String viewBbsWriteQna(@RequestParam(value="brdCd", required=false) String brdCd,
                                    @RequestParam(value="pstCd", required=false) String pstCd,
                                    @RequestParam(value="pstNm", required=false) String pstNm,
-                                   Model model) {
+                                   Model model, HttpServletRequest request) {
+
+        // GET 요청 시 홈으로 리다이렉트 (로그인 후 복귀 등)
+        if ("GET".equalsIgnoreCase(request.getMethod())) {
+            return "redirect:/";
+        }
+
+        // brdCd 필수값 체크
+        if (brdCd == null || brdCd.isEmpty()) {
+            return "redirect:/";
+        }
 
         Map<String, Object> paramMap = new HashMap<>();
 
@@ -299,9 +309,9 @@ public class BbsController {
 
 	    String pstCd = (String) paramMap.get("pstCd");
 	    
-	    // GET 요청이거나 필수값 없으면 목록으로
+	    // GET 요청이거나 필수값 없으면 홈으로
 	    if ("GET".equalsIgnoreCase(request.getMethod()) || pstCd == null || pstCd.isEmpty()) {
-	        return "redirect:/bbs/viewBbsQna";
+	        return "redirect:/";
 	    }
 
 	    paramMap.put("brdCd", Constant.BRD_CD_QNA);
