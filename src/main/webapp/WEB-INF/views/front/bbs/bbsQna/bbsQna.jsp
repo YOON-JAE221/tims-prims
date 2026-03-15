@@ -2,6 +2,18 @@
 <%@ include file="/WEB-INF/views/front/common/head.jsp" %>
 <%@ include file="/WEB-INF/views/front/bbs/bbsCommon/inc/bbsPagingVars.jspf" %>
 
+<style>
+/* 모바일에서 등록일 컬럼 숨김 */
+@media (max-width: 768px) {
+  .board-table-qna .col-date { display: none; }
+  .board-table-qna colgroup .col-date { width: 0; }
+  .board-table-qna th:nth-child(2),
+  .board-table-qna td:nth-child(2) { width: 70px !important; }
+  .board-table-qna th:nth-child(4),
+  .board-table-qna td:nth-child(4) { width: 50px !important; }
+}
+</style>
+
 <div class="page-header">
   <h2>문의하기</h2>
 </div>
@@ -22,12 +34,12 @@
       </div>
     </div>
 
-    <table class="board-table">
+    <table class="board-table board-table-qna">
       <colgroup>
-        <col><col style="width:100px;"><col style="width:120px;"><col style="width:80px;">
+        <col><col style="width:100px;"><col style="width:120px;" class="col-date"><col style="width:80px;">
       </colgroup>
       <thead>
-        <tr><th class="td-left">제목</th><th>글쓴이</th><th>등록일</th><th>조회</th></tr>
+        <tr><th class="td-left">제목</th><th>글쓴이</th><th class="col-date">등록일</th><th>조회</th></tr>
       </thead>
       <tbody>
         <c:if test="${empty list}">
@@ -52,7 +64,7 @@
                 <c:otherwise>${row.rgtUsrNm}</c:otherwise>
               </c:choose>
             </td>
-            <td class="td-muted">${row.rgtDtm}</td>
+            <td class="td-muted col-date">${row.rgtDtm}</td>
             <td class="td-muted">${row.pstLvl == 0 ? row.viewCnt : '-'}</td>
           </tr>
         </c:forEach>
