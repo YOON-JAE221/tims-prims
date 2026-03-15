@@ -188,9 +188,6 @@
       <div style="width:100%;height:300px;border-radius:12px;overflow:hidden;border:1px solid var(--gray-200);">
         <div id="propMap" style="width:100%;height:100%;"></div>
       </div>
-      <div style="margin-top:10px;font-size:13px;color:var(--gray-400);">
-        ${prop.address}
-      </div>
     </div>
     </c:if>
 

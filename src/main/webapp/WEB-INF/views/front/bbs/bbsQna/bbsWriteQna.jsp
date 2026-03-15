@@ -58,7 +58,7 @@
           <c:if test="${not empty pst.pstCd}"><input type="hidden" name="secretYn" value="Y" /></c:if>
           <tr>
             <th>문의사항 <span class="qna-required">*</span></th>
-            <td><textarea name="pstCnts" id="pstCnts" class="qna-textarea" placeholder="문의하실 내용을 입력해주세요">${pst.pstCnts}</textarea></td>
+            <td><textarea name="pstCnts" id="pstCnts" class="qna-textarea" placeholder="ex) 상가 매매 문의드립니다.&#10;- 희망지역: 부천 중동&#10;- 희망면적: 30평 이상&#10;- 업종: 카페&#10;- 기타: 1층 선호">${pst.pstCnts}</textarea></td>
           </tr>
           <c:if test="${fn:contains(brd.brdPropBinary, 'F')}">
           <tr>

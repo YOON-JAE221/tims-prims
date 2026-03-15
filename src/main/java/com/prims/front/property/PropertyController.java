@@ -38,6 +38,13 @@ public class PropertyController {
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
                                    @RequestParam(value = "badgeType", required = false, defaultValue = "") String badgeType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+                                   @RequestParam(value = "areaMin", required = false, defaultValue = "") String areaMin,
+                                   @RequestParam(value = "areaMax", required = false, defaultValue = "") String areaMax,
+                                   @RequestParam(value = "areaUnit", required = false, defaultValue = "pyeong") String areaUnit,
+                                   @RequestParam(value = "priceMin", required = false, defaultValue = "") String priceMin,
+                                   @RequestParam(value = "priceMax", required = false, defaultValue = "") String priceMax,
+                                   @RequestParam(value = "rentMin", required = false, defaultValue = "") String rentMin,
+                                   @RequestParam(value = "rentMax", required = false, defaultValue = "") String rentMax,
                                    @RequestParam(value = "pageNo", required = false, defaultValue = "1") int pageNo,
                                    HttpSession session, Model model) {
 
@@ -62,6 +69,36 @@ public class PropertyController {
         param.put("pageSize", Integer.valueOf(pageSize));
         param.put("offset", Integer.valueOf(offset));
 
+        // 면적 조건 추가 (평 → ㎡ 변환, DB는 ㎡ 기준)
+        if (areaMin != null && !areaMin.isEmpty()) {
+            double minVal = Double.parseDouble(areaMin);
+            if ("pyeong".equals(areaUnit)) {
+                minVal = minVal * 3.3058; // 평 → ㎡
+            }
+            param.put("areaMin", minVal);
+        }
+        if (areaMax != null && !areaMax.isEmpty()) {
+            double maxVal = Double.parseDouble(areaMax);
+            if ("pyeong".equals(areaUnit)) {
+                maxVal = maxVal * 3.3058; // 평 → ㎡
+            }
+            param.put("areaMax", maxVal);
+        }
+
+        // 가격 조건 추가 (만원 단위)
+        if (priceMin != null && !priceMin.isEmpty()) {
+            param.put("priceMin", Integer.parseInt(priceMin));
+        }
+        if (priceMax != null && !priceMax.isEmpty()) {
+            param.put("priceMax", Integer.parseInt(priceMax));
+        }
+        if (rentMin != null && !rentMin.isEmpty()) {
+            param.put("rentMin", Integer.parseInt(rentMin));
+        }
+        if (rentMax != null && !rentMax.isEmpty()) {
+            param.put("rentMax", Integer.parseInt(rentMax));
+        }
+
         List<?> list = propertySearchDao.getPropertyTypeList(param);
         int totalCnt = propertySearchDao.getPropertyTypeCount(param);
         int totalPage = totalCnt > 0 ? (int) Math.ceil((double) totalCnt / pageSize) : 1;
@@ -70,6 +107,13 @@ public class PropertyController {
         model.addAttribute("dealType", dealType);
         model.addAttribute("badgeType", badgeType);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("areaMin", areaMin);
+        model.addAttribute("areaMax", areaMax);
+        model.addAttribute("areaUnit", areaUnit);
+        model.addAttribute("priceMin", priceMin);
+        model.addAttribute("priceMax", priceMax);
+        model.addAttribute("rentMin", rentMin);
+        model.addAttribute("rentMax", rentMax);
         model.addAttribute("list", list);
         model.addAttribute("totalCnt", totalCnt);
         model.addAttribute("pageNo", pageNo);

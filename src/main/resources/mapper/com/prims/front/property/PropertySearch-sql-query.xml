@@ -72,6 +72,32 @@
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
            </if>
+           <if test="areaMin != null">
+           AND A.AREA_EXCLUSIVE >= #{areaMin}
+           </if>
+           <if test="areaMax != null">
+           AND A.AREA_EXCLUSIVE &lt;= #{areaMax}
+           </if>
+           <!-- 가격 조건: 매매가/전세가/보증금 -->
+           <if test="priceMin != null">
+           AND (
+               (A.DEAL_TYPE = 'SELL' AND A.SELL_PRICE >= #{priceMin})
+               OR (A.DEAL_TYPE IN ('JEONSE', 'WOLSE', 'RENT', 'SHORT') AND A.DEPOSIT >= #{priceMin})
+           )
+           </if>
+           <if test="priceMax != null">
+           AND (
+               (A.DEAL_TYPE = 'SELL' AND A.SELL_PRICE &lt;= #{priceMax})
+               OR (A.DEAL_TYPE IN ('JEONSE', 'WOLSE', 'RENT', 'SHORT') AND A.DEPOSIT &lt;= #{priceMax})
+           )
+           </if>
+           <!-- 월세 조건 -->
+           <if test="rentMin != null">
+           AND A.MONTHLY_RENT >= #{rentMin}
+           </if>
+           <if test="rentMax != null">
+           AND A.MONTHLY_RENT &lt;= #{rentMax}
+           </if>
          ORDER BY
            CASE A.SOLD_YN WHEN 'N' THEN 0 ELSE 1 END ASC,
            A.CRE_DTM DESC
@@ -92,6 +118,32 @@
            </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           </if>
+           <if test="areaMin != null">
+           AND A.AREA_EXCLUSIVE >= #{areaMin}
+           </if>
+           <if test="areaMax != null">
+           AND A.AREA_EXCLUSIVE &lt;= #{areaMax}
+           </if>
+           <!-- 가격 조건: 매매가/전세가/보증금 -->
+           <if test="priceMin != null">
+           AND (
+               (A.DEAL_TYPE = 'SELL' AND A.SELL_PRICE >= #{priceMin})
+               OR (A.DEAL_TYPE IN ('JEONSE', 'WOLSE', 'RENT', 'SHORT') AND A.DEPOSIT >= #{priceMin})
+           )
+           </if>
+           <if test="priceMax != null">
+           AND (
+               (A.DEAL_TYPE = 'SELL' AND A.SELL_PRICE &lt;= #{priceMax})
+               OR (A.DEAL_TYPE IN ('JEONSE', 'WOLSE', 'RENT', 'SHORT') AND A.DEPOSIT &lt;= #{priceMax})
+           )
+           </if>
+           <!-- 월세 조건 -->
+           <if test="rentMin != null">
+           AND A.MONTHLY_RENT >= #{rentMin}
+           </if>
+           <if test="rentMax != null">
+           AND A.MONTHLY_RENT &lt;= #{rentMax}
            </if>
     </select>
 
