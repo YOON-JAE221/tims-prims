@@ -66,7 +66,7 @@
           </c:when>
           <c:otherwise>
             <!-- 이미지 없을 때 기존 스타일 유지 -->
-            <div class="prop-detail-img ${fn:toLowerCase(prop.catCd)}" style="height:100%;min-height:300px;">
+            <div class="prop-detail-img ${fn:toLowerCase(prop.catCd)}" style="height:360px;min-height:auto;">
               <span class="prop-card-emoji" style="font-size:64px;">
                 <c:choose>
                   <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
@@ -91,7 +91,6 @@
       <div class="prop-detail-summary">
         <div class="prop-detail-type">${prop.catNm} &middot; ${prop.dealTypeNm}</div>
         <h2 class="prop-detail-title">${prop.propNm}</h2>
-        <div class="prop-detail-loc">${prop.address}</div>
         <div class="prop-detail-price">
           <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
             <c:choose>
@@ -111,8 +110,8 @@
 
         <div class="prop-detail-quick">
           <div class="prop-quick-item">
-            <div class="prop-quick-label">전용면적</div>
-            <div class="prop-quick-value">${prop.areaExclusive}&#13217;</div>
+            <div class="prop-quick-label">전용면적 / 평수</div>
+            <div class="prop-quick-value">${prop.areaExclusive}&#13217; / <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}"><fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</c:if></div>
           </div>
           <c:if test="${prop.roomCnt > 0}">
           <div class="prop-quick-item">
@@ -122,8 +121,8 @@
           </c:if>
           <c:if test="${not empty prop.floorNo}">
           <div class="prop-quick-item">
-            <div class="prop-quick-label">해당층</div>
-            <div class="prop-quick-value">${prop.floorNo}층<c:if test="${not empty prop.floorTotal}">/${prop.floorTotal}층</c:if></div>
+            <div class="prop-quick-label">해당층 / 총층</div>
+            <div class="prop-quick-value">${prop.floorNo}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</div>
           </div>
           </c:if>
           <c:if test="${not empty prop.moveInDate}">
@@ -158,7 +157,7 @@
           </td>
           <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>
-        <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217;</td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply}">${prop.areaSupply}&#13217;</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
+        <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217; <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">(<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:if></td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
         <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">
         <tr><th>방수/욕실수</th><td>${prop.roomCnt > 0 ? prop.roomCnt : '-'}룸 / ${prop.bathCnt > 0 ? prop.bathCnt : '-'}욕실</td><th>해당층/총층</th><td>${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</td></tr>
         </c:if>
@@ -244,15 +243,25 @@
 </c:if>
 
 <style>
+/* ── 상단 레이아웃 고정 ─────────────────────────── */
+.prop-detail-top {
+  align-items: flex-start;
+}
+
+.prop-detail-summary {
+  flex: 1;
+  min-width: 0;
+}
+
 /* ── 갤러리 그리드 ─────────────────────────────── */
 .prop-gallery-wrap {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  flex: 0 0 440px;
-  width: 440px;
+  flex: 0 0 480px;
+  width: 480px;
+  height: 360px;
   min-width: 260px;
-  align-self: stretch;
 }
 
 /* 메인 + 사이드 2열 레이아웃 */
@@ -261,7 +270,6 @@
   gap: 4px;
   width: 100%;
   height: 100%;
-  min-height: 300px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -274,7 +282,6 @@
   overflow: hidden;
   cursor: pointer;
   background: #e8e8e8;
-  min-height: 300px;
 }
 
 /* 1장: 메인이 100% 차지 */
@@ -471,10 +478,13 @@
 }
 .gallery-dot.active { background: #fff; }
 
+@media (max-width: 1024px) {
+  .prop-gallery-wrap { flex: 0 0 400px; width: 400px; height: 320px; }
+}
+
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; }
-  .prop-gallery-grid { height: auto; min-height: 220px; }
-  .prop-gallery-main { min-height: 220px; }
+  .prop-gallery-wrap { width: 100%; flex: none; height: 260px; }
+  .prop-gallery-grid { height: 100%; }
   .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
 

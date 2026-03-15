@@ -34,7 +34,7 @@
       <div class="slide-text">
         <div class="slide-badge">부천 중동 프리머스타워 1층</div>
         <h1>부천의 부동산,<br><em>프리머스</em>에 맡기세요</h1>
-        <p>아파트, 오피스텔, 상가, 사무실까지<br>부천 지역 전문 공인중개사가 함께합니다.</p>
+        <p>상가, 사무실, 건물 등<br>부천 지역 전문 공인중개사가 함께합니다.</p>
         <div class="slide-actions">
           <a href="${ctx}/property/viewPropertyList" class="btn-primary-primus">매물 안내</a>
           <a href="${ctx}/bbs/viewBbsQna" class="btn-outline-hero">상담 신청</a>
@@ -94,16 +94,16 @@
 
     <div class="slide-features">
       <div class="feature-card fc1">
-        <div class="feature-icon">🏢</div>
-        <div class="feature-text">아파트</div>
-      </div>
-      <div class="feature-card fc2">
         <div class="feature-icon">🏪</div>
         <div class="feature-text">상가</div>
       </div>
+      <div class="feature-card fc2">
+        <div class="feature-icon">🏢</div>
+        <div class="feature-text">사무실</div>
+      </div>
       <div class="feature-card fc3">
-        <div class="feature-icon">🏬</div>
-        <div class="feature-text">오피스텔</div>
+        <div class="feature-icon">🏛️</div>
+        <div class="feature-text">건물</div>
       </div>
     </div>
 
@@ -142,7 +142,7 @@
       <div class="trust-card reveal">
         <div class="trust-card-icon">🏠</div>
         <h3 class="trust-card-title">부천 지역 전문</h3>
-        <p class="trust-card-desc">부천 중동을 중심으로 오랜 현장 경험과 지역 시장에 대한 깊은 이해를 바탕으로 최적의 매물을 추천합니다.</p>
+        <p class="trust-card-desc">부천을 중심으로 오랜 현장 경험과 지역 시장에 대한 깊은 이해를 바탕으로 최적의 매물을 추천합니다.</p>
       </div>
       <div class="trust-card reveal reveal-delay-1">
         <div class="trust-card-icon">🛡️</div>

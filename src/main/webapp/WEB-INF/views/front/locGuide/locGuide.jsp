@@ -40,22 +40,7 @@
     <div class="loc-section-body">
       <span class="loc-stop"><span class="loc-stop-num">1</span> 롯데시네마부천점</span>
       <span class="loc-stop"><span class="loc-stop-num">2</span> 부천시청역</span>
-      <span class="loc-stop"><span class="loc-stop-num">3</span> 경기예고.현대백화점</span>
-    </div>
-
-    <div class="loc-section-title">주변 버스</div>
-    <div class="loc-section-body loc-bus-area">
-      <div class="loc-bus-row">
-        <span class="loc-bus-type" style="background:#33A23D;">지선</span>
-        <span class="loc-bus-no">52</span>
-        <span class="loc-bus-no">53</span>
-        <span class="loc-bus-no">59</span>
-      </div>
-      <div class="loc-bus-row">
-        <span class="loc-bus-type" style="background:#E60012;">간선</span>
-        <span class="loc-bus-no">87</span>
-        <span class="loc-bus-no">88</span>
-      </div>
+      <span class="loc-stop"><span class="loc-stop-num">3</span> 롯데백화점</span>
     </div>
 
     <div class="loc-section-title">자가용</div>

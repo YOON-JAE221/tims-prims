@@ -65,13 +65,13 @@
                     </div>
                     <div class="d-flex align-items-center" style="gap:4px;">
                       <span style="font-size:12px; color:#666;">중분류</span>
-                      <select name="midCatCd" id="midCatCd" class="form-control form-control-sm" style="width:130px;" onchange="fnMidCatChange(this.value)" required>
+                      <select name="midCatCd" id="midCatCd" class="form-control form-control-sm" style="width:130px;" onchange="fnMidCatChange(this.value)">
                         <option value="">선택</option>
                       </select>
                     </div>
                     <div class="d-flex align-items-center" style="gap:4px;">
                       <span style="font-size:12px; color:#666;">소분류</span>
-                      <select name="subCatCd" id="subCatCd" class="form-control form-control-sm" style="width:130px;" required>
+                      <select name="subCatCd" id="subCatCd" class="form-control form-control-sm" style="width:130px;">
                         <option value="">선택</option>
                       </select>
                     </div>
@@ -121,13 +121,13 @@
                   <div class="col-6">
                     <div class="form-group">
                       <label><strong>위도</strong></label>
-                      <input type="text" name="lat" id="lat" class="form-control form-control-sm" value="${prop.lat}" />
+                      <input type="text" name="lat" id="lat" class="form-control form-control-sm" value="${prop.lat}" readonly style="background:#f5f5f5;" />
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="form-group">
                       <label><strong>경도</strong></label>
-                      <input type="text" name="lng" id="lng" class="form-control form-control-sm" value="${prop.lng}" />
+                      <input type="text" name="lng" id="lng" class="form-control form-control-sm" value="${prop.lng}" readonly style="background:#f5f5f5;" />
                     </div>
                   </div>
                 </div>
@@ -297,8 +297,8 @@
           </div>
         </div>
 
-        <!-- ===== 7. 전시/상태 ===== -->
-        <div class="card">
+        <!-- ===== 7. 전시/상태 (미사용 - 숨김처리) ===== -->
+        <div class="card" style="display:none;">
           <div class="card-header"><h5 class="card-title mb-0">전시/상태</h5></div>
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
