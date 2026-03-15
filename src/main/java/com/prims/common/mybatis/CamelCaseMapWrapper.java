@@ -22,7 +22,7 @@ public class CamelCaseMapWrapper extends MapWrapper {
 
     @Override
     public void set(PropertyTokenizer prop, Object value) {
-        String key = underlineToCamel(prop.getName());
+        String key = prop.getName();
         map.put(key, value);
     }
 
