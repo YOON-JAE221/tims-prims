@@ -224,9 +224,9 @@
               <span class="prop-deal-label">${prop.dealTypeNm}</span>
               <span class="price-format">
                 <c:choose>
-                  <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.SELL_PRICE}" pattern="#,###"/>만</c:when>
-                  <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.DEPOSIT}" pattern="#,###"/>만</c:when>
-                  <c:otherwise><fmt:formatNumber value="${prop.DEPOSIT}" pattern="#,###"/>/<fmt:formatNumber value="${prop.MONTHLY_RENT}" pattern="#,###"/>만</c:otherwise>
+                  <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만</c:when>
+                  <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만</c:when>
+                  <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만</c:otherwise>
                 </c:choose>
               </span>
             </div>
