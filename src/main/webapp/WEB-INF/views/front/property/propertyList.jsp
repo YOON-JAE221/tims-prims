@@ -50,23 +50,37 @@
           <option value="upper" ${floorType eq 'upper' ? 'selected' : ''}>지상(2층~)</option>
           <option value="under" ${floorType eq 'under' ? 'selected' : ''}>지하</option>
         </select>
-        <!-- 가격대 필터 버튼 -->
-        <button type="button" class="filter-popup-btn ${not empty priceMin or not empty priceMax or not empty rentMin or not empty rentMax ? 'active' : ''}" onclick="openPricePopup()">
+        <!-- 가격 필터 버튼 (매매가/전세가/보증금) -->
+        <button type="button" class="filter-popup-btn ${(not empty priceMin and priceMin ne '') or (not empty priceMax and priceMax ne '') ? 'active' : ''}" onclick="openPricePopup()">
           <span id="priceFilterLabel">
             <c:choose>
-              <c:when test="${not empty priceMin or not empty priceMax or not empty rentMin or not empty rentMax}">가격설정</c:when>
-              <c:otherwise>가격대</c:otherwise>
+              <c:when test="${(not empty priceMin and priceMin ne '') and (not empty priceMax and priceMax ne '')}">${priceMin}~${priceMax}만</c:when>
+              <c:when test="${not empty priceMin and priceMin ne ''}">${priceMin}만~</c:when>
+              <c:when test="${not empty priceMax and priceMax ne ''}">~${priceMax}만</c:when>
+              <c:otherwise>가격</c:otherwise>
+            </c:choose>
+          </span>
+          <span class="filter-arrow">▼</span>
+        </button>
+        <!-- 월세 필터 버튼 -->
+        <button type="button" class="filter-popup-btn ${(not empty rentMin and rentMin ne '') or (not empty rentMax and rentMax ne '') ? 'active' : ''}" onclick="openRentPopup()">
+          <span id="rentFilterLabel">
+            <c:choose>
+              <c:when test="${(not empty rentMin and rentMin ne '') and (not empty rentMax and rentMax ne '')}">${rentMin}~${rentMax}만</c:when>
+              <c:when test="${not empty rentMin and rentMin ne ''}">${rentMin}만~</c:when>
+              <c:when test="${not empty rentMax and rentMax ne ''}">~${rentMax}만</c:when>
+              <c:otherwise>월세</c:otherwise>
             </c:choose>
           </span>
           <span class="filter-arrow">▼</span>
         </button>
         <!-- 면적 필터 버튼 -->
-        <button type="button" class="filter-popup-btn ${not empty areaMin or not empty areaMax ? 'active' : ''}" onclick="openAreaPopup()">
+        <button type="button" class="filter-popup-btn ${(not empty areaMin and areaMin ne '') or (not empty areaMax and areaMax ne '') ? 'active' : ''}" onclick="openAreaPopup()">
           <span id="areaFilterLabel">
             <c:choose>
-              <c:when test="${not empty areaMin and not empty areaMax}">${areaMin}~${areaMax}평</c:when>
-              <c:when test="${not empty areaMin}">${areaMin}평~</c:when>
-              <c:when test="${not empty areaMax}">~${areaMax}평</c:when>
+              <c:when test="${(not empty areaMin and areaMin ne '') and (not empty areaMax and areaMax ne '')}">${areaMin}~${areaMax}평</c:when>
+              <c:when test="${not empty areaMin and areaMin ne ''}">${areaMin}평~</c:when>
+              <c:when test="${not empty areaMax and areaMax ne ''}">~${areaMax}평</c:when>
               <c:otherwise>면적</c:otherwise>
             </c:choose>
           </span>
@@ -80,15 +94,13 @@
       </div>
     </form>
 
-    <!-- 가격대 필터 팝업 (간소화) -->
+    <!-- 가격 필터 팝업 (매매가/전세가/보증금) -->
     <div id="pricePopup" class="filter-popup" style="display:none;">
       <div class="filter-popup-header">
-        <span class="filter-popup-title">가격 설정</span>
+        <span class="filter-popup-title">매매가 / 전세가 / 보증금</span>
         <button type="button" class="filter-popup-close" onclick="closePricePopup()">×</button>
       </div>
       <div class="filter-popup-body">
-        <!-- 매매가/전세가/보증금 -->
-        <div class="filter-section-label">매매가 / 전세가 / 보증금</div>
         <div class="filter-input-row">
           <div class="filter-input-group">
             <input type="number" id="priceMinDirect" value="${priceMin}" placeholder="최소" />
@@ -100,9 +112,20 @@
             <span class="filter-input-unit">만원</span>
           </div>
         </div>
+        <div class="filter-popup-btns">
+          <button type="button" class="filter-reset-btn" onclick="resetPriceFilter()">초기화</button>
+          <button type="button" class="filter-apply-btn" onclick="applyPriceFilter()">적용</button>
+        </div>
+      </div>
+    </div>
 
-        <!-- 월세 -->
-        <div class="filter-section-label" style="margin-top:20px;">월세</div>
+    <!-- 월세 필터 팝업 -->
+    <div id="rentPopup" class="filter-popup" style="display:none;">
+      <div class="filter-popup-header">
+        <span class="filter-popup-title">월세</span>
+        <button type="button" class="filter-popup-close" onclick="closeRentPopup()">×</button>
+      </div>
+      <div class="filter-popup-body">
         <div class="filter-input-row">
           <div class="filter-input-group">
             <input type="number" id="rentMinDirect" value="${rentMin}" placeholder="최소" />
@@ -114,23 +137,20 @@
             <span class="filter-input-unit">만원</span>
           </div>
         </div>
-
-        <!-- 버튼 -->
         <div class="filter-popup-btns">
-          <button type="button" class="filter-reset-btn" onclick="resetPriceFilter()">초기화</button>
-          <button type="button" class="filter-apply-btn" onclick="applyPriceFilter()">적용</button>
+          <button type="button" class="filter-reset-btn" onclick="resetRentFilter()">초기화</button>
+          <button type="button" class="filter-apply-btn" onclick="applyRentFilter()">적용</button>
         </div>
       </div>
     </div>
 
-    <!-- 면적 필터 팝업 (간소화 - 평수만) -->
+    <!-- 면적 필터 팝업 -->
     <div id="areaPopup" class="filter-popup" style="display:none;">
       <div class="filter-popup-header">
-        <span class="filter-popup-title">면적 설정</span>
+        <span class="filter-popup-title">전용면적 (평)</span>
         <button type="button" class="filter-popup-close" onclick="closeAreaPopup()">×</button>
       </div>
       <div class="filter-popup-body">
-        <div class="filter-section-label">전용면적 (평)</div>
         <div class="filter-input-row">
           <div class="filter-input-group">
             <input type="number" id="areaMinDirect" value="${areaMin}" placeholder="최소" />
@@ -142,8 +162,6 @@
             <span class="filter-input-unit">평</span>
           </div>
         </div>
-
-        <!-- 버튼 -->
         <div class="filter-popup-btns">
           <button type="button" class="filter-reset-btn" onclick="resetAreaFilter()">초기화</button>
           <button type="button" class="filter-apply-btn" onclick="applyAreaFilter()">적용</button>
@@ -194,8 +212,6 @@
             </c:choose>
             <c:if test="${prop.soldYn eq 'Y'}">
               <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
-            </c:if>
-            <c:if test="${prop.soldYn eq 'Y'}">
               <div style="position:absolute; inset:0; background:rgba(0,0,0,0.35); display:flex; align-items:center; justify-content:center;">
                 <span style="color:white; font-size:18px; font-weight:800; letter-spacing:2px;">거래완료</span>
               </div>
@@ -206,7 +222,7 @@
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-price">
               <span class="prop-deal-label">${prop.dealTypeNm}</span>
-              <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
+              <span class="price-format">
                 <c:choose>
                   <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만</c:when>
                   <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만</c:when>
@@ -240,8 +256,12 @@
 
 <script>
   // ========== 팝업 제어 ==========
+  function closeAllPopup() {
+    $('#pricePopup, #rentPopup, #areaPopup').hide();
+    $('#filterPopupOverlay').hide();
+  }
   function openPricePopup() {
-    closeAreaPopup();
+    closeAllPopup();
     $('#pricePopup').show();
     $('#filterPopupOverlay').show();
   }
@@ -249,8 +269,17 @@
     $('#pricePopup').hide();
     $('#filterPopupOverlay').hide();
   }
+  function openRentPopup() {
+    closeAllPopup();
+    $('#rentPopup').show();
+    $('#filterPopupOverlay').show();
+  }
+  function closeRentPopup() {
+    $('#rentPopup').hide();
+    $('#filterPopupOverlay').hide();
+  }
   function openAreaPopup() {
-    closePricePopup();
+    closeAllPopup();
     $('#areaPopup').show();
     $('#filterPopupOverlay').show();
   }
@@ -258,23 +287,29 @@
     $('#areaPopup').hide();
     $('#filterPopupOverlay').hide();
   }
-  function closeAllPopup() {
-    closePricePopup();
-    closeAreaPopup();
-  }
 
-  // ========== 가격 필터 ==========
+  // ========== 가격 필터 (매매가/전세가/보증금) ==========
   function applyPriceFilter() {
     $('#priceMinInput').val($('#priceMinDirect').val());
     $('#priceMaxInput').val($('#priceMaxDirect').val());
-    $('#rentMinInput').val($('#rentMinDirect').val());
-    $('#rentMaxInput').val($('#rentMaxDirect').val());
     closePricePopup();
     fnFilter();
   }
   function resetPriceFilter() {
-    $('#priceMinDirect, #priceMaxDirect, #rentMinDirect, #rentMaxDirect').val('');
-    $('#priceMinInput, #priceMaxInput, #rentMinInput, #rentMaxInput').val('');
+    $('#priceMinDirect, #priceMaxDirect').val('');
+    $('#priceMinInput, #priceMaxInput').val('');
+  }
+
+  // ========== 월세 필터 ==========
+  function applyRentFilter() {
+    $('#rentMinInput').val($('#rentMinDirect').val());
+    $('#rentMaxInput').val($('#rentMaxDirect').val());
+    closeRentPopup();
+    fnFilter();
+  }
+  function resetRentFilter() {
+    $('#rentMinDirect, #rentMaxDirect').val('');
+    $('#rentMinInput, #rentMaxInput').val('');
   }
 
   // ========== 면적 필터 ==========
@@ -371,7 +406,7 @@
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   z-index: 1000;
-  width: 380px;
+  width: 360px;
   max-width: 95vw;
 }
 
@@ -398,14 +433,6 @@
 .filter-popup-close:hover { color: var(--gray-600); }
 
 .filter-popup-body { padding: 20px; }
-
-/* 섹션 라벨 */
-.filter-section-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--gray-600);
-  margin-bottom: 10px;
-}
 
 /* 입력 행 */
 .filter-input-row {
@@ -445,7 +472,7 @@
 .filter-popup-btns {
   display: flex;
   gap: 10px;
-  margin-top: 24px;
+  margin-top: 20px;
 }
 .filter-reset-btn {
   flex: 1;
