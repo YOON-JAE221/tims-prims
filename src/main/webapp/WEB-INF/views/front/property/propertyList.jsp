@@ -719,10 +719,10 @@
 
 /* 필터 팝업 공통 */
 .filter-popup, .area-popup {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: 8px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
