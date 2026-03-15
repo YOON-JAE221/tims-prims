@@ -25,7 +25,6 @@
       <input type="hidden" name="pageNo" id="pageNoInput" value="${pageNo}" />
       <input type="hidden" name="areaMin" id="areaMinInput" value="${areaMin}" />
       <input type="hidden" name="areaMax" id="areaMaxInput" value="${areaMax}" />
-      <input type="hidden" name="areaUnit" id="areaUnitInput" value="${empty areaUnit ? 'pyeong' : areaUnit}" />
       <input type="hidden" name="priceMin" id="priceMinInput" value="${priceMin}" />
       <input type="hidden" name="priceMax" id="priceMaxInput" value="${priceMax}" />
       <input type="hidden" name="rentMin" id="rentMinInput" value="${rentMin}" />
@@ -44,6 +43,13 @@
           <option value="WOLSE" ${dealType eq 'WOLSE' ? 'selected' : ''}>월세</option>
           <option value="RENT" ${dealType eq 'RENT' ? 'selected' : ''}>임대</option>
         </select>
+        <!-- 층수 필터 -->
+        <select name="floorType" onchange="fnFilter()">
+          <option value="">전체층</option>
+          <option value="1" ${floorType eq '1' ? 'selected' : ''}>1층</option>
+          <option value="upper" ${floorType eq 'upper' ? 'selected' : ''}>지상(2층~)</option>
+          <option value="under" ${floorType eq 'under' ? 'selected' : ''}>지하</option>
+        </select>
         <!-- 가격대 필터 버튼 -->
         <button type="button" class="filter-popup-btn ${not empty priceMin or not empty priceMax or not empty rentMin or not empty rentMax ? 'active' : ''}" onclick="openPricePopup()">
           <span id="priceFilterLabel">
@@ -58,9 +64,9 @@
         <button type="button" class="filter-popup-btn ${not empty areaMin or not empty areaMax ? 'active' : ''}" onclick="openAreaPopup()">
           <span id="areaFilterLabel">
             <c:choose>
-              <c:when test="${not empty areaMin and not empty areaMax}">${areaMin}~${areaMax}${areaUnit eq 'm2' ? '㎡' : '평'}</c:when>
-              <c:when test="${not empty areaMin}">${areaMin}${areaUnit eq 'm2' ? '㎡' : '평'}~</c:when>
-              <c:when test="${not empty areaMax}">~${areaMax}${areaUnit eq 'm2' ? '㎡' : '평'}</c:when>
+              <c:when test="${not empty areaMin and not empty areaMax}">${areaMin}~${areaMax}평</c:when>
+              <c:when test="${not empty areaMin}">${areaMin}평~</c:when>
+              <c:when test="${not empty areaMax}">~${areaMax}평</c:when>
               <c:otherwise>면적</c:otherwise>
             </c:choose>
           </span>
@@ -74,145 +80,79 @@
       </div>
     </form>
 
-    <!-- 가격대 필터 팝업 -->
+    <!-- 가격대 필터 팝업 (간소화) -->
     <div id="pricePopup" class="filter-popup" style="display:none;">
       <div class="filter-popup-header">
-        <span class="filter-popup-title">매매가/전세가/보증금</span>
+        <span class="filter-popup-title">가격 설정</span>
         <button type="button" class="filter-popup-close" onclick="closePricePopup()">×</button>
       </div>
       <div class="filter-popup-body">
-        <!-- 범위 표시 -->
-        <div class="filter-range-display">
-          <span id="priceRangeText">전체</span>
-        </div>
-        <!-- 빠른 선택 버튼 -->
-        <div class="filter-quick-btns price-btns" id="priceBtns">
-          <button type="button" class="filter-quick-btn" data-min="0" data-max="10000">1억</button>
-          <button type="button" class="filter-quick-btn" data-min="10000" data-max="20000">2억</button>
-          <button type="button" class="filter-quick-btn" data-min="20000" data-max="30000">3억</button>
-          <button type="button" class="filter-quick-btn" data-min="30000" data-max="40000">4억</button>
-          <button type="button" class="filter-quick-btn" data-min="40000" data-max="50000">5억</button>
-          <button type="button" class="filter-quick-btn" data-min="50000" data-max="60000">6억</button>
-          <button type="button" class="filter-quick-btn" data-min="60000" data-max="70000">7억</button>
-          <button type="button" class="filter-quick-btn" data-min="70000" data-max="80000">8억</button>
-          <button type="button" class="filter-quick-btn" data-min="80000" data-max="90000">9억</button>
-          <button type="button" class="filter-quick-btn" data-min="90000" data-max="100000">10억</button>
-          <button type="button" class="filter-quick-btn" data-min="100000" data-max="150000">15억</button>
-          <button type="button" class="filter-quick-btn" data-min="150000" data-max="200000">20억</button>
-          <button type="button" class="filter-quick-btn" data-min="200000" data-max="300000">30억</button>
-          <button type="button" class="filter-quick-btn" data-min="300000" data-max="400000">40억</button>
-          <button type="button" class="filter-quick-btn" data-min="400000" data-max="500000">50억</button>
-          <button type="button" class="filter-quick-btn" data-min="500000" data-max="">50억~</button>
-        </div>
-        <!-- 직접 입력 -->
+        <!-- 매매가/전세가/보증금 -->
+        <div class="filter-section-label">매매가 / 전세가 / 보증금</div>
         <div class="filter-input-row">
           <div class="filter-input-group">
-            <span class="filter-input-label">최소</span>
-            <input type="number" id="priceMinDirect" placeholder="만원" />
+            <input type="number" id="priceMinDirect" value="${priceMin}" placeholder="최소" />
+            <span class="filter-input-unit">만원</span>
           </div>
           <span class="filter-input-sep">~</span>
           <div class="filter-input-group">
-            <span class="filter-input-label">최대</span>
-            <input type="number" id="priceMaxDirect" placeholder="만원" />
+            <input type="number" id="priceMaxDirect" value="${priceMax}" placeholder="최대" />
+            <span class="filter-input-unit">만원</span>
           </div>
-          <button type="button" class="filter-input-apply" onclick="applyPriceDirect()">적용</button>
         </div>
 
-        <!-- 월세 섹션 -->
-        <div class="filter-section-title">월세</div>
-        <div class="filter-range-display">
-          <span id="rentRangeText">전체</span>
-        </div>
-        <div class="filter-quick-btns rent-btns" id="rentBtns">
-          <button type="button" class="filter-quick-btn" data-min="0" data-max="10">10만</button>
-          <button type="button" class="filter-quick-btn" data-min="10" data-max="20">20만</button>
-          <button type="button" class="filter-quick-btn" data-min="20" data-max="30">30만</button>
-          <button type="button" class="filter-quick-btn" data-min="30" data-max="40">40만</button>
-          <button type="button" class="filter-quick-btn" data-min="40" data-max="50">50만</button>
-          <button type="button" class="filter-quick-btn" data-min="50" data-max="60">60만</button>
-          <button type="button" class="filter-quick-btn" data-min="60" data-max="70">70만</button>
-          <button type="button" class="filter-quick-btn" data-min="70" data-max="80">80만</button>
-          <button type="button" class="filter-quick-btn" data-min="80" data-max="90">90만</button>
-          <button type="button" class="filter-quick-btn" data-min="90" data-max="100">100만</button>
-          <button type="button" class="filter-quick-btn" data-min="100" data-max="200">200만</button>
-          <button type="button" class="filter-quick-btn" data-min="200" data-max="">200만~</button>
-        </div>
-        <!-- 월세 직접 입력 -->
+        <!-- 월세 -->
+        <div class="filter-section-label" style="margin-top:20px;">월세</div>
         <div class="filter-input-row">
           <div class="filter-input-group">
-            <span class="filter-input-label">최소</span>
-            <input type="number" id="rentMinDirect" placeholder="만원" />
+            <input type="number" id="rentMinDirect" value="${rentMin}" placeholder="최소" />
+            <span class="filter-input-unit">만원</span>
           </div>
           <span class="filter-input-sep">~</span>
           <div class="filter-input-group">
-            <span class="filter-input-label">최대</span>
-            <input type="number" id="rentMaxDirect" placeholder="만원" />
+            <input type="number" id="rentMaxDirect" value="${rentMax}" placeholder="최대" />
+            <span class="filter-input-unit">만원</span>
           </div>
-          <button type="button" class="filter-input-apply" onclick="applyRentDirect()">적용</button>
         </div>
 
-        <!-- 조건 삭제 -->
-        <div class="filter-popup-footer">
-          <button type="button" class="filter-reset-btn" onclick="resetPriceFilter()">↺ 조건삭제</button>
+        <!-- 버튼 -->
+        <div class="filter-popup-btns">
+          <button type="button" class="filter-reset-btn" onclick="resetPriceFilter()">초기화</button>
+          <button type="button" class="filter-apply-btn" onclick="applyPriceFilter()">적용</button>
         </div>
       </div>
     </div>
 
-    <!-- 면적 필터 팝업 -->
-    <div id="areaPopup" class="area-popup" style="display:none;">
-      <div class="area-popup-header">
-        <span class="area-popup-title">면적</span>
-        <div class="area-unit-tabs">
-          <button type="button" class="area-unit-tab" data-unit="m2">㎡</button>
-          <button type="button" class="area-unit-tab active" data-unit="pyeong">평</button>
-        </div>
-        <button type="button" class="area-popup-close" onclick="closeAreaPopup()">×</button>
+    <!-- 면적 필터 팝업 (간소화 - 평수만) -->
+    <div id="areaPopup" class="filter-popup" style="display:none;">
+      <div class="filter-popup-header">
+        <span class="filter-popup-title">면적 설정</span>
+        <button type="button" class="filter-popup-close" onclick="closeAreaPopup()">×</button>
       </div>
-      <div class="area-popup-body">
-        <!-- 범위 표시 -->
-        <div class="area-range-display">
-          <span id="areaRangeText">전체</span>
+      <div class="filter-popup-body">
+        <div class="filter-section-label">전용면적 (평)</div>
+        <div class="filter-input-row">
+          <div class="filter-input-group">
+            <input type="number" id="areaMinDirect" value="${areaMin}" placeholder="최소" />
+            <span class="filter-input-unit">평</span>
+          </div>
+          <span class="filter-input-sep">~</span>
+          <div class="filter-input-group">
+            <input type="number" id="areaMaxDirect" value="${areaMax}" placeholder="최대" />
+            <span class="filter-input-unit">평</span>
+          </div>
         </div>
-        <!-- 슬라이더 -->
-        <div class="area-slider-wrap">
-          <div id="areaSlider"></div>
-        </div>
-        <!-- 빠른 선택 버튼 (평) -->
-        <div class="area-quick-btns" id="areaBtnsPyeong">
-          <button type="button" class="area-quick-btn" data-min="" data-max="50">~50평</button>
-          <button type="button" class="area-quick-btn" data-min="50" data-max="100">100평</button>
-          <button type="button" class="area-quick-btn" data-min="100" data-max="200">200평</button>
-          <button type="button" class="area-quick-btn" data-min="200" data-max="300">300평</button>
-          <button type="button" class="area-quick-btn" data-min="300" data-max="400">400평</button>
-          <button type="button" class="area-quick-btn" data-min="400" data-max="500">500평</button>
-          <button type="button" class="area-quick-btn" data-min="500" data-max="600">600평</button>
-          <button type="button" class="area-quick-btn" data-min="600" data-max="700">700평</button>
-          <button type="button" class="area-quick-btn" data-min="700" data-max="800">800평</button>
-          <button type="button" class="area-quick-btn" data-min="800" data-max="900">900평</button>
-          <button type="button" class="area-quick-btn" data-min="900" data-max="1000">1000평</button>
-          <button type="button" class="area-quick-btn" data-min="1000" data-max="">1000평~</button>
-        </div>
-        <!-- 빠른 선택 버튼 (㎡) -->
-        <div class="area-quick-btns" id="areaBtnsM2" style="display:none;">
-          <button type="button" class="area-quick-btn" data-min="" data-max="165">~165㎡</button>
-          <button type="button" class="area-quick-btn" data-min="165" data-max="331">331㎡</button>
-          <button type="button" class="area-quick-btn" data-min="331" data-max="661">661㎡</button>
-          <button type="button" class="area-quick-btn" data-min="661" data-max="992">992㎡</button>
-          <button type="button" class="area-quick-btn" data-min="992" data-max="1322">1322㎡</button>
-          <button type="button" class="area-quick-btn" data-min="1322" data-max="1653">1653㎡</button>
-          <button type="button" class="area-quick-btn" data-min="1653" data-max="1983">1983㎡</button>
-          <button type="button" class="area-quick-btn" data-min="1983" data-max="2314">2314㎡</button>
-          <button type="button" class="area-quick-btn" data-min="2314" data-max="2645">2645㎡</button>
-          <button type="button" class="area-quick-btn" data-min="2645" data-max="2975">2975㎡</button>
-          <button type="button" class="area-quick-btn" data-min="2975" data-max="3306">3306㎡</button>
-          <button type="button" class="area-quick-btn" data-min="3306" data-max="">3306㎡~</button>
-        </div>
-        <!-- 조건 삭제 -->
-        <div class="area-popup-footer">
-          <button type="button" class="area-reset-btn" onclick="resetAreaFilter()">↺ 조건삭제</button>
+
+        <!-- 버튼 -->
+        <div class="filter-popup-btns">
+          <button type="button" class="filter-reset-btn" onclick="resetAreaFilter()">초기화</button>
+          <button type="button" class="filter-apply-btn" onclick="applyAreaFilter()">적용</button>
         </div>
       </div>
     </div>
+
+    <!-- 팝업 오버레이 -->
+    <div id="filterPopupOverlay" class="filter-popup-overlay" style="display:none;" onclick="closeAllPopup()"></div>
 
     <!-- 결과 건수 -->
     <div class="board-header">
@@ -252,7 +192,6 @@
                 </span>
               </c:otherwise>
             </c:choose>
-            <%-- 거래완료 뱃지 --%>
             <c:if test="${prop.soldYn eq 'Y'}">
               <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
             </c:if>
@@ -275,8 +214,8 @@
                 </c:choose>
               </span>
             </div>
-            <c:if test="${not empty prop.areaExclusive}">
-              <div class="prop-card-area">${prop.areaExclusive}㎡</div>
+            <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">
+              <div class="prop-card-area">${prop.areaExclusive}㎡ / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</div>
             </c:if>
           </div>
         </div>
@@ -300,320 +239,54 @@
 </div>
 
 <script>
-  // ========== 면적 필터 변수 ==========
-  var areaUnit = '${empty areaUnit ? "pyeong" : areaUnit}';
-  var areaMin = '${areaMin}' || '';
-  var areaMax = '${areaMax}' || '';
-
-  // ========== 가격 필터 변수 ==========
-  var priceMin = '${priceMin}' || '';
-  var priceMax = '${priceMax}' || '';
-  var rentMin = '${rentMin}' || '';
-  var rentMax = '${rentMax}' || '';
-
-  // ========== 가격 팝업 ==========
+  // ========== 팝업 제어 ==========
   function openPricePopup() {
     closeAreaPopup();
     $('#pricePopup').show();
     $('#filterPopupOverlay').show();
-    updatePriceDisplay();
-    updateRentDisplay();
   }
-
   function closePricePopup() {
     $('#pricePopup').hide();
     $('#filterPopupOverlay').hide();
   }
-
-  // 가격 버튼 클릭
-  $(document).on('click', '#priceBtns .filter-quick-btn', function() {
-    var $btn = $(this);
-    if ($btn.hasClass('active')) {
-      $btn.removeClass('active');
-      if ($('#priceBtns .filter-quick-btn.active').length === 0) {
-        priceMin = '';
-        priceMax = '';
-      } else {
-        recalculatePriceRange();
-      }
-    } else {
-      $btn.addClass('active');
-      recalculatePriceRange();
-    }
-    updatePriceDisplay();
-    applyPriceFilter();
-  });
-
-  // 월세 버튼 클릭
-  $(document).on('click', '#rentBtns .filter-quick-btn', function() {
-    var $btn = $(this);
-    if ($btn.hasClass('active')) {
-      $btn.removeClass('active');
-      if ($('#rentBtns .filter-quick-btn.active').length === 0) {
-        rentMin = '';
-        rentMax = '';
-      } else {
-        recalculateRentRange();
-      }
-    } else {
-      $btn.addClass('active');
-      recalculateRentRange();
-    }
-    updateRentDisplay();
-    applyPriceFilter();
-  });
-
-  function recalculatePriceRange() {
-    var activeBtns = $('#priceBtns .filter-quick-btn.active');
-    if (activeBtns.length === 0) {
-      priceMin = '';
-      priceMax = '';
-      return;
-    }
-    var mins = [], maxs = [];
-    activeBtns.each(function() {
-      var m = $(this).data('min');
-      var x = $(this).data('max');
-      if (m !== '' && m !== undefined) mins.push(parseInt(m));
-      if (x !== '' && x !== undefined) maxs.push(parseInt(x));
-    });
-    priceMin = mins.length > 0 ? Math.min.apply(null, mins) : '';
-    priceMax = maxs.length > 0 ? Math.max.apply(null, maxs) : '';
-  }
-
-  function recalculateRentRange() {
-    var activeBtns = $('#rentBtns .filter-quick-btn.active');
-    if (activeBtns.length === 0) {
-      rentMin = '';
-      rentMax = '';
-      return;
-    }
-    var mins = [], maxs = [];
-    activeBtns.each(function() {
-      var m = $(this).data('min');
-      var x = $(this).data('max');
-      if (m !== '' && m !== undefined) mins.push(parseInt(m));
-      if (x !== '' && x !== undefined) maxs.push(parseInt(x));
-    });
-    rentMin = mins.length > 0 ? Math.min.apply(null, mins) : '';
-    rentMax = maxs.length > 0 ? Math.max.apply(null, maxs) : '';
-  }
-
-  function formatPriceText(min, max, unit) {
-    unit = unit || '만원';
-    if (!min && !max) return '전체';
-
-    function toDisplay(val) {
-      if (val >= 10000) return (val / 10000) + '억';
-      return val + '만';
-    }
-
-    if (min && max) return toDisplay(min) + '~' + toDisplay(max);
-    if (min) return toDisplay(min) + '~';
-    return '~' + toDisplay(max);
-  }
-
-  function updatePriceDisplay() {
-    var text = formatPriceText(priceMin, priceMax);
-    $('#priceRangeText').text(text);
-    updatePriceLabel();
-  }
-
-  function updateRentDisplay() {
-    var text = '전체';
-    if (rentMin || rentMax) {
-      if (rentMin && rentMax) text = rentMin + '만~' + rentMax + '만';
-      else if (rentMin) text = rentMin + '만~';
-      else text = '~' + rentMax + '만';
-    }
-    $('#rentRangeText').text(text);
-    updatePriceLabel();
-  }
-
-  function updatePriceLabel() {
-    if (priceMin || priceMax || rentMin || rentMax) {
-      $('#priceFilterLabel').text('가격설정');
-      $('.filter-popup-btn').first().addClass('active');
-    } else {
-      $('#priceFilterLabel').text('가격대');
-      $('.filter-popup-btn').first().removeClass('active');
-    }
-  }
-
-  function applyPriceDirect() {
-    var min = $('#priceMinDirect').val();
-    var max = $('#priceMaxDirect').val();
-    if (min) priceMin = parseInt(min);
-    if (max) priceMax = parseInt(max);
-    $('#priceBtns .filter-quick-btn').removeClass('active');
-    updatePriceDisplay();
-    applyPriceFilter();
-  }
-
-  function applyRentDirect() {
-    var min = $('#rentMinDirect').val();
-    var max = $('#rentMaxDirect').val();
-    if (min) rentMin = parseInt(min);
-    if (max) rentMax = parseInt(max);
-    $('#rentBtns .filter-quick-btn').removeClass('active');
-    updateRentDisplay();
-    applyPriceFilter();
-  }
-
-  function applyPriceFilter() {
-    $('#priceMinInput').val(priceMin);
-    $('#priceMaxInput').val(priceMax);
-    $('#rentMinInput').val(rentMin);
-    $('#rentMaxInput').val(rentMax);
-  }
-
-  function resetPriceFilter() {
-    priceMin = '';
-    priceMax = '';
-    rentMin = '';
-    rentMax = '';
-    $('#priceBtns .filter-quick-btn').removeClass('active');
-    $('#rentBtns .filter-quick-btn').removeClass('active');
-    $('#priceMinDirect, #priceMaxDirect, #rentMinDirect, #rentMaxDirect').val('');
-    updatePriceDisplay();
-    updateRentDisplay();
-    applyPriceFilter();
-  }
-
-  // ========== 면적 팝업 ==========
   function openAreaPopup() {
     closePricePopup();
     $('#areaPopup').show();
     $('#filterPopupOverlay').show();
-    updateAreaDisplay();
   }
-
   function closeAreaPopup() {
     $('#areaPopup').hide();
     $('#filterPopupOverlay').hide();
   }
-
-  // 단위 전환
-  $(document).on('click', '.area-unit-tab', function() {
-    $('.area-unit-tab').removeClass('active');
-    $(this).addClass('active');
-    areaUnit = $(this).data('unit');
-
-    if (areaUnit === 'm2') {
-      $('#areaBtnsPyeong').hide();
-      $('#areaBtnsM2').show();
-      if (areaMin) areaMin = Math.round(parseFloat(areaMin) * 3.3058);
-      if (areaMax) areaMax = Math.round(parseFloat(areaMax) * 3.3058);
-    } else {
-      $('#areaBtnsPyeong').show();
-      $('#areaBtnsM2').hide();
-      if (areaMin) areaMin = Math.round(parseFloat(areaMin) / 3.3058);
-      if (areaMax) areaMax = Math.round(parseFloat(areaMax) / 3.3058);
-    }
-    updateAreaDisplay();
-    updateQuickBtnState();
-  });
-
-  // 면적 버튼 클릭
-  $(document).on('click', '.area-quick-btn', function() {
-    var $btn = $(this);
-    var min = $btn.data('min');
-    var max = $btn.data('max');
-
-    if ($btn.hasClass('active')) {
-      $btn.removeClass('active');
-      if ($('.area-quick-btn.active').length === 0) {
-        areaMin = '';
-        areaMax = '';
-      } else {
-        recalculateRange();
-      }
-    } else {
-      $btn.addClass('active');
-      recalculateRange();
-    }
-
-    updateAreaDisplay();
-    applyAreaFilter();
-  });
-
-  function recalculateRange() {
-    var activeBtns = $('.area-quick-btns:visible .area-quick-btn.active');
-    if (activeBtns.length === 0) {
-      areaMin = '';
-      areaMax = '';
-      return;
-    }
-
-    var mins = [], maxs = [];
-    activeBtns.each(function() {
-      var m = $(this).data('min');
-      var x = $(this).data('max');
-      if (m !== '' && m !== undefined) mins.push(parseInt(m));
-      if (x !== '' && x !== undefined) maxs.push(parseInt(x));
-    });
-
-    areaMin = mins.length > 0 ? Math.min.apply(null, mins) : '';
-    areaMax = maxs.length > 0 ? Math.max.apply(null, maxs) : '';
+  function closeAllPopup() {
+    closePricePopup();
+    closeAreaPopup();
   }
 
-  function updateAreaDisplay() {
-    var unitStr = areaUnit === 'm2' ? '㎡' : '평';
-    var text = '전체';
-
-    if (areaMin && areaMax) {
-      text = areaMin + unitStr + '~' + areaMax + unitStr;
-    } else if (areaMin) {
-      text = areaMin + unitStr + '~';
-    } else if (areaMax) {
-      text = '~' + areaMax + unitStr;
-    }
-
-    $('#areaRangeText').text(text);
-
-    if (areaMin || areaMax) {
-      var label = '';
-      if (areaMin && areaMax) label = areaMin + '~' + areaMax + unitStr;
-      else if (areaMin) label = areaMin + unitStr + '~';
-      else label = '~' + areaMax + unitStr;
-      $('#areaFilterLabel').text(label);
-      $('.filter-popup-btn').last().addClass('active');
-    } else {
-      $('#areaFilterLabel').text('면적');
-      $('.filter-popup-btn').last().removeClass('active');
-    }
+  // ========== 가격 필터 ==========
+  function applyPriceFilter() {
+    $('#priceMinInput').val($('#priceMinDirect').val());
+    $('#priceMaxInput').val($('#priceMaxDirect').val());
+    $('#rentMinInput').val($('#rentMinDirect').val());
+    $('#rentMaxInput').val($('#rentMaxDirect').val());
+    closePricePopup();
+    fnFilter();
+  }
+  function resetPriceFilter() {
+    $('#priceMinDirect, #priceMaxDirect, #rentMinDirect, #rentMaxDirect').val('');
+    $('#priceMinInput, #priceMaxInput, #rentMinInput, #rentMaxInput').val('');
   }
 
-  function updateQuickBtnState() {
-    $('.area-quick-btn').removeClass('active');
-    if (areaMin || areaMax) {
-      $('.area-quick-btns:visible .area-quick-btn').each(function() {
-        var btnMin = $(this).data('min');
-        var btnMax = $(this).data('max');
-
-        if (btnMin === '' && areaMin === '' && btnMax == areaMax) {
-          $(this).addClass('active');
-        } else if (btnMax === '' && areaMax === '' && btnMin == areaMin) {
-          $(this).addClass('active');
-        } else if (btnMin == areaMin && btnMax == areaMax) {
-          $(this).addClass('active');
-        }
-      });
-    }
-  }
-
+  // ========== 면적 필터 ==========
   function applyAreaFilter() {
-    $('#areaMinInput').val(areaMin);
-    $('#areaMaxInput').val(areaMax);
-    $('#areaUnitInput').val(areaUnit);
+    $('#areaMinInput').val($('#areaMinDirect').val());
+    $('#areaMaxInput').val($('#areaMaxDirect').val());
+    closeAreaPopup();
+    fnFilter();
   }
-
   function resetAreaFilter() {
-    areaMin = '';
-    areaMax = '';
-    $('.area-quick-btn').removeClass('active');
-    updateAreaDisplay();
-    applyAreaFilter();
+    $('#areaMinDirect, #areaMaxDirect').val('');
+    $('#areaMinInput, #areaMaxInput').val('');
   }
 
   // ========== 공통 ==========
@@ -628,24 +301,10 @@
   }
   function fnReset() {
     $('#filterForm').find('select[name="dealType"]').val('');
+    $('#filterForm').find('select[name="floorType"]').val('');
     $('#filterForm').find('input[name="keyword"]').val('');
-    // 면적 초기화
-    $('#areaMinInput').val('');
-    $('#areaMaxInput').val('');
-    areaMin = '';
-    areaMax = '';
-    $('.area-quick-btn').removeClass('active');
-    // 가격 초기화
+    $('#areaMinInput, #areaMaxInput').val('');
     $('#priceMinInput, #priceMaxInput, #rentMinInput, #rentMaxInput').val('');
-    priceMin = '';
-    priceMax = '';
-    rentMin = '';
-    rentMax = '';
-    $('#priceBtns .filter-quick-btn, #rentBtns .filter-quick-btn').removeClass('active');
-
-    updateAreaDisplay();
-    updatePriceDisplay();
-    updateRentDisplay();
     $('#pageNoInput').val(1);
     $('#filterForm').submit();
   }
@@ -658,35 +317,20 @@
     var foType = '${type}';
     var catCd = (foType && foType !== 'all') ? foType.toUpperCase() : '';
     var dealType = $('select[name="dealType"]').val() || '';
-
     $('#adminCatCd').val(catCd);
     $('#adminDealType').val(dealType);
     $('#goAdminForm').submit();
   }
 
-  // 초기화
-  $(function() {
-    updateAreaDisplay();
-    updateQuickBtnState();
-    updatePriceDisplay();
-    updateRentDisplay();
-
-    // ESC 키로 닫기
-    $(document).on('keydown', function(e) {
-      if (e.key === 'Escape') {
-        closeAreaPopup();
-        closePricePopup();
-      }
-    });
+  // ESC 키로 닫기
+  $(document).on('keydown', function(e) {
+    if (e.key === 'Escape') closeAllPopup();
   });
 </script>
 
-<!-- 필터 팝업 오버레이 -->
-<div id="filterPopupOverlay" class="filter-popup-overlay" style="display:none;" onclick="closeAreaPopup();closePricePopup();"></div>
-
 <!-- 필터 스타일 -->
 <style>
-/* 필터 버튼 공통 */
+/* 필터 버튼 */
 .filter-popup-btn {
   display: flex;
   align-items: center;
@@ -717,8 +361,8 @@
   z-index: 999;
 }
 
-/* 필터 팝업 공통 */
-.filter-popup, .area-popup {
+/* 필터 팝업 */
+.filter-popup {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -727,29 +371,23 @@
   border-radius: 12px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.15);
   z-index: 1000;
-  width: 420px;
+  width: 380px;
   max-width: 95vw;
-  max-height: 80vh;
-  overflow-y: auto;
 }
 
-.filter-popup-header, .area-popup-header {
+.filter-popup-header {
   display: flex;
   align-items: center;
   padding: 16px 20px;
   border-bottom: 1px solid var(--gray-100);
-  position: sticky;
-  top: 0;
-  background: white;
-  z-index: 1;
 }
-.filter-popup-title, .area-popup-title {
+.filter-popup-title {
   font-size: 16px;
   font-weight: 700;
   color: var(--navy);
   margin-right: auto;
 }
-.filter-popup-close, .area-popup-close {
+.filter-popup-close {
   background: none;
   border: none;
   font-size: 20px;
@@ -757,167 +395,94 @@
   cursor: pointer;
   padding: 4px 8px;
 }
-.filter-popup-close:hover, .area-popup-close:hover { color: var(--gray-600); }
+.filter-popup-close:hover { color: var(--gray-600); }
 
-.filter-popup-body, .area-popup-body { padding: 20px; }
+.filter-popup-body { padding: 20px; }
 
-/* 범위 표시 */
-.filter-range-display, .area-range-display {
-  text-align: center;
-  margin-bottom: 16px;
-}
-.filter-range-display span, .area-range-display span {
-  font-size: 18px;
-  font-weight: 700;
-  color: #2db400;
-}
-
-/* 섹션 타이틀 */
-.filter-section-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--navy);
-  margin: 24px 0 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--gray-100);
-}
-
-/* 빠른 선택 버튼 */
-.filter-quick-btns, .area-quick-btns {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-}
-.filter-quick-btn, .area-quick-btn {
-  padding: 10px 6px;
-  border: 1px solid var(--gray-200);
-  background: white;
-  border-radius: 6px;
+/* 섹션 라벨 */
+.filter-section-label {
   font-size: 13px;
-  color: var(--gray-600);
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-}
-.filter-quick-btn:hover, .area-quick-btn:hover {
-  border-color: #2db400;
-  color: #2db400;
-}
-.filter-quick-btn.active, .area-quick-btn.active {
-  background: #2db400;
-  border-color: #2db400;
-  color: white;
   font-weight: 600;
+  color: var(--gray-600);
+  margin-bottom: 10px;
 }
 
-/* 직접 입력 */
+/* 입력 행 */
 .filter-input-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 16px;
+  gap: 10px;
 }
 .filter-input-group {
   flex: 1;
   display: flex;
   align-items: center;
-  gap: 6px;
   background: var(--gray-50);
   border: 1px solid var(--gray-200);
   border-radius: 6px;
-  padding: 6px 10px;
-}
-.filter-input-label {
-  font-size: 12px;
-  color: var(--gray-500);
-  white-space: nowrap;
+  padding: 10px 12px;
 }
 .filter-input-group input {
   flex: 1;
   border: none;
   background: transparent;
   font-size: 14px;
-  width: 60px;
+  width: 80px;
   text-align: right;
 }
 .filter-input-group input:focus { outline: none; }
+.filter-input-unit {
+  font-size: 13px;
+  color: var(--gray-500);
+  margin-left: 6px;
+}
 .filter-input-sep {
   color: var(--gray-400);
   font-size: 14px;
 }
-.filter-input-apply {
-  padding: 8px 14px;
-  background: var(--navy);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.filter-input-apply:hover { opacity: 0.9; }
 
-/* 조건 삭제 */
-.filter-popup-footer, .area-popup-footer {
-  margin-top: 16px;
-  text-align: right;
-}
-.filter-reset-btn, .area-reset-btn {
-  background: none;
-  border: none;
-  color: var(--gray-500);
-  font-size: 13px;
-  cursor: pointer;
-  padding: 6px 12px;
-}
-.filter-reset-btn:hover, .area-reset-btn:hover { color: var(--gray-700); }
-
-/* 면적 팝업 추가 스타일 */
-.area-unit-tabs {
+/* 버튼 영역 */
+.filter-popup-btns {
   display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+.filter-reset-btn {
+  flex: 1;
+  padding: 12px;
   background: var(--gray-100);
-  border-radius: 6px;
-  padding: 3px;
-}
-.area-unit-tab {
-  padding: 6px 14px;
   border: none;
-  background: transparent;
-  font-size: 13px;
-  color: var(--gray-500);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--gray-600);
   cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
 }
-.area-unit-tab.active {
-  background: white;
-  color: var(--navy);
+.filter-reset-btn:hover { background: var(--gray-200); }
+.filter-apply-btn {
+  flex: 2;
+  padding: 12px;
+  background: var(--navy);
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  color: white;
+  cursor: pointer;
 }
-.area-quick-btns {
-  grid-template-columns: repeat(4, 1fr);
-}
+.filter-apply-btn:hover { opacity: 0.9; }
 
 /* 모바일 대응 */
 @media (max-width: 768px) {
-  .filter-popup, .area-popup {
+  .filter-popup {
     position: fixed;
     top: auto;
     bottom: 0;
     left: 0;
     right: 0;
-    margin: 0;
+    transform: none;
     width: 100%;
     max-width: 100%;
     border-radius: 16px 16px 0 0;
-    max-height: 80vh;
-  }
-  .filter-quick-btns {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  .area-quick-btns {
-    grid-template-columns: repeat(3, 1fr);
   }
   .prop-filter {
     flex-wrap: wrap;
