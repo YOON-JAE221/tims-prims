@@ -117,20 +117,8 @@
                   <label>상세주소</label>
                   <input type="text" name="addressDtl" class="form-control form-control-sm" value="${prop.addressDtl}" placeholder="상세주소 입력 (동/호수 등)" />
                 </div>
-                <div class="row">
-                  <div class="col-6">
-                    <div class="form-group">
-                      <label><strong>위도</strong></label>
-                      <input type="text" name="lat" id="lat" class="form-control form-control-sm" value="${prop.lat}" readonly style="background:#f5f5f5;" />
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="form-group">
-                      <label><strong>경도</strong></label>
-                      <input type="text" name="lng" id="lng" class="form-control form-control-sm" value="${prop.lng}" readonly style="background:#f5f5f5;" />
-                    </div>
-                  </div>
-                </div>
+                <input type="hidden" name="lat" id="lat" value="${prop.lat}" />
+                <input type="hidden" name="lng" id="lng" value="${prop.lng}" />
                 <div class="form-group">
                   <label>건물명</label>
                   <input type="text" name="buildingNm" class="form-control form-control-sm" value="${prop.buildingNm}" />
@@ -278,7 +266,7 @@
               <c:if test="${not empty fileList}">
                 <c:forEach var="file" items="${fileList}">
                   <div class="exist-file-item" id="file_${file.upldFileCd}_${file.fileSeq}">
-                    <img src="${ctx}/common/fileView?upldFileCd=${file.upldFileCd}&fileSeq=${file.fileSeq}" />
+                    <img src="/upload${file.savePath}${file.saveFileNm}" />
                     <button type="button" class="btn btn-xs btn-bo-del" onclick="fnDeleteFile('${file.upldFileCd}','${file.fileSeq}')">×</button>
                   </div>
                 </c:forEach>
@@ -297,25 +285,17 @@
           </div>
         </div>
 
-        <!-- ===== 7. 전시/상태 (미사용 - 숨김처리) ===== -->
-        <div class="card" style="display:none;">
-          <div class="card-header"><h5 class="card-title mb-0">전시/상태</h5></div>
+        <!-- ===== 7. 관리정보 ===== -->
+        <c:if test="${not empty prop}">
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">관리정보</h5></div>
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
               <tr>
-                <th>전시여부</th>
-                <td>
-                  <label class="mr-2"><input type="radio" name="displayYn" value="Y" ${empty prop.displayYn || prop.displayYn eq 'Y' ? 'checked' : ''} /> 전시</label>
-                  <label><input type="radio" name="displayYn" value="N" ${prop.displayYn eq 'N' ? 'checked' : ''} /> 비전시</label>
-                </td>
-                <th></th>
-                <td></td>
-              </tr>
-              <tr>
-                <th>전시 시작일</th>
-                <td><input type="date" name="displayStart" class="form-control form-control-sm" value="${prop.displayStart}" style="width:180px;" /></td>
-                <th>전시 종료일</th>
-                <td><input type="date" name="displayEnd" class="form-control form-control-sm" value="${prop.displayEnd}" style="width:180px;" /></td>
+                <th>등록자</th>
+                <td>${prop.creUsrNm}</td>
+                <th>등록일시</th>
+                <td>${prop.creDtm}</td>
               </tr>
               <tr>
                 <th>관리자 메모</th>
@@ -324,6 +304,11 @@
             </table>
           </div>
         </div>
+        </c:if>
+        <!-- 전시정보 hidden -->
+        <input type="hidden" name="displayYn" value="${empty prop.displayYn ? 'Y' : prop.displayYn}" />
+        <input type="hidden" name="displayStart" value="${prop.displayStart}" />
+        <input type="hidden" name="displayEnd" value="${prop.displayEnd}" />
 
         <!-- ===== 하단 버튼 ===== -->
         <div style="display:flex; justify-content:center; gap:8px; padding:40px 0 80px;">

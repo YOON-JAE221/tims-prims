@@ -87,9 +87,11 @@
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD AND C.CAT_LVL = 0) AS CAT_NM
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
-             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM_FMT
+             , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d %H:%i') AS CRE_DTM
              , DATE_FORMAT(A.UPD_DTM, '%Y-%m-%d %H:%i') AS UPD_DTM_FMT
+             , U.USR_NM AS CRE_USR_NM
           FROM TB_PROPERTY A
+          LEFT JOIN TB_USR U ON U.USR_CD = A.CRE_USR_CD
          WHERE A.PROP_CD = #{propCd}
            AND A.DEL_YN = 'N'
     </select>
