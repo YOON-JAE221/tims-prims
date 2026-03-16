@@ -295,7 +295,7 @@
                 <th>등록자</th>
                 <td>${prop.creUsrNm}</td>
                 <th>등록일시</th>
-                <td>${prop.creDtm}</td>
+                <td>${prop.creDtmFmt}</td>
               </tr>
               <tr>
                 <th>관리자 메모</th>
