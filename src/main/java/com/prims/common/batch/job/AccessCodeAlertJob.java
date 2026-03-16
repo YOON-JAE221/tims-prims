@@ -76,7 +76,7 @@ public class AccessCodeAlertJob implements BatchJob {
      */
     private String buildEmailHtml() {
 
-        String loginUrl = appProperties.getSiteUrl() + "/login";
+        String loginUrl = appProperties.getSiteUrl() + "/login/loginView";
 
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>");
