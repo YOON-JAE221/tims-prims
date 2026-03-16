@@ -34,7 +34,7 @@
       <c:if test="${fn:toLowerCase(type) eq 'shop'}">
         <div class="prop-filter-category">
           <span class="filter-category-label">업종 분류</span>
-          <select name="midCatCd" id="midCatCdSelect" onchange="fnFilter()">
+          <select name="midCatCd" id="midCatCdSelect" onchange="fnMidCatChange()">
             <option value="">중분류 전체</option>
             <c:forEach var="midCat" items="${midCatList}">
               <option value="${midCat.midCatCd}" <c:if test="${midCatCd eq midCat.midCatCd}">selected</c:if>>${midCat.catNm}</option>
@@ -381,10 +381,14 @@
   // 대분류(type) 변경 시 - 페이지 이동 (중분류/소분류 초기화)
   function fnTypeChange(typeVal) {
     $('#pageNoInput').val(1);
-    // 중분류/소분류 초기화
     if ($('#midCatCdSelect').length) $('#midCatCdSelect').val('');
     if ($('#subCatCdSelect').length) $('#subCatCdSelect').val('');
     $('#filterForm').submit();
+  }
+  // 중분류 변경 시 - 소분류 초기화 후 검색
+  function fnMidCatChange() {
+    $('#subCatCdSelect').val('');
+    fnFilter();
   }
   function fnGoDetail(propType, propCd) {
     $('#detailType').val(propType);
