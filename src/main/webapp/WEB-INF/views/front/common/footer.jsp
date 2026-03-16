@@ -2,6 +2,12 @@
 
 <!-- 플로팅 SNS 버튼 -->
 <div class="floating-sns">
+  <a href="tel:010-7113-1277" class="floating-btn floating-phone" title="전화걸기">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+      <circle cx="30" cy="30" r="30" fill="#20B954"/>
+      <path d="M38 36.5c-1.2-1.2-2.8-1.2-4 0l-1.5 1.5c-0.4 0.4-0.8 0.4-1.2 0.2-1.6-1-3.2-2.2-4.4-3.8-1.2-1.5-2.2-3.2-2.8-4.8-0.2-0.4-0.1-0.8 0.2-1.1l1.5-1.5c1.2-1.2 1.2-2.8 0-4l-2.4-2.4c-1.2-1.2-2.8-1.2-4 0l-1.2 1.2c-1.6 1.6-2 4-1.2 6 1.6 4 4.4 8 8.4 11.2s7.2 4.8 11.2 6c2 0.6 4.4 0.2 6-1.4l1.2-1.2c1.2-1.2 1.2-2.8 0-4l-2.4-2.4z" fill="#fff"/>
+    </svg>
+  </a>
   <a href="https://m.blog.naver.com/PostList.naver?blogId=primus037&tab=1" target="_blank" rel="noopener noreferrer" class="floating-btn floating-blog" title="네이버 블로그">
     <img src="${ctx}/resources/front/img/icon/naver-blog.svg" alt="네이버 블로그">
   </a>
@@ -36,9 +42,15 @@
   transform: scale(1.1);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
 }
-.floating-btn img {
+.floating-btn img,
+.floating-btn svg {
   width: 100%;
   height: 100%;
+}
+
+/* 전화버튼은 PC에서 숨김 */
+.floating-phone {
+  display: none;
 }
 
 /* 모바일 대응 */
@@ -51,6 +63,12 @@
   .floating-btn {
     width: 46px;
     height: 46px;
+  }
+  /* 모바일에서 전화버튼 표시 (약간 작게) */
+  .floating-phone {
+    display: flex;
+    width: 42px;
+    height: 42px;
   }
 }
 </style>

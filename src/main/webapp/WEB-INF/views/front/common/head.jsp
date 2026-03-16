@@ -79,6 +79,7 @@
           </div>
         </li>
         <li class="nav-item"><a href="${ctx}/locGuide/viewLocGuide">오시는길</a></li>
+        <li class="nav-item"><a href="https://m.blog.naver.com/PostList.naver?blogId=primus037&tab=1" target="_blank">BLOG</a></li>
       </ul>
       <div class="nav-right">
         <div class="nav-phone-num">
