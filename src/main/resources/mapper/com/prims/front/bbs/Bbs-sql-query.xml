@@ -92,9 +92,9 @@
              , A.RGT_EMAIL
              , CASE WHEN #{encryptKey} IS NOT NULL AND #{encryptKey} != ''
                     THEN CONCAT(
-                           SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 1, 3), '-',
-                           SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 4, 4), '-',
-                           SUBSTRING(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), 8, 4)
+                           SUBSTRING(REPLACE(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), '-', ''), 1, 3), '-',
+                           SUBSTRING(REPLACE(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), '-', ''), 4, 4), '-',
+                           SUBSTRING(REPLACE(F_COM_DECRYPT(A.RGT_PHONE, #{encryptKey}), '-', ''), 8, 4)
                          )
                     ELSE A.RGT_PHONE END AS RGT_PHONE
              , A.ATCH_FILE_KEY

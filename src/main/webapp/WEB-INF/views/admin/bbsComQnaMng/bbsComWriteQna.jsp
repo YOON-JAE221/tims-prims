@@ -50,9 +50,8 @@
                   </c:choose>
                   <c:if test="${not empty qst.propCd}">
                     <span style="margin-left:12px;">
-                      <a href="${ctx}/propertyMng/viewPropertyWrite?propCd=${qst.propCd}" target="_blank" class="btn btn-xs btn-outline-primary">
-                        📍 연결 매물 보기 (${qst.propNm})
-                      </a>
+                      <button type="button" class="btn btn-xs btn-outline-primary" onclick="fnGoAdminProp()">🔧 관리자 매물 (${qst.propNm})</button>
+                      <button type="button" class="btn btn-xs btn-outline-success ml-1" onclick="fnGoFrontProp()">👁 사용자 페이지</button>
                     </span>
                   </c:if>
                 </td>
@@ -185,6 +184,16 @@
 <!-- 목록 이동용 -->
 <form id="goListForm" action="${ctx}/bbsComQnaMng/viewBbsComQnaMng" method="post"></form>
 
+<!-- 관리자 매물 수정 이동용 -->
+<form id="goAdminPropForm" action="${ctx}/propertyMng/viewPropertyWrite" method="post" target="_blank">
+  <input type="hidden" name="propCd" value="${qst.propCd}" />
+</form>
+
+<!-- 사용자 매물 상세 이동용 -->
+<form id="goFrontPropForm" action="${ctx}/property/viewPropertyDetail" method="post" target="_blank">
+  <input type="hidden" name="propCd" value="${qst.propCd}" />
+</form>
+
 <script>
   const editor = EDIT.Summernote.init({
     el: '#summernote',
@@ -241,4 +250,6 @@
   }
 
   function fnGoList() { $('#goListForm').submit(); }
+  function fnGoAdminProp() { $('#goAdminPropForm').submit(); }
+  function fnGoFrontProp() { $('#goFrontPropForm').submit(); }
 </script>
