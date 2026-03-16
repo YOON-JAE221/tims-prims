@@ -194,7 +194,18 @@
           <div class="prop-card-img ${fn:toLowerCase(prop.catCd)}">
             <c:choose>
               <c:when test="${not empty prop.thumbPath}">
-                <img src="/upload/${prop.thumbPath}" alt="${prop.propNm}" style="width:100%; height:100%; object-fit:cover;" />
+                <img src="/upload/${prop.thumbPath}" alt="${prop.propNm}" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <span class="prop-card-emoji" style="display:none;">
+                  <c:choose>
+                    <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
+                    <c:when test="${prop.catCd eq 'OFFICETEL'}">&#127980;</c:when>
+                    <c:when test="${prop.catCd eq 'VILLA'}">&#127968;</c:when>
+                    <c:when test="${prop.catCd eq 'ONEROOM'}">&#128682;</c:when>
+                    <c:when test="${prop.catCd eq 'SHOP'}">&#127978;</c:when>
+                    <c:when test="${prop.catCd eq 'OFFICE'}">&#127963;</c:when>
+                    <c:otherwise>&#127968;</c:otherwise>
+                  </c:choose>
+                </span>
               </c:when>
               <c:otherwise>
                 <span class="prop-card-emoji">

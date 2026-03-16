@@ -166,7 +166,12 @@ img { max-width: 100%; display: block; }
 .prop-card-img.oneroom { background: linear-gradient(135deg, #3b5e6b, #5a9aaa); }
 .prop-card-img.shop { background: linear-gradient(135deg, #3a7a6a, #5bb5a0); }
 .prop-card-img.office { background: linear-gradient(135deg, #5a6a3a, #8aaa5a); }
-.prop-card-emoji { font-size: 42px; color: white; }
+.prop-card-emoji { font-size: 42px; color: white; display: flex; align-items: center; justify-content: center; }
+/* 이미지 로드 실패 시 alt 텍스트 숨김 */
+.prop-card-img img {
+  color: transparent;
+  font-size: 0;
+}
 .prop-card-noimg {
   font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.6);
   letter-spacing: 2px;
@@ -516,12 +521,13 @@ img { max-width: 100%; display: block; }
 .qna-required { color: var(--orange); }
 .qna-readonly-badge {
   display: inline-block;
-  padding: 8px 16px;
-  background: var(--orange);
-  color: white;
+  padding: 6px 14px;
+  background: var(--orange-light);
+  color: var(--orange);
   font-size: 14px;
-  font-weight: 700;
-  border-radius: 8px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid var(--orange);
 }
 
 /* ===== FAQ 아코디언 ===== */
