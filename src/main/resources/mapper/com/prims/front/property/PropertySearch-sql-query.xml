@@ -45,6 +45,8 @@
              , A.PROP_NM
              , A.CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
+             , A.MID_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , A.SUB_CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE
@@ -65,6 +67,12 @@
            AND A.USE_YN = 'Y'
            <if test="catCd != null and catCd != '' and catCd != 'all' and catCd != 'ALL'">
            AND A.CAT_CD = UPPER(#{catCd})
+           </if>
+           <if test="midCatCd != null and midCatCd != '' and midCatCd != 'ALL'">
+           AND A.MID_CAT_CD = #{midCatCd}
+           </if>
+           <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
+           AND A.SUB_CAT_CD = #{subCatCd}
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -122,6 +130,12 @@
            AND A.USE_YN = 'Y'
            <if test="catCd != null and catCd != '' and catCd != 'all' and catCd != 'ALL'">
            AND A.CAT_CD = UPPER(#{catCd})
+           </if>
+           <if test="midCatCd != null and midCatCd != '' and midCatCd != 'ALL'">
+           AND A.MID_CAT_CD = #{midCatCd}
+           </if>
+           <if test="subCatCd != null and subCatCd != '' and subCatCd != 'ALL'">
+           AND A.SUB_CAT_CD = #{subCatCd}
            </if>
            <if test="dealType != null and dealType != '' and dealType != 'ALL'">
            AND A.DEAL_TYPE = #{dealType}
@@ -263,6 +277,7 @@
     <select id="getPropertyDetail" parameterType="map" resultType="map">
         SELECT A.*
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
@@ -301,6 +316,30 @@
              , CAT_NM
           FROM TB_PROP_CATEGORY
          WHERE CAT_LVL = 0
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- FO 중분류 목록 (상가점포용) -->
+    <select id="getMidCatList" parameterType="string" resultType="map">
+        SELECT CAT_CD AS MID_CAT_CD
+             , CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE UPR_CAT_CD = #{catCd}
+           AND CAT_LVL = 1
+           AND USE_YN = 'Y'
+           AND DEL_YN = 'N'
+         ORDER BY SORT_ORDER
+    </select>
+
+    <!-- FO 소분류 목록 (상가점포용) -->
+    <select id="getSubCatList" parameterType="string" resultType="map">
+        SELECT CAT_CD AS SUB_CAT_CD
+             , CAT_NM
+          FROM TB_PROP_CATEGORY
+         WHERE UPR_CAT_CD = #{midCatCd}
+           AND CAT_LVL = 2
            AND USE_YN = 'Y'
            AND DEL_YN = 'N'
          ORDER BY SORT_ORDER

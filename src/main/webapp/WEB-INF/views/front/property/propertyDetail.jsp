@@ -91,7 +91,9 @@
         </c:choose>
       </div>
       <div class="prop-detail-summary">
-        <div class="prop-detail-type">${prop.catNm}</div>
+        <div class="prop-detail-type">
+          ${prop.catNm}<c:if test="${not empty prop.midCatNm}"> &gt; ${prop.midCatNm}</c:if><c:if test="${not empty prop.subCatNm}"> &gt; ${prop.subCatNm}</c:if>
+        </div>
         <h2 class="prop-detail-title">${prop.propNm}</h2>
         <div class="prop-detail-price">
           <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
@@ -226,7 +228,7 @@
 <style>
 /* ── 상단 레이아웃 고정 ─────────────────────────── */
 .prop-detail-top {
-  align-items: stretch;
+  align-items: flex-start;
 }
 
 .prop-detail-summary {
@@ -244,20 +246,18 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  /* 오른쪽 영역 높이에 맞춤 - align-self: stretch로 자동 조절 */
-  align-self: stretch;
+  /* 오른쪽 영역 높이에 맞춤 - 고정 높이 */
+  height: 320px;
 }
 
 /* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
 .prop-gallery-grid {
   height: 100% !important;
-  min-height: 280px;
 }
 
 /* 이미지 없을 때 (거래완료 등) - 오른쪽 높이에 맞춤 */
 .prop-gallery-wrap .prop-detail-img {
   height: 100%;
-  min-height: 280px;
 }
 
 /* 메인 + 사이드 2열 레이아웃 */
@@ -266,7 +266,6 @@
   gap: 4px;
   width: 100%;
   height: 100%;
-  min-height: 280px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -275,10 +274,11 @@
 /* 좌측 메인 이미지 */
 .prop-gallery-main {
   position: relative;
-  flex: 1.5;
+  flex: 1;
   overflow: hidden;
   cursor: pointer;
   background: #e8e8e8;
+  height: 100%;
 }
 
 /* 1장: 메인이 100% 차지 */
@@ -302,9 +302,11 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 0 0 160px;
+  flex: 0 0 120px;
   position: relative;
   min-width: 0;
+  height: 100%;
+  overflow: hidden;
 }
 
 .prop-gallery-thumb {
@@ -476,14 +478,14 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 1024px) {
-  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; }
-  .prop-gallery-side { flex: 0 0 130px; }
+  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; height: 280px; }
+  .prop-gallery-side { flex: 0 0 100px; }
 }
 
 @media (max-width: 768px) {
   .prop-gallery-wrap { width: 100%; flex: none; max-width: none; height: auto; }
-  .prop-gallery-grid { aspect-ratio: 16/9; height: auto; }
-  .prop-gallery-side { flex: 0 0 90px; }
+  .prop-gallery-grid { aspect-ratio: 16/9; height: auto !important; }
+  .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
 
   .prop-detail-top { flex-direction: column; gap: 0; }

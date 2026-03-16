@@ -29,8 +29,28 @@
       <input type="hidden" name="priceMax" id="priceMaxInput" value="${priceMax}" />
       <input type="hidden" name="rentMin" id="rentMinInput" value="${rentMin}" />
       <input type="hidden" name="rentMax" id="rentMaxInput" value="${rentMax}" />
+
+      <%-- 상가점포일 때만 중분류/소분류 필터 표시 (별도 라인) --%>
+      <c:if test="${fn:toLowerCase(type) eq 'shop'}">
+        <div class="prop-filter-category">
+          <span class="filter-category-label">업종 분류</span>
+          <select name="midCatCd" id="midCatCdSelect" onchange="fnMidCatChange(this.value)">
+            <option value="">중분류 전체</option>
+            <c:forEach var="midCat" items="${midCatList}">
+              <option value="${midCat.MID_CAT_CD}" ${midCatCd eq midCat.MID_CAT_CD ? 'selected' : ''}>${midCat.catNm}</option>
+            </c:forEach>
+          </select>
+          <select name="subCatCd" id="subCatCdSelect" onchange="fnFilter()">
+            <option value="">소분류 전체</option>
+            <c:forEach var="subCat" items="${subCatList}">
+              <option value="${subCat.SUB_CAT_CD}" ${subCatCd eq subCat.SUB_CAT_CD ? 'selected' : ''}>${subCat.catNm}</option>
+            </c:forEach>
+          </select>
+        </div>
+      </c:if>
+
       <div class="prop-filter">
-        <select name="type" class="mo-only" onchange="fnFilter()">
+        <select name="type" class="mo-only" onchange="fnTypeChange(this.value)">
           <option value="all">전체매물</option>
           <c:forEach var="cat" items="${catList}">
             <option value="${fn:toLowerCase(cat.catCd)}" ${fn:toLowerCase(type) eq fn:toLowerCase(cat.catCd) ? 'selected' : ''}>${cat.catNm}</option>
@@ -229,7 +249,9 @@
             </c:if>
           </div>
           <div class="prop-card-body">
-            <div class="prop-card-type">${prop.catNm}</div>
+            <div class="prop-card-type">
+              ${prop.catNm}<c:if test="${not empty prop.midCatNm}"> &gt; ${prop.midCatNm}</c:if><c:if test="${not empty prop.subCatNm}"> &gt; ${prop.subCatNm}</c:if>
+            </div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-price">
               <span class="prop-deal-label">${prop.dealTypeNm}</span>
@@ -348,11 +370,48 @@
   function fnReset() {
     $('#filterForm').find('select[name="dealType"]').val('');
     $('#filterForm').find('select[name="floorType"]').val('');
+    $('#filterForm').find('select[name="midCatCd"]').val('');
+    $('#filterForm').find('select[name="subCatCd"]').val('');
     $('#filterForm').find('input[name="keyword"]').val('');
     $('#areaMinInput, #areaMaxInput').val('');
     $('#priceMinInput, #priceMaxInput, #rentMinInput, #rentMaxInput').val('');
     $('#pageNoInput').val(1);
     $('#filterForm').submit();
+  }
+  // 대분류(type) 변경 시 - 페이지 이동 (중분류/소분류 초기화)
+  function fnTypeChange(typeVal) {
+    $('#pageNoInput').val(1);
+    // 중분류/소분류 초기화
+    $('#midCatCdSelect').val('');
+    $('#subCatCdSelect').val('');
+    $('#filterForm').submit();
+  }
+  // 중분류 변경 시 - 소분류 목록 갱신
+  function fnMidCatChange(midCatCd) {
+    if (!midCatCd) {
+      $('#subCatCdSelect').html('<option value="">소분류 전체</option>');
+      fnFilter();
+      return;
+    }
+    $.ajax({
+      url: '${ctx}/property/getSubCatList',
+      type: 'POST',
+      data: { midCatCd: midCatCd },
+      dataType: 'json',
+      success: function(res) {
+        var html = '<option value="">소분류 전체</option>';
+        if (res.result === 'OK' && res.DATA) {
+          res.DATA.forEach(function(item) {
+            html += '<option value="' + item.SUB_CAT_CD + '">' + item.catNm + '</option>';
+          });
+        }
+        $('#subCatCdSelect').html(html);
+        fnFilter();
+      },
+      error: function() {
+        fnFilter();
+      }
+    });
   }
   function fnGoDetail(propType, propCd) {
     $('#detailType').val(propType);
@@ -376,6 +435,39 @@
 
 <!-- 필터 스타일 -->
 <style>
+/* 업종 분류 필터 (상가점포용) */
+.prop-filter-category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: var(--orange-light);
+  border-radius: 10px;
+  border: 1px solid rgba(232, 131, 12, 0.2);
+}
+.filter-category-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--orange);
+  white-space: nowrap;
+  margin-right: 4px;
+}
+.prop-filter-category select {
+  padding: 8px 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  color: var(--gray-700);
+  background: white;
+  min-width: 140px;
+}
+.prop-filter-category select:focus {
+  border-color: var(--orange);
+}
+
 /* 필터 버튼 */
 .filter-popup-btn {
   display: flex;
@@ -511,6 +603,19 @@
 
 /* 모바일 대응 */
 @media (max-width: 768px) {
+  .prop-filter-category {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px;
+  }
+  .filter-category-label {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .prop-filter-category select {
+    flex: 1;
+    min-width: 0;
+  }
   .filter-popup {
     position: fixed;
     top: auto;

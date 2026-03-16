@@ -64,4 +64,14 @@ public class PropertySearchDao {
     public List<Map<String, Object>> getFrontCatList() {
         return sqlSession.selectList("propertySearch.getFrontCatList");
     }
+
+    /** FO 중분류 목록 (상가점포용) */
+    public List<Map<String, Object>> getMidCatList(String catCd) {
+        return sqlSession.selectList("propertySearch.getMidCatList", catCd);
+    }
+
+    /** FO 소분류 목록 (상가점포용) */
+    public List<Map<String, Object>> getSubCatList(String midCatCd) {
+        return sqlSession.selectList("propertySearch.getSubCatList", midCatCd);
+    }
 }

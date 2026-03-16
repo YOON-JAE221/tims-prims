@@ -35,6 +35,8 @@ public class PropertyController {
      */
     @RequestMapping(value = "/viewPropertyList", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyList(@RequestParam(value = "type", required = false, defaultValue = "all") String type,
+                                   @RequestParam(value = "midCatCd", required = false, defaultValue = "") String midCatCd,
+                                   @RequestParam(value = "subCatCd", required = false, defaultValue = "") String subCatCd,
                                    @RequestParam(value = "dealType", required = false, defaultValue = "") String dealType,
                                    @RequestParam(value = "badgeType", required = false, defaultValue = "") String badgeType,
                                    @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
@@ -63,6 +65,8 @@ public class PropertyController {
         int offset = (pageNo - 1) * pageSize;
         Map<String, Object> param = new HashMap<>();
         param.put("catCd", type);
+        param.put("midCatCd", midCatCd);
+        param.put("subCatCd", subCatCd);
         param.put("dealType", dealType);
         param.put("badgeType", badgeType);
         param.put("keyword", keyword);
@@ -103,6 +107,8 @@ public class PropertyController {
         int totalPage = totalCnt > 0 ? (int) Math.ceil((double) totalCnt / pageSize) : 1;
 
         model.addAttribute("type", type);
+        model.addAttribute("midCatCd", midCatCd);
+        model.addAttribute("subCatCd", subCatCd);
         model.addAttribute("dealType", dealType);
         model.addAttribute("badgeType", badgeType);
         model.addAttribute("keyword", keyword);
@@ -118,6 +124,15 @@ public class PropertyController {
         model.addAttribute("pageNo", pageNo);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("catList", propertySearchDao.getFrontCatList());
+        
+        // 상가점포(SHOP)인 경우 중분류/소분류 목록 전달
+        if ("shop".equalsIgnoreCase(type)) {
+            model.addAttribute("midCatList", propertySearchDao.getMidCatList("SHOP"));
+            if (midCatCd != null && !midCatCd.isEmpty()) {
+                model.addAttribute("subCatList", propertySearchDao.getSubCatList(midCatCd));
+            }
+        }
+        
         return "front/property/propertyList";
     }
 
@@ -146,6 +161,24 @@ public class PropertyController {
         }
         model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertyDetail";
+    }
+
+    /**
+     * 중분류 변경 시 소분류 목록 조회 (AJAX)
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getSubCatList", method = RequestMethod.POST)
+    public Map<String, Object> getSubCatList(@RequestParam("midCatCd") String midCatCd) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            List<Map<String, Object>> list = propertySearchDao.getSubCatList(midCatCd);
+            result.put("DATA", list);
+            result.put("result", "OK");
+        } catch (Exception e) {
+            result.put("DATA", new java.util.ArrayList<>());
+            result.put("result", "FAIL");
+        }
+        return result;
     }
 
     /**
