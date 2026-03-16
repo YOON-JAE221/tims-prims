@@ -113,26 +113,12 @@
         <div class="prop-detail-quick">
           <div class="prop-quick-item">
             <div class="prop-quick-label">전용면적 / 평수</div>
-            <div class="prop-quick-value">${prop.areaExclusive}&#13217; / <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}"><fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</c:if></div>
+            <div class="prop-quick-value"><c:choose><c:when test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">${prop.areaExclusive}&#13217; / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</c:when><c:otherwise>-</c:otherwise></c:choose></div>
           </div>
-          <c:if test="${prop.roomCnt > 0}">
-          <div class="prop-quick-item">
-            <div class="prop-quick-label">방/욕실</div>
-            <div class="prop-quick-value">${prop.roomCnt}룸<c:if test="${prop.bathCnt > 0}"> / ${prop.bathCnt}욕실</c:if></div>
-          </div>
-          </c:if>
-          <c:if test="${not empty prop.floorNo}">
           <div class="prop-quick-item">
             <div class="prop-quick-label">해당층 / 총층</div>
-            <div class="prop-quick-value">${prop.floorNo}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</div>
+            <div class="prop-quick-value">${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</div>
           </div>
-          </c:if>
-          <c:if test="${not empty prop.moveInDate}">
-          <div class="prop-quick-item">
-            <div class="prop-quick-label">입주가능일</div>
-            <div class="prop-quick-value">${prop.moveInDate}</div>
-          </div>
-          </c:if>
         </div>
 
         <c:if test="${prop.soldYn ne 'Y'}">
@@ -260,9 +246,8 @@
   position: relative;
   border-radius: 16px;
   overflow: hidden;
-  flex: 0 0 480px;
-  width: 480px;
-  height: 360px;
+  flex: 0 0 520px;
+  width: 520px;
   min-width: 260px;
 }
 
@@ -271,7 +256,7 @@
   display: flex;
   gap: 4px;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 4/3;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -280,15 +265,17 @@
 /* 좌측 메인 이미지 */
 .prop-gallery-main {
   position: relative;
-  flex: 2;
+  flex: 1.5;
   overflow: hidden;
   cursor: pointer;
   background: #e8e8e8;
+  aspect-ratio: 4/3;
 }
 
 /* 1장: 메인이 100% 차지 */
 .prop-gallery-count-1 .prop-gallery-main {
   flex: 1;
+  aspect-ratio: 16/10;
 }
 
 .prop-gallery-main img {
@@ -307,7 +294,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
+  flex: 0 0 160px;
   position: relative;
   min-width: 0;
 }
@@ -481,13 +468,14 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 1024px) {
-  .prop-gallery-wrap { flex: 0 0 400px; width: 400px; height: 320px; }
+  .prop-gallery-wrap { flex: 0 0 420px; width: 420px; }
+  .prop-gallery-side { flex: 0 0 130px; }
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; height: 260px; }
-  .prop-gallery-grid { height: 100%; }
-  .prop-gallery-side { flex: 0 0 80px; }
+  .prop-gallery-wrap { width: 100%; flex: none; }
+  .prop-gallery-main { aspect-ratio: 16/9; }
+  .prop-gallery-side { flex: 0 0 90px; }
   .gallery-modal-inner { padding: 20px 44px; }
 
   .prop-detail-top { flex-direction: column; gap: 0; }
