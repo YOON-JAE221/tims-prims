@@ -34,16 +34,16 @@
       <c:if test="${fn:toLowerCase(type) eq 'shop'}">
         <div class="prop-filter-category">
           <span class="filter-category-label">업종 분류</span>
-          <select name="midCatCd" id="midCatCdSelect" onchange="fnMidCatChange(this.value)">
+          <select name="midCatCd" id="midCatCdSelect" onchange="fnFilter()">
             <option value="">중분류 전체</option>
             <c:forEach var="midCat" items="${midCatList}">
-              <option value="${midCat.MID_CAT_CD}" ${midCatCd eq midCat.MID_CAT_CD ? 'selected' : ''}>${midCat.catNm}</option>
+              <option value="${midCat.midCatCd}" <c:if test="${midCatCd eq midCat.midCatCd}">selected</c:if>>${midCat.catNm}</option>
             </c:forEach>
           </select>
           <select name="subCatCd" id="subCatCdSelect" onchange="fnFilter()">
             <option value="">소분류 전체</option>
             <c:forEach var="subCat" items="${subCatList}">
-              <option value="${subCat.SUB_CAT_CD}" ${subCatCd eq subCat.SUB_CAT_CD ? 'selected' : ''}>${subCat.catNm}</option>
+              <option value="${subCat.subCatCd}" <c:if test="${subCatCd eq subCat.subCatCd}">selected</c:if>>${subCat.catNm}</option>
             </c:forEach>
           </select>
         </div>
@@ -382,36 +382,9 @@
   function fnTypeChange(typeVal) {
     $('#pageNoInput').val(1);
     // 중분류/소분류 초기화
-    $('#midCatCdSelect').val('');
-    $('#subCatCdSelect').val('');
+    if ($('#midCatCdSelect').length) $('#midCatCdSelect').val('');
+    if ($('#subCatCdSelect').length) $('#subCatCdSelect').val('');
     $('#filterForm').submit();
-  }
-  // 중분류 변경 시 - 소분류 목록 갱신
-  function fnMidCatChange(midCatCd) {
-    if (!midCatCd) {
-      $('#subCatCdSelect').html('<option value="">소분류 전체</option>');
-      fnFilter();
-      return;
-    }
-    $.ajax({
-      url: '${ctx}/property/getSubCatList',
-      type: 'POST',
-      data: { midCatCd: midCatCd },
-      dataType: 'json',
-      success: function(res) {
-        var html = '<option value="">소분류 전체</option>';
-        if (res.result === 'OK' && res.DATA) {
-          res.DATA.forEach(function(item) {
-            html += '<option value="' + item.SUB_CAT_CD + '">' + item.catNm + '</option>';
-          });
-        }
-        $('#subCatCdSelect').html(html);
-        fnFilter();
-      },
-      error: function() {
-        fnFilter();
-      }
-    });
   }
   function fnGoDetail(propType, propCd) {
     $('#detailType').val(propType);
