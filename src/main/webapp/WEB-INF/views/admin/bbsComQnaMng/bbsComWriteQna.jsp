@@ -50,8 +50,8 @@
                   </c:choose>
                   <c:if test="${not empty qst.propCd}">
                     <span style="margin-left:12px;">
-                      <button type="button" class="btn btn-xs btn-outline-primary" onclick="fnGoAdminProp()">🔧 관리자 매물 (${qst.propNm})</button>
-                      <button type="button" class="btn btn-xs btn-outline-success ml-1" onclick="fnGoFrontProp()">👁 사용자 페이지</button>
+                      <button type="button" class="btn btn-sm btn-primary" onclick="fnGoAdminProp()">📝 매물 수정</button>
+                      <button type="button" class="btn btn-sm btn-success ml-1" onclick="fnGoFrontProp()">🌐 고객화면 보기</button>
                     </span>
                   </c:if>
                 </td>
@@ -191,7 +191,7 @@
 
 <!-- 사용자 매물 상세 이동용 -->
 <form id="goFrontPropForm" action="${ctx}/property/viewPropertyDetail" method="post" target="_blank">
-  <input type="hidden" name="propCd" value="${qst.propCd}" />
+  <input type="hidden" name="id" value="${qst.propCd}" />
 </form>
 
 <script>

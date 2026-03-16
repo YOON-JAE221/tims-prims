@@ -91,7 +91,7 @@
         </c:choose>
       </div>
       <div class="prop-detail-summary">
-        <div class="prop-detail-type">${prop.catNm} &middot; ${prop.dealTypeNm}</div>
+        <div class="prop-detail-type">${prop.catNm}</div>
         <h2 class="prop-detail-title">${prop.propNm}</h2>
         <div class="prop-detail-price">
           <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
@@ -101,13 +101,6 @@
               <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>원</c:otherwise>
             </c:choose>
           </span>
-        </div>
-
-        <div class="prop-detail-tags">
-          <span class="prop-tag">${prop.catNm}</span>
-          <span class="prop-tag">${prop.dealTypeNm}</span>
-          <c:if test="${not empty prop.direction}"><span class="prop-tag">${prop.direction}</span></c:if>
-          <c:if test="${not empty prop.parking}"><span class="prop-tag">주차 ${prop.parking}</span></c:if>
         </div>
 
         <div class="prop-detail-quick">
