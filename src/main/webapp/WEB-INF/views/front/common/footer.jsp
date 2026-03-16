@@ -1,5 +1,61 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<!-- 플로팅 SNS 버튼 -->
+<div class="floating-sns">
+  <a href="https://m.blog.naver.com/PostList.naver?blogId=primus037&tab=1" target="_blank" rel="noopener noreferrer" class="floating-btn floating-blog" title="네이버 블로그">
+    <img src="${ctx}/resources/front/img/icon/naver-blog.svg" alt="네이버 블로그">
+  </a>
+  <a href="https://www.instagram.com/primus037?igsh=MW51b3R2enQxZHZteQ==" target="_blank" rel="noopener noreferrer" class="floating-btn floating-insta" title="인스타그램">
+    <img src="${ctx}/resources/front/img/icon/instagram.svg" alt="인스타그램">
+  </a>
+</div>
+
+<style>
+/* 플로팅 SNS 버튼 */
+.floating-sns {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+.floating-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+.floating-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .floating-sns {
+    right: 14px;
+    bottom: 14px;
+    gap: 10px;
+  }
+  .floating-btn {
+    width: 46px;
+    height: 46px;
+  }
+}
+</style>
+
+
 <footer class="primus-footer">
 
   <div class="footer-main">
