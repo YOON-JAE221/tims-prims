@@ -9,7 +9,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item active">매물관리</li>
-            <li class="breadcrumb-item"><a href="${ctx}/propertyMng/viewPropertyMng">매물관리</a></li>
+            <li class="breadcrumb-item"><a href="/property/viewPropertyList" target="_blank">매물관리</a></li>
           </ol>
         </div>
       </div>
