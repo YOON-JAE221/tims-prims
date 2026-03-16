@@ -199,7 +199,7 @@
             <div class="quick-links">
               <a href="${ctx}/propertyMng/viewPropertyWrite" class="quick-link">➕ 매물 등록</a>
               <a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="quick-link">📩 문의 게시판</a>
-              <a href="${ctx}/bbsComNoticeMng/viewBbsComNoticeMng" class="quick-link">📢 공지사항</a>
+              <a href="javascript:fnGoNotice()" class="quick-link">📢 공지사항</a>
             </div>
           </div>
 
@@ -225,6 +225,10 @@
 
 <form id="goPropMngForm" action="${ctx}/propertyMng/viewPropertyMng" method="post">
   <input type="hidden" name="soldYn" id="soldYnVal" />
+</form>
+
+<form id="goNoticeForm" action="${ctx}/bbsComMng/viewBbsComMng" method="post">
+  <input type="hidden" name="brdCd" value="38f5e73ffcbf11f08771908d6ec6e544" />
 </form>
 
 <script>
@@ -287,5 +291,9 @@ function fnGoPropEdit(propCd) {
 function fnGoPropMng(soldYn) {
   $('#soldYnVal').val(soldYn);
   $('#goPropMngForm').submit();
+}
+
+function fnGoNotice() {
+  $('#goNoticeForm').submit();
 }
 </script>
