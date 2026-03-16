@@ -13,6 +13,17 @@
 
     <!-- 제목 헤더 -->
     <div class="board-detail-header">
+      <div style="margin-bottom:8px;">
+        <c:choose>
+          <c:when test="${pst.inqType eq 'PROPERTY'}"><span class="qna-readonly-badge" style="font-size:12px; padding:5px 12px;">매물문의</span></c:when>
+          <c:when test="${pst.inqType eq 'SALE'}"><span class="qna-readonly-badge" style="font-size:12px; padding:5px 12px; background:var(--navy);">매매상담</span></c:when>
+          <c:when test="${pst.inqType eq 'RENT'}"><span class="qna-readonly-badge" style="font-size:12px; padding:5px 12px; background:var(--gray-500);">임대상담</span></c:when>
+          <c:when test="${pst.inqType eq 'ETC'}"><span class="qna-readonly-badge" style="font-size:12px; padding:5px 12px; background:var(--gray-700);">기타문의</span></c:when>
+        </c:choose>
+        <c:if test="${not empty pst.propNm}">
+          <a href="${ctx}/property/viewPropertyDetail?propCd=${pst.propCd}" target="_blank" style="margin-left:8px; font-size:13px; color:var(--orange); text-decoration:underline;">📍 ${pst.propNm}</a>
+        </c:if>
+      </div>
       <div class="board-detail-title">${pst.pstNm}</div>
       <div class="board-detail-meta">
         <span>작성자 : ${pst.rgtUsrNm}</span>

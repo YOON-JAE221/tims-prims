@@ -113,11 +113,11 @@
         <div class="prop-detail-quick">
           <div class="prop-quick-item">
             <div class="prop-quick-label">전용면적 / 평수</div>
-            <div class="prop-quick-value"><c:choose><c:when test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">${prop.areaExclusive}&#13217; / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</c:when><c:otherwise>-</c:otherwise></c:choose></div>
+            <div class="prop-quick-value" style="white-space:nowrap;"><c:choose><c:when test="${not empty prop.areaExclusive and prop.areaExclusive > 0}"><fmt:formatNumber value="${prop.areaExclusive}" pattern="#,##0.##"/>㎡ / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</c:when><c:otherwise>-</c:otherwise></c:choose></div>
           </div>
           <div class="prop-quick-item">
             <div class="prop-quick-label">해당층 / 총층</div>
-            <div class="prop-quick-value">${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</div>
+            <div class="prop-quick-value" style="white-space:nowrap;">${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</div>
           </div>
         </div>
 
@@ -591,6 +591,8 @@
 <form id="goPropertyConsultForm" action="${ctx}/bbs/viewBbsWriteQna" method="post" style="display:none;">
   <input type="hidden" name="brdCd" value="3ccd942dfcbf11f08771908d6ec6e544" />
   <input type="hidden" name="pstNm" id="consultPstNm" value="[매물문의] ${prop.propNm}" />
+  <input type="hidden" name="propCd" value="${prop.propCd}" />
+  <input type="hidden" name="inqType" value="PROPERTY" />
 </form>
 <script>
   function fnGoPropertyConsult() {

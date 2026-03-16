@@ -18,6 +18,13 @@
 	           ) AS RGT_PHONE
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
 	         , IFNULL(A.VIEW_CNT, 0) AS VIEW_CNT
+	         , A.INQ_TYPE
+	         , CASE A.INQ_TYPE
+	             WHEN 'PROPERTY' THEN '매물문의'
+	             WHEN 'SALE' THEN '매매상담'
+	             WHEN 'RENT' THEN '임대상담'
+	             WHEN 'ETC' THEN '기타문의'
+	             ELSE '-' END AS INQ_TYPE_NM
 	         , (SELECT COUNT(*) FROM TB_BBS_PST T
 	             WHERE T.BRD_CD = A.BRD_CD AND T.ROT_PST_CD = A.PST_CD
 	               AND T.PST_LVL > 0 AND T.DEL_YN = 'N' AND T.USE_YN = 'Y'
@@ -69,7 +76,17 @@
 	           ) AS RGT_PHONE
 	         , A.ATCH_FILE_KEY, IFNULL(A.VIEW_CNT,0) AS VIEW_CNT
 	         , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d %H:%i') AS RGT_DTM
+	         , A.PROP_CD
+	         , A.INQ_TYPE
+	         , CASE A.INQ_TYPE
+	             WHEN 'PROPERTY' THEN '매물문의'
+	             WHEN 'SALE' THEN '매매상담'
+	             WHEN 'RENT' THEN '임대상담'
+	             WHEN 'ETC' THEN '기타문의'
+	             ELSE '-' END AS INQ_TYPE_NM
+	         , P.PROP_NM
 	      FROM TB_BBS_PST A
+	      LEFT JOIN TB_PROP P ON A.PROP_CD = P.PROP_CD AND P.DEL_YN = 'N'
 	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
 	       AND A.BRD_CD = #{brdCd} AND A.PST_CD = #{pstCd}
 	</select>

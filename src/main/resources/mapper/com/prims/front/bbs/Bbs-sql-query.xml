@@ -99,8 +99,18 @@
                     ELSE A.RGT_PHONE END AS RGT_PHONE
              , A.ATCH_FILE_KEY
              , DATE_FORMAT(A.RGT_DTM, '%Y-%m-%d') AS RGT_DTM
+             , A.PROP_CD
+             , A.INQ_TYPE
+             , CASE A.INQ_TYPE
+                 WHEN 'PROPERTY' THEN '매물문의'
+                 WHEN 'SALE' THEN '매매상담'
+                 WHEN 'RENT' THEN '임대상담'
+                 WHEN 'ETC' THEN '기타문의'
+                 ELSE '-' END AS INQ_TYPE_NM
+             , P.PROP_NM
           FROM TB_BBS_PST A
          INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN = 'N' AND B.USE_YN = 'Y'
+          LEFT JOIN TB_PROP P ON A.PROP_CD = P.PROP_CD AND P.DEL_YN = 'N'
          WHERE A.DEL_YN = 'N'
            AND A.USE_YN = 'Y'
            AND A.BRD_CD = #{brdCd}
@@ -135,6 +145,8 @@
 		    , RGT_DTM
 		    , ATCH_FILE_KEY
 		    , ATCH_FILE_TYPE
+		    , PROP_CD
+		    , INQ_TYPE
 		    , VIEW_CNT
 		    , IDX
 		    , THUMB_URL
@@ -170,6 +182,8 @@
 		    , SYSDATE()
 		    , #{atchFileKey}
 		    , 0
+		    , #{propCd}
+		    , #{inqType}
 		    , 0
 		    , (SELECT IFNULL(MAX(T.IDX), 0) + 1 FROM TB_BBS_PST T WHERE T.BRD_CD = #{brdCd})
 		    , #{thumbUrl}

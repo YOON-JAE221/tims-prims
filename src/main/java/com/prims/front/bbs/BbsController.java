@@ -96,6 +96,8 @@ public class BbsController {
     public String viewBbsWriteQna(@RequestParam(value="brdCd", required=false) String brdCd,
                                    @RequestParam(value="pstCd", required=false) String pstCd,
                                    @RequestParam(value="pstNm", required=false) String pstNm,
+                                   @RequestParam(value="propCd", required=false) String propCd,
+                                   @RequestParam(value="inqType", required=false) String inqType,
                                    Model model, HttpServletRequest request) {
 
         // GET 요청 시 홈으로 리다이렉트 (로그인 후 복귀 등)
@@ -140,6 +142,15 @@ public class BbsController {
         // 매물 문의 시 제목 자동 설정
         if (pstNm != null && !pstNm.isEmpty() && pstCd == null) {
             model.addAttribute("initPstNm", pstNm);
+        }
+
+        // 매물 연결 정보
+        if (propCd != null && !propCd.isEmpty()) {
+            model.addAttribute("propCd", propCd);
+        }
+        // 문의유형 (매물문의 시 PROPERTY, 아니면 선택)
+        if (inqType != null && !inqType.isEmpty()) {
+            model.addAttribute("inqType", inqType);
         }
 
         return "front/bbs/bbsQna/bbsWriteQna";

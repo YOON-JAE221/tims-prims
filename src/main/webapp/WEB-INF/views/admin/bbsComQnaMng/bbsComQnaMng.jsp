@@ -67,6 +67,26 @@
       { title:"PST_CD", field:"pstCd", visible:false },
       { title:"BRD_CD", field:"brdCd", visible:false },
       {
+        title:"문의유형",
+        field:"inqTypeNm",
+        width:100,
+        hozAlign:"center",
+        headerSort:false,
+        formatter: function(cell) {
+          var val = cell.getValue();
+          if (val === '매물문의') {
+            return "<span class='badge bg-primary'>매물문의</span>";
+          } else if (val === '매매상담') {
+            return "<span class='badge bg-info'>매매상담</span>";
+          } else if (val === '임대상담') {
+            return "<span class='badge bg-secondary'>임대상담</span>";
+          } else if (val === '기타문의') {
+            return "<span class='badge bg-dark'>기타</span>";
+          }
+          return val || '-';
+        }
+      },
+      {
         title:"제목",
         field:"pstNm",
         minWidth:350,

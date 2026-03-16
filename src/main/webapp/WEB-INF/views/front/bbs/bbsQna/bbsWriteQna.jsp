@@ -19,10 +19,30 @@
       <input type="hidden" name="brdCd" value="${brdCd}" />
       <input type="hidden" name="pstCd" value="${pst.pstCd}" />
       <input type="hidden" name="rgtPhone" id="rgtPhone" />
+      <input type="hidden" name="propCd" value="${propCd}" />
 
       <table class="qna-form-table">
         <colgroup><col style="width:130px;"><col></colgroup>
         <tbody>
+          <tr>
+            <th>문의유형 <span class="qna-required">*</span></th>
+            <td>
+              <c:choose>
+                <c:when test="${inqType eq 'PROPERTY'}">
+                  <input type="hidden" name="inqType" value="PROPERTY" />
+                  <span class="qna-readonly-badge">매물문의</span>
+                </c:when>
+                <c:otherwise>
+                  <select name="inqType" id="inqType" class="qna-select" style="width:180px;">
+                    <option value="">선택해주세요</option>
+                    <option value="SALE" ${inqType eq 'SALE' ? 'selected' : ''}>매매 상담</option>
+                    <option value="RENT" ${inqType eq 'RENT' ? 'selected' : ''}>임대 상담</option>
+                    <option value="ETC" ${inqType eq 'ETC' ? 'selected' : ''}>기타 문의</option>
+                  </select>
+                </c:otherwise>
+              </c:choose>
+            </td>
+          </tr>
           <tr>
             <th>성명 <span class="qna-required">*</span></th>
             <td><input type="text" name="rgtUsrNm" id="rgtUsrNm" class="qna-input qna-input-sm" placeholder="성명을 입력해주세요" value="${pst.rgtUsrNm}" maxlength="50" /></td>
@@ -142,6 +162,7 @@
     var $btn = $('.btn-save');
     if ($btn.prop('disabled')) return;
     if ($('#privacyAgree').length && !$('#privacyAgree').is(':checked')) { alert('개인정보 수집 및 이용에 동의해주세요.'); return; }
+    if ($('#inqType').length && !$('#inqType').val()) { alert('문의유형을 선택해주세요.'); $('#inqType').focus(); return; }
     if (!$('#rgtUsrNm').val().trim()) { alert('성명을 입력해주세요.'); $('#rgtUsrNm').focus(); return; }
     var p2 = $('#phone2').val().trim(), p3 = $('#phone3').val().trim();
     if (!p2 || !p3) { alert('연락처를 입력해주세요.'); $('#phone2').focus(); return; }

@@ -39,6 +39,25 @@
             <colgroup><col style="width:120px;"><col></colgroup>
             <tbody>
               <tr>
+                <th class="bg-light">문의유형</th>
+                <td>
+                  <c:choose>
+                    <c:when test="${qst.inqType eq 'PROPERTY'}"><span class="badge bg-primary" style="font-size:13px;">매물문의</span></c:when>
+                    <c:when test="${qst.inqType eq 'SALE'}"><span class="badge bg-info" style="font-size:13px;">매매상담</span></c:when>
+                    <c:when test="${qst.inqType eq 'RENT'}"><span class="badge bg-secondary" style="font-size:13px;">임대상담</span></c:when>
+                    <c:when test="${qst.inqType eq 'ETC'}"><span class="badge bg-dark" style="font-size:13px;">기타문의</span></c:when>
+                    <c:otherwise>-</c:otherwise>
+                  </c:choose>
+                  <c:if test="${not empty qst.propCd}">
+                    <span style="margin-left:12px;">
+                      <a href="${ctx}/propertyMng/viewPropertyWrite?propCd=${qst.propCd}" target="_blank" class="btn btn-xs btn-outline-primary">
+                        📍 연결 매물 보기 (${qst.propNm})
+                      </a>
+                    </span>
+                  </c:if>
+                </td>
+              </tr>
+              <tr>
                 <th class="bg-light">성명</th>
                 <td>${qst.rgtUsrNm}</td>
               </tr>
