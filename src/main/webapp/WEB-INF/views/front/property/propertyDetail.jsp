@@ -244,6 +244,8 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
+  height: 100%;
+  min-height: 280px;
 }
 
 /* 이미지 없을 때 (거래완료 등) - 오른쪽 높이에 맞춤 */
@@ -472,7 +474,7 @@
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; }
+  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; height: auto; min-height: auto; }
   .prop-gallery-grid { aspect-ratio: 16/9; height: auto; }
   .prop-gallery-side { flex: 0 0 90px; }
   .gallery-modal-inner { padding: 20px 44px; }
