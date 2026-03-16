@@ -11,11 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.prims.common.batch.BatchJob;
 import com.prims.common.batch.BatchResult;
+import com.prims.common.config.AppProperties;
 import com.prims.common.constant.Constant;
 
 /**
  * 접근코드 변경 알림 배치
- * - 매월 말일 오전 9시 실행
+ * - 매월 말일 오전 1시 실행
  * - 관리자에게 "내일(1일)부터 접근코드 변경 필요" 메일 발송
  *
  * Bean명 = TB_BAT.JOB_CD = "accessCodeAlertJob"
@@ -31,6 +32,9 @@ public class AccessCodeAlertJob implements BatchJob {
 
     @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private AppProperties appProperties;
 
     @Override
     public BatchResult execute() {
@@ -72,6 +76,8 @@ public class AccessCodeAlertJob implements BatchJob {
      */
     private String buildEmailHtml() {
 
+        String loginUrl = appProperties.getSiteUrl() + "/login";
+
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>");
         sb.append("<html><head><meta charset='UTF-8'/></head><body>");
@@ -96,9 +102,14 @@ public class AccessCodeAlertJob implements BatchJob {
         sb.append("<p style='margin:0;font-size:14px;color:#333;line-height:1.8;'>");
         sb.append("<strong>📌 변경 방법</strong><br/>");
         sb.append("1. 관리자 페이지 접속<br/>");
-        sb.append("2. 시스템관리 → 접근코드 관리<br/>");
+        sb.append("2. 시스템관리 → 환경설정<br/>");
         sb.append("3. 새로운 접근코드 설정");
         sb.append("</p>");
+        sb.append("</div>");
+
+        // 로그인 버튼
+        sb.append("<div style='text-align:center;margin-bottom:24px;'>");
+        sb.append("<a href='").append(loginUrl).append("' style='display:inline-block;padding:14px 40px;background:#1B2A4A;color:#fff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;'>관리자 로그인</a>");
         sb.append("</div>");
 
         // 주의사항
