@@ -606,6 +606,23 @@
   }
   .prop-filter {
     flex-wrap: wrap;
+    justify-content: center;
+  }
+  .prop-filter select,
+  .prop-filter input[type="text"] {
+    width: 100%;
+  }
+  .prop-filter .filter-popup-btn {
+    min-width: 80px;
+  }
+  .prop-filter-btns {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  .prop-filter-btns .prop-filter-btn,
+  .prop-filter-btns .prop-filter-reset {
+    flex: 1;
   }
 }
 </style>
