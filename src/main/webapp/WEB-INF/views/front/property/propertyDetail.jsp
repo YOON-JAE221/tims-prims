@@ -244,14 +244,20 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  height: 100%;
+  /* 오른쪽 영역 높이에 맞춤 - align-self: stretch로 자동 조절 */
+  align-self: stretch;
+}
+
+/* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
+.prop-gallery-grid {
+  height: 100% !important;
   min-height: 280px;
 }
 
 /* 이미지 없을 때 (거래완료 등) - 오른쪽 높이에 맞춤 */
 .prop-gallery-wrap .prop-detail-img {
   height: 100%;
-  min-height: 200px;
+  min-height: 280px;
 }
 
 /* 메인 + 사이드 2열 레이아웃 */
@@ -260,6 +266,7 @@
   gap: 4px;
   width: 100%;
   height: 100%;
+  min-height: 280px;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -474,7 +481,7 @@
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; height: auto; min-height: auto; }
+  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; height: auto; }
   .prop-gallery-grid { aspect-ratio: 16/9; height: auto; }
   .prop-gallery-side { flex: 0 0 90px; }
   .gallery-modal-inner { padding: 20px 44px; }
