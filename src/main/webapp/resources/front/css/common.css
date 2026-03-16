@@ -289,7 +289,7 @@ img { max-width: 100%; display: block; }
   gap: 28px; margin-bottom: 36px;
 }
 .prop-detail-img {
-  height: 100%; min-height: 300px; border-radius: 16px; overflow: hidden;
+  border-radius: 16px; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   position: relative;
 }
@@ -366,8 +366,8 @@ img { max-width: 100%; display: block; }
 }
 
 @media (max-width: 768px) {
-  .prop-detail-top { flex-direction: column; }
-  .prop-detail-img { height: 220px; }
+  .prop-detail-top { flex-direction: column; gap: 0; }
+  .prop-detail-img { min-height: 200px; }
   .prop-detail-title { font-size: 22px; }
   .prop-detail-price { font-size: 14px; }
   .prop-detail-price span { font-size: 24px; }

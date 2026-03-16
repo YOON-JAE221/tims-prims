@@ -67,8 +67,8 @@
             </div>
           </c:when>
           <c:otherwise>
-            <!-- 이미지 없을 때 기존 스타일 유지 -->
-            <div class="prop-detail-img ${fn:toLowerCase(prop.catCd)}" style="height:360px;min-height:auto;">
+            <!-- 이미지 없을 때 - 우측 영역에 맞춤 -->
+            <div class="prop-detail-img ${fn:toLowerCase(prop.catCd)}">
               <span class="prop-card-emoji" style="font-size:64px;">
                 <c:choose>
                   <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
@@ -244,7 +244,12 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  min-height: 280px;
+}
+
+/* 이미지 없을 때 (거래완료 등) - 오른쪽 높이에 맞춤 */
+.prop-gallery-wrap .prop-detail-img {
+  height: 100%;
+  min-height: 200px;
 }
 
 /* 메인 + 사이드 2열 레이아웃 */
