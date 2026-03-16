@@ -70,42 +70,42 @@
           <option value="upper" ${floorType eq 'upper' ? 'selected' : ''}>지상(2층~)</option>
           <option value="under" ${floorType eq 'under' ? 'selected' : ''}>지하</option>
         </select>
-        <!-- 가격 필터 버튼 (매매가/전세가/보증금) -->
-        <button type="button" class="filter-popup-btn ${(not empty priceMin and priceMin ne '') or (not empty priceMax and priceMax ne '') ? 'active' : ''}" onclick="openPricePopup()">
-          <span id="priceFilterLabel">
-            <c:choose>
-              <c:when test="${(not empty priceMin and priceMin ne '') and (not empty priceMax and priceMax ne '')}">${priceMin}~${priceMax}만</c:when>
-              <c:when test="${not empty priceMin and priceMin ne ''}">${priceMin}만~</c:when>
-              <c:when test="${not empty priceMax and priceMax ne ''}">~${priceMax}만</c:when>
-              <c:otherwise>가격</c:otherwise>
-            </c:choose>
-          </span>
-          <span class="filter-arrow">▼</span>
-        </button>
-        <!-- 월세 필터 버튼 -->
-        <button type="button" class="filter-popup-btn ${(not empty rentMin and rentMin ne '') or (not empty rentMax and rentMax ne '') ? 'active' : ''}" onclick="openRentPopup()">
-          <span id="rentFilterLabel">
-            <c:choose>
-              <c:when test="${(not empty rentMin and rentMin ne '') and (not empty rentMax and rentMax ne '')}">${rentMin}~${rentMax}만</c:when>
-              <c:when test="${not empty rentMin and rentMin ne ''}">${rentMin}만~</c:when>
-              <c:when test="${not empty rentMax and rentMax ne ''}">~${rentMax}만</c:when>
-              <c:otherwise>월세</c:otherwise>
-            </c:choose>
-          </span>
-          <span class="filter-arrow">▼</span>
-        </button>
-        <!-- 면적 필터 버튼 -->
-        <button type="button" class="filter-popup-btn ${(not empty areaMin and areaMin ne '') or (not empty areaMax and areaMax ne '') ? 'active' : ''}" onclick="openAreaPopup()">
-          <span id="areaFilterLabel">
-            <c:choose>
-              <c:when test="${(not empty areaMin and areaMin ne '') and (not empty areaMax and areaMax ne '')}">${areaMin}~${areaMax}평</c:when>
-              <c:when test="${not empty areaMin and areaMin ne ''}">${areaMin}평~</c:when>
-              <c:when test="${not empty areaMax and areaMax ne ''}">~${areaMax}평</c:when>
-              <c:otherwise>면적</c:otherwise>
-            </c:choose>
-          </span>
-          <span class="filter-arrow">▼</span>
-        </button>
+        <!-- 가격/월세/면적 필터 버튼 -->
+        <div class="filter-popup-btn-group">
+          <button type="button" class="filter-popup-btn ${(not empty priceMin and priceMin ne '') or (not empty priceMax and priceMax ne '') ? 'active' : ''}" onclick="openPricePopup()">
+            <span id="priceFilterLabel">
+              <c:choose>
+                <c:when test="${(not empty priceMin and priceMin ne '') and (not empty priceMax and priceMax ne '')}">${priceMin}~${priceMax}만</c:when>
+                <c:when test="${not empty priceMin and priceMin ne ''}">${priceMin}만~</c:when>
+                <c:when test="${not empty priceMax and priceMax ne ''}">~${priceMax}만</c:when>
+                <c:otherwise>가격</c:otherwise>
+              </c:choose>
+            </span>
+            <span class="filter-arrow">▼</span>
+          </button>
+          <button type="button" class="filter-popup-btn ${(not empty rentMin and rentMin ne '') or (not empty rentMax and rentMax ne '') ? 'active' : ''}" onclick="openRentPopup()">
+            <span id="rentFilterLabel">
+              <c:choose>
+                <c:when test="${(not empty rentMin and rentMin ne '') and (not empty rentMax and rentMax ne '')}">${rentMin}~${rentMax}만</c:when>
+                <c:when test="${not empty rentMin and rentMin ne ''}">${rentMin}만~</c:when>
+                <c:when test="${not empty rentMax and rentMax ne ''}">~${rentMax}만</c:when>
+                <c:otherwise>월세</c:otherwise>
+              </c:choose>
+            </span>
+            <span class="filter-arrow">▼</span>
+          </button>
+          <button type="button" class="filter-popup-btn ${(not empty areaMin and areaMin ne '') or (not empty areaMax and areaMax ne '') ? 'active' : ''}" onclick="openAreaPopup()">
+            <span id="areaFilterLabel">
+              <c:choose>
+                <c:when test="${(not empty areaMin and areaMin ne '') and (not empty areaMax and areaMax ne '')}">${areaMin}~${areaMax}평</c:when>
+                <c:when test="${not empty areaMin and areaMin ne ''}">${areaMin}평~</c:when>
+                <c:when test="${not empty areaMax and areaMax ne ''}">~${areaMax}평</c:when>
+                <c:otherwise>면적</c:otherwise>
+              </c:choose>
+            </span>
+            <span class="filter-arrow">▼</span>
+          </button>
+        </div>
         <input type="text" name="keyword" value="${keyword}" placeholder="매물명 검색" />
         <div class="prop-filter-btns">
           <button type="submit" class="prop-filter-btn">검색</button>
@@ -468,6 +468,12 @@
 }
 .filter-arrow { font-size: 10px; opacity: 0.6; }
 
+/* 가격/월세/면적 버튼 그룹 */
+.filter-popup-btn-group {
+  display: flex;
+  gap: 8px;
+}
+
 /* 팝업 오버레이 */
 .filter-popup-overlay {
   position: fixed;
@@ -606,14 +612,21 @@
   }
   .prop-filter {
     flex-wrap: wrap;
-    justify-content: center;
+    gap: 10px;
   }
   .prop-filter select,
   .prop-filter input[type="text"] {
     width: 100%;
   }
-  .prop-filter .filter-popup-btn {
-    min-width: 80px;
+  /* 가격/월세/면적 버튼 그룹 - 가로 3개 배치 */
+  .filter-popup-btn-group {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  .filter-popup-btn-group .filter-popup-btn {
+    flex: 1;
+    justify-content: center;
   }
   .prop-filter-btns {
     width: 100%;
