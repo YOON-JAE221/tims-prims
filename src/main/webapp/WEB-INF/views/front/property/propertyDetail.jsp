@@ -231,15 +231,14 @@
 </c:if>
 
 <style>
-/* ── 상단 레이아웃 - 양쪽 높이 동기화 ─────────────────────────── */
+/* ── 상단 레이아웃 - 우측 기준으로 좌측 맞춤 ─────────────────────────── */
 .prop-detail-top {
-  align-items: stretch; /* 양쪽 높이 맞춤 */
+  align-items: stretch; /* 핵심: 양쪽 높이 동기화 */
 }
 
 .prop-detail-summary {
   flex: 1;
   min-width: 0;
-  min-height: 280px; /* 최소 높이 보장 */
   display: flex;
   flex-direction: column;
 }
@@ -252,8 +251,7 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  min-height: 280px; /* 최소 높이 */
-  /* height 없음 - stretch로 우측에 맞춤 */
+  /* height 없음! stretch로 우측에 맞춰짐 */
 }
 
 /* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
@@ -484,15 +482,13 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 1024px) {
-  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; min-height: 240px; }
-  .prop-detail-summary { min-height: 240px; }
+  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; }
   .prop-gallery-side { flex: 0 0 100px; }
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; min-height: auto; }
-  .prop-detail-summary { min-height: auto; }
-  .prop-gallery-grid { aspect-ratio: 16/9; height: auto !important; }
+  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; aspect-ratio: 16 / 9; }
+  .prop-gallery-grid { height: 100% !important; }
   .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
 
