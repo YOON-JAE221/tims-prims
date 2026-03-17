@@ -9,6 +9,8 @@
              , A.PROP_NM
              , A.CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
+             , A.MID_CAT_CD
+             , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , A.SUB_CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , A.DEAL_TYPE

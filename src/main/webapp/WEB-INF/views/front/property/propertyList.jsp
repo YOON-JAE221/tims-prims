@@ -30,22 +30,24 @@
       <input type="hidden" name="rentMin" id="rentMinInput" value="${rentMin}" />
       <input type="hidden" name="rentMax" id="rentMaxInput" value="${rentMax}" />
 
-      <%-- 상가점포일 때만 중분류/소분류 필터 표시 (별도 라인) --%>
-      <c:if test="${fn:toLowerCase(type) eq 'shop'}">
+      <%-- 중분류가 있을 때만 분류 필터 표시 --%>
+      <c:if test="${not empty midCatList}">
         <div class="prop-filter-category">
-          <span class="filter-category-label">업종 분류</span>
+          <span class="filter-category-label">상세 분류</span>
           <select name="midCatCd" id="midCatCdSelect" onchange="fnMidCatChange()">
             <option value="">중분류 전체</option>
             <c:forEach var="midCat" items="${midCatList}">
               <option value="${midCat.midCatCd}" <c:if test="${midCatCd eq midCat.midCatCd}">selected</c:if>>${midCat.catNm}</option>
             </c:forEach>
           </select>
-          <select name="subCatCd" id="subCatCdSelect" onchange="fnFilter()">
-            <option value="">소분류 전체</option>
-            <c:forEach var="subCat" items="${subCatList}">
-              <option value="${subCat.subCatCd}" <c:if test="${subCatCd eq subCat.subCatCd}">selected</c:if>>${subCat.catNm}</option>
-            </c:forEach>
-          </select>
+          <c:if test="${not empty subCatList}">
+            <select name="subCatCd" id="subCatCdSelect" onchange="fnFilter()">
+              <option value="">소분류 전체</option>
+              <c:forEach var="subCat" items="${subCatList}">
+                <option value="${subCat.subCatCd}" <c:if test="${subCatCd eq subCat.subCatCd}">selected</c:if>>${subCat.catNm}</option>
+              </c:forEach>
+            </select>
+          </c:if>
         </div>
       </c:if>
 
@@ -412,21 +414,17 @@
 
 <!-- 필터 스타일 -->
 <style>
-/* 업종 분류 필터 (상가점포용) */
+/* 상세 분류 필터 */
 .prop-filter-category {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 16px;
   margin-bottom: 12px;
-  background: var(--orange-light);
-  border-radius: 10px;
-  border: 1px solid rgba(232, 131, 12, 0.2);
 }
 .filter-category-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--orange);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-700);
   white-space: nowrap;
   margin-right: 4px;
 }
@@ -442,7 +440,7 @@
   min-width: 140px;
 }
 .prop-filter-category select:focus {
-  border-color: var(--orange);
+  border-color: var(--navy);
 }
 
 /* 필터 버튼 */
@@ -589,7 +587,6 @@
   .prop-filter-category {
     flex-wrap: wrap;
     gap: 8px;
-    padding: 12px;
   }
   .filter-category-label {
     width: 100%;

@@ -264,11 +264,10 @@ function fnRenderList(list) {
 
     html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + d.catNm + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + fnCatPath(d) + ' · ' + d.dealTypeNm + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
-    html += '  <div class="ps-item-addr">' + d.address + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
     html += '  <div class="ps-item-info">';
     html += '    <span>🏠 ' + (d.areaExclusive || '-') + '㎡</span>';
@@ -391,11 +390,10 @@ function fnRenderFilteredList(items) {
 
     html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + d.catNm + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + fnCatPath(d) + ' · ' + d.dealTypeNm + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
-    html += '  <div class="ps-item-addr">' + d.address + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
     html += '  <div class="ps-item-info">';
     html += '    <span>🏠 ' + (d.areaExclusive || '-') + '㎡</span>';
@@ -417,6 +415,13 @@ function fnPriceStr(d) {
   if (d.dealType === 'SELL') return '<strong>' + PriceUtil.formatPrice(d.sellPrice) + '</strong>';
   if (d.dealType === 'JEONSE') return '<strong>' + PriceUtil.formatPrice(d.deposit) + '</strong>';
   return '<strong>' + PriceUtil.formatPrice(d.deposit) + '/' + PriceUtil.formatPrice(d.monthlyRent) + '</strong>';
+}
+
+function fnCatPath(d) {
+  var path = d.catNm || '';
+  if (d.midCatNm) path += ' > ' + d.midCatNm;
+  if (d.subCatNm) path += ' > ' + d.subCatNm;
+  return path;
 }
 
 function fnPriceShort(d) {

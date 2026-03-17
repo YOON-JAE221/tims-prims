@@ -125,9 +125,9 @@ public class PropertyController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("catList", propertySearchDao.getFrontCatList());
         
-        // 상가점포(SHOP)인 경우 중분류/소분류 목록 전달
-        if ("shop".equalsIgnoreCase(type)) {
-            model.addAttribute("midCatList", propertySearchDao.getMidCatList("SHOP"));
+        // 특정 대분류 선택 시 중분류/소분류 목록 전달 (전체매물 제외)
+        if (type != null && !type.isEmpty() && !"all".equalsIgnoreCase(type)) {
+            model.addAttribute("midCatList", propertySearchDao.getMidCatList(type.toUpperCase()));
             if (midCatCd != null && !midCatCd.isEmpty()) {
                 model.addAttribute("subCatList", propertySearchDao.getSubCatList(midCatCd));
             }
