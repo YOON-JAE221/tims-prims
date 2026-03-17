@@ -116,9 +116,14 @@
           </div>
         </div>
 
-        <c:if test="${prop.soldYn ne 'Y'}">
-        <a href="javascript:fnGoPropertyConsult()" class="btn-primary-primus" style="margin-top:20px;padding:12px 28px;font-size:14px;">이 매물 문의하기</a>
-        </c:if>
+        <c:choose>
+          <c:when test="${prop.soldYn eq 'Y'}">
+            <a href="javascript:void(0)" class="btn-primary-primus btn-disabled" style="margin-top:20px;padding:12px 28px;font-size:14px;pointer-events:none;opacity:0.5;">거래완료 매물</a>
+          </c:when>
+          <c:otherwise>
+            <a href="javascript:fnGoPropertyConsult()" class="btn-primary-primus" style="margin-top:20px;padding:12px 28px;font-size:14px;">이 매물 문의하기</a>
+          </c:otherwise>
+        </c:choose>
       </div>
     </div>
 
@@ -226,9 +231,9 @@
 </c:if>
 
 <style>
-/* ── 상단 레이아웃 고정 ─────────────────────────── */
+/* ── 상단 레이아웃 - 좌우 높이 자동 맞춤 ─────────────────────────── */
 .prop-detail-top {
-  align-items: flex-start;
+  align-items: stretch; /* 좌우 높이 동기화 */
 }
 
 .prop-detail-summary {
@@ -246,8 +251,8 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  /* 오른쪽 영역 높이에 맞춤 - 고정 높이 */
-  height: 320px;
+  min-height: 280px; /* 최소 높이만 보장 */
+  /* height 제거 → 우측 영역에 맞춰 자동 조절 */
 }
 
 /* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
@@ -255,7 +260,7 @@
   height: 100% !important;
 }
 
-/* 이미지 없을 때 (거래완료 등) - 오른쪽 높이에 맞춤 */
+/* 이미지 없을 때 (거래완료 등) - 부모 높이에 맞춤 */
 .prop-gallery-wrap .prop-detail-img {
   height: 100%;
 }
@@ -478,12 +483,12 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 1024px) {
-  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; height: 280px; }
+  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; min-height: 240px; }
   .prop-gallery-side { flex: 0 0 100px; }
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; height: auto; }
+  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; min-height: auto; }
   .prop-gallery-grid { aspect-ratio: 16/9; height: auto !important; }
   .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
