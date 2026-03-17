@@ -112,7 +112,10 @@ public final class Constant {
      * 환경설정 CONFIG_KEY (TB_SYS_CONFIG)
      * ========================= */
     public static final String CFG_SITE_ACCESS_CODE = "SITE_ACCESS_CODE";
+    public static final String CFG_PROP_ACCESS_CODE = "PROP_ACCESS_CODE";  // 매물 통합 접근코드
+    @Deprecated
     public static final String CFG_PROP_SEARCH_ACCESS_CODE = "PROP_SEARCH_ACCESS_CODE";
+    @Deprecated
     public static final String CFG_PROP_LIST_ACCESS_CODE = "PROP_LIST_ACCESS_CODE";
 
     /* =========================

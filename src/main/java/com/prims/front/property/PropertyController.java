@@ -20,9 +20,8 @@ import java.util.Map;
 @RequestMapping("/property")
 public class PropertyController {
 
-    // 세션 키
-    public static final String PROP_SEARCH_VERIFIED = "PROP_SEARCH_VERIFIED";
-    public static final String PROP_LIST_VERIFIED = "PROP_LIST_VERIFIED";
+    // 세션 키 (매물 접근코드 통합)
+    public static final String PROP_VERIFIED = "PROP_VERIFIED";
 
     @Autowired
     private PropertySearchDao propertySearchDao;
@@ -54,9 +53,9 @@ public class PropertyController {
         boolean isAdmin = session.getAttribute(Constant.SESSION_LOGIN_USER) != null;
 
         // 접근 코드 체크 (관리자가 아닐 때만)
-        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_LIST_ACCESS_CODE)) {
-            if (!"Y".equals(session.getAttribute(PROP_LIST_VERIFIED))) {
-                model.addAttribute("codeType", "PROP_LIST");
+        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_ACCESS_CODE)) {
+            if (!"Y".equals(session.getAttribute(PROP_VERIFIED))) {
+                model.addAttribute("codeType", "PROP");
                 return "front/property/propertyAccessCode";
             }
         }
@@ -191,9 +190,9 @@ public class PropertyController {
         boolean isAdmin = session.getAttribute(Constant.SESSION_LOGIN_USER) != null;
 
         // 접근 코드 체크 (관리자가 아닐 때만)
-        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_SEARCH_ACCESS_CODE)) {
-            if (!"Y".equals(session.getAttribute(PROP_SEARCH_VERIFIED))) {
-                model.addAttribute("codeType", "PROP_SEARCH");
+        if (!isAdmin && isAccessRequired(Constant.CFG_PROP_ACCESS_CODE)) {
+            if (!"Y".equals(session.getAttribute(PROP_VERIFIED))) {
+                model.addAttribute("codeType", "PROP");
                 return "front/property/propertyAccessCode";
             }
         }
@@ -245,22 +244,15 @@ public class PropertyController {
                                                  HttpSession session) {
         Map<String, Object> result = new HashMap<>();
         try {
-            String configKey = "PROP_SEARCH".equals(codeType) 
-                ? Constant.CFG_PROP_SEARCH_ACCESS_CODE 
-                : Constant.CFG_PROP_LIST_ACCESS_CODE;
-            String sessionKey = "PROP_SEARCH".equals(codeType) 
-                ? PROP_SEARCH_VERIFIED 
-                : PROP_LIST_VERIFIED;
-
             Map<String, Object> param = new HashMap<>();
-            param.put("configKey", configKey);
+            param.put("configKey", Constant.CFG_PROP_ACCESS_CODE);
             param.put("accessCode", accessCode.trim());
             param.put("encryptKey", Constant.ENCRYPT_KEY);
 
             int cnt = sysConfigDao.verifyAccessCode(param);
 
             if (cnt > 0) {
-                session.setAttribute(sessionKey, "Y");
+                session.setAttribute(PROP_VERIFIED, "Y");
                 result.put("result", "OK");
             } else {
                 result.put("result", "FAIL");

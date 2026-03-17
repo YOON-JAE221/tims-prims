@@ -68,62 +68,33 @@
         </div>
       </div>
 
-      <!-- 매물검색 접근 설정 -->
+      <!-- 매물 접근 설정 (매물검색 + 매물안내 통합) -->
       <div class="card config-card">
         <div class="card-header">
-          <i class="fas fa-search-location"></i>
-          <h5 class="card-title mb-0">매물검색 접근 설정</h5>
+          <i class="fas fa-building"></i>
+          <h5 class="card-title mb-0">매물 접근 설정</h5>
         </div>
         <div class="card-body">
           <div class="config-row">
             <span class="config-label">사용여부</span>
             <div class="config-radio">
-              <label><input type="radio" name="propSearchUseYn" value="Y" ${propSearchConfig.useYn == 'Y' ? 'checked' : ''} onchange="fnToggleInput('propSearch')"> 사용</label>
-              <label><input type="radio" name="propSearchUseYn" value="N" ${propSearchConfig.useYn != 'Y' ? 'checked' : ''} onchange="fnToggleInput('propSearch')"> 미사용</label>
+              <label><input type="radio" name="propUseYn" value="Y" ${propConfig.useYn == 'Y' ? 'checked' : ''} onchange="fnToggleInput('prop')"> 사용</label>
+              <label><input type="radio" name="propUseYn" value="N" ${propConfig.useYn != 'Y' ? 'checked' : ''} onchange="fnToggleInput('prop')"> 미사용</label>
             </div>
           </div>
           <div class="config-row">
             <span class="config-label">접근코드</span>
             <div class="config-input">
-              <input type="text" id="propSearchCode" class="form-control" value="${propSearchConfig.configValue}" maxlength="20" placeholder="접근코드 입력 (4자 이상)" ${propSearchConfig.useYn != 'Y' ? 'disabled' : ''} />
+              <input type="text" id="propCode" class="form-control" value="${propConfig.configValue}" maxlength="20" placeholder="접근코드 입력 (4자 이상)" ${propConfig.useYn != 'Y' ? 'disabled' : ''} />
             </div>
           </div>
           <div class="config-hint">
             <i class="fas fa-info-circle"></i>
-            매물검색(지도) 페이지에 접근코드를 설정합니다. 활성화 시 해당 페이지 접근 전 코드 입력이 필요합니다.
+            매물검색(지도) 및 매물안내(리스트) 페이지에 접근코드를 설정합니다.<br>
+            활성화 시 해당 페이지 접근 전 코드 입력이 필요하며, 한 번 입력하면 두 페이지 모두 접근 가능합니다.
           </div>
           <div class="config-actions">
-            <button type="button" class="btn btn-bo-save" onclick="fnSave('PROP_SEARCH_ACCESS_CODE', 'propSearch')">저장</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 매물안내 접근 설정 -->
-      <div class="card config-card">
-        <div class="card-header">
-          <i class="fas fa-list-alt"></i>
-          <h5 class="card-title mb-0">매물안내 접근 설정</h5>
-        </div>
-        <div class="card-body">
-          <div class="config-row">
-            <span class="config-label">사용여부</span>
-            <div class="config-radio">
-              <label><input type="radio" name="propListUseYn" value="Y" ${propListConfig.useYn == 'Y' ? 'checked' : ''} onchange="fnToggleInput('propList')"> 사용</label>
-              <label><input type="radio" name="propListUseYn" value="N" ${propListConfig.useYn != 'Y' ? 'checked' : ''} onchange="fnToggleInput('propList')"> 미사용</label>
-            </div>
-          </div>
-          <div class="config-row">
-            <span class="config-label">접근코드</span>
-            <div class="config-input">
-              <input type="text" id="propListCode" class="form-control" value="${propListConfig.configValue}" maxlength="20" placeholder="접근코드 입력 (4자 이상)" ${propListConfig.useYn != 'Y' ? 'disabled' : ''} />
-            </div>
-          </div>
-          <div class="config-hint">
-            <i class="fas fa-info-circle"></i>
-            매물안내(리스트) 페이지에 접근코드를 설정합니다. 활성화 시 해당 페이지 접근 전 코드 입력이 필요합니다.
-          </div>
-          <div class="config-actions">
-            <button type="button" class="btn btn-bo-save" onclick="fnSave('PROP_LIST_ACCESS_CODE', 'propList')">저장</button>
+            <button type="button" class="btn btn-bo-save" onclick="fnSave('PROP_ACCESS_CODE', 'prop')">저장</button>
           </div>
         </div>
       </div>

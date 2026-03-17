@@ -39,19 +39,12 @@ public class AccessCodeMngController {
         Map<String, Object> siteConfig = sysConfigDao.getConfigOne(siteParam);
         model.addAttribute("siteConfig", siteConfig);
 
-        // 매물검색 접근코드
-        Map<String, Object> propSearchParam = new HashMap<>();
-        propSearchParam.put("configKey", Constant.CFG_PROP_SEARCH_ACCESS_CODE);
-        propSearchParam.put("encryptKey", Constant.ENCRYPT_KEY);
-        Map<String, Object> propSearchConfig = sysConfigDao.getConfigOne(propSearchParam);
-        model.addAttribute("propSearchConfig", propSearchConfig);
-
-        // 매물안내 접근코드
-        Map<String, Object> propListParam = new HashMap<>();
-        propListParam.put("configKey", Constant.CFG_PROP_LIST_ACCESS_CODE);
-        propListParam.put("encryptKey", Constant.ENCRYPT_KEY);
-        Map<String, Object> propListConfig = sysConfigDao.getConfigOne(propListParam);
-        model.addAttribute("propListConfig", propListConfig);
+        // 매물 접근코드 (통합)
+        Map<String, Object> propParam = new HashMap<>();
+        propParam.put("configKey", Constant.CFG_PROP_ACCESS_CODE);
+        propParam.put("encryptKey", Constant.ENCRYPT_KEY);
+        Map<String, Object> propConfig = sysConfigDao.getConfigOne(propParam);
+        model.addAttribute("propConfig", propConfig);
 
         return "admin/accessCodeMng/accessCodeMng";
     }
@@ -71,8 +64,7 @@ public class AccessCodeMngController {
         try {
             // configKey 유효성 체크
             if (!Constant.CFG_SITE_ACCESS_CODE.equals(configKey) 
-                && !Constant.CFG_PROP_SEARCH_ACCESS_CODE.equals(configKey) 
-                && !Constant.CFG_PROP_LIST_ACCESS_CODE.equals(configKey)) {
+                && !Constant.CFG_PROP_ACCESS_CODE.equals(configKey)) {
                 result.put("result", Constant.FAIL);
                 result.put("message", "유효하지 않은 설정키");
                 return result;
