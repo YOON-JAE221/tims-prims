@@ -251,17 +251,26 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  /* height 없음! stretch로 우측에 맞춰짐 */
+  min-height: 280px; /* 최소 높이 보장 */
+  /* height 없음 → stretch로 우측에 맞춰짐 */
 }
 
-/* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
+/* 핵심: 갤러리 그리드를 absolute로 부모에 고정 → 이미지가 컨테이너 밀어내지 않음 */
 .prop-gallery-grid {
-  height: 100% !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* 이미지 없을 때 (거래완료 등) - 부모 높이에 맞춤 */
 .prop-gallery-wrap .prop-detail-img {
-  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* 메인 + 사이드 2열 레이아웃 */
@@ -272,7 +281,6 @@
   height: 100%;
   border-radius: 16px;
   overflow: hidden;
-  position: relative;
 }
 
 /* 좌측 메인 이미지 */
@@ -482,13 +490,13 @@
 .gallery-dot.active { background: #fff; }
 
 @media (max-width: 1024px) {
-  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; }
+  .prop-gallery-wrap { flex: 0 0 45%; max-width: 420px; min-height: 240px; }
   .prop-gallery-side { flex: 0 0 100px; }
 }
 
 @media (max-width: 768px) {
-  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; aspect-ratio: 16 / 9; }
-  .prop-gallery-grid { height: 100% !important; }
+  .prop-gallery-wrap { width: 100%; flex: none; max-width: none; min-height: 0; aspect-ratio: 16 / 9; }
+  .prop-gallery-grid { position: relative; height: 100%; }
   .prop-gallery-side { flex: 0 0 80px; }
   .gallery-modal-inner { padding: 20px 44px; }
 
