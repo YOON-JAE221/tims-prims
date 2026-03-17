@@ -223,30 +223,30 @@ function escapeHtml(str){
 })(window);
 
 /* ===============================
- * 부동산 금액 포맷 유틸 (원 → 억/만원)
+ * 부동산 금액 포맷 유틸 (만원 → 억/만 표기)
  * =============================== */
 (function(global) {
   /**
-   * 원 단위 금액을 한국식 부동산 표기로 변환
-   * formatPrice(385000000) → "3억 8,500만"
-   * formatPrice(280000000) → "2억 8,000만"
-   * formatPrice(15000000)  → "1,500만"
-   * formatPrice(600000)    → "60만"
-   * formatPrice(0)         → "-"
+   * 만원 단위 금액을 한국식 부동산 표기로 변환
+   * formatPrice(38500) → "3억 8,500만"
+   * formatPrice(28000) → "2억 8,000만"
+   * formatPrice(1500)  → "1,500만"
+   * formatPrice(60)    → "60만"
+   * formatPrice(0)     → "-"
    */
   function formatPrice(val) {
     val = parseInt(val) || 0;
     if (val <= 0) return '-';
 
-    var eok = Math.floor(val / 100000000);
-    var man = Math.floor((val % 100000000) / 10000);
+    var eok = Math.floor(val / 10000);     // 억 (1억 = 10,000만원)
+    var man = Math.floor(val % 10000);     // 만
     var parts = [];
 
     if (eok > 0) parts.push(eok + '억');
     if (man > 0) parts.push(man.toLocaleString() + '만');
 
-    // 억, 만 둘 다 0이면 (1만원 미만)
-    if (parts.length === 0) return val.toLocaleString() + '원';
+    // 억, 만 둘 다 0이면 (이 경우는 거의 없음)
+    if (parts.length === 0) return val.toLocaleString() + '만';
 
     return parts.join(' ');
   }

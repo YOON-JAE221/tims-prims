@@ -139,7 +139,7 @@ public class PropertyController {
     /**
      * 매물 상세
      */
-    @RequestMapping(value = "/viewPropertyDetail", method = RequestMethod.POST)
+    @RequestMapping(value = "/viewPropertyDetail", method = {RequestMethod.GET, RequestMethod.POST})
     public String viewPropertyDetail(@RequestParam(value = "type", required = false, defaultValue = "apt") String type,
                                      @RequestParam(value = "id", required = false, defaultValue = "") String id,
                                      HttpSession session, Model model) {

@@ -109,14 +109,14 @@
            AND A.MONTHLY_RENT &lt;= #{rentMax}
            </if>
            <!-- 층수 조건 -->
-           <if test="floorType != null and floorType.equals('1')">
-           AND A.FLOOR_NO = '1'
+           <if test="floorType != null and floorType == '1'.toString()">
+           AND A.FLOOR_NO = 1
            </if>
-           <if test="floorType != null and floorType.equals('upper')">
-           AND A.FLOOR_NO REGEXP '^[0-9]+$' AND CAST(A.FLOOR_NO AS SIGNED) >= 2
+           <if test="floorType != null and floorType == 'upper'.toString()">
+           AND A.FLOOR_NO >= 2
            </if>
-           <if test="floorType != null and floorType.equals('under')">
-           AND (A.FLOOR_NO LIKE 'B%' OR A.FLOOR_NO LIKE '-%' OR A.FLOOR_NO LIKE '지하%')
+           <if test="floorType != null and floorType == 'under'.toString()">
+           AND (A.FLOOR_NO &lt; 0 OR A.FLOOR_NO LIKE 'B%' OR A.FLOOR_NO LIKE '지하%')
            </if>
          ORDER BY
            CASE A.SOLD_YN WHEN 'N' THEN 0 ELSE 1 END ASC,
@@ -172,14 +172,14 @@
            AND A.MONTHLY_RENT &lt;= #{rentMax}
            </if>
            <!-- 층수 조건 -->
-           <if test="floorType != null and floorType.equals('1')">
-           AND A.FLOOR_NO = '1'
+           <if test="floorType != null and floorType == '1'.toString()">
+           AND A.FLOOR_NO = 1
            </if>
-           <if test="floorType != null and floorType.equals('upper')">
-           AND A.FLOOR_NO REGEXP '^[0-9]+$' AND CAST(A.FLOOR_NO AS SIGNED) >= 2
+           <if test="floorType != null and floorType == 'upper'.toString()">
+           AND A.FLOOR_NO >= 2
            </if>
-           <if test="floorType != null and floorType.equals('under')">
-           AND (A.FLOOR_NO LIKE 'B%' OR A.FLOOR_NO LIKE '-%' OR A.FLOOR_NO LIKE '지하%')
+           <if test="floorType != null and floorType == 'under'.toString()">
+           AND (A.FLOOR_NO &lt; 0 OR A.FLOOR_NO LIKE 'B%' OR A.FLOOR_NO LIKE '지하%')
            </if>
     </select>
 

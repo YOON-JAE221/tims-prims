@@ -137,32 +137,32 @@
 
         <!-- ===== 3. 가격정보 ===== -->
         <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">가격정보</h5></div>
+          <div class="card-header"><h5 class="card-title mb-0">가격정보 <small class="text-muted">(만원 단위 입력)</small></h5></div>
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
               <tr>
-                <th>매매가 <small class="text-muted">(원)</small></th>
+                <th>매매가 <small class="text-muted">(만원)</small></th>
                 <td><input type="number" name="sellPrice" class="form-control form-control-sm" value="${prop.sellPrice}" /></td>
-                <th>보증금/전세가 <small class="text-muted">(원)</small></th>
+                <th>보증금/전세가 <small class="text-muted">(만원)</small></th>
                 <td><input type="number" name="deposit" class="form-control form-control-sm" value="${prop.deposit}" /></td>
               </tr>
               <tr>
-                <th>월세 <small class="text-muted">(원)</small></th>
+                <th>월세 <small class="text-muted">(만원)</small></th>
                 <td><input type="number" name="monthlyRent" class="form-control form-control-sm" value="${prop.monthlyRent}" /></td>
-                <th>월관리비 <small class="text-muted">(원)</small></th>
+                <th>월관리비 <small class="text-muted">(만원)</small></th>
                 <td><input type="number" name="monthlyMgmt" class="form-control form-control-sm" value="${prop.monthlyMgmt}" /></td>
               </tr>
               <tr>
-                <th>권리금 <small class="text-muted">(원, 상가)</small></th>
+                <th>권리금 <small class="text-muted">(만원)</small></th>
                 <td><input type="number" name="premium" class="form-control form-control-sm" value="${prop.premium}" /></td>
-                <th>융자여부</th>
+                <th>융자금 <small class="text-muted">(만원)</small></th>
                 <td>
                   <div class="d-flex" style="gap:8px;">
                     <select name="loanYn" class="form-control form-control-sm" style="width:100px;">
                       <option value="N" ${empty prop.loanYn || prop.loanYn eq 'N' ? 'selected' : ''}>없음</option>
                       <option value="Y" ${prop.loanYn eq 'Y' ? 'selected' : ''}>있음</option>
                     </select>
-                    <input type="number" name="loanAmount" class="form-control form-control-sm" value="${prop.loanAmount}" placeholder="융자금(만원)" style="width:150px;" />
+                    <input type="number" name="loanAmount" class="form-control form-control-sm" value="${prop.loanAmount}" placeholder="융자금액" style="width:150px;" />
                   </div>
                 </td>
               </tr>
