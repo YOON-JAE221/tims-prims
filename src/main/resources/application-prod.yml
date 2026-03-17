@@ -9,12 +9,10 @@ server:
     min-response-size: 512
   tomcat:
     threads:
-      max: 50
-      min-spare: 5
+      max: 30
+      min-spare: 3
     connection-timeout: 5000
-    accept-count: 100
-    keep-alive-timeout: 30000
-    max-keep-alive-requests: 100
+    accept-count: 50
   servlet:
     session:
       timeout: 20m
@@ -26,21 +24,14 @@ spring:
     username: primushome
     password: vmflajtm12@@
     hikari:
-      maximum-pool-size: 8
-      minimum-idle: 3
+      maximum-pool-size: 5
+      minimum-idle: 2
       idle-timeout: 30000
       connection-timeout: 10000
       max-lifetime: 1800000
   mvc:
     async:
       request-timeout: 10000
-  web:
-    resources:
-      cache:
-        period: 86400
-        cachecontrol:
-          max-age: 86400
-          cache-public: true
 
 upload:
   base:
