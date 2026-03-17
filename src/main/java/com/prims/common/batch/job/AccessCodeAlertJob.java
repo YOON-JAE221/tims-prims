@@ -1,5 +1,8 @@
 package com.prims.common.batch.job;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import com.prims.common.batch.BatchJob;
 import com.prims.common.batch.BatchResult;
 import com.prims.common.config.AppProperties;
 import com.prims.common.constant.Constant;
+import com.prims.common.notification.SendLogDao;
 
 /**
  * 접근코드 변경 알림 배치
@@ -36,28 +40,60 @@ public class AccessCodeAlertJob implements BatchJob {
     @Autowired
     private AppProperties appProperties;
 
+    @Autowired
+    private SendLogDao sendLogDao;
+
     @Override
     public BatchResult execute() {
 
         logger.info("[AccessCodeAlertJob] 접근코드 변경 알림 배치 시작");
 
+        String subject = "[프리머스 부동산] 접근코드 변경 알림 - 내일(1일) 변경 필요";
+
         try {
-            sendAlertEmail();
+            sendAlertEmail(subject);
             logger.info("[AccessCodeAlertJob] 메일 발송 완료 - 수신: {}", ALERT_TO_EMAIL);
+
+            // 발송 로그 저장 (성공)
+            saveSendLog(subject, Constant.SEND_RSLT_SUCCESS, null);
+
             return BatchResult.success(1, 1);
 
         } catch (Exception e) {
             logger.error("[AccessCodeAlertJob] 메일 발송 실패: {}", e.getMessage(), e);
+
+            // 발송 로그 저장 (실패)
+            saveSendLog(subject, Constant.SEND_RSLT_FAIL, e.getMessage());
+
             return BatchResult.fail(e.getMessage());
+        }
+    }
+
+    /**
+     * 발송 로그 저장
+     */
+    private void saveSendLog(String sendTitle, String sendRslt, String errMsg) {
+        try {
+            Map<String, Object> log = new HashMap<>();
+            log.put("sendType",    Constant.SEND_TYPE_EMAIL);
+            log.put("recvNm",      "관리자");
+            log.put("recvAddr",    ALERT_TO_EMAIL);
+            log.put("sendTitle",   sendTitle);
+            log.put("sendContent", null);
+            log.put("sendRslt",    sendRslt);
+            log.put("errMsg",      errMsg);
+            log.put("refCd",       "BATCH_ACCESS_CODE_ALERT");
+            log.put("creUsrCd",    "SYSTEM");
+            sendLogDao.insertSendLog(log);
+        } catch (Exception e) {
+            logger.error("[AccessCodeAlertJob] 발송로그 저장 실패: {}", e.getMessage());
         }
     }
 
     /**
      * 접근코드 변경 알림 메일 발송
      */
-    private void sendAlertEmail() throws Exception {
-
-        String subject = "[프리머스 부동산] 접근코드 변경 알림 - 내일(1일) 변경 필요";
+    private void sendAlertEmail(String subject) throws Exception {
 
         String html = buildEmailHtml();
 
