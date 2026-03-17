@@ -31,8 +31,8 @@ public class AccessCodeAlertJob implements BatchJob {
 
     private static final Logger logger = LoggerFactory.getLogger(AccessCodeAlertJob.class);
 
-    /** 알림 수신자 이메일 */
-    private static final String ALERT_TO_EMAIL = "minuk3466@naver.com";
+    /** 알림 수신자 이메일 - Constant에서 관리 */
+    private static final String ALERT_TO_EMAIL = Constant.MAIL_ADMIN_EMAIL;
 
     @Autowired
     private JavaMailSender mailSender;

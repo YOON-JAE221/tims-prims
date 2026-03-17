@@ -68,7 +68,7 @@ public final class Constant {
      * ========================= */
     public static final String MAIL_FROM_EMAIL = "qkrtpghks67@gmail.com";
     public static final String MAIL_FROM_NAME = "프리머스 부동산";
-    public static final String MAIL_ADMIN_EMAIL = "minuk3466@naver.com";
+    public static final String MAIL_ADMIN_EMAIL = "shinyworld_park@naver.com";
 
     /* =========================
      * 발송 유형 (TB_SEND_LOG.SEND_TYPE)
