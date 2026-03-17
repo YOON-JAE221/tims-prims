@@ -49,7 +49,7 @@
   <link href="${ctx}/resources/front/css/main.css?v=202503110006" rel="stylesheet">
 
   <!-- Common JS -->
-  <script src="${ctx}/resources/common/util/js/common.js?v=202503100005" charset="UTF-8"></script>
+  <script src="${ctx}/resources/common/util/js/common.js?v=202503170001" charset="UTF-8"></script>
 
   <!-- Global Config -->
   <script>
