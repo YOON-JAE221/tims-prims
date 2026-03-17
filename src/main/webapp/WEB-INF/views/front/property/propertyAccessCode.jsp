@@ -84,20 +84,12 @@
     </div>
 
     <div class="access-card">
-      <c:choose>
-        <c:when test="${codeType == 'PROP_SEARCH'}">
-          <div class="access-icon">🗺️</div>
-          <div class="access-title">매물검색 접근코드</div>
-          <div class="access-desc">매물검색(지도) 페이지는 접근코드가 필요합니다.<br>안내받은 코드를 입력해 주세요.</div>
-        </c:when>
-        <c:otherwise>
-          <div class="access-icon">📋</div>
-          <div class="access-title">매물안내 접근코드</div>
-          <div class="access-desc">매물안내(리스트) 페이지는 접근코드가 필요합니다.<br>안내받은 코드를 입력해 주세요.</div>
-        </c:otherwise>
-      </c:choose>
+      <div class="access-icon">🏠</div>
+      <div class="access-title">매물 접근코드</div>
+      <div class="access-desc">매물 페이지는 접근코드가 필요합니다.<br>안내받은 코드를 입력해 주세요.</div>
 
       <input type="hidden" id="codeType" value="${codeType}" />
+      <input type="hidden" id="returnUrl" value="${returnUrl}" />
 
       <div class="access-input-wrap">
         <input type="text" id="accessCode" class="access-input"
@@ -136,7 +128,8 @@
         success: function(res) {
           if (res.result === 'OK') {
             // 인증 성공 → 원래 페이지로
-            if (codeType === 'PROP_SEARCH') {
+            var returnUrl = $('#returnUrl').val();
+            if (returnUrl === 'SEARCH') {
               location.href = '${ctx}/property/viewPropertySearch';
             } else {
               location.href = '${ctx}/property/viewPropertyList';

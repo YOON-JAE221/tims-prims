@@ -56,6 +56,7 @@ public class PropertyController {
         if (!isAdmin && isAccessRequired(Constant.CFG_PROP_ACCESS_CODE)) {
             if (!"Y".equals(session.getAttribute(PROP_VERIFIED))) {
                 model.addAttribute("codeType", "PROP");
+                model.addAttribute("returnUrl", "LIST");
                 return "front/property/propertyAccessCode";
             }
         }
@@ -193,6 +194,7 @@ public class PropertyController {
         if (!isAdmin && isAccessRequired(Constant.CFG_PROP_ACCESS_CODE)) {
             if (!"Y".equals(session.getAttribute(PROP_VERIFIED))) {
                 model.addAttribute("codeType", "PROP");
+                model.addAttribute("returnUrl", "SEARCH");
                 return "front/property/propertyAccessCode";
             }
         }
