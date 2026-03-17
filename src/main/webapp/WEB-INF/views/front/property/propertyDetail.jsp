@@ -98,9 +98,9 @@
         <div class="prop-detail-price">
           <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
             <c:choose>
-              <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만원</c:when>
-              <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만원</c:when>
-              <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만원</c:otherwise>
+              <c:when test="${prop.dealType eq 'SELL'}"><fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만</c:when>
+              <c:when test="${prop.dealType eq 'JEONSE'}"><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만</c:when>
+              <c:otherwise><fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>/<fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만</c:otherwise>
             </c:choose>
           </span>
         </div>
@@ -137,16 +137,16 @@
           <td>
             <span class="price-format" data-deal-type="${prop.dealType}" data-sell="${prop.sellPrice}" data-deposit="${prop.deposit}" data-rent="${prop.monthlyRent}">
               <c:choose>
-                <c:when test="${prop.dealType eq 'SELL'}">매매 <fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만원</c:when>
-                <c:when test="${prop.dealType eq 'JEONSE'}">전세 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만원</c:when>
-                <c:otherwise>보증금 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/> / 월세 <fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만원</c:otherwise>
+                <c:when test="${prop.dealType eq 'SELL'}">매매 <fmt:formatNumber value="${prop.sellPrice}" pattern="#,###"/>만</c:when>
+                <c:when test="${prop.dealType eq 'JEONSE'}">전세 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/>만</c:when>
+                <c:otherwise>보증금 <fmt:formatNumber value="${prop.deposit}" pattern="#,###"/> / 월세 <fmt:formatNumber value="${prop.monthlyRent}" pattern="#,###"/>만</c:otherwise>
               </c:choose>
             </span>
           </td>
-          <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>만원</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+          <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>만</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>
         <c:if test="${not empty prop.premium and prop.premium > 0}">
-        <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${prop.premium}" pattern="#,###"/>만원</td></tr>
+        <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${prop.premium}" pattern="#,###"/>만</td></tr>
         </c:if>
         <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217; <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">(<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:if></td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
         <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">
