@@ -37,7 +37,7 @@
                   <c:if test="${detail.manualExecYn eq 'Y'}">
                     <button type="button" class="btn btn-sm btn-dark" onclick="fnManualExec()">수동실행</button>
                   </c:if>
-                  <button type="button" class="btn btn-sm btn-bo-delete" onclick="fnDelete()">삭제</button>
+                  <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnDelete()">삭제</button>
                 </c:if>
                 <button type="button" class="btn btn-sm btn-bo-reset" onclick="fnGoList()">목록</button>
               </div>
