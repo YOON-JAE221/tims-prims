@@ -252,7 +252,7 @@
   max-width: 520px;
   min-width: 260px;
   min-height: 280px; /* 최소 높이만 보장 */
-  /* height 제거 → 우측 영역에 맞춰 자동 조절 */
+  max-height: 420px; /* 최대 높이 제한 - 너무 늘어나는 것 방지 */
 }
 
 /* 갤러리 그리드가 wrap 높이를 100% 채우도록 */
