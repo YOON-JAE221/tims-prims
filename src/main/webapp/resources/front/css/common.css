@@ -741,6 +741,22 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase; letter-spacing: 0.3px;
 }
 
+/* 푸터 하단 모바일 */
+@media (max-width: 600px) {
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    padding: 20px 24px;
+  }
+  .footer-bottom-links {
+    order: 1;
+  }
+  .footer-copyright {
+    order: 2;
+  }
+}
+
 
 .footer-nav-group a:hover { color: var(--orange); transform: translateX(3px); }
 .footer-nav-group a::before {

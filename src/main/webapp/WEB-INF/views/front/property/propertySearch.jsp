@@ -264,7 +264,7 @@ function fnRenderList(list) {
 
     html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + fnCatPath(d) + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
@@ -390,7 +390,7 @@ function fnRenderFilteredList(items) {
 
     html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
-    html += '    <span class="ps-item-type">' + fnCatPath(d) + ' · ' + d.dealTypeNm + '</span>';
+    html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
