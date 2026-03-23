@@ -203,6 +203,9 @@
     <!-- 버튼 -->
     <div class="board-detail-btns">
       <button type="button" class="board-btn board-btn-list" onclick="history.back()">목록</button>
+      <c:if test="${not empty ssnUsrCd}">
+        <button type="button" class="board-btn board-btn-list" onclick="fnGoEdit()">수정</button>
+      </c:if>
     </div>
 
   </div>
@@ -668,6 +671,9 @@
 <script>
   function fnGoPropertyConsult() {
     document.getElementById('goPropertyConsultForm').submit();
+  }
+  function fnGoEdit() {
+    window.open('${ctx}/propertyMng/viewPropertyWrite?propCd=${prop.propCd}', '_blank');
   }
 </script>
 
