@@ -84,22 +84,38 @@
 
 /* 매물 카드 */
 .ps-item {
-  padding: 16px; border-bottom: 1px solid var(--gray-100);
+  padding: 14px 16px; border-bottom: 1px solid var(--gray-100);
   cursor: pointer; transition: background 0.15s;
 }
 .ps-item:hover { background: var(--gray-50); }
-.ps-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.ps-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .ps-item-type { font-size: 12px; color: var(--orange); font-weight: 700; }
 .ps-item-badge {
   font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: white;
 }
 .ps-item-badge.sold { background: var(--gray-400); }
-.ps-item-name { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-.ps-item-addr { font-size: 12px; color: var(--gray-400); margin-bottom: 8px; }
-.ps-item-price { font-size: 17px; font-weight: 800; color: var(--navy); }
+.ps-item-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 2px; line-height: 1.3; }
+.ps-item-addr { font-size: 12px; color: var(--gray-400); margin-bottom: 6px; }
+.ps-item-price { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
 .ps-item-price span { font-size: 12px; font-weight: 500; color: var(--gray-400); }
-.ps-item-info { display: flex; gap: 10px; margin-top: 8px; font-size: 12px; color: var(--gray-500); }
+/* 면적/층수 + 버튼 같은 라인 */
+.ps-item-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.ps-item-info { display: flex; gap: 10px; font-size: 12px; color: var(--gray-500); }
 .ps-item.sold { opacity: 0.5; }
+
+/* 리스트 카드 상세보기 버튼 */
+.ps-item-detail-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px; border: 1px solid var(--orange); border-radius: 6px;
+  font-size: 11px; font-weight: 600; color: var(--orange);
+  background: white; cursor: pointer; font-family: inherit;
+  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
+}
+.ps-item-detail-btn:hover {
+  background: var(--orange); color: white;
+}
 
 /* 커스텀 오버레이 (가격 말풍선) */
 .map-price-label {
@@ -168,21 +184,6 @@
 .ps-item.active {
   background: #fff8f2;
   border-left: 3px solid var(--orange);
-}
-
-/* 리스트 카드 하단 상세보기 버튼 */
-.ps-item-bottom {
-  display: flex; justify-content: flex-end; margin-top: 10px;
-}
-.ps-item-detail-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 6px 14px; border: 1px solid var(--orange); border-radius: 6px;
-  font-size: 12px; font-weight: 600; color: var(--orange);
-  background: white; cursor: pointer; font-family: inherit;
-  transition: all 0.15s;
-}
-.ps-item-detail-btn:hover {
-  background: var(--orange); color: white;
 }
 
 /* 매물검색 페이지: 풋터 숨김 (전체화면 앱 레이아웃) */
@@ -269,12 +270,11 @@ function fnRenderList(list) {
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
-    html += '  <div class="ps-item-info">';
-    html += '    <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
-    if (d.roomCnt > 0) html += '<span>🚪 ' + d.roomCnt + '룸</span>';
-    html += '<span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
-    html += '  </div>';
-    html += '  <div class="ps-item-bottom">';
+    html += '  <div class="ps-item-row">';
+    html += '    <div class="ps-item-info">';
+    html += '      <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
+    html += '      <span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
+    html += '    </div>';
     html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
     html += '  </div>';
     html += '</div>';
@@ -395,12 +395,11 @@ function fnRenderFilteredList(items) {
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
-    html += '  <div class="ps-item-info">';
-    html += '    <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
-    if (d.roomCnt > 0) html += '<span>🚪 ' + d.roomCnt + '룸</span>';
-    html += '<span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
-    html += '  </div>';
-    html += '  <div class="ps-item-bottom">';
+    html += '  <div class="ps-item-row">';
+    html += '    <div class="ps-item-info">';
+    html += '      <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
+    html += '      <span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
+    html += '    </div>';
     html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
     html += '  </div>';
     html += '</div>';

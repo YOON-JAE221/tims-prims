@@ -205,6 +205,7 @@
     <div class="gallery-slider" id="gallerySlider">
       <c:forEach var="img" items="${imgList}" varStatus="vs">
         <div class="gallery-slide">
+          <div class="gallery-spinner"></div>
           <img data-src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}"
                class="gallery-slide-img"
                decoding="async" />
@@ -239,6 +240,27 @@
 }
 .gallery-slide-img.loaded {
   opacity: 1;
+}
+
+/* 슬라이더 로딩 스피너 */
+.gallery-slide {
+  position: relative;
+  background: #1a1a1a;
+}
+.gallery-slide .gallery-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* ── 상단 레이아웃 ─────────────────────────── */
@@ -536,11 +558,36 @@
 (function() {
   var currentIdx = 0;
   var totalSlides = ${fn:length(imgList)};
+  var preloaded = false;
+
+  // 모달 열릴 때 모든 이미지 미리 로드
+  function preloadAllImages() {
+    if (preloaded) return;
+    preloaded = true;
+
+    var slides = document.querySelectorAll('.gallery-slide img[data-src]');
+    slides.forEach(function(img) {
+      if (img.dataset.src) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        img.onload = function() {
+          this.classList.add('loaded');
+          // 스피너 숨기기
+          var spinner = this.parentElement.querySelector('.gallery-spinner');
+          if (spinner) spinner.style.display = 'none';
+        };
+      }
+    });
+  }
 
   window.openGallerySlider = function(startIdx) {
     currentIdx = startIdx || 0;
     document.getElementById('galleryModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
+
+    // 모달 열릴 때 모든 이미지 프리로드
+    preloadAllImages();
+
     renderSlide();
   };
 
@@ -569,15 +616,6 @@
     var slides = document.querySelectorAll('.gallery-slide');
     slides.forEach(function(s, i) {
       s.style.display = i === currentIdx ? 'flex' : 'none';
-      // Lazy load: 현재 슬라이드와 앞뒤 슬라이드 이미지 로드
-      if (Math.abs(i - currentIdx) <= 1 || (currentIdx === 0 && i === totalSlides - 1) || (currentIdx === totalSlides - 1 && i === 0)) {
-        var img = s.querySelector('img[data-src]');
-        if (img && img.dataset.src) {
-          img.src = img.dataset.src;
-          img.removeAttribute('data-src');
-          img.onload = function() { this.classList.add('loaded'); };
-        }
-      }
     });
     var counter = document.getElementById('galleryCounter');
     if (counter) counter.textContent = (currentIdx + 1) + ' / ' + totalSlides;
