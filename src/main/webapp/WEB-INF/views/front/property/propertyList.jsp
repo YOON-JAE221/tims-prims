@@ -285,12 +285,12 @@
 
     <!-- 페이징 -->
     <c:if test="${totalPage > 0}">
+      <c:set var="startPage" value="${((pageNo - 1) - ((pageNo - 1) mod 10)) + 1}" />
+      <c:set var="endPage" value="${startPage + 9 > totalPage ? totalPage : startPage + 9}" />
       <div class="board-paging">
         <a href="javascript:fnGoPage(${pageNo - 1})" class="${pageNo <= 1 ? 'disabled' : ''}">이전</a>
-        <c:forEach var="p" begin="1" end="${totalPage}">
-          <c:if test="${p >= ((pageNo - 1) / 10 * 10 + 1) and p <= ((pageNo - 1) / 10 * 10 + 10)}">
-            <a href="javascript:fnGoPage(${p})" class="${p == pageNo ? 'active' : ''}">${p}</a>
-          </c:if>
+        <c:forEach var="p" begin="${startPage}" end="${endPage}">
+          <a href="javascript:fnGoPage(${p})" class="${p == pageNo ? 'active' : ''}">${p}</a>
         </c:forEach>
         <a href="javascript:fnGoPage(${pageNo + 1})" class="${pageNo >= totalPage ? 'disabled' : ''}">다음</a>
       </div>
