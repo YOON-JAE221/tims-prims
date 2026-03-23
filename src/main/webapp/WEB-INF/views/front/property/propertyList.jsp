@@ -266,7 +266,12 @@
               </span>
             </div>
             <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">
-              <div class="prop-card-area">${prop.areaExclusive}㎡ / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</div>
+              <div class="prop-card-area">
+                <span>🏠 ${prop.areaExclusive}㎡ / <fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평</span>
+                <c:if test="${not empty prop.floorNo}">
+                  <span style="margin-left:10px;">📐 ${prop.floorNo}층<c:if test="${not empty prop.floorTotal}">/${prop.floorTotal}층</c:if></span>
+                </c:if>
+              </div>
             </c:if>
           </div>
         </div>

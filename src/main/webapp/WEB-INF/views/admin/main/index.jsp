@@ -120,7 +120,7 @@
     .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .dash-row { grid-template-columns: 1fr; gap: 16px; }
     .recent-prop-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .recent-prop-table { min-width: 650px; }
+    .recent-prop-table { min-width: 850px; }
   }
   @media (max-width: 480px) {
     .dash-cards { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -172,18 +172,19 @@
             <table class="recent-prop-table" style="border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;">
               <thead>
                 <tr>
-                  <th style="text-align:left; width:24%;">매물명</th>
-                  <th style="text-align:left; width:20%;">주소</th>
+                  <th style="text-align:left; width:20%;">매물명</th>
+                  <th style="text-align:left; width:16%;">주소</th>
                   <th style="width:8%;">대분류</th>
-                  <th style="width:10%;">중분류</th>
-                  <th style="width:9%;">소분류</th>
-                  <th style="width:7%;">거래</th>
-                  <th style="width:7%;">조회수</th>
-                  <th style="width:12%;">등록일</th>
+                  <th style="width:9%;">중분류</th>
+                  <th style="width:8%;">소분류</th>
+                  <th style="width:6%;">거래</th>
+                  <th style="width:8%;">등록자</th>
+                  <th style="text-align:left; width:18%;">관리자메모</th>
+                  <th style="width:5%;">조회</th>
                 </tr>
               </thead>
               <tbody id="recentPropBody">
-                <tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
+                <tr><td colspan="9" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
               </tbody>
             </table>
           </div>
@@ -242,19 +243,22 @@ function loadRecentPropList() {
     var list = res.data || [];
     var html = '';
     if (list.length === 0) {
-      html = '<tr><td colspan="8" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
+      html = '<tr><td colspan="9" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
     } else {
       for (var i = 0; i < list.length; i++) {
         var p = list[i];
+        var memo = p.adminMemo || '-';
+        if (memo.length > 18) memo = memo.substring(0, 18) + '...';
         html += '<tr onclick="fnGoPropEdit(\'' + p.propCd + '\')">';
-        html += '<td style="text-align:left;"><span class="prop-name">' + (p.propNm || '') + '</span></td>';
+        html += '<td style="text-align:left;"><span class="prop-name">' + (p.propNm || '-') + '</span></td>';
         html += '<td style="text-align:left;">' + (p.address || '-') + '</td>';
-        html += '<td style="text-align:center;">' + (p.catNm || '-') + '</td>';
+        html += '<td style="text-align:center;">' + p.catNm + '</td>';
         html += '<td style="text-align:center;">' + (p.midCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.subCatNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.dealTypeNm || '-') + '</td>';
+        html += '<td style="text-align:center;">' + (p.creUsrNm || '-') + '</td>';
+        html += '<td style="text-align:left; color:#666;">' + memo + '</td>';
         html += '<td style="text-align:center;">' + (p.viewCnt || 0) + '</td>';
-        html += '<td style="text-align:center;">' + (p.creDtm || '-') + '</td>';
         html += '</tr>';
       }
     }

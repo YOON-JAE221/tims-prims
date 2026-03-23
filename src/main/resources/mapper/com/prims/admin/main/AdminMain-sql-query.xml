@@ -23,6 +23,8 @@
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기' ELSE '' END AS DEAL_TYPE_NM
              , A.SOLD_YN
              , A.VIEW_CNT
+             , A.ADMIN_MEMO
+             , (SELECT U.USR_NM FROM TB_USR U WHERE U.USR_CD = A.CRE_USR_CD) AS CRE_USR_NM
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'

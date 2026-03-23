@@ -270,9 +270,9 @@ function fnRenderList(list) {
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
     html += '  <div class="ps-item-info">';
-    html += '    <span>🏠 ' + (d.areaExclusive || '-') + '㎡</span>';
+    html += '    <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
     if (d.roomCnt > 0) html += '<span>🚪 ' + d.roomCnt + '룸</span>';
-    if (d.floorNo) html += '<span>📐 ' + d.floorNo + '층</span>';
+    html += '<span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
     html += '  </div>';
     html += '  <div class="ps-item-bottom">';
     html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
@@ -396,9 +396,9 @@ function fnRenderFilteredList(items) {
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
     html += '  <div class="ps-item-price">' + priceStr + '</div>';
     html += '  <div class="ps-item-info">';
-    html += '    <span>🏠 ' + (d.areaExclusive || '-') + '㎡</span>';
+    html += '    <span>🏠 ' + fnAreaStr(d.areaExclusive) + '</span>';
     if (d.roomCnt > 0) html += '<span>🚪 ' + d.roomCnt + '룸</span>';
-    if (d.floorNo) html += '<span>📐 ' + d.floorNo + '층</span>';
+    html += '<span>📐 ' + fnFloorStr(d.floorNo, d.floorTotal) + '</span>';
     html += '  </div>';
     html += '  <div class="ps-item-bottom">';
     html += '    <button class="ps-item-detail-btn" onclick="event.stopPropagation(); fnGoDetail(\'' + d.propCd + '\')">매물 보러가기 →</button>';
@@ -446,6 +446,20 @@ function fnGoDetail(propCd) {
 function fnBadgeHtml(d) {
   if (d.soldYn === 'Y') return '<span class="ps-item-badge sold">거래완료</span>';
   return '';
+}
+
+/* 면적 표시: ㎡ / 평 */
+function fnAreaStr(sqm) {
+  if (!sqm) return '-';
+  var pyeong = (parseFloat(sqm) * 0.3025).toFixed(1);
+  return sqm + '㎡ / ' + pyeong + '평';
+}
+
+/* 층수 표시: 현재층/전체층 */
+function fnFloorStr(floorNo, floorTotal) {
+  if (!floorNo) return '-';
+  if (!floorTotal) return floorNo + '층';
+  return floorNo + '층/' + floorTotal + '층';
 }
 </script>
 

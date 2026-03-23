@@ -45,6 +45,25 @@
           </c:if>
         </div>
 
+        <!-- ===== 0. 관리정보 (맨 위) ===== -->
+        <div class="card">
+          <div class="card-header"><h5 class="card-title mb-0">관리정보</h5></div>
+          <div class="card-body">
+            <table class="table table-bordered bo-form-table">
+              <tr>
+                <th>등록자</th>
+                <td><c:out value="${not empty prop.creUsrNm ? prop.creUsrNm : ssnUsrNm}" /></td>
+                <th>등록일시</th>
+                <td><c:out value="${not empty prop.creDtmFmt ? prop.creDtmFmt : '-'}" /></td>
+              </tr>
+              <tr>
+                <th>관리자 메모</th>
+                <td colspan="3"><textarea name="adminMemo" class="form-control form-control-sm" rows="2" placeholder="비공개 메모">${prop.adminMemo}</textarea></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+
         <!-- ===== 1. 기본정보 ===== -->
         <div class="card">
           <div class="card-header"><h5 class="card-title mb-0">기본정보</h5></div>
@@ -285,26 +304,6 @@
           </div>
         </div>
 
-        <!-- ===== 7. 관리정보 ===== -->
-        <c:if test="${not empty prop}">
-        <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">관리정보</h5></div>
-          <div class="card-body">
-            <table class="table table-bordered bo-form-table">
-              <tr>
-                <th>등록자</th>
-                <td>${prop.creUsrNm}</td>
-                <th>등록일시</th>
-                <td>${prop.creDtmFmt}</td>
-              </tr>
-              <tr>
-                <th>관리자 메모</th>
-                <td colspan="3"><textarea name="adminMemo" class="form-control form-control-sm" rows="2" placeholder="비공개 메모">${prop.adminMemo}</textarea></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        </c:if>
         <!-- 전시정보 hidden -->
         <input type="hidden" name="displayYn" value="${empty prop.displayYn ? 'Y' : prop.displayYn}" />
         <input type="hidden" name="displayStart" value="${prop.displayStart}" />

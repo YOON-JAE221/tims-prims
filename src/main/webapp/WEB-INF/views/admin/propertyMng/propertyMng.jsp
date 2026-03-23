@@ -100,9 +100,13 @@ $(function() {
 function initGrid() {
   var columns = [
     { title:"대분류", field:"catNm", width:100, headerSort:false },
-    { title:"중분류", field:"midCatNm", width:120, headerSort:false },
-    { title:"소분류", field:"subCatNm", width:110, headerSort:false },
-    { title:"거래", field:"dealTypeNm", width:100, headerSort:false },
+    { title:"중분류", field:"midCatNm", width:100, headerSort:false,
+      formatter: function(cell) { return cell.getValue() || '-'; }
+    },
+    { title:"소분류", field:"subCatNm", width:100, headerSort:false,
+      formatter: function(cell) { return cell.getValue() || '-'; }
+    },
+    { title:"거래", field:"dealTypeNm", width:70, headerSort:false },
     { title:"매물명", field:"propNm", widthGrow:2,
       formatter: function(cell) {
         return '<span style="color:#1B2A4A;font-weight:600;text-decoration:underline;cursor:pointer;">' + (cell.getValue() || '') + '</span>';
@@ -112,9 +116,19 @@ function initGrid() {
         location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + d.propCd;
       }
     },
-    { title:"주소", field:"address", widthGrow:2, headerSort:false },
-    { title:"조회수", field:"viewCnt", width:100, hozAlign:"center", headerSort:false },
-    { title:"삭제", field:"_del", width:100, headerSort:false,
+    { title:"주소", field:"address", widthGrow:1, headerSort:false },
+    { title:"등록자", field:"creUsrNm", width:90, hozAlign:"left", headerSort:false,
+      formatter: function(cell) { return cell.getValue() || '-'; }
+    },
+    { title:"관리자메모", field:"adminMemo", width:180, hozAlign:"left", headerSort:false,
+      formatter: function(cell) {
+        var val = cell.getValue() || '-';
+        if (val.length > 25) val = val.substring(0, 25) + '...';
+        return '<span style="color:#666;">' + val + '</span>';
+      }
+    },
+    { title:"조회", field:"viewCnt", width:60, hozAlign:"center", headerSort:false },
+    { title:"삭제", field:"_del", width:60, headerSort:false,
       formatter: function() { return "<button type='button' class='btn btn-xs btn-bo-reset'>삭제</button>"; },
       cellClick: function(e, cell) { fnDeleteProp(cell.getRow()); }
     }
