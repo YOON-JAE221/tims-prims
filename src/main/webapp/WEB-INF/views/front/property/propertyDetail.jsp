@@ -28,42 +28,26 @@
         <c:choose>
           <c:when test="${not empty imgList}">
             <c:set var="imgCnt" value="${fn:length(imgList)}" />
-            <!-- 이미지 수에 따른 갤러리 레이아웃 -->
-            <div class="prop-gallery-grid prop-gallery-count-${imgCnt > 4 ? 'many' : imgCnt}" id="propGalleryGrid">
-
-              <!-- 메인 이미지 -->
+            <!-- 메인 이미지 1장만 표시 -->
+            <div class="prop-gallery-single" id="propGalleryGrid">
               <div class="prop-gallery-main" onclick="openGallerySlider(0)">
-                <img src="/upload/${imgList[0].imgPath}" alt="매물 대표 이미지" />
+                <img src="/upload/${imgList[0].imgPath}" alt="매물 대표 이미지"
+                     class="prop-detail-img-main"
+                     loading="eager"
+                     decoding="async"
+                     onload="this.classList.add('loaded')" />
                 <c:if test="${prop.soldYn eq 'Y'}">
-                    <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
-                    <div class="prop-gallery-sold-overlay"><span>거래완료</span></div>
-                  </c:if>
+                  <span class="prop-card-badge" style="background:var(--gray-400);">거래완료</span>
+                  <div class="prop-gallery-sold-overlay"><span>거래완료</span></div>
+                </c:if>
               </div>
 
-              <!-- 우측 썸네일 (2장 이상일 때만) -->
+              <!-- 전체보기 버튼 (이미지 2장 이상일 때) -->
               <c:if test="${imgCnt >= 2}">
-                <div class="prop-gallery-side">
-                  <c:forEach var="img" items="${imgList}" varStatus="vs">
-                    <c:if test="${vs.index >= 1 and vs.index <= 3}">
-                      <div class="prop-gallery-thumb" onclick="openGallerySlider(${vs.index})">
-                        <img src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}" />
-                        <!-- 4번째 썸네일(index=3)이고 이미지가 5장 이상이면 더보기 오버레이 -->
-                        <c:if test="${vs.index == 3 and imgCnt > 4}">
-                          <div class="prop-gallery-more-overlay">
-                            <span class="more-count">+${imgCnt - 4}</span>
-                            <span class="more-label">더보기</span>
-                          </div>
-                        </c:if>
-                      </div>
-                    </c:if>
-                  </c:forEach>
-                </div>
+                <button class="prop-gallery-all-btn" onclick="openGallerySlider(0)">
+                  📷 사진 전체보기 <span class="all-cnt">${imgCnt}</span>
+                </button>
               </c:if>
-
-              <!-- 전체보기 버튼 (항상 표시) -->
-              <button class="prop-gallery-all-btn" onclick="openGallerySlider(0)">
-                &#128247; 사진 전체보기 <span class="all-cnt">${imgCnt}</span>
-              </button>
             </div>
           </c:when>
           <c:otherwise>
@@ -221,7 +205,9 @@
     <div class="gallery-slider" id="gallerySlider">
       <c:forEach var="img" items="${imgList}" varStatus="vs">
         <div class="gallery-slide">
-          <img src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}" />
+          <img data-src="/upload/${img.imgPath}" alt="매물 이미지 ${vs.index + 1}"
+               class="gallery-slide-img"
+               decoding="async" />
         </div>
       </c:forEach>
     </div>
@@ -236,9 +222,28 @@
 </c:if>
 
 <style>
-/* ── 상단 레이아웃 - 우측 기준으로 좌측 맞춤 ─────────────────────────── */
+/* ── 이미지 로딩 최적화 ─────────────────────────── */
+.prop-detail-img-main {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.prop-detail-img-main.loaded {
+  opacity: 1;
+}
+.gallery-slide-img {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.gallery-slide-img.loaded {
+  opacity: 1;
+}
+
+/* ── 상단 레이아웃 ─────────────────────────── */
 .prop-detail-top {
-  align-items: stretch; /* 핵심: 양쪽 높이 동기화 */
+  align-items: stretch;
 }
 
 .prop-detail-summary {
@@ -248,7 +253,7 @@
   flex-direction: column;
 }
 
-/* ── 갤러리 그리드 ─────────────────────────────── */
+/* ── 갤러리 - 1장만 표시 ─────────────────────────────── */
 .prop-gallery-wrap {
   position: relative;
   border-radius: 16px;
@@ -256,12 +261,11 @@
   flex: 0 0 50%;
   max-width: 520px;
   min-width: 260px;
-  min-height: 280px; /* 최소 높이 보장 */
-  /* height 없음 → stretch로 우측에 맞춰짐 */
+  min-height: 280px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
 }
 
-/* 핵심: 갤러리 그리드를 absolute로 부모에 고정 → 이미지가 컨테이너 밀어내지 않음 */
-.prop-gallery-grid {
+.prop-gallery-single {
   position: absolute;
   top: 0;
   left: 0;
@@ -269,38 +273,13 @@
   bottom: 0;
 }
 
-/* 이미지 없을 때 (거래완료 등) - 부모 높이에 맞춤 */
-.prop-gallery-wrap .prop-detail-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-/* 메인 + 사이드 2열 레이아웃 */
-.prop-gallery-grid {
-  display: flex;
-  gap: 4px;
-  width: 100%;
-  height: 100%;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-/* 좌측 메인 이미지 */
 .prop-gallery-main {
   position: relative;
-  flex: 1;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   cursor: pointer;
   background: #e8e8e8;
-  height: 100%;
-}
-
-/* 1장: 메인이 100% 차지 */
-.prop-gallery-count-1 .prop-gallery-main {
-  flex: 1;
 }
 
 .prop-gallery-main img {
@@ -314,79 +293,37 @@
   transform: scale(1.03);
 }
 
-/* 우측 썸네일 열 */
-.prop-gallery-side {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 0 0 120px;
-  position: relative;
-  min-width: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-.prop-gallery-thumb {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-  cursor: pointer;
-  background: #e8e8e8;
-  min-height: 0;
-}
-.prop-gallery-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-  display: block;
-}
-.prop-gallery-thumb:hover img {
-  transform: scale(1.05);
-}
-
-/* 더보기 오버레이 */
-.prop-gallery-more-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  pointer-events: none;
-}
-.more-count { font-size: 26px; font-weight: 800; line-height: 1; }
-.more-label { font-size: 12px; margin-top: 4px; opacity: 0.9; }
-
 /* 전체보기 버튼 */
 .prop-gallery-all-btn {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(255,255,255,0.92);
+  bottom: 12px;
+  right: 12px;
+  background: rgba(255,255,255,0.95);
   color: #333;
   border: none;
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 12px;
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
-  transition: background 0.2s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  transition: all 0.2s;
   white-space: nowrap;
   z-index: 3;
 }
-.prop-gallery-all-btn:hover { background: #fff; }
+.prop-gallery-all-btn:hover {
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
 .prop-gallery-all-btn .all-cnt {
   display: inline-block;
   background: var(--navy, #1a2e5a);
   color: #fff;
-  border-radius: 10px;
-  padding: 1px 7px;
-  font-size: 11px;
-  margin-left: 4px;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  margin-left: 6px;
 }
 
 .prop-gallery-sold-overlay {
@@ -403,6 +340,15 @@
   font-size: 24px;
   font-weight: 800;
   letter-spacing: 3px;
+}
+
+/* 이미지 없을 때 */
+.prop-gallery-wrap .prop-detail-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 /* ── 슬라이더 모달 ────────────────────────────── */
@@ -623,6 +569,15 @@
     var slides = document.querySelectorAll('.gallery-slide');
     slides.forEach(function(s, i) {
       s.style.display = i === currentIdx ? 'flex' : 'none';
+      // Lazy load: 현재 슬라이드와 앞뒤 슬라이드 이미지 로드
+      if (Math.abs(i - currentIdx) <= 1 || (currentIdx === 0 && i === totalSlides - 1) || (currentIdx === totalSlides - 1 && i === 0)) {
+        var img = s.querySelector('img[data-src]');
+        if (img && img.dataset.src) {
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          img.onload = function() { this.classList.add('loaded'); };
+        }
+      }
     });
     var counter = document.getElementById('galleryCounter');
     if (counter) counter.textContent = (currentIdx + 1) + ' / ' + totalSlides;

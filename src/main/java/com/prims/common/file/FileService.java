@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.prims.common.config.AppProperties;
+import com.prims.common.util.ImageUtil;
 import com.prims.common.util.Utility;
 
 @Service("FileService")
@@ -264,6 +265,11 @@ public class FileService {
             // 물리 저장
             Path target = Paths.get(physDir, saveFileNm).normalize();
             Files.copy(f.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+
+            // 이미지 파일이면 압축 (원본 대체)
+            if (ImageUtil.isImageFile(saveFileNm)) {
+                ImageUtil.compressImage(target.toFile());
+            }
 
             // DB 저장
             Map<String, Object> p = new HashMap<>();

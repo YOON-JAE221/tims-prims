@@ -211,12 +211,17 @@
           등록된 매물이 없습니다.
         </div>
       </c:if>
-      <c:forEach var="prop" items="${list}">
+      <c:forEach var="prop" items="${list}" varStatus="status">
         <div class="prop-card ${prop.soldYn eq 'Y' ? 'sold-card' : ''}" onclick="fnGoDetail('${prop.catCd}','${prop.propCd}')">
           <div class="prop-card-img ${fn:toLowerCase(prop.catCd)}">
             <c:choose>
               <c:when test="${not empty prop.thumbPath}">
-                <img src="/upload/${prop.thumbPath}" alt="${prop.propNm}" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                <img src="/upload/${prop.thumbPath}" alt="${prop.propNm}"
+                     class="prop-thumb-img"
+                     loading="${status.index < 6 ? 'eager' : 'lazy'}"
+                     decoding="async"
+                     onload="this.classList.add('loaded')"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
                 <span class="prop-card-emoji" style="display:none;">
                   <c:choose>
                     <c:when test="${prop.catCd eq 'APT'}">&#127970;</c:when>
@@ -412,6 +417,23 @@
 
 <!-- 필터 스타일 -->
 <style>
+/* 이미지 로딩 최적화 */
+.prop-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+.prop-thumb-img.loaded {
+  opacity: 1;
+}
+.prop-card-img {
+  position: relative;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
 /* 상세 분류 필터 */
 .prop-filter-category {
   display: flex;
