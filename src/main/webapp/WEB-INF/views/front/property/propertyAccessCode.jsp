@@ -92,7 +92,7 @@
       <input type="hidden" id="returnUrl" value="${returnUrl}" />
 
       <div class="access-input-wrap">
-        <input type="text" id="accessCode" class="access-input"
+        <input type="password" id="accessCode" class="access-input"
                placeholder="접근코드" maxlength="20" autocomplete="off"
                onkeydown="if(event.keyCode===13) fnVerify()" />
       </div>
