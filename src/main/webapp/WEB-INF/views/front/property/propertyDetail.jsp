@@ -164,11 +164,13 @@
       </table>
     </div>
 
-    <!-- 매물 설명 -->
-    <c:if test="${not empty prop.propDesc}">
+    <!-- 매물 설명 (BO 상세정보 에디터 내용) -->
+    <c:if test="${not empty prop.detailCnts}">
     <div class="prop-detail-section">
       <h3 class="prop-detail-section-title">매물 설명</h3>
-      <div class="prop-detail-desc">${prop.propDesc}</div>
+      <div class="prop-detail-desc-box">
+        ${prop.detailCnts}
+      </div>
     </div>
     </c:if>
 
@@ -531,6 +533,53 @@
 
   /* 위치 지도 높이 조절 */
   #propMap { min-height: 200px; }
+}
+
+/* ── 매물 설명 박스 스타일 ─────────────────────────── */
+.prop-detail-desc-box {
+  background: #fafbfc;
+  border: 1px solid #e8eaed;
+  border-radius: 12px;
+  padding: 24px 28px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #333;
+}
+.prop-detail-desc-box p {
+  margin: 0 0 12px 0;
+}
+.prop-detail-desc-box p:last-child {
+  margin-bottom: 0;
+}
+.prop-detail-desc-box img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+.prop-detail-desc-box ul,
+.prop-detail-desc-box ol {
+  padding-left: 20px;
+  margin: 12px 0;
+}
+.prop-detail-desc-box li {
+  margin-bottom: 6px;
+}
+.prop-detail-desc-box table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+.prop-detail-desc-box table td,
+.prop-detail-desc-box table th {
+  border: 1px solid #e0e0e0;
+  padding: 8px 12px;
+}
+@media (max-width: 768px) {
+  .prop-detail-desc-box {
+    padding: 18px 16px;
+    font-size: 14px;
+  }
 }
 </style>
 
