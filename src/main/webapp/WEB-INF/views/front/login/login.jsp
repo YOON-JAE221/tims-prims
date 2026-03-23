@@ -10,7 +10,7 @@
     <p class="login-box-sub">관리자 로그인</p>
 
     <form id="loginForm" method="POST" action="${ctx}/login/doLogin" novalidate onsubmit="return fnLogin();">
-      <input type="hidden" name="returnUrl" value="${returnUrl}" />
+      <input type="hidden" name="returnUrl" id="returnUrlInput" value="" />
 
       <div class="login-field">
         <label for="loginId">아이디</label>
@@ -44,6 +44,24 @@
     var msg = "${loginFailMsg}";
     if (msg && msg.trim() !== "") {
       alert(msg);
+    }
+
+    // returnUrl 설정: 서버 전달값 → referrer 순서로 체크
+    var returnUrlInput = document.getElementById('returnUrlInput');
+    var serverReturnUrl = "${returnUrl}";
+
+    if (serverReturnUrl && serverReturnUrl.trim() !== '' && serverReturnUrl !== 'null') {
+      // 서버에서 전달된 값 사용
+      returnUrlInput.value = serverReturnUrl;
+    } else if (document.referrer) {
+      // 이전 페이지(referrer)에서 가져오기
+      try {
+        var refUrl = new URL(document.referrer);
+        // 같은 사이트이고 로그인 페이지가 아닌 경우에만
+        if (refUrl.hostname === location.hostname && !refUrl.pathname.includes('/login')) {
+          returnUrlInput.value = refUrl.pathname + refUrl.search;
+        }
+      } catch(e) {}
     }
   });
 

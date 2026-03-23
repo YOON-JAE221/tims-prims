@@ -397,18 +397,11 @@
     $('#subCatCdSelect').val('');
     fnFilter();
   }
-  function fnGoDetail(propType, propCd) {
-    $('#detailType').val(propType);
-    $('#detailId').val(propCd);
-    $('#goDetailForm').submit();
-  }
   function fnGoAdmin() {
     var foType = '${type}';
     var catCd = (foType && foType !== 'all') ? foType.toUpperCase() : '';
     var dealType = $('select[name="dealType"]').val() || '';
-    $('#adminCatCd').val(catCd);
-    $('#adminDealType').val(dealType);
-    $('#goAdminForm').submit();
+    window.open('${ctx}/propertyMng/viewPropertyMng?catCd=' + encodeURIComponent(catCd) + '&dealType=' + encodeURIComponent(dealType), '_blank');
   }
 
   // ESC 키로 닫기
@@ -647,10 +640,13 @@
   <input type="hidden" name="id" id="detailId" />
 </form>
 
-<form id="goAdminForm" action="${ctx}/propertyMng/viewPropertyMng" method="post" target="_blank">
-  <input type="hidden" name="catCd" id="adminCatCd" />
-  <input type="hidden" name="dealType" id="adminDealType" />
-</form>
+<script>
+  function fnGoDetail(type, propCd) {
+    document.getElementById('detailType').value = type;
+    document.getElementById('detailId').value = propCd;
+    document.getElementById('goDetailForm').submit();
+  }
+</script>
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>
 </body>

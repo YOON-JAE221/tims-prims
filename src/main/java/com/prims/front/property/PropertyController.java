@@ -158,6 +158,13 @@ public class PropertyController {
             model.addAttribute("prop", prop);
             List<Map<String, Object>> imgList = propertySearchDao.getPropertyImageList(param);
             model.addAttribute("imgList", imgList);
+            
+            // 세션에 마지막 조회 매물 정보 저장 (로그인 후 POST 복귀용)
+            Map<String, Object> lastView = new HashMap<>();
+            lastView.put("url", "/property/viewPropertyDetail");
+            lastView.put("type", type);
+            lastView.put("id", id);
+            session.setAttribute("lastViewPage", lastView);
         }
         model.addAttribute("catList", propertySearchDao.getFrontCatList());
         return "front/property/propertyDetail";

@@ -190,6 +190,14 @@ public class BbsController {
 	    model.addAttribute("brdMenuNm", "고객지원");
 	    model.addAttribute("brdCd", paramMap.get("brdCd").toString());
 	    model.addAttribute("pageNo", paramMap.getOrDefault("pageNo", "1"));
+	    
+	    // 세션에 마지막 조회 게시글 정보 저장 (로그인 후 POST 복귀용)
+	    Map<String, Object> lastView = new HashMap<>();
+	    lastView.put("url", "/bbs/viewBbsDetail");
+	    lastView.put("brdCd", brdCd);
+	    lastView.put("pstCd", pstCd);
+	    lastView.put("pageNo", paramMap.getOrDefault("pageNo", "1"));
+	    request.getSession().setAttribute("lastViewPage", lastView);
 
 	    return "front/bbs/bbsCommon/bbsDetail";
 	}

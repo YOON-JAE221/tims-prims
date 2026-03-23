@@ -439,8 +439,8 @@ function fnFormatPriceShort(v) {
 }
 
 function fnGoDetail(propCd) {
-  $('#searchDetailId').val(propCd);
-  $('#searchDetailForm').submit();
+  document.getElementById('searchDetailId').value = propCd;
+  document.getElementById('searchDetailForm').submit();
 }
 
 function fnBadgeHtml(d) {

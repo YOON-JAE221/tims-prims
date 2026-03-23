@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +53,8 @@ public class LoginController {
 	public String doLogin(HttpSession session,
 	                      @RequestParam Map<String, Object> paramMap,
 	                      RedirectAttributes ra,
-	                      HttpServletResponse response) {
+	                      HttpServletResponse response,
+	                      Model model) {
 
 	    String loginId = String.valueOf(paramMap.get("loginId"));
 	    boolean remember = paramMap.containsKey("rememberId"); // 체크박스 체크 시 파라미터 존재
@@ -80,6 +82,15 @@ public class LoginController {
 	                idCookie.setPath("/");
 	                idCookie.setMaxAge(0);
 	                response.addCookie(idCookie);
+	            }
+
+	            // 세션에 마지막 조회 페이지 정보가 있으면 POST redirect 페이지로 이동
+	            @SuppressWarnings("unchecked")
+	            Map<String, Object> lastViewPage = (Map<String, Object>) session.getAttribute("lastViewPage");
+	            if (lastViewPage != null && !lastViewPage.isEmpty()) {
+	                model.addAttribute("lastViewPage", lastViewPage);
+	                session.removeAttribute("lastViewPage"); // 사용 후 제거
+	                return "front/login/postRedirect";
 	            }
 
 	            // returnUrl이 있으면 해당 페이지로, 없으면 홈으로 (내부 경로만 허용)
