@@ -39,4 +39,9 @@ public class FileDao {
         return sqlSession.delete("file.deleteUpldFileByKey", upldFileCd);
     }
 
+    // 파일 순서 업데이트
+    public int updateFileSeq(Map<String, Object> param) {
+        return sqlSession.update("file.updateFileSeq", param);
+    }
+
 }

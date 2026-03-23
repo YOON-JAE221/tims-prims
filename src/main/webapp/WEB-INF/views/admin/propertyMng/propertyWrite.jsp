@@ -6,6 +6,8 @@
 <script src="${ctx}/resources/common/summernote/js/admin/summernote-bs4.min.js" charset="UTF-8"></script>
 <script src="${ctx}/resources/common/summernote/js/summernote-ko-KR.min.js" charset="UTF-8"></script>
 <script src="${ctx}/resources/common/summernote/js/summernote-editor-common.js" charset="UTF-8"></script>
+<!-- SortableJS (드래그 순서 변경) -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <div class="content-wrapper">
   <div class="content-header">
@@ -278,28 +280,45 @@
 
         <!-- ===== 6. 사진 ===== -->
         <div class="card">
-          <div class="card-header"><h5 class="card-title mb-0">사진</h5></div>
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">사진</h5>
+            <small class="text-muted">💡 드래그로 순서 변경 | "대표" 클릭하여 썸네일 지정</small>
+          </div>
           <div class="card-body">
-            <!-- 기존 사진 -->
-            <div id="existFileArea" class="d-flex flex-wrap" style="gap:10px; margin-bottom:10px;">
+            <!-- 대표 이미지 경로 (hidden) -->
+            <input type="hidden" name="thumbImgPath" id="thumbImgPath" value="${prop.thumbImgPath}" />
+            <!-- 이미지 순서 (hidden) -->
+            <input type="hidden" name="imageOrder" id="imageOrder" value="" />
+
+            <!-- 2열 그리드 파일 미리보기 -->
+            <div id="filePreviewArea" class="prop-file-grid">
               <c:if test="${not empty fileList}">
-                <c:forEach var="file" items="${fileList}">
-                  <div class="exist-file-item" id="file_${file.upldFileCd}_${file.fileSeq}">
-                    <img src="/upload${file.savePath}${file.saveFileNm}" />
-                    <button type="button" class="btn btn-xs btn-bo-del" onclick="fnDeleteFile('${file.upldFileCd}','${file.fileSeq}')">×</button>
+                <c:forEach var="file" items="${fileList}" varStatus="st">
+                  <c:set var="imgPath" value="${file.savePath}${file.saveFileNm}" />
+                  <c:set var="isThumb" value="${imgPath eq prop.thumbImgPath}" />
+                  <div class="prop-file-card" data-type="exist" data-upld-file-cd="${file.upldFileCd}" data-file-seq="${file.fileSeq}" data-img-path="${imgPath}">
+                    <div class="prop-file-card-header">
+                      <span class="prop-file-thumb ${isThumb || (empty prop.thumbImgPath && st.first) ? 'active' : ''}" onclick="fnSetThumb(this)"><i class="fas fa-check"></i> 대표</span>
+                      <button type="button" class="prop-file-remove" onclick="fnDeleteFile(this)">×</button>
+                    </div>
+                    <div class="prop-file-card-img">
+                      <img src="/upload${imgPath}" alt="" />
+                    </div>
+                    <div class="prop-file-card-footer">
+                      <div class="prop-file-drag"><i class="fas fa-grip-horizontal"></i> 드래그하여 순서변경</div>
+                    </div>
                   </div>
                 </c:forEach>
               </c:if>
             </div>
-            <!-- 드래그앤드롭 업로드 -->
+
+            <!-- 드래그앤드롭 업로드 영역 -->
             <input type="file" name="atchFile" id="atchFileInput" multiple accept=".jpg,.jpeg,.png,.gif,.webp" style="display:none;" />
-            <div id="dropZone" class="drop-zone">
-              <span class="drop-zone-icon">&#128247;</span>
-              <p class="drop-zone-text">이미지를 여기에 드래그하거나 <a href="javascript:void(0)" class="drop-zone-link" id="dropZoneLink">클릭하여 선택</a></p>
-              <small class="text-muted">최대 10개, 파일당 20MB 이하 (JPG, PNG, GIF, WEBP)</small>
+            <div id="dropZone" class="prop-drop-zone">
+              <span class="prop-drop-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+              <p class="prop-drop-text">이미지를 여기에 드래그하거나 <a href="javascript:void(0)" class="prop-drop-link">클릭하여 선택</a></p>
+              <small class="text-muted">파일당 20MB 이하 (JPG, PNG, GIF, WEBP)</small>
             </div>
-            <!-- 새 파일 미리보기 -->
-            <div id="newFilePreview" class="d-flex flex-wrap" style="gap:10px; margin-top:10px;"></div>
             <div id="deleteFilesArea"></div>
           </div>
         </div>
@@ -377,6 +396,9 @@ $(function() {
 
   // 드래그앤드롭 초기화 (별도 블록으로 분리하여 에러 격리)
   try { fnInitDropZone(); } catch(e) { console.error('dropzone init error', e); }
+
+  // Sortable 초기화 (이미지 순서 드래그)
+  try { fnInitSortable(); } catch(e) { console.error('sortable init error', e); }
 });
 
 /* 대분류 변경 → 중분류 로드 */
@@ -466,9 +488,16 @@ function fnInitDropZone() {
   var $zone = $('#dropZone');
   var $input = $('#atchFileInput');
 
+  // 페이지 전체 드래그 방지
+  $(document).on('dragover drop', function(e) {
+    if (!$(e.target).closest('#dropZone').length) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  });
+
   // 영역 전체 클릭 → 파일 선택
   $zone.on('click', function(e) {
-    // 이미 input click이 진행중이면 무시 (이중 호출 방지)
     if (e.target === $input[0]) return;
     $input.trigger('click');
   });
@@ -480,60 +509,168 @@ function fnInitDropZone() {
     e.preventDefault(); e.stopPropagation();
     $zone.removeClass('drag-over');
     if (e.originalEvent.dataTransfer.files.length) {
-      $input[0].files = e.originalEvent.dataTransfer.files;
-      fnPreviewNewFiles($input[0].files);
+      fnAddNewFiles(e.originalEvent.dataTransfer.files);
     }
   });
 
   $input.on('change', function() {
-    fnPreviewNewFiles(this.files);
+    fnAddNewFiles(this.files);
+    this.value = '';
   });
 }
 
-var _newFiles = []; // 새 파일 목록 관리
+var _newFiles = [];
+var _newFileIdCounter = 0;
+var _deletedExistFiles = [];
+var _sortable = null;
 
-function fnPreviewNewFiles(files) {
-  // 기존 목록에 추가
+function fnAddNewFiles(files) {
   for (var i = 0; i < files.length; i++) {
-    _newFiles.push(files[i]);
+    var file = files[i];
+    if (!file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 가능합니다.');
+      continue;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      alert('파일 크기는 20MB 이하만 가능합니다: ' + file.name);
+      continue;
+    }
+
+    var fileId = 'new_' + (++_newFileIdCounter);
+    _newFiles.push({ id: fileId, file: file });
+    fnRenderNewFile(fileId, file);
   }
-  fnRenderNewFiles();
-  fnSyncFileInput();
+  fnUpdateThumbBadge();
 }
 
-function fnRemoveNewFile(idx) {
-  _newFiles.splice(idx, 1);
-  fnRenderNewFiles();
-  fnSyncFileInput();
+function fnRenderNewFile(fileId, file) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var html = '<div class="prop-file-card" data-type="new" data-file-id="' + fileId + '">' +
+                 '<div class="prop-file-card-header">' +
+                   '<span class="prop-file-thumb" onclick="fnSetThumb(this)"><i class="fas fa-check"></i> 대표</span>' +
+                   '<span class="prop-file-new">NEW</span>' +
+                   '<button type="button" class="prop-file-remove" onclick="fnDeleteFile(this)">×</button>' +
+                 '</div>' +
+                 '<div class="prop-file-card-img">' +
+                   '<img src="' + e.target.result + '" alt="' + file.name + '" />' +
+                 '</div>' +
+                 '<div class="prop-file-card-footer">' +
+                   '<div class="prop-file-drag"><i class="fas fa-grip-horizontal"></i> 드래그하여 순서변경</div>' +
+                 '</div>' +
+               '</div>';
+    $('#filePreviewArea').append(html);
+    fnUpdateThumbBadge();
+  };
+  reader.readAsDataURL(file);
 }
 
-function fnRenderNewFiles() {
-  var $preview = $('#newFilePreview');
-  $preview.empty();
-  for (var i = 0; i < _newFiles.length; i++) {
-    (function(file, idx) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $preview.append(
-          '<div class="exist-file-item" id="newFile_' + idx + '">' +
-          '<img src="' + e.target.result + '" />' +
-          '<button type="button" class="btn btn-xs btn-bo-del" onclick="fnRemoveNewFile(' + idx + ')">×</button>' +
-          '<span class="new-file-label">NEW</span>' +
-          '</div>'
-        );
-      };
-      reader.readAsDataURL(file);
-    })(_newFiles[i], i);
+/* ========== Sortable 초기화 ========== */
+function fnInitSortable() {
+  var el = document.getElementById('filePreviewArea');
+  if (!el || typeof Sortable === 'undefined') return;
+
+  _sortable = new Sortable(el, {
+    animation: 150,
+    handle: '.prop-file-drag',
+    draggable: '.prop-file-card',
+    ghostClass: 'prop-file-ghost',
+    chosenClass: 'prop-file-chosen',
+    dragClass: 'prop-file-dragging',
+    forceFallback: true,
+    fallbackTolerance: 3,
+    onStart: function() {
+      document.body.style.cursor = 'grabbing';
+    },
+    onEnd: function() {
+      document.body.style.cursor = '';
+      fnUpdateThumbBadge();
+    }
+  });
+}
+
+/* ========== 썸네일 배지 업데이트 ========== */
+function fnUpdateThumbBadge() {
+  var $cards = $('#filePreviewArea .prop-file-card:not(.prop-file-card--deleted)');
+  var $activeCard = $cards.filter(function() {
+    return $(this).find('.prop-file-thumb').hasClass('active');
+  });
+
+  // 대표 없으면 첫번째를 대표로
+  if ($activeCard.length === 0 && $cards.length > 0) {
+    $cards.first().find('.prop-file-thumb').addClass('active');
+    // thumbImgPath도 업데이트
+    var firstPath = $cards.first().data('img-path');
+    if (firstPath) {
+      $('#thumbImgPath').val(firstPath);
+    }
   }
 }
 
-function fnSyncFileInput() {
-  // DataTransfer로 input.files를 동기화
-  var dt = new DataTransfer();
-  for (var i = 0; i < _newFiles.length; i++) {
-    dt.items.add(_newFiles[i]);
+/* ========== 대표 이미지 설정 ========== */
+function fnSetThumb(el) {
+  var $card = $(el).closest('.prop-file-card');
+  if ($card.hasClass('prop-file-card--deleted')) return;
+
+  // 기존 대표 해제
+  $('#filePreviewArea .prop-file-card .prop-file-thumb').removeClass('active');
+  // 새 대표 설정
+  $card.find('.prop-file-thumb').addClass('active');
+
+  // thumbImgPath 업데이트 (기존 파일만)
+  var imgPath = $card.data('img-path');
+  if (imgPath) {
+    $('#thumbImgPath').val(imgPath);
+  } else {
+    // 새 파일이면 저장 후 서버에서 처리
+    $('#thumbImgPath').val('');
   }
-  document.getElementById('atchFileInput').files = dt.files;
+}
+
+/* ========== 파일 삭제 ========== */
+function fnDeleteFile(btn) {
+  var $card = $(btn).closest('.prop-file-card');
+  var type = $card.data('type');
+  var wasActive = $card.find('.prop-file-thumb').hasClass('active');
+
+  if (type === 'exist') {
+    var upldFileCd = $card.data('upld-file-cd');
+    var fileSeq = $card.data('file-seq');
+    _deletedExistFiles.push(upldFileCd + ':' + fileSeq);
+    $card.addClass('prop-file-card--deleted');
+    $card.find('.prop-file-thumb').removeClass('active');
+
+    // 삭제 취소 오버레이 추가
+    if (!$card.find('.prop-file-undo-overlay').length) {
+      $card.append('<div class="prop-file-undo-overlay"><span class="undo-text">삭제됨</span><button type="button" class="prop-file-undo-btn" onclick="fnUndoDelete(this)"><i class="fas fa-undo"></i> 삭제취소</button></div>');
+    }
+
+    // hidden input 추가
+    $('#deleteFilesArea').append('<input type="hidden" name="deleteFiles" value="' + upldFileCd + ':' + fileSeq + '" />');
+  } else {
+    var fileId = $card.data('file-id');
+    _newFiles = _newFiles.filter(function(f) { return f.id !== fileId; });
+    $card.remove();
+  }
+
+  fnUpdateThumbBadge();
+}
+
+/* ========== 파일 삭제 취소 ========== */
+function fnUndoDelete(btn) {
+  var $card = $(btn).closest('.prop-file-card');
+  var upldFileCd = $card.data('upld-file-cd');
+  var fileSeq = $card.data('file-seq');
+  var key = upldFileCd + ':' + fileSeq;
+
+  _deletedExistFiles = _deletedExistFiles.filter(function(k) { return k !== key; });
+  $card.removeClass('prop-file-card--deleted');
+  $card.find('.prop-file-undo-overlay').remove();
+
+  // hidden input 제거
+  $('#deleteFilesArea').find('input[value="' + key + '"]').remove();
+
+  fnUpdateThumbBadge();
 }
 
 /* ========== 저장 ========== */
@@ -543,7 +680,26 @@ function fnSave() {
 
   $('[name=detailCnts]').val($('#detailCnts').summernote('code'));
 
+  // 이미지 순서 수집
+  fnCollectImageOrder();
+
   var formData = new FormData($form[0]);
+
+  // 새 파일들 추가 (순서대로)
+  var fileOrder = $('#imageOrder').val();
+  if (fileOrder) {
+    try {
+      var orderList = JSON.parse(fileOrder);
+      orderList.forEach(function(item) {
+        if (item.fileId && item.fileId.startsWith('new_')) {
+          var found = _newFiles.find(function(f) { return f.id === item.fileId; });
+          if (found) {
+            formData.append('atchFile', found.file);
+          }
+        }
+      });
+    } catch(e) {}
+  }
 
   $.ajax({
     url: '${ctx}/propertyMng/saveProperty',
@@ -602,11 +758,24 @@ function fnComplete() {
   }
 }
 
-/* ========== 파일 삭제 ========== */
-function fnDeleteFile(upldFileCd, fileSeq) {
-  if (!confirm('이 사진을 삭제하시겠습니까?')) return;
-  $('#file_' + upldFileCd + '_' + fileSeq).hide();
-  $('#deleteFilesArea').append('<input type="hidden" name="deleteFiles" value="' + upldFileCd + ':' + fileSeq + '" />');
+/* ========== 저장 시 이미지 순서 수집 ========== */
+function fnCollectImageOrder() {
+  var orderList = [];
+  $('#filePreviewArea .prop-file-card:not(.prop-file-card--deleted)').each(function(idx) {
+    var type = $(this).data('type');
+    if (type === 'exist') {
+      orderList.push({
+        fileSeq: $(this).data('file-seq'),
+        newSeq: idx + 1
+      });
+    } else {
+      orderList.push({
+        fileId: $(this).data('file-id'),
+        newSeq: idx + 1
+      });
+    }
+  });
+  $('#imageOrder').val(JSON.stringify(orderList));
 }
 
 function fnGoList() {
@@ -619,23 +788,233 @@ function fnRefresh() {
 </script>
 
 <style>
-/* 기존 파일 아이템 */
-.exist-file-item { position:relative; display:inline-block; }
-.exist-file-item img { width:150px; height:100px; object-fit:cover; border-radius:4px; border:1px solid #dee2e6; }
-.exist-file-item .btn { position:absolute; top:4px; right:4px; font-size:14px; padding:0 6px; line-height:20px; background:rgba(0,0,0,0.5); color:#fff; border:none; border-radius:50%; }
-.exist-file-item .btn:hover { background:rgba(220,53,69,0.9); }
-.new-file-label { position:absolute; bottom:4px; left:4px; background:#28a745; color:#fff; font-size:10px; padding:1px 6px; border-radius:3px; font-weight:700; }
+/* 3열 그리드 */
+.prop-file-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+  min-height: 50px;
+}
+
+/* 카드 스타일 */
+.prop-file-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.prop-file-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* 카드 헤더 */
+.prop-file-card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 10;
+}
+
+/* 대표 이미지 뱃지 */
+.prop-file-thumb {
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.prop-file-thumb:hover {
+  background: rgba(0,0,0,0.7);
+}
+.prop-file-thumb.active {
+  background: #28a745;
+}
+
+/* NEW 뱃지 */
+.prop-file-new {
+  background: #007bff;
+  color: #fff;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-weight: 700;
+  margin-left: 8px;
+}
+
+/* 삭제 버튼 */
+.prop-file-remove {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.prop-file-remove:hover {
+  background: #dc3545;
+}
+
+/* 이미지 영역 */
+.prop-file-card-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #f5f5f5;
+}
+.prop-file-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 카드 푸터 */
+.prop-file-card-footer {
+  padding: 12px 15px 15px;
+  background: #fff;
+}
+
+/* 드래그 핸들 */
+.prop-file-drag {
+  padding: 8px;
+  background: #f0f0f0;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  cursor: grab;
+  transition: all 0.2s;
+  user-select: none;
+}
+.prop-file-drag:hover {
+  background: #e0e0e0;
+  color: #555;
+}
+.prop-file-drag:active {
+  cursor: grabbing;
+}
+
+/* 드래그 상태 */
+.prop-file-ghost {
+  opacity: 0.4;
+  border: 2px dashed #007bff !important;
+}
+.prop-file-chosen {
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+/* 삭제된 카드 */
+.prop-file-card--deleted {
+  opacity: 0.5;
+  position: relative;
+}
+.prop-file-card--deleted .prop-file-card-header,
+.prop-file-card--deleted .prop-file-card-footer {
+  pointer-events: none;
+}
+
+/* 삭제 취소 오버레이 */
+.prop-file-undo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 25;
+  border-radius: 12px;
+}
+.prop-file-undo-overlay .undo-text {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+}
+.prop-file-undo-btn {
+  background: #fff;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+.prop-file-undo-btn:hover {
+  background: #007bff;
+  color: #fff;
+}
 
 /* 드래그앤드롭 영역 */
-.drop-zone {
-  border:2px dashed #b8d4f0; border-radius:8px; padding:40px 30px; text-align:center; cursor:pointer;
-  transition: border-color 0.2s, background 0.2s;
-  background: #fbfdff;
+.prop-drop-zone {
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fafafa;
 }
-.drop-zone:hover, .drop-zone.drag-over { border-color:#0078ff; background:#f0f7ff; }
-.drop-zone-icon { font-size:36px; color:#888; margin-bottom:12px; display:block; }
-.drop-zone-text { margin:0 0 6px; font-size:14px; color:#555; font-weight:500; }
-.drop-zone-link { color:#0078ff; font-weight:700; text-decoration:underline; cursor:pointer; }
-.drop-zone-link:hover { color:#005ec7; }
-.drop-zone p { margin:0; }
+.prop-drop-zone:hover,
+.prop-drop-zone.drag-over {
+  border-color: #007bff;
+  background: #f0f7ff;
+}
+.prop-drop-icon {
+  font-size: 36px;
+  color: #999;
+  display: block;
+  margin-bottom: 12px;
+}
+.prop-drop-text {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #555;
+}
+.prop-drop-link {
+  color: #007bff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+/* 반응형 */
+@media (max-width: 1200px) {
+  .prop-file-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .prop-file-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

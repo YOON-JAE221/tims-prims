@@ -560,34 +560,39 @@
   var totalSlides = ${fn:length(imgList)};
   var preloaded = false;
 
-  // 모달 열릴 때 모든 이미지 미리 로드
+  // 페이지 로드 시 백그라운드에서 이미지 미리 로드 시작
   function preloadAllImages() {
     if (preloaded) return;
     preloaded = true;
 
     var slides = document.querySelectorAll('.gallery-slide img[data-src]');
-    slides.forEach(function(img) {
+    slides.forEach(function(img, idx) {
       if (img.dataset.src) {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-        img.onload = function() {
-          this.classList.add('loaded');
-          // 스피너 숨기기
-          var spinner = this.parentElement.querySelector('.gallery-spinner');
-          if (spinner) spinner.style.display = 'none';
-        };
+        // 순차적 로드 (네트워크 부하 분산)
+        setTimeout(function() {
+          img.src = img.dataset.src;
+          img.removeAttribute('data-src');
+          img.onload = function() {
+            this.classList.add('loaded');
+            var spinner = this.parentElement.querySelector('.gallery-spinner');
+            if (spinner) spinner.style.display = 'none';
+          };
+        }, idx * 50); // 50ms 간격으로 순차 로드
       }
     });
+  }
+
+  // 페이지 로드 완료 후 바로 프리로드 시작
+  if (document.readyState === 'complete') {
+    preloadAllImages();
+  } else {
+    window.addEventListener('load', preloadAllImages);
   }
 
   window.openGallerySlider = function(startIdx) {
     currentIdx = startIdx || 0;
     document.getElementById('galleryModal').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-
-    // 모달 열릴 때 모든 이미지 프리로드
-    preloadAllImages();
-
     renderSlide();
   };
 
@@ -661,12 +666,16 @@
   <input type="hidden" name="propCd" value="${prop.propCd}" />
   <input type="hidden" name="inqType" value="PROPERTY" />
 </form>
+<!-- 매물 수정 전용 form -->
+<form id="goPropertyEditForm" action="${ctx}/propertyMng/viewPropertyWrite" method="post" target="_blank" style="display:none;">
+  <input type="hidden" name="propCd" value="${prop.propCd}" />
+</form>
 <script>
   function fnGoPropertyConsult() {
     document.getElementById('goPropertyConsultForm').submit();
   }
   function fnGoEdit() {
-    window.open('${ctx}/propertyMng/viewPropertyWrite?propCd=${prop.propCd}', '_blank');
+    document.getElementById('goPropertyEditForm').submit();
   }
 </script>
 

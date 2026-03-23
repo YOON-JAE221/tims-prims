@@ -323,6 +323,26 @@ public class FileService {
         return fileDao.getSelectUpldFileOne(paramMap);
     }
     
-    
+    /**
+     * 파일 순서 일괄 업데이트
+     * @param upldFileCd 파일 그룹 키
+     * @param orderList  [{oldFileSeq: 1, newFileSeq: 2}, ...]
+     * @param ssnUsrCd   세션 사용자
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void updateFileOrder(String upldFileCd, List<Map<String, Object>> orderList, String ssnUsrCd) {
+        if (upldFileCd == null || orderList == null || orderList.isEmpty()) return;
+
+        for (Map<String, Object> item : orderList) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("upldFileCd", upldFileCd);
+            param.put("oldFileSeq", item.get("oldFileSeq"));
+            param.put("newFileSeq", item.get("newFileSeq"));
+            param.put("ssnUsrCd", ssnUsrCd);
+            fileDao.updateFileSeq(param);
+        }
+    }
+
+
     
 }

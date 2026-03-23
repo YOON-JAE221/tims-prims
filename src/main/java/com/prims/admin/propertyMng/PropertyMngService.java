@@ -111,7 +111,42 @@ public class PropertyMngService {
         if ("".equals(paramMap.get("displayStart"))) paramMap.put("displayStart", null);
         if ("".equals(paramMap.get("displayEnd"))) paramMap.put("displayEnd", null);
 
-        return propertyMngDao.saveProperty(paramMap);
+        int result = propertyMngDao.saveProperty(paramMap);
+
+        // 이미지 순서 업데이트 (수정 모드에서만)
+        String imageOrderJson = String.valueOf(paramMap.getOrDefault("imageOrder", ""));
+        if (!isNew && !imageOrderJson.isEmpty() && !"null".equals(imageOrderJson)) {
+            try {
+                // 기존 atchFileKey 조회
+                Map<String, Object> prop = propertyMngDao.getSelectPropertyDetail(paramMap);
+                String atchFileKey = String.valueOf(prop.getOrDefault("atchFileKey", ""));
+                if (!atchFileKey.isEmpty() && !"null".equals(atchFileKey)) {
+                    com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                    List<Map<String, Object>> orderList = om.readValue(imageOrderJson,
+                            om.getTypeFactory().constructCollectionType(List.class, Map.class));
+
+                    List<Map<String, Object>> updateList = new ArrayList<>();
+                    for (Map<String, Object> item : orderList) {
+                        int oldSeq = Integer.parseInt(String.valueOf(item.get("fileSeq")));
+                        int newSeq = Integer.parseInt(String.valueOf(item.get("newSeq")));
+                        if (oldSeq != newSeq) {
+                            Map<String, Object> upd = new HashMap<>();
+                            upd.put("oldFileSeq", oldSeq);
+                            upd.put("newFileSeq", newSeq);
+                            updateList.add(upd);
+                        }
+                    }
+                    if (!updateList.isEmpty()) {
+                        fileService.updateFileOrder(atchFileKey, updateList, paramMap.get("ssnUsrCd").toString());
+                    }
+                }
+            } catch (Exception e) {
+                // 순서 업데이트 실패해도 매물 저장은 유지
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 
     private long toLong(Object val) {
@@ -366,5 +401,12 @@ public class PropertyMngService {
     private String getString(Map<String, Object> map, String key) {
         Object val = map.get(key);
         return val != null ? val.toString() : "";
+    }
+
+    /**
+     * 이미지 순서 저장
+     */
+    public void updateFileOrder(String upldFileCd, List<Map<String, Object>> orderList, String ssnUsrCd) {
+        fileService.updateFileOrder(upldFileCd, orderList, ssnUsrCd);
     }
 }

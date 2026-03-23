@@ -108,7 +108,7 @@
             AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND,
             FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
             BUILD_DATE, ENTRANCE_TYPE, HEATING,
-            DETAIL_CNTS, ATCH_FILE_KEY,
+            DETAIL_CNTS, ATCH_FILE_KEY, THUMB_IMG_PATH,
             DISPLAY_YN, DISPLAY_START, DISPLAY_END,
             SOLD_YN, ADMIN_MEMO,
             USE_YN, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
@@ -119,7 +119,7 @@
             #{areaSupply}, #{areaExclusive}, #{areaLand},
             #{floorNo}, #{floorTotal}, #{roomCnt}, #{bathCnt}, #{direction}, #{parkingYn},
             #{buildDate}, #{entranceType}, #{heating},
-            #{detailCnts}, #{atchFileKey},
+            #{detailCnts}, #{atchFileKey}, #{thumbImgPath},
             #{displayYn}, #{displayStart}, #{displayEnd},
             #{soldYn}, #{adminMemo},
             'Y', 'N', #{ssnUsrCd}, NOW(), #{ssnUsrCd}, NOW()
@@ -159,6 +159,7 @@
             <if test="atchFileKey != null and atchFileKey != ''">
             ATCH_FILE_KEY  = #{atchFileKey},
             </if>
+            THUMB_IMG_PATH = #{thumbImgPath},
             DISPLAY_YN     = #{displayYn},
             DISPLAY_START  = #{displayStart},
             DISPLAY_END    = #{displayEnd},

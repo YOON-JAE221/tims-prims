@@ -201,4 +201,25 @@ public class PropertyMngController {
             e.printStackTrace();
         }
     }
+
+    // 이미지 순서 저장
+    @RequestMapping(value = "/saveImageOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveImageOrder(@RequestParam("upldFileCd") String upldFileCd,
+                                              @RequestParam("orderList") String orderListJson,
+                                              @ParamMap Map<String, Object> paramMap) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+            List<Map<String, Object>> orderList = om.readValue(orderListJson,
+                    om.getTypeFactory().constructCollectionType(List.class, Map.class));
+            String ssnUsrCd = String.valueOf(paramMap.getOrDefault("ssnUsrCd", "ADMIN"));
+            propertyMngService.updateFileOrder(upldFileCd, orderList, ssnUsrCd);
+            result.put("result", Constant.OK);
+        } catch (Exception e) {
+            result.put("result", Constant.FAIL);
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
 }

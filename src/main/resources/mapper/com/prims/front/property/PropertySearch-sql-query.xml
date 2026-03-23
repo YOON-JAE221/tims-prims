@@ -57,12 +57,7 @@
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO, A.FLOOR_TOTAL
              , A.ADDRESS, A.SOLD_YN
              , A.ATCH_FILE_KEY
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC
-                 LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N'
@@ -193,11 +188,7 @@
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO, A.FLOOR_TOTAL
              , A.ADDRESS
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
@@ -216,11 +207,7 @@
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO, A.FLOOR_TOTAL
              , A.ADDRESS
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
@@ -239,11 +226,7 @@
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO, A.FLOOR_TOTAL
              , A.ADDRESS
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
@@ -262,11 +245,7 @@
              , A.SELL_PRICE, A.DEPOSIT, A.MONTHLY_RENT
              , A.AREA_EXCLUSIVE, A.ROOM_CNT, A.BATH_CNT, A.FLOOR_NO, A.FLOOR_TOTAL
              , A.ADDRESS
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
           FROM TB_PROPERTY A
          WHERE A.SOLD_YN = 'N'
            AND A.DEL_YN = 'N'
@@ -282,11 +261,7 @@
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.MID_CAT_CD) AS MID_CAT_NM
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
-             , (SELECT CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM)
-                  FROM TB_UPLD_FILE F
-                 WHERE F.UPLD_FILE_CD COLLATE utf8mb4_unicode_ci = A.ATCH_FILE_KEY
-                   AND F.DEL_YN = 'N'
-                 ORDER BY F.FILE_SEQ ASC LIMIT 1) AS THUMB_PATH
+             , A.THUMB_IMG_PATH AS THUMB_PATH
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM_FMT
           FROM TB_PROPERTY A
          WHERE A.PROP_CD = #{id}

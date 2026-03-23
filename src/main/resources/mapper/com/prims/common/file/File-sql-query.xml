@@ -61,6 +61,7 @@
 	      FROM TB_UPLD_FILE
 	     WHERE UPLD_FILE_CD = #{upldFileCd}
 	       AND DEL_YN = 'N'
+	     ORDER BY FILE_SEQ ASC
 	</select>
 	
 	
@@ -89,6 +90,16 @@
 	    DELETE FROM TB_UPLD_FILE
 	     WHERE UPLD_FILE_CD = #{upldFileCd}
 	</delete>
+
+	<!-- 파일 순서 업데이트 -->
+	<update id="updateFileSeq" parameterType="map">
+	    UPDATE TB_UPLD_FILE
+	       SET FILE_SEQ = #{newFileSeq}
+	         , UPD_USR_CD = #{ssnUsrCd}
+	         , UPD_DTM = SYSDATE()
+	     WHERE UPLD_FILE_CD = #{upldFileCd}
+	       AND FILE_SEQ = #{oldFileSeq}
+	</update>
 	</mapper>
 	
 	
