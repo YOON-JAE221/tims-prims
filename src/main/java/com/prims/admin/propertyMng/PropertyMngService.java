@@ -68,17 +68,95 @@ public class PropertyMngService {
         }
 
         // 첨부파일 처리
+        String newAtchFileKey = null;
         if (atchFile != null) {
             List<MultipartFile> fileList = new ArrayList<>();
             for (MultipartFile f : atchFile) {
                 if (f != null && !f.isEmpty()) fileList.add(f);
             }
             if (!fileList.isEmpty()) {
-                String atchFileKey = fileService.saveBbsAtchFiles(fileList, "property", paramMap.get("ssnUsrCd").toString());
-                if (atchFileKey != null) {
-                    paramMap.put("atchFileKey", atchFileKey);
+                newAtchFileKey = fileService.saveBbsAtchFiles(fileList, "property", paramMap.get("ssnUsrCd").toString());
+                if (newAtchFileKey != null) {
+                    paramMap.put("atchFileKey", newAtchFileKey);
                 }
             }
+        }
+
+        // ★ 썸네일 이미지 경로 처리 ★
+        String thumbImgPath = String.valueOf(paramMap.getOrDefault("thumbImgPath", ""));
+        String thumbNewFileIndex = String.valueOf(paramMap.getOrDefault("thumbNewFileIndex", ""));
+        String imageOrderJson = String.valueOf(paramMap.getOrDefault("imageOrder", ""));
+        
+        // 1) JSP에서 기존 파일을 대표로 선택한 경우 → thumbImgPath 사용
+        if (thumbImgPath != null && !thumbImgPath.isEmpty() && !"null".equals(thumbImgPath)) {
+            paramMap.put("thumbImgPath", thumbImgPath);
+        }
+        // 2) JSP에서 새 파일을 대표로 선택한 경우 → thumbNewFileIndex로 해당 파일 찾기
+        else if (thumbNewFileIndex != null && !thumbNewFileIndex.isEmpty() && !"null".equals(thumbNewFileIndex)
+                && newAtchFileKey != null && !newAtchFileKey.isEmpty()) {
+            try {
+                // imageOrder에서 새 파일들의 순서 파악
+                com.fasterxml.jackson.databind.ObjectMapper om = new com.fasterxml.jackson.databind.ObjectMapper();
+                List<Map<String, Object>> orderList = om.readValue(imageOrderJson,
+                        om.getTypeFactory().constructCollectionType(List.class, Map.class));
+                
+                // thumbNewFileIndex가 몇 번째 새 파일인지 찾기
+                int newFileIndex = 0;
+                for (Map<String, Object> item : orderList) {
+                    String fileId = String.valueOf(item.getOrDefault("fileId", ""));
+                    if (fileId.startsWith("new_")) {
+                        newFileIndex++;
+                        if (fileId.equals(thumbNewFileIndex)) {
+                            break;
+                        }
+                    }
+                }
+                
+                // 해당 인덱스의 파일 경로 조회
+                if (newFileIndex > 0) {
+                    Map<String, Object> fileParam = new HashMap<>();
+                    fileParam.put("upldFileCd", newAtchFileKey);
+                    List<Map<String, Object>> uploadedFiles = fileService.getSelectUpldFileList(fileParam);
+                    if (uploadedFiles != null && uploadedFiles.size() >= newFileIndex) {
+                        Map<String, Object> targetFile = uploadedFiles.get(newFileIndex - 1);
+                        String savePath = String.valueOf(targetFile.getOrDefault("savePath", ""));
+                        String saveFileNm = String.valueOf(targetFile.getOrDefault("saveFileNm", ""));
+                        thumbImgPath = savePath + saveFileNm;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            paramMap.put("thumbImgPath", thumbImgPath);
+        }
+        // 3) 둘 다 비어있으면 → 첫 번째 파일로 설정
+        else {
+            String fileKey = newAtchFileKey;
+            
+            // 신규 업로드 파일이 없으면 기존 atchFileKey 사용
+            if (fileKey == null || fileKey.isEmpty()) {
+                String existingPropCd = String.valueOf(paramMap.getOrDefault("propCd", ""));
+                if (!existingPropCd.isEmpty() && !"null".equals(existingPropCd)) {
+                    Map<String, Object> prop = propertyMngDao.getSelectPropertyDetail(paramMap);
+                    if (prop != null) {
+                        fileKey = String.valueOf(prop.getOrDefault("atchFileKey", ""));
+                    }
+                }
+            }
+            
+            // 파일 키가 있으면 첫 번째 파일 경로 조회
+            if (fileKey != null && !fileKey.isEmpty() && !"null".equals(fileKey)) {
+                Map<String, Object> fileParam = new HashMap<>();
+                fileParam.put("upldFileCd", fileKey);
+                List<Map<String, Object>> uploadedFiles = fileService.getSelectUpldFileList(fileParam);
+                if (uploadedFiles != null && !uploadedFiles.isEmpty()) {
+                    Map<String, Object> firstFile = uploadedFiles.get(0);
+                    String savePath = String.valueOf(firstFile.getOrDefault("savePath", ""));
+                    String saveFileNm = String.valueOf(firstFile.getOrDefault("saveFileNm", ""));
+                    thumbImgPath = savePath + saveFileNm;
+                }
+            }
+            paramMap.put("thumbImgPath", thumbImgPath);
         }
 
         // 신규/수정 분기
@@ -114,7 +192,7 @@ public class PropertyMngService {
         int result = propertyMngDao.saveProperty(paramMap);
 
         // 이미지 순서 업데이트 (수정 모드에서만)
-        String imageOrderJson = String.valueOf(paramMap.getOrDefault("imageOrder", ""));
+        // imageOrderJson은 위에서 이미 선언됨
         if (!isNew && !imageOrderJson.isEmpty() && !"null".equals(imageOrderJson)) {
             try {
                 // 기존 atchFileKey 조회

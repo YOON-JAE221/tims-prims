@@ -287,6 +287,8 @@
           <div class="card-body">
             <!-- 대표 이미지 경로 (hidden) -->
             <input type="hidden" name="thumbImgPath" id="thumbImgPath" value="${prop.thumbImgPath}" />
+            <!-- 새 파일 중 대표 인덱스 (hidden) - 새 파일이 대표일 때 사용 -->
+            <input type="hidden" name="thumbNewFileIndex" id="thumbNewFileIndex" value="" />
             <!-- 이미지 순서 (hidden) -->
             <input type="hidden" name="imageOrder" id="imageOrder" value="" />
 
@@ -598,11 +600,19 @@ function fnUpdateThumbBadge() {
 
   // 대표 없으면 첫번째를 대표로
   if ($activeCard.length === 0 && $cards.length > 0) {
-    $cards.first().find('.prop-file-thumb').addClass('active');
-    // thumbImgPath도 업데이트
-    var firstPath = $cards.first().data('img-path');
-    if (firstPath) {
-      $('#thumbImgPath').val(firstPath);
+    var $firstCard = $cards.first();
+    $firstCard.find('.prop-file-thumb').addClass('active');
+
+    // 첫 번째 카드의 타입에 따라 thumbImgPath 또는 thumbNewFileIndex 설정
+    var type = $firstCard.data('type');
+    if (type === 'exist') {
+      var firstPath = $firstCard.data('img-path');
+      $('#thumbImgPath').val(firstPath || '');
+      $('#thumbNewFileIndex').val('');
+    } else {
+      var fileId = $firstCard.data('file-id');
+      $('#thumbImgPath').val('');
+      $('#thumbNewFileIndex').val(fileId || '');
     }
   }
 }
@@ -617,13 +627,18 @@ function fnSetThumb(el) {
   // 새 대표 설정
   $card.find('.prop-file-thumb').addClass('active');
 
-  // thumbImgPath 업데이트 (기존 파일만)
-  var imgPath = $card.data('img-path');
-  if (imgPath) {
-    $('#thumbImgPath').val(imgPath);
+  // thumbImgPath / thumbNewFileIndex 업데이트
+  var type = $card.data('type');
+  if (type === 'exist') {
+    // 기존 파일: 경로 설정
+    var imgPath = $card.data('img-path');
+    $('#thumbImgPath').val(imgPath || '');
+    $('#thumbNewFileIndex').val('');
   } else {
-    // 새 파일이면 저장 후 서버에서 처리
+    // 새 파일: 파일 ID 저장 (저장 시 서버에서 해당 파일로 대표 설정)
+    var fileId = $card.data('file-id');
     $('#thumbImgPath').val('');
+    $('#thumbNewFileIndex').val(fileId || '');
   }
 }
 
