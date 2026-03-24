@@ -268,16 +268,18 @@
            AND A.DEL_YN = 'N'
     </select>
 
-    <!-- 매물 이미지 목록 -->
+    <!-- 매물 이미지 목록 (썸네일 이미지가 첫 번째로) -->
     <select id="getPropertyImageList" parameterType="map" resultType="map">
         SELECT F.UPLD_FILE_CD
              , F.FILE_SEQ
-             , CONCAT(F.SAVE_PATH, '/', F.SAVE_FILE_NM) AS IMG_PATH
+             , CONCAT(F.SAVE_PATH, F.SAVE_FILE_NM) AS IMG_PATH
           FROM TB_UPLD_FILE F
          INNER JOIN TB_PROPERTY A ON A.ATCH_FILE_KEY COLLATE utf8mb4_unicode_ci = F.UPLD_FILE_CD
          WHERE A.PROP_CD = #{id}
            AND F.DEL_YN = 'N'
-         ORDER BY F.FILE_SEQ ASC
+         ORDER BY
+           CASE WHEN CONCAT(F.SAVE_PATH, F.SAVE_FILE_NM) = A.THUMB_IMG_PATH THEN 0 ELSE 1 END ASC,
+           F.FILE_SEQ ASC
     </select>
 
     <!-- 조회수 증가 -->
