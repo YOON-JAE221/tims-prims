@@ -304,7 +304,7 @@
                       <button type="button" class="prop-file-remove" onclick="fnDeleteFile(this)">×</button>
                     </div>
                     <div class="prop-file-card-img">
-                      <img src="/upload${imgPath}" alt="" />
+                      <img src="/upload${imgPath}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'" />
                     </div>
                     <div class="prop-file-card-footer">
                       <div class="prop-file-drag"><i class="fas fa-grip-horizontal"></i> 드래그하여 순서변경</div>
@@ -896,12 +896,20 @@ function fnRefresh() {
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .prop-file-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.prop-file-card-img img[src] {
+  opacity: 1;
 }
 
 /* 카드 푸터 */
