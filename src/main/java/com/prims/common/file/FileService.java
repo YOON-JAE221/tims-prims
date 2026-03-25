@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -242,6 +245,7 @@ public class FileService {
     /**
      * 게시판용 첨부파일 다건 저장 (기존 키에 추가 가능)
      * - existingKey가 있으면 해당 키에 추가, 없으면 새 키 생성
+     * - 병렬 처리로 WebP 변환 속도 개선
      *
      * @param existingKey 기존 upldFileCd (수정 모드에서 기존 파일에 추가할 때)
      * @return upldFileCd
@@ -268,59 +272,94 @@ public class FileService {
         if (!dir.exists()) dir.mkdirs();
 
         // 기존 키 사용 시 최대 fileSeq 조회
-        int seq = 1;
+        AtomicInteger seqCounter = new AtomicInteger(1);
         if (existingKey != null && !existingKey.isEmpty() && !"null".equals(existingKey)) {
             Map<String, Object> param = new HashMap<>();
             param.put("upldFileCd", existingKey);
             List<Map<String, Object>> existingFiles = fileDao.getSelectUpldFileList(param);
             if (existingFiles != null && !existingFiles.isEmpty()) {
+                int maxSeq = 0;
                 for (Map<String, Object> f : existingFiles) {
                     int fSeq = Integer.parseInt(String.valueOf(f.get("fileSeq")));
-                    if (fSeq >= seq) seq = fSeq + 1;
+                    if (fSeq > maxSeq) maxSeq = fSeq;
                 }
+                seqCounter.set(maxSeq + 1);
             }
         }
 
-        int savedCount = 0;
-        for (MultipartFile f : files) {
-            if (f == null || f.isEmpty()) continue;
+        // 유효한 파일만 필터링
+        List<MultipartFile> validFiles = files.stream()
+                .filter(f -> f != null && !f.isEmpty())
+                .collect(Collectors.toList());
 
-            String orgFileNm = (f.getOriginalFilename() == null) ? "" : f.getOriginalFilename();
-            String fileExtn = "";
-            if (orgFileNm.contains(".")) {
-                fileExtn = orgFileNm.substring(orgFileNm.lastIndexOf('.') + 1).toLowerCase();
-            }
-            String dotExt = fileExtn.isEmpty() ? "" : "." + fileExtn;
-            String saveFileNm = Utility.getUuidPk32() + dotExt;
+        if (validFiles.isEmpty()) return existingKey;
 
-            // 물리 저장
-            Path target = Paths.get(physDir, saveFileNm).normalize();
-            Files.copy(f.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+        // 결과 저장용 (순서 보장 위해 ConcurrentHashMap 사용)
+        final String finalPhysDir = physDir;
+        final String finalWebDir = webDir;
+        Map<Integer, Map<String, Object>> resultMap = new ConcurrentHashMap<>();
 
-            long fileSiz = f.getSize();
-
-            // 이미지 파일 처리: WebP 변환 (JPG/PNG → WebP)
-            if (ImageUtil.isImageFile(saveFileNm) && ImageUtil.isConvertibleToWebp(saveFileNm)) {
-                File webpFile = ImageUtil.convertToWebp(target.toFile());
-                if (webpFile != null && webpFile.exists()) {
-                    // 원본 삭제
-                    Files.deleteIfExists(target);
-                    // 파일명, 확장자 변경
-                    saveFileNm = webpFile.getName();
-                    fileExtn = "webp";
-                    fileSiz = webpFile.length();
+        // ★ 병렬 처리: 파일 저장 + WebP 변환 ★
+        validFiles.parallelStream().forEach(f -> {
+            try {
+                int seq = seqCounter.getAndIncrement();
+                
+                String orgFileNm = (f.getOriginalFilename() == null) ? "" : f.getOriginalFilename();
+                String fileExtn = "";
+                if (orgFileNm.contains(".")) {
+                    fileExtn = orgFileNm.substring(orgFileNm.lastIndexOf('.') + 1).toLowerCase();
                 }
-            }
+                String dotExt = fileExtn.isEmpty() ? "" : "." + fileExtn;
+                String saveFileNm = Utility.getUuidPk32() + dotExt;
 
-            // DB 저장
+                // 물리 저장
+                Path target = Paths.get(finalPhysDir, saveFileNm).normalize();
+                Files.copy(f.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+
+                long fileSiz = f.getSize();
+
+                // 이미지 파일 처리: WebP 변환 (JPG/PNG → WebP)
+                if (ImageUtil.isImageFile(saveFileNm) && ImageUtil.isConvertibleToWebp(saveFileNm)) {
+                    File webpFile = ImageUtil.convertToWebp(target.toFile());
+                    if (webpFile != null && webpFile.exists()) {
+                        // 원본 삭제
+                        Files.deleteIfExists(target);
+                        // 파일명, 확장자 변경
+                        saveFileNm = webpFile.getName();
+                        fileExtn = "webp";
+                        fileSiz = webpFile.length();
+                    }
+                }
+
+                // 결과 저장
+                Map<String, Object> fileInfo = new HashMap<>();
+                fileInfo.put("seq", seq);
+                fileInfo.put("orgFileNm", orgFileNm);
+                fileInfo.put("saveFileNm", saveFileNm);
+                fileInfo.put("fileExtn", fileExtn);
+                fileInfo.put("fileSiz", fileSiz);
+                resultMap.put(seq, fileInfo);
+
+            } catch (Exception e) {
+                throw new RuntimeException("파일 처리 실패: " + f.getOriginalFilename(), e);
+            }
+        });
+
+        // ★ 순차 처리: DB 저장 (순서대로) ★
+        List<Integer> sortedKeys = resultMap.keySet().stream().sorted().collect(Collectors.toList());
+        int savedCount = 0;
+        
+        for (Integer seq : sortedKeys) {
+            Map<String, Object> fileInfo = resultMap.get(seq);
+            
             Map<String, Object> p = new HashMap<>();
             p.put("upldFileCd", upldFileCd);
-            p.put("fileSeq", seq++);
-            p.put("fileNm", orgFileNm);
-            p.put("saveFileNm", saveFileNm);
-            p.put("savePath", webDir);
-            p.put("fileSiz", fileSiz);
-            p.put("fileExtn", fileExtn);
+            p.put("fileSeq", seq);
+            p.put("fileNm", fileInfo.get("orgFileNm"));
+            p.put("saveFileNm", fileInfo.get("saveFileNm"));
+            p.put("savePath", finalWebDir);
+            p.put("fileSiz", fileInfo.get("fileSiz"));
+            p.put("fileExtn", fileInfo.get("fileExtn"));
             p.put("useYn", "Y");
             p.put("delYn", "N");
             p.put("ssnUsrCd", ssnUsrCd);
@@ -329,7 +368,10 @@ public class FileService {
                 fileDao.insertUpldFile(p);
                 savedCount++;
             } catch (Exception dbEx) {
-                try { Files.deleteIfExists(Paths.get(physDir, saveFileNm)); } catch (Exception ignore) {}
+                // 실패 시 해당 파일 삭제
+                try { 
+                    Files.deleteIfExists(Paths.get(finalPhysDir, String.valueOf(fileInfo.get("saveFileNm")))); 
+                } catch (Exception ignore) {}
                 throw dbEx;
             }
         }
