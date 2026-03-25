@@ -10,73 +10,10 @@
   <title>프리머스 부동산</title>
   <link rel="icon" sizes="any" href="${ctx}/resources/front/img/favicon/favicon.ico?v=20260305">
   <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="${ctx}/resources/front/css/common.css">
   <script src="${ctx}/resources/common/util/js/jquery-4.0.0.min.js" charset="UTF-8"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Pretendard', sans-serif;
-      background: linear-gradient(135deg, #1B2A4A 0%, #2D4A7A 100%);
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .access-wrap { text-align: center; padding: 20px; }
-    .access-logo {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      margin-bottom: 40px;
-    }
-    .access-logo img { height: 44px; }
-    .access-logo-text { font-size: 22px; font-weight: 800; color: #fff; }
-    .access-logo-text em { color: #E8830C; font-style: normal; }
-    .access-card {
-      background: #fff; border-radius: 20px; padding: 48px 40px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      width: 420px; max-width: 100%;
-    }
-    .access-icon {
-      width: 56px; height: 56px; border-radius: 14px;
-      background: linear-gradient(135deg, #E8830C, #F5A623);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px; font-size: 26px;
-    }
-    .access-title { font-size: 20px; font-weight: 800; color: #1B2A4A; margin-bottom: 8px; }
-    .access-desc { font-size: 14px; color: #9CA3AF; margin-bottom: 32px; line-height: 1.6; }
-    .access-input-wrap { position: relative; margin-bottom: 16px; }
-    .access-input {
-      width: 100%; padding: 14px 18px; font-size: 16px;
-      border: 2px solid #E5E7EB; border-radius: 12px;
-      font-family: inherit; outline: none;
-      text-align: center; letter-spacing: 4px; font-weight: 700;
-      color: #1B2A4A; transition: border-color 0.2s;
-    }
-    .access-input:focus { border-color: #E8830C; }
-    .access-input.error { border-color: #dc3545; animation: shake 0.4s; }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-8px); }
-      50% { transform: translateX(8px); }
-      75% { transform: translateX(-4px); }
-    }
-    .access-error { font-size: 13px; color: #dc3545; margin-bottom: 16px; display: none; }
-    .access-btn {
-      width: 100%; padding: 14px; font-size: 15px; font-weight: 700;
-      background: #1B2A4A; color: #fff; border: none; border-radius: 12px;
-      cursor: pointer; font-family: inherit; transition: background 0.2s;
-    }
-    .access-btn:hover { background: #2D4A7A; }
-    .access-btn:disabled { background: #9CA3AF; cursor: not-allowed; }
-    .access-back {
-      margin-top: 20px; font-size: 14px; color: #6B7280;
-    }
-    .access-back a { color: #E8830C; text-decoration: none; font-weight: 600; }
-    .access-back a:hover { text-decoration: underline; }
-    .access-footer { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.5); }
-    @media (max-width: 480px) {
-      .access-card { padding: 36px 24px; }
-      .access-logo-text { font-size: 18px; }
-    }
-  </style>
 </head>
-<body>
+<body class="access-body">
   <div class="access-wrap">
     <div class="access-logo">
       <img src="${ctx}/resources/front/img/logo/primus-logo-white.png" alt="프리머스 부동산" onerror="this.style.display='none'">

@@ -16,64 +16,6 @@
   </a>
 </div>
 
-<style>
-/* 플로팅 SNS 버튼 */
-.floating-sns {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  z-index: 9999;
-}
-.floating-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  overflow: hidden;
-}
-.floating-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
-.floating-btn img,
-.floating-btn svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* 전화버튼은 PC에서 숨김 */
-.floating-phone {
-  display: none;
-}
-
-/* 모바일 대응 */
-@media (max-width: 768px) {
-  .floating-sns {
-    right: 14px;
-    bottom: 14px;
-    gap: 10px;
-  }
-  .floating-btn {
-    width: 46px;
-    height: 46px;
-  }
-  /* 모바일에서 전화버튼 표시 (약간 작게) */
-  .floating-phone {
-    display: flex;
-    width: 42px;
-    height: 42px;
-  }
-}
-</style>
-
-
 <footer class="primus-footer">
 
   <div class="footer-main">

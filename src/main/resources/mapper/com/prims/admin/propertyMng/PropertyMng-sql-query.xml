@@ -53,11 +53,8 @@
            <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
            AND A.SOLD_YN = #{soldYn}
            </if>
-           <if test="propNo != null and propNo != ''">
-           AND A.PROP_NO LIKE CONCAT('%', #{propNo}, '%')
-           </if>
            <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           AND (A.PROP_NO LIKE CONCAT('%', #{keyword}, '%') OR A.PROP_NM LIKE CONCAT('%', #{keyword}, '%'))
            </if>
          ORDER BY A.CRE_DTM DESC
     </select>
@@ -84,7 +81,7 @@
            AND A.SOLD_YN = #{soldYn}
            </if>
            <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           AND (A.PROP_NO LIKE CONCAT('%', #{keyword}, '%') OR A.PROP_NM LIKE CONCAT('%', #{keyword}, '%'))
            </if>
     </select>
 
@@ -311,7 +308,7 @@
            AND A.SOLD_YN = #{soldYn}
            </if>
            <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           AND (A.PROP_NO LIKE CONCAT('%', #{keyword}, '%') OR A.PROP_NM LIKE CONCAT('%', #{keyword}, '%'))
            </if>
          ORDER BY A.CRE_DTM DESC
     </select>

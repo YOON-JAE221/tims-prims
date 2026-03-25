@@ -2292,4 +2292,172 @@ img { max-width: 100%; display: block; }
   .loc-label { width:auto; }
 }
 
+/* ===============================
+ * 문의하기 테이블 - 모바일 반응형
+ * =============================== */
+@media (max-width: 768px) {
+  /* 제목(1번째)은 반드시 보이게 - common.css의 display:none 오버라이드 */
+  .board-table-qna thead th:nth-child(1),
+  .board-table-qna tbody td:nth-child(1) { display: table-cell !important; }
+
+  /* 등록일만 숨김 */
+  .board-table-qna .col-date { display: none; }
+  .board-table-qna colgroup .col-date { width: 0; }
+
+  /* 컬럼 너비 조정 */
+  .board-table-qna { table-layout: fixed; width: 100%; }
+  .board-table-qna colgroup { display: table-column-group !important; }
+  .board-table-qna col:nth-child(1) { width: auto; }
+  .board-table-qna col:nth-child(2) { width: 60px; }
+  .board-table-qna col:nth-child(3) { width: 0; }
+  .board-table-qna col:nth-child(4) { width: 45px; }
+
+  .board-table-qna .td-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ===============================
+ * 접속코드 입력 페이지
+ * =============================== */
+.access-body {
+  font-family: 'Pretendard', sans-serif;
+  background: linear-gradient(135deg, #1B2A4A 0%, #2D4A7A 100%);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0; padding: 0;
+}
+.access-wrap {
+  text-align: center; padding: 20px;
+}
+.access-logo {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  margin-bottom: 40px;
+}
+.access-logo img { height: 44px; }
+.access-logo-text {
+  font-size: 22px; font-weight: 800; color: #fff;
+}
+.access-logo-text em { color: #E8830C; font-style: normal; }
+.access-card {
+  background: #fff; border-radius: 20px; padding: 48px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  width: 420px; max-width: 100%;
+}
+.access-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: linear-gradient(135deg, #E8830C, #F5A623);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px; font-size: 26px;
+}
+.access-title {
+  font-size: 20px; font-weight: 800; color: #1B2A4A;
+  margin-bottom: 8px;
+}
+.access-desc {
+  font-size: 14px; color: #9CA3AF; margin-bottom: 32px;
+  line-height: 1.6;
+}
+.access-input-wrap {
+  position: relative; margin-bottom: 16px;
+}
+.access-input {
+  width: 100%; padding: 14px 18px; font-size: 16px;
+  border: 2px solid #E5E7EB; border-radius: 12px;
+  font-family: inherit; outline: none;
+  text-align: center; letter-spacing: 4px; font-weight: 700;
+  color: #1B2A4A; transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.access-input:focus { border-color: #E8830C; }
+.access-input.error { border-color: #dc3545; animation: accessShake 0.4s; }
+@keyframes accessShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-4px); }
+}
+.access-error {
+  font-size: 13px; color: #dc3545; margin-bottom: 16px;
+  display: none;
+}
+.access-btn {
+  width: 100%; padding: 14px; font-size: 15px; font-weight: 700;
+  background: #1B2A4A; color: #fff; border: none; border-radius: 12px;
+  cursor: pointer; font-family: inherit; transition: background 0.2s;
+}
+.access-btn:hover { background: #2D4A7A; }
+.access-btn:disabled { background: #9CA3AF; cursor: not-allowed; }
+.access-back {
+  margin-top: 20px; font-size: 14px; color: #6B7280;
+}
+.access-back a { color: #E8830C; text-decoration: none; font-weight: 600; }
+.access-back a:hover { text-decoration: underline; }
+.access-footer {
+  margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.5);
+}
+
+@media (max-width: 480px) {
+  .access-card { padding: 36px 24px; }
+  .access-logo-text { font-size: 18px; }
+}
+
+/* ===============================
+ * 플로팅 SNS 버튼 (footer)
+ * =============================== */
+.floating-sns {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+}
+.floating-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+.floating-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+.floating-btn img,
+.floating-btn svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 전화버튼은 PC에서 숨김 */
+.floating-phone {
+  display: none;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .floating-sns {
+    right: 14px;
+    bottom: 14px;
+    gap: 10px;
+  }
+  .floating-btn {
+    width: 46px;
+    height: 46px;
+  }
+  /* 모바일에서 전화버튼 표시 (약간 작게) */
+  .floating-phone {
+    display: flex;
+    width: 42px;
+    height: 42px;
+  }
+}
 

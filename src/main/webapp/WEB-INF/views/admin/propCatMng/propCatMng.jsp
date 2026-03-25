@@ -1,27 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
 
-<style>
-  .cat-layout { display:flex; gap:16px; }
-  .cat-tree-wrap { flex:0 0 480px; min-width:480px; }
-  .cat-form-wrap { flex:1; min-width:0; }
-  @media (max-width:992px) {
-    .cat-layout { flex-direction:column; }
-    .cat-tree-wrap { flex:none; min-width:0; }
-  }
-  .cat-form-wrap .table th { font-size:13px; white-space:nowrap; width:120px; }
-  .cat-form-wrap .table td { font-size:13px; }
-  /* 트리 행 클릭 커서 */
-  #catTree .tabulator-row { cursor:pointer; }
-  #catTree .tabulator-row.row-selected { background:#e8f4fd !important; }
-  #catTree .tabulator-row.row-new { background:#fff8e1 !important; font-style:italic; }
-  /* 사용법 박스 */
-  .help-box { background:#f8f9fa; border:1px solid #e9ecef; border-radius:6px; padding:16px; margin-top:16px; }
-  .help-box h6 { font-size:14px; font-weight:700; color:#1B2A4A; margin-bottom:12px; }
-  .help-box ul { margin:0; padding-left:20px; font-size:13px; color:#555; }
-  .help-box li { margin-bottom:6px; }
-</style>
-
 <!-- Content Wrapper -->
 <div class="content-wrapper">
 

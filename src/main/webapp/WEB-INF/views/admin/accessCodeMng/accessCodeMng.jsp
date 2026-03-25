@@ -1,23 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/admin/common/head.jsp" %>
 
-<style>
-.config-card { margin-bottom: 20px; }
-.config-card .card-header { display: flex; align-items: center; gap: 8px; background: #1B2A4A; color: #fff; }
-.config-card .card-header i { font-size: 16px; color: #E8830C; }
-.config-card .card-body { padding: 24px; }
-.config-row { display: flex; align-items: center; margin-bottom: 16px; }
-.config-row:last-child { margin-bottom: 0; }
-.config-label { width: 100px; font-weight: 600; color: #333; }
-.config-input { flex: 1; max-width: 300px; }
-.config-radio { display: flex; gap: 20px; }
-.config-radio label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 500; }
-.config-radio input[type="radio"] { width: 16px; height: 16px; }
-.config-hint { background: #f8f9fa; border-radius: 6px; padding: 12px 16px; margin-top: 16px; font-size: 13px; color: #666; line-height: 1.6; }
-.config-hint i { color: #17a2b8; margin-right: 6px; }
-.config-actions { display: flex; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid #eee; }
-</style>
-
 <div class="content-wrapper">
 
   <div class="content-header">

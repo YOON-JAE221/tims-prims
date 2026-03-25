@@ -47,8 +47,7 @@
                   <option value="N" selected>거래중</option>
                   <option value="Y">거래완료</option>
                 </select>
-                <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:150px;" placeholder="매물명/주소" onkeypress="if(event.keyCode===13) fnSearch();" />
-                <input type="text" id="srchPropNo" class="form-control form-control-sm" style="width:100px;" placeholder="매물번호" onkeypress="if(event.keyCode===13) fnSearch();" />
+                <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:180px;" placeholder="매물번호/매물명" onkeypress="if(event.keyCode===13) fnSearch();" />
                 <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
               </div>
             </div>
@@ -159,8 +158,7 @@ function fnSearch() {
     subCatCd: $('#srchSubCatCd').val(),
     dealType: $('#srchDealType').val(),
     soldYn: $('#srchSoldYn').val(),
-    keyword: $('#srchKeyword').val(),
-    propNo: $('#srchPropNo').val()
+    keyword: $('#srchKeyword').val()
   }, false);
   _allData = (res && res.DATA) ? res.DATA : [];
   fnLoadPage();

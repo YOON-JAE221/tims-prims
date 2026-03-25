@@ -2,33 +2,6 @@
 <%@ include file="/WEB-INF/views/front/common/head.jsp" %>
 <%@ include file="/WEB-INF/views/front/bbs/bbsCommon/inc/bbsPagingVars.jspf" %>
 
-<style>
-/* 문의하기 테이블 - 공통 CSS 오버라이드 */
-@media (max-width: 768px) {
-  /* 제목(1번째)은 반드시 보이게 - common.css의 display:none 오버라이드 */
-  .board-table-qna thead th:nth-child(1),
-  .board-table-qna tbody td:nth-child(1) { display: table-cell !important; }
-
-  /* 등록일만 숨김 */
-  .board-table-qna .col-date { display: none; }
-  .board-table-qna colgroup .col-date { width: 0; }
-
-  /* 컬럼 너비 조정 */
-  .board-table-qna { table-layout: fixed; width: 100%; }
-  .board-table-qna colgroup { display: table-column-group !important; }
-  .board-table-qna col:nth-child(1) { width: auto; }
-  .board-table-qna col:nth-child(2) { width: 60px; }
-  .board-table-qna col:nth-child(3) { width: 0; }
-  .board-table-qna col:nth-child(4) { width: 45px; }
-
-  .board-table-qna .td-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-</style>
-
 <div class="page-header">
   <h2>문의하기</h2>
 </div>

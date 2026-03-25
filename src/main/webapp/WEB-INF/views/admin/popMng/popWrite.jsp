@@ -7,11 +7,6 @@
 <script src="${ctx}/resources/common/summernote/js/summernote-ko-KR.min.js" charset="UTF-8"></script>
 <script src="${ctx}/resources/common/summernote/js/summernote-editor-common.js" charset="UTF-8"></script>
 
-<style>
-  .pop-size-group { display:flex; align-items:center; gap:8px; }
-  .pop-size-group input { width:100px; }
-</style>
-
 <!-- Content Wrapper -->
 <div class="content-wrapper">
 
@@ -226,31 +221,53 @@ function fnDelete() {
 function fnPreview() {
   var w = parseInt($('#popWidth').val()) || 520;
   var h = parseInt($('#popHgt').val()) || 0;
-  var x = parseInt($('#popXLoc').val()) || 0;
-  var y = parseInt($('#popYLoc').val()) || 0;
   var html = snEditor.getData();
   var title = $('#popNm').val() || '팝업 미리보기';
 
-  $('#previewModal').remove();
-
-  var overlayAlign = (x > 0 || y > 0) ? 'justify-content:flex-start;align-items:flex-start;' : 'justify-content:center;align-items:center;';
-  var modalMargin = (x > 0 || y > 0) ? 'margin-left:' + x + 'px;margin-top:' + y + 'px;' : '';
-  var heightStyle = h > 0 ? 'height:' + h + 'px;' : '';
-
-  var modal = '<div id="previewModal" style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);display:flex;padding:20px;' + overlayAlign + '">'
-    + '<div style="background:#fff;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.2);width:' + w + 'px;max-width:100%;' + heightStyle + 'max-height:90vh;display:flex;flex-direction:column;overflow:hidden;' + modalMargin + '">'
-    + '<div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #eee;flex-shrink:0;">'
-    + '<span style="font-size:16px;font-weight:700;color:#1a2332;">' + escapeHtml(title) + '</span>'
-    + '<button onclick="$(\'#previewModal\').remove()" style="background:none;border:none;font-size:24px;color:#999;cursor:pointer;">&times;</button>'
-    + '</div>'
-    + '<div style="flex:1;overflow-y:auto;padding:24px;font-size:14px;color:#444;line-height:1.7;">' + html + '</div>'
-    + '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 24px;border-top:1px solid #eee;background:#fafafa;flex-shrink:0;">'
-    + '<label style="display:flex;align-items:center;gap:6px;font-size:13px;color:#888;cursor:pointer;"><input type="checkbox" style="width:16px;height:16px;" /><span>오늘 하루 보지 않기</span></label>'
-    + '<button onclick="$(\'#previewModal\').remove()" style="padding:8px 24px;font-size:13px;font-weight:600;color:#fff;background:#1a2332;border:none;border-radius:8px;cursor:pointer;">닫기</button>'
-    + '</div></div></div>';
-  $('body').append(modal);
-  $('#previewModal').on('click', function(e) { if (e.target === this) $(this).remove(); });
+  fnShowPreviewModal(title, html, w, h);
 }
+
+/* 모달 미리보기 */
+function fnShowPreviewModal(title, content, width, height) {
+  // 기존 모달 제거
+  $('#popPreviewModal').remove();
+
+  var modalHtml = '<div id="popPreviewModal" class="pop-preview-overlay">'
+    + '<div class="pop-preview-modal" style="width:' + width + 'px;' + (height > 0 ? 'height:' + height + 'px;' : '') + '">'
+    + '  <div class="pop-preview-header">'
+    + '    <span class="pop-preview-title">' + escapeHtml(title) + '</span>'
+    + '    <button type="button" class="pop-preview-close" onclick="fnClosePreviewModal()">&times;</button>'
+    + '  </div>'
+    + '  <div class="pop-preview-body">' + content + '</div>'
+    + '  <div class="pop-preview-footer">'
+    + '    <label class="pop-preview-today"><input type="checkbox" /><span>오늘 하루 보지 않기</span></label>'
+    + '    <button type="button" class="pop-preview-close-btn" onclick="fnClosePreviewModal()">닫기</button>'
+    + '  </div>'
+    + '</div>'
+    + '</div>';
+
+  $('body').append(modalHtml);
+  $('body').css('overflow', 'hidden');
+}
+
+function fnClosePreviewModal() {
+  $('#popPreviewModal').fadeOut(200, function() {
+    $(this).remove();
+    $('body').css('overflow', '');
+  });
+}
+
+// ESC 키로 닫기
+$(document).on('keydown', function(e) {
+  if (e.keyCode === 27 && $('#popPreviewModal').length) {
+    fnClosePreviewModal();
+  }
+});
+
+// 오버레이 클릭으로 닫기
+$(document).on('click', '.pop-preview-overlay', function(e) {
+  if (e.target === this) fnClosePreviewModal();
+});
 
 /* 목록 */
 function fnGoList() {
