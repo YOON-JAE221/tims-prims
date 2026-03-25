@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -294,16 +295,16 @@ public class FileService {
 
         if (validFiles.isEmpty()) return existingKey;
 
-        // 결과 저장용 (순서 보장 위해 ConcurrentHashMap 사용)
+        // 결과 저장용
         final String finalPhysDir = physDir;
         final String finalWebDir = webDir;
         Map<Integer, Map<String, Object>> resultMap = new ConcurrentHashMap<>();
+        final List<Exception> errors = Collections.synchronizedList(new ArrayList<>());
 
         // ★ 병렬 처리: 파일 저장 + WebP 변환 ★
         validFiles.parallelStream().forEach(f -> {
+            int seq = seqCounter.getAndIncrement();
             try {
-                int seq = seqCounter.getAndIncrement();
-                
                 String orgFileNm = (f.getOriginalFilename() == null) ? "" : f.getOriginalFilename();
                 String fileExtn = "";
                 if (orgFileNm.contains(".")) {
@@ -316,7 +317,7 @@ public class FileService {
                 Path target = Paths.get(finalPhysDir, saveFileNm).normalize();
                 Files.copy(f.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
-                long fileSiz = f.getSize();
+                long fileSiz = target.toFile().length();
 
                 // 이미지 파일 처리: WebP 변환 (JPG/PNG → WebP)
                 if (ImageUtil.isImageFile(saveFileNm) && ImageUtil.isConvertibleToWebp(saveFileNm)) {
@@ -341,9 +342,20 @@ public class FileService {
                 resultMap.put(seq, fileInfo);
 
             } catch (Exception e) {
-                throw new RuntimeException("파일 처리 실패: " + f.getOriginalFilename(), e);
+                errors.add(new Exception("파일 처리 실패 [" + f.getOriginalFilename() + "]: " + e.getMessage(), e));
             }
         });
+
+        // 에러 발생 시 저장된 파일 삭제 후 예외
+        if (!errors.isEmpty()) {
+            // 롤백: 저장된 파일 삭제
+            for (Map<String, Object> fileInfo : resultMap.values()) {
+                try {
+                    Files.deleteIfExists(Paths.get(finalPhysDir, String.valueOf(fileInfo.get("saveFileNm"))));
+                } catch (Exception ignore) {}
+            }
+            throw errors.get(0);
+        }
 
         // ★ 순차 처리: DB 저장 (순서대로) ★
         List<Integer> sortedKeys = resultMap.keySet().stream().sorted().collect(Collectors.toList());
@@ -368,7 +380,6 @@ public class FileService {
                 fileDao.insertUpldFile(p);
                 savedCount++;
             } catch (Exception dbEx) {
-                // 실패 시 해당 파일 삭제
                 try { 
                     Files.deleteIfExists(Paths.get(finalPhysDir, String.valueOf(fileInfo.get("saveFileNm")))); 
                 } catch (Exception ignore) {}
