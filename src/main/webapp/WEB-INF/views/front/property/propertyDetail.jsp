@@ -133,6 +133,12 @@
         <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${prop.premium}" pattern="#,###"/>만</td></tr>
         </c:if>
         <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217; <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">(<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:if></td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
+        <c:if test="${(not empty prop.areaLand and prop.areaLand > 0) or (not empty prop.areaTotal and prop.areaTotal > 0)}">
+        <tr><th>대지면적</th><td><c:choose><c:when test="${not empty prop.areaLand and prop.areaLand > 0}">${prop.areaLand}&#13217; (<fmt:formatNumber value="${prop.areaLand * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td><th>연면적</th><td><c:choose><c:when test="${not empty prop.areaTotal and prop.areaTotal > 0}">${prop.areaTotal}&#13217; (<fmt:formatNumber value="${prop.areaTotal * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
+        </c:if>
+        <c:if test="${not empty prop.zoneType or not empty prop.roadWidth}">
+        <tr><th>용도지역</th><td>${not empty prop.zoneType ? prop.zoneType : '-'}</td><th>도로폭</th><td>${not empty prop.roadWidth ? prop.roadWidth : '-'}</td></tr>
+        </c:if>
         <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">
         <tr><th>방수/욕실수</th><td>${prop.roomCnt > 0 ? prop.roomCnt : '-'}룸 / ${prop.bathCnt > 0 ? prop.bathCnt : '-'}욕실</td><th>해당층/총층</th><td>${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</td></tr>
         </c:if>

@@ -205,7 +205,14 @@
               <tr>
                 <th>대지면적 <small class="text-muted">(㎡)</small></th>
                 <td><input type="number" step="0.01" name="areaLand" class="form-control form-control-sm" value="${prop.areaLand}" /></td>
-                <th></th><td></td>
+                <th>연면적 <small class="text-muted">(㎡)</small></th>
+                <td><input type="number" step="0.01" name="areaTotal" class="form-control form-control-sm" value="${prop.areaTotal}" /></td>
+              </tr>
+              <tr>
+                <th>용도지역</th>
+                <td><input type="text" name="zoneType" class="form-control form-control-sm" value="${prop.zoneType}" placeholder="예: 제2종일반주거지역" /></td>
+                <th>도로폭</th>
+                <td><input type="text" name="roadWidth" class="form-control form-control-sm" value="${prop.roadWidth}" placeholder="예: 8m" /></td>
               </tr>
               <tr>
                 <th>해당층</th>

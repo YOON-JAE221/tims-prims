@@ -179,6 +179,7 @@ public class PropertyMngService {
         paramMap.put("areaExclusive", toDecimal(paramMap.get("areaExclusive")));
         paramMap.put("areaSupply", toDecimal(paramMap.get("areaSupply")));
         paramMap.put("areaLand", toDecimal(paramMap.get("areaLand")));
+        paramMap.put("areaTotal", toDecimal(paramMap.get("areaTotal")));
         paramMap.put("lat", toDecimal(paramMap.get("lat")));
         paramMap.put("lng", toDecimal(paramMap.get("lng")));
 
@@ -375,7 +376,7 @@ public class PropertyMngService {
                 "매물명", "대분류", "소분류", "거래유형", "매물특징",
                 "주소", "상세주소", "건물명",
                 "매매가(만원)", "보증금(만원)", "월세(만원)", "융자", "융자금액(만원)", "권리금(만원)", "월관리비(만원)",
-                "공급면적(㎡)", "전용면적(㎡)", "대지면적(㎡)",
+                "공급면적(㎡)", "전용면적(㎡)", "대지면적(㎡)", "연면적(㎡)", "용도지역", "도로폭",
                 "층", "총층수", "방수", "욕실수", "방향", "주차",
                 "준공일", "현관구조", "난방방식",
                 "거래상태", "등록일"
@@ -420,6 +421,9 @@ public class PropertyMngService {
                 createNumericCell(row, col++, data.get("areaSupply"), numberStyle);
                 createNumericCell(row, col++, data.get("areaExclusive"), numberStyle);
                 createNumericCell(row, col++, data.get("areaLand"), numberStyle);
+                createNumericCell(row, col++, data.get("areaTotal"), numberStyle);
+                createCell(row, col++, getString(data, "zoneType"), dataStyle);
+                createCell(row, col++, getString(data, "roadWidth"), dataStyle);
 
                 // 층/방
                 createCell(row, col++, getString(data, "floorNo"), dataStyle);

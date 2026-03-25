@@ -262,6 +262,10 @@
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.SUB_CAT_CD) AS SUB_CAT_NM
              , CASE A.DEAL_TYPE WHEN 'SELL' THEN '매매' WHEN 'JEONSE' THEN '전세' WHEN 'WOLSE' THEN '월세' WHEN 'SHORT' THEN '단기임대' ELSE '' END AS DEAL_TYPE_NM
              , A.THUMB_IMG_PATH AS THUMB_PATH
+             , A.AREA_LAND
+             , A.AREA_TOTAL
+             , A.ZONE_TYPE
+             , A.ROAD_WIDTH
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM_FMT
           FROM TB_PROPERTY A
          WHERE A.PROP_CD = #{id}
