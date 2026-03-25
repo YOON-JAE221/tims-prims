@@ -92,4 +92,76 @@ public class AdminMainController {
 		}
 		return result;
 	}
+
+	/**
+	 * 기존 이미지 일괄 압축 시작 (비동기)
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/compressAllImages", method = RequestMethod.POST)
+	public Map<String, Object> compressAllImages() {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			// 이미 진행 중인지 확인
+			if (adminMainService.isCompressing()) {
+				result.put("result", "RUNNING");
+				result.put("message", "이미 압축이 진행 중입니다.");
+				return result;
+			}
+
+			// 비동기 압축 시작
+			adminMainService.compressAllImagesAsync();
+
+			result.put("result", "STARTED");
+			result.put("message", "압축 작업이 시작되었습니다. 상태를 확인해주세요.");
+
+		} catch (Exception e) {
+			result.put("result", "FAIL");
+			result.put("message", "시작 실패: " + e.getMessage());
+		}
+		return result;
+	}
+
+	/**
+	 * 압축 진행 상태 확인
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getCompressStatus", method = RequestMethod.POST)
+	public Map<String, Object> getCompressStatus() {
+		return adminMainService.getCompressStatus();
+	}
+
+	/**
+	 * WebP 변환 시작 (비동기 - 백업 + 변환 + DB 업데이트)
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/convertAllToWebp", method = RequestMethod.POST)
+	public Map<String, Object> convertAllToWebp() {
+		Map<String, Object> result = new HashMap<>();
+		try {
+			if (adminMainService.isConverting()) {
+				result.put("result", "RUNNING");
+				result.put("message", "이미 WebP 변환이 진행 중입니다.");
+				return result;
+			}
+
+			adminMainService.convertAllToWebpAsync();
+
+			result.put("result", "STARTED");
+			result.put("message", "WebP 변환이 시작되었습니다.");
+
+		} catch (Exception e) {
+			result.put("result", "FAIL");
+			result.put("message", "시작 실패: " + e.getMessage());
+		}
+		return result;
+	}
+
+	/**
+	 * WebP 변환 진행 상태 확인
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/getConvertStatus", method = RequestMethod.POST)
+	public Map<String, Object> getConvertStatus() {
+		return adminMainService.getConvertStatus();
+	}
 }

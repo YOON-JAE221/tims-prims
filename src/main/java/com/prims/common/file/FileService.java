@@ -228,7 +228,7 @@ public class FileService {
     /**
      * 게시판용 첨부파일 다건 저장
      * - 동일 upldFileCd(ATCH_FILE_KEY)로 묶어서 저장
-     * - 기존 saveCommonFile() 수정 없음
+     * - 이미지: 압축 → WebP 변환
      *
      * @return upldFileCd (= ATCH_FILE_KEY), 파일 없으면 null
      */
@@ -266,9 +266,25 @@ public class FileService {
             Path target = Paths.get(physDir, saveFileNm).normalize();
             Files.copy(f.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
 
-            // 이미지 파일이면 압축 (원본 대체)
+            long fileSiz = f.getSize();
+
+            // 이미지 파일 처리: 압축 → WebP 변환
             if (ImageUtil.isImageFile(saveFileNm)) {
+                // 1. 압축
                 ImageUtil.compressImage(target.toFile());
+
+                // 2. WebP 변환 (JPG/PNG만)
+                if (ImageUtil.isConvertibleToWebp(saveFileNm)) {
+                    File webpFile = ImageUtil.convertToWebp(target.toFile());
+                    if (webpFile != null && webpFile.exists()) {
+                        // 원본 삭제
+                        Files.deleteIfExists(target);
+                        // 파일명, 확장자 변경
+                        saveFileNm = webpFile.getName();
+                        fileExtn = "webp";
+                        fileSiz = webpFile.length();
+                    }
+                }
             }
 
             // DB 저장
@@ -278,7 +294,7 @@ public class FileService {
             p.put("fileNm", orgFileNm);
             p.put("saveFileNm", saveFileNm);
             p.put("savePath", webDir);
-            p.put("fileSiz", f.getSize());
+            p.put("fileSiz", fileSiz);
             p.put("fileExtn", fileExtn);
             p.put("useYn", "Y");
             p.put("delYn", "N");
@@ -287,7 +303,7 @@ public class FileService {
             try {
                 fileDao.insertUpldFile(p);
             } catch (Exception dbEx) {
-                try { Files.deleteIfExists(target); } catch (Exception ignore) {}
+                try { Files.deleteIfExists(Paths.get(physDir, saveFileNm)); } catch (Exception ignore) {}
                 throw dbEx;
             }
         }

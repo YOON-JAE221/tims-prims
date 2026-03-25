@@ -106,4 +106,22 @@
          LIMIT 10
     </select>
 
+    <!-- TB_UPLD_FILE 확장자 WebP로 변경 (property 폴더) -->
+    <update id="updateFileExtToWebp">
+        UPDATE TB_UPLD_FILE
+           SET SAVE_FILE_NM = CONCAT(SUBSTRING_INDEX(SAVE_FILE_NM, '.', 1), '.webp'),
+               FILE_EXTN = 'webp'
+         WHERE SAVE_PATH LIKE '%/property/%'
+           AND (SAVE_FILE_NM LIKE '%.jpg' OR SAVE_FILE_NM LIKE '%.jpeg' OR SAVE_FILE_NM LIKE '%.png')
+    </update>
+
+    <!-- TB_PROPERTY 썸네일 경로 WebP로 변경 -->
+    <update id="updateThumbPathToWebp">
+        UPDATE TB_PROPERTY
+           SET THUMB_IMG_PATH = CONCAT(SUBSTRING_INDEX(THUMB_IMG_PATH, '.', 1), '.webp')
+         WHERE THUMB_IMG_PATH IS NOT NULL
+           AND THUMB_IMG_PATH != ''
+           AND (THUMB_IMG_PATH LIKE '%.jpg' OR THUMB_IMG_PATH LIKE '%.jpeg' OR THUMB_IMG_PATH LIKE '%.png')
+    </update>
+
 </mapper>

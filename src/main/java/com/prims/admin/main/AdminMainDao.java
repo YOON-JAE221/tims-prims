@@ -37,4 +37,14 @@ public class AdminMainDao {
     public List<Map<String, Object>> getRecentQnaList() {
         return sqlSession.selectList("adminMain.getRecentQnaList");
     }
+
+    /** TB_UPLD_FILE 확장자 WebP로 변경 */
+    public int updateFileExtToWebp() {
+        return sqlSession.update("adminMain.updateFileExtToWebp");
+    }
+
+    /** TB_PROPERTY 썸네일 경로 WebP로 변경 */
+    public int updateThumbPathToWebp() {
+        return sqlSession.update("adminMain.updateThumbPathToWebp");
+    }
 }

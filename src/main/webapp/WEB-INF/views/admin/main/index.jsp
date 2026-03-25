@@ -78,6 +78,10 @@
               <a href="${ctx}/propertyMng/viewPropertyWrite" class="quick-link">➕ 매물 등록</a>
               <a href="${ctx}/bbsComQnaMng/viewBbsComQnaMng" class="quick-link">📩 문의 게시판</a>
               <a href="javascript:fnGoNotice()" class="quick-link">📢 공지사항</a>
+              <%-- 기존 이미지 일괄 작업용 (필요시 주석 해제)
+              <a href="javascript:fnCompressImages()" class="quick-link" id="compressBtn">🗜️ 이미지 압축</a>
+              <a href="javascript:fnConvertToWebp()" class="quick-link" id="convertBtn">🖼️ WebP 변환</a>
+              --%>
             </div>
           </div>
 
@@ -113,6 +117,8 @@
 $(function() {
   loadRecentPropList();
   loadTopPropList();
+  checkCompressStatusOnLoad();
+  checkConvertStatusOnLoad();
 });
 
 function loadRecentPropList() {
@@ -178,5 +184,177 @@ function fnGoPropMng(soldYn) {
 
 function fnGoNotice() {
   $('#goNoticeForm').submit();
+}
+
+// 페이지 로드 시 압축 상태 확인
+function checkCompressStatusOnLoad() {
+  $.ajax({
+    url: '${ctx}/admin/getCompressStatus',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      var $btn = $('#compressBtn');
+
+      if (res.compressing) {
+        // 진행 중이면 폴링 시작
+        $btn.text('⏳ ' + (res.status || '압축 중...')).css('pointer-events', 'none');
+        compressPolling = setInterval(checkCompressStatus, 2000);
+      } else if (res.result === 'OK') {
+        // 완료 결과가 있으면 콘솔 출력
+        console.log('✅ 이미지 압축 완료:', res.message);
+      } else if (res.result === 'FAIL') {
+        console.log('❌ 이미지 압축 실패:', res.message);
+      }
+    }
+  });
+}
+
+// 페이지 로드 시 WebP 변환 상태 확인
+function checkConvertStatusOnLoad() {
+  $.ajax({
+    url: '${ctx}/admin/getConvertStatus',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      var $btn = $('#convertBtn');
+
+      if (res.converting) {
+        $btn.text('⏳ ' + (res.status || '변환 중...')).css('pointer-events', 'none');
+        convertPolling = setInterval(checkConvertStatus, 2000);
+      } else if (res.result === 'OK') {
+        console.log('✅ WebP 변환 완료:', res.message);
+      } else if (res.result === 'FAIL') {
+        console.log('❌ WebP 변환 실패:', res.message);
+      }
+    }
+  });
+}
+
+// 이미지 일괄 압축
+var compressPolling = null;
+
+function fnCompressImages() {
+  if (!confirm('기존 매물 이미지를 일괄 압축합니다.\n(900px, 75% 품질로 재압축)\n\n진행하시겠습니까?')) {
+    return;
+  }
+
+  var $btn = $('#compressBtn');
+  $btn.text('⏳ 시작 중...').css('pointer-events', 'none');
+
+  $.ajax({
+    url: '${ctx}/admin/compressAllImages',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      if (res.result === 'STARTED' || res.result === 'RUNNING') {
+        $btn.text('⏳ 압축 중...');
+        console.log('🗜️ 이미지 압축 시작됨');
+        // 상태 폴링 시작
+        compressPolling = setInterval(checkCompressStatus, 2000);
+      } else {
+        console.log('❌ 압축 시작 실패:', res.message);
+        $btn.text('🗜️ 이미지 압축').css('pointer-events', '');
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('❌ 시작 실패:', error);
+      $btn.text('🗜️ 이미지 압축').css('pointer-events', '');
+    }
+  });
+}
+
+function checkCompressStatus() {
+  $.ajax({
+    url: '${ctx}/admin/getCompressStatus',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      var $btn = $('#compressBtn');
+
+      if (res.compressing) {
+        // 아직 진행 중
+        $btn.text('⏳ ' + (res.status || '압축 중...'));
+      } else {
+        // 완료됨
+        clearInterval(compressPolling);
+        compressPolling = null;
+        $btn.text('🗜️ 이미지 압축').css('pointer-events', '');
+
+        if (res.result === 'OK') {
+          console.log('✅ 이미지 압축 완료:', res.message);
+        } else if (res.result === 'FAIL') {
+          console.log('❌ 이미지 압축 실패:', res.message);
+        }
+      }
+    },
+    error: function() {
+      // 에러시 폴링 중단
+      clearInterval(compressPolling);
+      compressPolling = null;
+      $('#compressBtn').text('🗜️ 이미지 압축').css('pointer-events', '');
+    }
+  });
+}
+
+// ==================== WebP 변환 ====================
+var convertPolling = null;
+
+function fnConvertToWebp() {
+  if (!confirm('모든 JPG/PNG 이미지를 WebP로 변환합니다.\n\n⚠️ 자동 백업 후 진행됩니다.\n(property → property_backup)\n\n진행하시겠습니까?')) {
+    return;
+  }
+
+  var $btn = $('#convertBtn');
+  $btn.text('⏳ 시작 중...').css('pointer-events', 'none');
+
+  $.ajax({
+    url: '${ctx}/admin/convertAllToWebp',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      if (res.result === 'STARTED' || res.result === 'RUNNING') {
+        $btn.text('⏳ 변환 중...');
+        console.log('🖼️ WebP 변환 시작됨');
+        convertPolling = setInterval(checkConvertStatus, 2000);
+      } else {
+        console.log('❌ 변환 시작 실패:', res.message);
+        $btn.text('🖼️ WebP 변환').css('pointer-events', '');
+      }
+    },
+    error: function(xhr, status, error) {
+      console.log('❌ 시작 실패:', error);
+      $btn.text('🖼️ WebP 변환').css('pointer-events', '');
+    }
+  });
+}
+
+function checkConvertStatus() {
+  $.ajax({
+    url: '${ctx}/admin/getConvertStatus',
+    type: 'POST',
+    dataType: 'json',
+    success: function(res) {
+      var $btn = $('#convertBtn');
+
+      if (res.converting) {
+        $btn.text('⏳ ' + (res.status || '변환 중...'));
+      } else {
+        clearInterval(convertPolling);
+        convertPolling = null;
+        $btn.text('🖼️ WebP 변환').css('pointer-events', '');
+
+        if (res.result === 'OK') {
+          console.log('✅ WebP 변환 완료:', res.message);
+        } else if (res.result === 'FAIL') {
+          console.log('❌ WebP 변환 실패:', res.message);
+        }
+      }
+    },
+    error: function() {
+      clearInterval(convertPolling);
+      convertPolling = null;
+      $('#convertBtn').text('🖼️ WebP 변환').css('pointer-events', '');
+    }
+  });
 }
 </script>
