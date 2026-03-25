@@ -236,11 +236,28 @@ public class FileService {
     public String saveBbsAtchFiles(List<MultipartFile> files,
                                    String subDir,
                                    String ssnUsrCd) throws Exception {
+        return saveBbsAtchFiles(files, subDir, ssnUsrCd, null);
+    }
 
-        if (files == null || files.isEmpty()) return null;
+    /**
+     * 게시판용 첨부파일 다건 저장 (기존 키에 추가 가능)
+     * - existingKey가 있으면 해당 키에 추가, 없으면 새 키 생성
+     *
+     * @param existingKey 기존 upldFileCd (수정 모드에서 기존 파일에 추가할 때)
+     * @return upldFileCd
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public String saveBbsAtchFiles(List<MultipartFile> files,
+                                   String subDir,
+                                   String ssnUsrCd,
+                                   String existingKey) throws Exception {
+
+        if (files == null || files.isEmpty()) return existingKey;
         if (subDir == null || subDir.trim().isEmpty()) subDir = "bbs";
 
-        String upldFileCd = Utility.getUuidPk32();
+        // 기존 키가 있으면 사용, 없으면 새로 생성
+        String upldFileCd = (existingKey != null && !existingKey.isEmpty() && !"null".equals(existingKey))
+                            ? existingKey : Utility.getUuidPk32();
 
         String ym = java.time.LocalDate.now()
                     .format(java.time.format.DateTimeFormatter.ofPattern("yyyyMM"));
@@ -250,7 +267,21 @@ public class FileService {
         File dir = new File(physDir);
         if (!dir.exists()) dir.mkdirs();
 
+        // 기존 키 사용 시 최대 fileSeq 조회
         int seq = 1;
+        if (existingKey != null && !existingKey.isEmpty() && !"null".equals(existingKey)) {
+            Map<String, Object> param = new HashMap<>();
+            param.put("upldFileCd", existingKey);
+            List<Map<String, Object>> existingFiles = fileDao.getSelectUpldFileList(param);
+            if (existingFiles != null && !existingFiles.isEmpty()) {
+                for (Map<String, Object> f : existingFiles) {
+                    int fSeq = Integer.parseInt(String.valueOf(f.get("fileSeq")));
+                    if (fSeq >= seq) seq = fSeq + 1;
+                }
+            }
+        }
+
+        int savedCount = 0;
         for (MultipartFile f : files) {
             if (f == null || f.isEmpty()) continue;
 
@@ -302,13 +333,14 @@ public class FileService {
 
             try {
                 fileDao.insertUpldFile(p);
+                savedCount++;
             } catch (Exception dbEx) {
                 try { Files.deleteIfExists(Paths.get(physDir, saveFileNm)); } catch (Exception ignore) {}
                 throw dbEx;
             }
         }
 
-        return (seq > 1) ? upldFileCd : null;
+        return (savedCount > 0 || (existingKey != null && !existingKey.isEmpty())) ? upldFileCd : null;
     }
     
     

@@ -75,7 +75,18 @@ public class PropertyMngService {
                 if (f != null && !f.isEmpty()) fileList.add(f);
             }
             if (!fileList.isEmpty()) {
-                newAtchFileKey = fileService.saveBbsAtchFiles(fileList, "property", paramMap.get("ssnUsrCd").toString());
+                // 수정 모드면 기존 atchFileKey 조회해서 전달 (기존 파일에 추가)
+                String existingKey = null;
+                String existingPropCd = String.valueOf(paramMap.getOrDefault("propCd", ""));
+                if (!existingPropCd.isEmpty() && !"null".equals(existingPropCd)) {
+                    Map<String, Object> prop = propertyMngDao.getSelectPropertyDetail(paramMap);
+                    if (prop != null) {
+                        existingKey = String.valueOf(prop.getOrDefault("atchFileKey", ""));
+                        if ("null".equals(existingKey) || existingKey.isEmpty()) existingKey = null;
+                    }
+                }
+
+                newAtchFileKey = fileService.saveBbsAtchFiles(fileList, "property", paramMap.get("ssnUsrCd").toString(), existingKey);
                 if (newAtchFileKey != null) {
                     paramMap.put("atchFileKey", newAtchFileKey);
                 }
