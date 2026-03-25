@@ -48,6 +48,7 @@
                   <option value="Y">거래완료</option>
                 </select>
                 <input type="text" id="srchKeyword" class="form-control form-control-sm" style="width:150px;" placeholder="매물명/주소" onkeypress="if(event.keyCode===13) fnSearch();" />
+                <input type="text" id="srchPropNo" class="form-control form-control-sm" style="width:100px;" placeholder="매물번호" onkeypress="if(event.keyCode===13) fnSearch();" />
                 <button type="button" class="btn btn-sm btn-bo-search" onclick="fnSearch()">검색</button>
               </div>
             </div>
@@ -99,6 +100,12 @@ $(function() {
 
 function initGrid() {
   var columns = [
+    { title:"매물번호", field:"propNo", width:100, hozAlign:"center", headerSort:false,
+      formatter: function(cell) {
+        var val = cell.getValue() || '-';
+        return '<span style="font-family:\'SF Mono\',Monaco,monospace;font-weight:800;font-size:13px;color:#1B2A4A;">' + val + '</span>';
+      }
+    },
     { title:"대분류", field:"catNm", width:100, headerSort:false },
     { title:"중분류", field:"midCatNm", width:100, headerSort:false,
       formatter: function(cell) { return cell.getValue() || '-'; }
@@ -152,7 +159,8 @@ function fnSearch() {
     subCatCd: $('#srchSubCatCd').val(),
     dealType: $('#srchDealType').val(),
     soldYn: $('#srchSoldYn').val(),
-    keyword: $('#srchKeyword').val()
+    keyword: $('#srchKeyword').val(),
+    propNo: $('#srchPropNo').val()
   }, false);
   _allData = (res && res.DATA) ? res.DATA : [];
   fnLoadPage();

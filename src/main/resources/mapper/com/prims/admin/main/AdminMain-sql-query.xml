@@ -13,8 +13,9 @@
     </select>
 
     <!-- 최근 등록 매물 9건 (계층형 카테고리) -->
-    <select id="getRecentPropList" resultType="map">
+    <select id="getRecentPropList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
+             , A.PROP_NO
              , A.PROP_NM
              , A.ADDRESS
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
@@ -28,6 +29,9 @@
              , DATE_FORMAT(A.CRE_DTM, '%Y-%m-%d') AS CRE_DTM
           FROM TB_PROPERTY A
          WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
+           <if test="propNo != null and propNo != ''">
+           AND A.PROP_NO LIKE CONCAT('%', #{propNo}, '%')
+           </if>
          ORDER BY A.CRE_DTM DESC
          LIMIT 10
     </select>

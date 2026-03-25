@@ -60,4 +60,21 @@ public class PropertyMngDao {
     public List<Map<String, Object>> getPropertyListForExcel(Map<String, Object> paramMap) {
         return sqlSession.selectList("propertyMng.getPropertyListForExcel", paramMap);
     }
+
+    // 매물번호 채번 관련
+    public String getNextPropNo(String yearCd) {
+        return sqlSession.selectOne("propertyMng.getNextPropNo", yearCd);
+    }
+
+    public int increaseSeq(String yearCd) {
+        return sqlSession.update("propertyMng.increaseSeq", yearCd);
+    }
+
+    public int checkSeqExists(String yearCd) {
+        return sqlSession.selectOne("propertyMng.checkSeqExists", yearCd);
+    }
+
+    public int insertNewYearSeq(String yearCd) {
+        return sqlSession.insert("propertyMng.insertNewYearSeq", yearCd);
+    }
 }

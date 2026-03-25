@@ -88,8 +88,19 @@
   cursor: pointer; transition: background 0.15s;
 }
 .ps-item:hover { background: var(--gray-50); }
-.ps-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.ps-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
 .ps-item-type { font-size: 12px; color: var(--orange); font-weight: 700; }
+.ps-item-no {
+  font-size: 12px;
+  color: var(--navy);
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-weight: 700;
+  background: transparent;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  border: 1.5px solid var(--navy);
+}
 .ps-item-badge {
   font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: white;
 }
@@ -266,6 +277,7 @@ function fnRenderList(list) {
     html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
     html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
+    html += '    <span class="ps-item-no">' + (d.propNo || '') + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
@@ -391,6 +403,7 @@ function fnRenderFilteredList(items) {
     html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
     html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
+    html += '    <span class="ps-item-no">' + (d.propNo || '') + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';

@@ -115,6 +115,9 @@
     <div class="prop-detail-section">
       <h3 class="prop-detail-section-title">매물 정보</h3>
       <table class="prop-detail-table">
+        <c:if test="${not empty prop.propNo}">
+        <tr><th>매물번호</th><td colspan="3"><span class="prop-no-display">${prop.propNo}</span></td></tr>
+        </c:if>
         <tr><th>매물유형</th><td>${prop.catNm}</td><th>거래유형</th><td>${prop.dealTypeNm}</td></tr>
         <tr>
           <th>가격</th>
@@ -230,6 +233,19 @@
 
 <style>
 /* ── 이미지 로딩 최적화 ─────────────────────────── */
+/* 매물번호 표시 스타일 */
+.prop-no-display {
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy, #1B2A4A);
+  background: transparent;
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 2px solid var(--navy, #1B2A4A);
+  letter-spacing: 0.5px;
+}
+
 .prop-detail-img-main {
   width: 100%;
   height: 100%;

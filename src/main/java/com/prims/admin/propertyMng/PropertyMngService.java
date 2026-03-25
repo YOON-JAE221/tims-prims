@@ -164,6 +164,10 @@ public class PropertyMngService {
         boolean isNew = propCd.isEmpty() || "null".equals(propCd);
         if (isNew) {
             paramMap.put("propCd", Utility.getUuidPk32());
+            
+            // ★ 매물번호 채번 ★
+            String propNo = generatePropNo();
+            paramMap.put("propNo", propNo);
         }
 
         // 숫자 필드 변환
@@ -275,7 +279,9 @@ public class PropertyMngService {
     @Transactional(rollbackFor = Exception.class)
     public String copyProperty(Map<String, Object> paramMap) throws Exception {
         String newPropCd = Utility.getUuidPk32();
+        String newPropNo = generatePropNo();  // 새 매물번호 채번
         paramMap.put("newPropCd", newPropCd);
+        paramMap.put("newPropNo", newPropNo);
         propertyMngDao.copyProperty(paramMap);
         return newPropCd;
     }
@@ -490,5 +496,27 @@ public class PropertyMngService {
      */
     public void updateFileOrder(String upldFileCd, List<Map<String, Object>> orderList, String ssnUsrCd) {
         fileService.updateFileOrder(upldFileCd, orderList, ssnUsrCd);
+    }
+
+    /**
+     * 매물번호 채번 (YYYYNNNNN 형식)
+     * 년도별 시퀀스 관리
+     */
+    private String generatePropNo() {
+        String yearCd = new SimpleDateFormat("yyyy").format(new Date());
+        
+        // 해당 년도 시퀀스가 없으면 생성
+        int exists = propertyMngDao.checkSeqExists(yearCd);
+        if (exists == 0) {
+            propertyMngDao.insertNewYearSeq(yearCd);
+        }
+        
+        // 다음 번호 조회 (FOR UPDATE 락)
+        String nextPropNo = propertyMngDao.getNextPropNo(yearCd);
+        
+        // 시퀀스 증가
+        propertyMngDao.increaseSeq(yearCd);
+        
+        return nextPropNo;
     }
 }

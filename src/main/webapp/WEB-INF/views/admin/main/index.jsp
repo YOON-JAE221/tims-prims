@@ -166,25 +166,29 @@
         <div class="dash-section">
           <div class="dash-section-header">
             <span class="dash-section-title">📋 최근 등록 매물</span>
-            <a href="${ctx}/propertyMng/viewPropertyMng" class="dash-section-link">전체보기 →</a>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <input type="text" id="srchPropNo" class="form-control form-control-sm" placeholder="매물번호 입력 후 Enter" style="width:160px; font-size:12px;" onkeypress="if(event.keyCode===13) loadRecentPropList();" />
+              <a href="${ctx}/propertyMng/viewPropertyMng" class="dash-section-link">전체보기 →</a>
+            </div>
           </div>
           <div class="recent-prop-wrap" style="overflow-x:auto; padding:16px;">
             <table class="recent-prop-table" style="border:1px solid #e0e0e0; border-radius:8px; overflow:hidden;">
               <thead>
                 <tr>
-                  <th style="text-align:left; width:20%;">매물명</th>
-                  <th style="text-align:left; width:16%;">주소</th>
+                  <th style="text-align:left; width:18%;">매물명</th>
+                  <th style="text-align:left; width:14%;">주소</th>
                   <th style="width:8%;">대분류</th>
-                  <th style="width:9%;">중분류</th>
+                  <th style="width:8%;">중분류</th>
                   <th style="width:8%;">소분류</th>
                   <th style="width:6%;">거래</th>
-                  <th style="width:8%;">등록자</th>
-                  <th style="text-align:left; width:18%;">관리자메모</th>
+                  <th style="width:7%;">등록자</th>
+                  <th style="text-align:left; width:14%;">관리자메모</th>
+                  <th style="width:9%;">매물번호</th>
                   <th style="width:5%;">조회</th>
                 </tr>
               </thead>
               <tbody id="recentPropBody">
-                <tr><td colspan="9" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
+                <tr><td colspan="10" style="text-align:center; padding:40px; color:#aaa;">로딩중...</td></tr>
               </tbody>
             </table>
           </div>
@@ -239,16 +243,17 @@ $(function() {
 });
 
 function loadRecentPropList() {
-  $.post("${ctx}/admin/getRecentPropList", function(res) {
+  var propNo = $('#srchPropNo').val() || '';
+  $.post("${ctx}/admin/getRecentPropList", { propNo: propNo }, function(res) {
     var list = res.data || [];
     var html = '';
     if (list.length === 0) {
-      html = '<tr><td colspan="9" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
+      html = '<tr><td colspan="10" style="text-align:center; padding:40px; color:#aaa;">데이터가 없습니다.</td></tr>';
     } else {
       for (var i = 0; i < list.length; i++) {
         var p = list[i];
         var memo = p.adminMemo || '-';
-        if (memo.length > 18) memo = memo.substring(0, 18) + '...';
+        if (memo.length > 15) memo = memo.substring(0, 15) + '...';
         html += '<tr onclick="fnGoPropEdit(\'' + p.propCd + '\')">';
         html += '<td style="text-align:left;"><span class="prop-name">' + (p.propNm || '-') + '</span></td>';
         html += '<td style="text-align:left;">' + (p.address || '-') + '</td>';
@@ -258,6 +263,7 @@ function loadRecentPropList() {
         html += '<td style="text-align:center;">' + (p.dealTypeNm || '-') + '</td>';
         html += '<td style="text-align:center;">' + (p.creUsrNm || '-') + '</td>';
         html += '<td style="text-align:left; color:#666;">' + memo + '</td>';
+        html += '<td style="text-align:center;"><span style="font-family:monospace;font-weight:600;color:#1a2332;">' + (p.propNo || '-') + '</span></td>';
         html += '<td style="text-align:center;">' + (p.viewCnt || 0) + '</td>';
         html += '</tr>';
       }

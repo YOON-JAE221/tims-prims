@@ -7,6 +7,7 @@
     <!-- 매물 목록 조회 -->
     <select id="getSelectPropertyList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
+             , A.PROP_NO
              , A.PROP_NM
              , A.PROP_FEATURE
              , A.CAT_CD
@@ -51,6 +52,9 @@
            </if>
            <if test="soldYn != null and soldYn != '' and soldYn != 'ALL'">
            AND A.SOLD_YN = #{soldYn}
+           </if>
+           <if test="propNo != null and propNo != ''">
+           AND A.PROP_NO LIKE CONCAT('%', #{propNo}, '%')
            </if>
            <if test="keyword != null and keyword != ''">
            AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
@@ -102,7 +106,7 @@
     <!-- 매물 저장 (UPSERT) -->
     <update id="saveProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            PROP_CD, PROP_NO, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
             AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
@@ -113,7 +117,7 @@
             SOLD_YN, ADMIN_MEMO,
             USE_YN, DEL_YN, CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         ) VALUES (
-            #{propCd}, #{catCd}, #{midCatCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
+            #{propCd}, #{propNo}, #{catCd}, #{midCatCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
             #{address}, #{addressDtl}, #{buildingNm}, #{lat}, #{lng},
             #{sellPrice}, #{deposit}, #{monthlyRent}, #{loanYn}, #{loanAmount}, #{premium}, #{monthlyMgmt},
             #{areaSupply}, #{areaExclusive}, #{areaLand}, #{areaTotal}, #{zoneType}, #{roadWidth},
@@ -181,7 +185,7 @@
     <!-- 매물 복사 -->
     <insert id="copyProperty" parameterType="map">
         INSERT INTO TB_PROPERTY (
-            PROP_CD, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
+            PROP_CD, PROP_NO, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
             AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
@@ -192,7 +196,7 @@
             USE_YN, DEL_YN, VIEW_CNT,
             CRE_USR_CD, CRE_DTM, UPD_USR_CD, UPD_DTM
         )
-        SELECT #{newPropCd}, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
+        SELECT #{newPropCd}, #{newPropNo}, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
                ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
                SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
                AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
@@ -311,5 +315,30 @@
            </if>
          ORDER BY A.CRE_DTM DESC
     </select>
+
+    <!-- 매물번호 시퀀스 조회 및 증가 (FOR UPDATE로 락) -->
+    <select id="getNextPropNo" parameterType="string" resultType="string">
+        SELECT CONCAT(#{yearCd}, LPAD(LAST_SEQ + 1, 5, '0')) AS NEXT_PROP_NO
+          FROM TB_PROPERTY_SEQ
+         WHERE YEAR_CD = #{yearCd}
+           FOR UPDATE
+    </select>
+
+    <!-- 시퀀스 증가 -->
+    <update id="increaseSeq" parameterType="string">
+        UPDATE TB_PROPERTY_SEQ
+           SET LAST_SEQ = LAST_SEQ + 1
+         WHERE YEAR_CD = #{yearCd}
+    </update>
+
+    <!-- 년도 시퀀스 존재 여부 확인 -->
+    <select id="checkSeqExists" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM TB_PROPERTY_SEQ WHERE YEAR_CD = #{yearCd}
+    </select>
+
+    <!-- 새 년도 시퀀스 생성 -->
+    <insert id="insertNewYearSeq" parameterType="string">
+        INSERT INTO TB_PROPERTY_SEQ (YEAR_CD, LAST_SEQ) VALUES (#{yearCd}, 0)
+    </insert>
 
 </mapper>

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -53,10 +54,10 @@ public class AdminMainController {
 	// 최근 등록 매물 목록 (AJAX)
 	@ResponseBody
 	@RequestMapping(value = "/getRecentPropList", method = RequestMethod.POST)
-	public Map<String, Object> getRecentPropList() {
+	public Map<String, Object> getRecentPropList(@RequestParam Map<String, Object> paramMap) {
 		Map<String, Object> result = new HashMap<>();
 		try {
-			List<?> list = adminMainService.getRecentPropList();
+			List<?> list = adminMainService.getRecentPropList(paramMap);
 			result.put("data", list);
 		} catch (Exception e) {
 			result.put("data", new ArrayList<>());

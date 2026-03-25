@@ -24,8 +24,8 @@ public class AdminMainDao {
     }
 
     /** 최근 등록 매물 10건 */
-    public List<Map<String, Object>> getRecentPropList() {
-        return sqlSession.selectList("adminMain.getRecentPropList");
+    public List<Map<String, Object>> getRecentPropList(Map<String, Object> paramMap) {
+        return sqlSession.selectList("adminMain.getRecentPropList", paramMap);
     }
 
     /** 인기 매물 TOP 5 */

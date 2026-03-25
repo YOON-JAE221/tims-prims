@@ -21,8 +21,8 @@ public class AdminMainService {
         return adminMainDao.getQnaSummary();
     }
 
-    public List<Map<String, Object>> getRecentPropList() {
-        return adminMainDao.getRecentPropList();
+    public List<Map<String, Object>> getRecentPropList(Map<String, Object> paramMap) {
+        return adminMainDao.getRecentPropList(paramMap);
     }
 
     public List<Map<String, Object>> getTopPropList() {

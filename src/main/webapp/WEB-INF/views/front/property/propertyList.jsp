@@ -258,6 +258,7 @@
           <div class="prop-card-body">
             <div class="prop-card-type">
               ${prop.catNm}<c:if test="${not empty prop.midCatNm}"> &gt; ${prop.midCatNm}</c:if><c:if test="${not empty prop.subCatNm}"> &gt; ${prop.subCatNm}</c:if>
+              <c:if test="${not empty prop.propNo}"><span class="prop-card-no">${prop.propNo}</span></c:if>
             </div>
             <div class="prop-card-title">${prop.propNm}</div>
             <div class="prop-card-price">
@@ -432,6 +433,20 @@
 .prop-card-img {
   position: relative;
   background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
+/* 매물 카드 내 매물번호 */
+.prop-card-no {
+  display: inline-block;
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--navy);
+  background: transparent;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  border: 1.5px solid var(--navy);
 }
 
 /* 상세 분류 필터 */

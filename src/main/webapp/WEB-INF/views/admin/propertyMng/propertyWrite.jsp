@@ -53,10 +53,25 @@
           <div class="card-body">
             <table class="table table-bordered bo-form-table">
               <tr>
+                <th>매물번호</th>
+                <td>
+                  <c:choose>
+                    <c:when test="${not empty prop.propNo}">
+                      <span style="font-family:monospace;font-size:16px;font-weight:700;color:#1B2A4A;">${prop.propNo}</span>
+                    </c:when>
+                    <c:otherwise>
+                      <span style="color:#999;">저장 시 자동발급</span>
+                    </c:otherwise>
+                  </c:choose>
+                </td>
                 <th>등록자</th>
                 <td><c:out value="${not empty prop.creUsrNm ? prop.creUsrNm : ssnUsrNm}" /></td>
+              </tr>
+              <tr>
                 <th>등록일시</th>
                 <td><c:out value="${not empty prop.creDtmFmt ? prop.creDtmFmt : '-'}" /></td>
+                <th>수정일시</th>
+                <td><c:out value="${not empty prop.updDtmFmt ? prop.updDtmFmt : '-'}" /></td>
               </tr>
               <tr>
                 <th>관리자 메모</th>

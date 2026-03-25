@@ -6,6 +6,7 @@
 
     <select id="getPropertyMapList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
+             , A.PROP_NO
              , A.PROP_NM
              , A.CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
@@ -44,6 +45,7 @@
     <!-- 매물 목록 -->
     <select id="getPropertyTypeList" parameterType="map" resultType="map">
         SELECT A.PROP_CD
+             , A.PROP_NO
              , A.PROP_NM
              , A.CAT_CD
              , (SELECT C.CAT_NM FROM TB_PROP_CATEGORY C WHERE C.CAT_CD = A.CAT_CD) AS CAT_NM
