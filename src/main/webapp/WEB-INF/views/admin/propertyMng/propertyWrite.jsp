@@ -549,6 +549,8 @@ var _deletedExistFiles = [];
 var _sortable = null;
 
 function fnAddNewFiles(files) {
+  // 유효성 검사
+  var validFiles = [];
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
     if (!file.type.startsWith('image/')) {
@@ -559,12 +561,20 @@ function fnAddNewFiles(files) {
       alert('파일 크기는 20MB 이하만 가능합니다: ' + file.name);
       continue;
     }
-
-    var fileId = 'new_' + (++_newFileIdCounter);
-    _newFiles.push({ id: fileId, file: file });
-    fnRenderNewFile(fileId, file);
+    validFiles.push(file);
   }
-  fnUpdateThumbBadge();
+
+  if (validFiles.length === 0) return;
+
+  // FileUtil로 리사이즈 (병렬 처리)
+  FileUtil.resizeImages(validFiles).then(function(resizedFiles) {
+    resizedFiles.forEach(function(file) {
+      var fileId = 'new_' + (++_newFileIdCounter);
+      _newFiles.push({ id: fileId, file: file });
+      fnRenderNewFile(fileId, file);
+    });
+    fnUpdateThumbBadge();
+  });
 }
 
 function fnRenderNewFile(fileId, file) {
@@ -724,6 +734,7 @@ function fnSave() {
 
   // 새 파일들 추가 (순서대로)
   var fileOrder = $('#imageOrder').val();
+  var hasNewFiles = false;
   if (fileOrder) {
     try {
       var orderList = JSON.parse(fileOrder);
@@ -732,10 +743,16 @@ function fnSave() {
           var found = _newFiles.find(function(f) { return f.id === item.fileId; });
           if (found) {
             formData.append('atchFile', found.file);
+            hasNewFiles = true;
           }
         }
       });
     } catch(e) {}
+  }
+
+  // 새 파일이 있으면 로딩바 표시
+  if (hasNewFiles) {
+    FileUtil.showLoading('사진을 저장하고 있습니다.\n잠시만 기다려주세요 😊');
   }
 
   $.ajax({
@@ -745,12 +762,19 @@ function fnSave() {
     processData: false,
     contentType: false,
     success: function(res) {
+      FileUtil.hideLoading();
       if (res.result === 'OK') {
-        alert('저장되었습니다.');
-        location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + res.propCd;
+        setTimeout(function() {
+          alert('저장되었습니다.');
+          location.href = '${ctx}/propertyMng/viewPropertyWrite?propCd=' + res.propCd;
+        }, 100);
       } else {
         alert('저장 실패: ' + (res.message || ''));
       }
+    },
+    error: function() {
+      FileUtil.hideLoading();
+      alert('저장 중 오류가 발생했습니다.');
     }
   });
 }

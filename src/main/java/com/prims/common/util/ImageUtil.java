@@ -219,7 +219,7 @@ public class ImageUtil {
     }
 
     /**
-     * 단일 파일 WebP 변환 (리사이즈 포함)
+     * 단일 파일 WebP 변환 (클라이언트에서 리사이즈 완료된 상태)
      * @param imageFile 원본 이미지 (jpg, png)
      * @return 변환된 WebP 파일 (성공 시), null (실패 시)
      */
@@ -239,13 +239,19 @@ public class ImageUtil {
             String webpPath = imageFile.getAbsolutePath().replaceAll("\\.(jpg|jpeg|png)$", ".webp");
             File webpFile = new File(webpPath);
 
-            // 리사이즈 + WebP 변환 (Thumbnailator 사용)
-            Thumbnails.of(imageFile)
-                    .size(MAX_WIDTH, MAX_HEIGHT)
-                    .keepAspectRatio(true)
-                    .outputQuality(QUALITY)
-                    .outputFormat("webp")
-                    .toFile(webpFile);
+            // 이미지 읽기
+            BufferedImage image = ImageIO.read(imageFile);
+            if (image == null) {
+                logger.error("이미지 읽기 실패: {}", imageFile.getName());
+                return null;
+            }
+
+            // WebP로 저장 (ImageIO)
+            boolean success = ImageIO.write(image, "webp", webpFile);
+            if (!success) {
+                logger.error("WebP 저장 실패: {}", imageFile.getName());
+                return null;
+            }
 
             logger.debug("WebP 변환 완료: {} → {}", imageFile.getName(), webpFile.getName());
             return webpFile;

@@ -84,9 +84,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 	-->
 	
 	<!-- common -->
-	<link rel="stylesheet" href="${ctx}/resources/admin/dist/css/common.css">
+	<link rel="stylesheet" href="${ctx}/resources/admin/dist/css/common.css?v=202503250001">
 	<script src="${ctx}/resources/common/util/js/tabulatorGrid.js" charset="UTF-8"></script>
-	<script src="${ctx}/resources/common/util/js/common.js?v=202503100001" charset="UTF-8"></script>
+	<script src="${ctx}/resources/common/util/js/common.js?v=202503250001" charset="UTF-8"></script>
 </head>
 
 <body class="hold-transition layout-top-nav">

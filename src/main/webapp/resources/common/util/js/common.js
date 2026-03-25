@@ -217,6 +217,130 @@ function escapeHtml(str){
   global.FileUtil.uploadCommonFile = uploadCommonFile;
   global.FileUtil.uploadPendingGridFiles = uploadPendingGridFiles;
 
+  // ========== 이미지 리사이즈 (클라이언트) ==========
+  var RESIZE_MAX_WIDTH = 600;
+  var RESIZE_MAX_HEIGHT = 600;
+  var RESIZE_QUALITY = 0.85;
+
+  /**
+   * 단일 이미지 리사이즈 (Canvas 사용)
+   * @param {File} file - 이미지 파일
+   * @param {Object} options - { maxWidth, maxHeight, quality }
+   * @returns {Promise<File>} - 리사이즈된 파일 (또는 원본)
+   */
+  function resizeImage(file, options) {
+    options = options || {};
+    var maxWidth = options.maxWidth || RESIZE_MAX_WIDTH;
+    var maxHeight = options.maxHeight || RESIZE_MAX_HEIGHT;
+    var quality = options.quality || RESIZE_QUALITY;
+
+    return new Promise(function(resolve) {
+      // 이미지가 아니면 그대로 반환
+      if (!file || !file.type || !file.type.startsWith('image/')) {
+        resolve(file);
+        return;
+      }
+
+      // GIF는 리사이즈 안함 (애니메이션 손실)
+      if (file.type === 'image/gif') {
+        resolve(file);
+        return;
+      }
+
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          // 이미 작은 이미지면 그대로
+          if (img.width <= maxWidth && img.height <= maxHeight) {
+            resolve(file);
+            return;
+          }
+
+          // 비율 계산
+          var ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+          var newWidth = Math.round(img.width * ratio);
+          var newHeight = Math.round(img.height * ratio);
+
+          // Canvas 리사이즈
+          var canvas = document.createElement('canvas');
+          canvas.width = newWidth;
+          canvas.height = newHeight;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+          // Blob으로 변환
+          canvas.toBlob(function(blob) {
+            if (blob) {
+              var resizedFile = new File([blob], file.name, { type: file.type });
+              console.log('[FileUtil] 리사이즈: ' + file.name + ' (' + Math.round(file.size/1024) + 'KB → ' + Math.round(blob.size/1024) + 'KB)');
+              resolve(resizedFile);
+            } else {
+              resolve(file);
+            }
+          }, file.type, quality);
+        };
+        img.onerror = function() { resolve(file); };
+        img.src = e.target.result;
+      };
+      reader.onerror = function() { resolve(file); };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /**
+   * 여러 이미지 리사이즈 (병렬 처리)
+   * @param {FileList|Array} files - 이미지 파일들
+   * @param {Object} options - { maxWidth, maxHeight, quality }
+   * @returns {Promise<File[]>} - 리사이즈된 파일 배열
+   */
+  function resizeImages(files, options) {
+    var promises = [];
+    for (var i = 0; i < files.length; i++) {
+      promises.push(resizeImage(files[i], options));
+    }
+    return Promise.all(promises);
+  }
+
+  global.FileUtil.resizeImage = resizeImage;
+  global.FileUtil.resizeImages = resizeImages;
+
+  // ========== 로딩 오버레이 ==========
+  /**
+   * 로딩 오버레이 표시
+   * @param {String} message - 로딩 메시지
+   */
+  function showLoading(message) {
+    message = message || '처리 중입니다...';
+
+    // 이미 있으면 메시지만 변경
+    var $overlay = $('#fileUtilLoadingOverlay');
+    if ($overlay.length) {
+      $overlay.find('.loading-message').text(message);
+      $overlay.fadeIn(200);
+      return;
+    }
+
+    // 새로 생성
+    var html = '<div id="fileUtilLoadingOverlay" class="file-loading-overlay">' +
+                 '<div class="file-loading-content">' +
+                   '<div class="file-loading-spinner"></div>' +
+                   '<p class="loading-message">' + message + '</p>' +
+                 '</div>' +
+               '</div>';
+    $('body').append(html);
+  }
+
+  /**
+   * 로딩 오버레이 숨김
+   */
+  function hideLoading() {
+    $('#fileUtilLoadingOverlay').fadeOut(200);
+  }
+
+  global.FileUtil.showLoading = showLoading;
+  global.FileUtil.hideLoading = hideLoading;
+
   // 로드 확인용(원하면 지워)
   // console.log("[FileUtil] loaded", global.FileUtil);
 
