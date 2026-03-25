@@ -299,22 +299,16 @@ public class FileService {
 
             long fileSiz = f.getSize();
 
-            // 이미지 파일 처리: 압축 → WebP 변환
-            if (ImageUtil.isImageFile(saveFileNm)) {
-                // 1. 압축
-                ImageUtil.compressImage(target.toFile());
-
-                // 2. WebP 변환 (JPG/PNG만)
-                if (ImageUtil.isConvertibleToWebp(saveFileNm)) {
-                    File webpFile = ImageUtil.convertToWebp(target.toFile());
-                    if (webpFile != null && webpFile.exists()) {
-                        // 원본 삭제
-                        Files.deleteIfExists(target);
-                        // 파일명, 확장자 변경
-                        saveFileNm = webpFile.getName();
-                        fileExtn = "webp";
-                        fileSiz = webpFile.length();
-                    }
+            // 이미지 파일 처리: WebP 변환 (JPG/PNG → WebP)
+            if (ImageUtil.isImageFile(saveFileNm) && ImageUtil.isConvertibleToWebp(saveFileNm)) {
+                File webpFile = ImageUtil.convertToWebp(target.toFile());
+                if (webpFile != null && webpFile.exists()) {
+                    // 원본 삭제
+                    Files.deleteIfExists(target);
+                    // 파일명, 확장자 변경
+                    saveFileNm = webpFile.getName();
+                    fileExtn = "webp";
+                    fileSiz = webpFile.length();
                 }
             }
 

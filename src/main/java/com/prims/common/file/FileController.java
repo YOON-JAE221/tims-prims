@@ -119,20 +119,15 @@ public class FileController {
             File targetFile = new File(uploadDirPath + savedName);
             image.transferTo(targetFile);
 
-            // 이미지 파일 처리: 압축 → WebP 변환
-            if (com.prims.common.util.ImageUtil.isImageFile(savedName)) {
-                // 1. 압축
-                com.prims.common.util.ImageUtil.compressImage(targetFile);
-
-                // 2. WebP 변환 (JPG/PNG만)
-                if (com.prims.common.util.ImageUtil.isConvertibleToWebp(savedName)) {
-                    File webpFile = com.prims.common.util.ImageUtil.convertToWebp(targetFile);
-                    if (webpFile != null && webpFile.exists()) {
-                        // 원본 삭제
-                        targetFile.delete();
-                        // 파일명 변경
-                        savedName = webpFile.getName();
-                    }
+            // 이미지 파일 처리: WebP 변환 (JPG/PNG → WebP)
+            if (com.prims.common.util.ImageUtil.isImageFile(savedName)
+                    && com.prims.common.util.ImageUtil.isConvertibleToWebp(savedName)) {
+                File webpFile = com.prims.common.util.ImageUtil.convertToWebp(targetFile);
+                if (webpFile != null && webpFile.exists()) {
+                    // 원본 삭제
+                    targetFile.delete();
+                    // 파일명 변경
+                    savedName = webpFile.getName();
                 }
             }
 
