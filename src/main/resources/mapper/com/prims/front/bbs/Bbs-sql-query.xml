@@ -108,6 +108,7 @@
                  WHEN 'ETC' THEN '기타문의'
                  ELSE '-' END AS INQ_TYPE_NM
              , P.PROP_NM
+             , P.PROP_NO
           FROM TB_BBS_PST A
          INNER JOIN TB_BBS_BRD B ON A.BRD_CD = B.BRD_CD AND B.DEL_YN = 'N' AND B.USE_YN = 'Y'
           LEFT JOIN TB_PROPERTY P ON A.PROP_CD = P.PROP_CD AND P.DEL_YN = 'N'

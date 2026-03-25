@@ -77,7 +77,7 @@
            AND A.DEAL_TYPE = #{dealType}
            </if>
            <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%') OR A.PROP_NO LIKE CONCAT('%', #{keyword}, '%'))
            </if>
            <if test="areaMin != null">
            AND A.AREA_EXCLUSIVE >= #{areaMin}
@@ -140,7 +140,7 @@
            AND A.DEAL_TYPE = #{dealType}
            </if>
            <if test="keyword != null and keyword != ''">
-           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%'))
+           AND (A.PROP_NM LIKE CONCAT('%', #{keyword}, '%') OR A.ADDRESS LIKE CONCAT('%', #{keyword}, '%') OR A.PROP_NO LIKE CONCAT('%', #{keyword}, '%'))
            </if>
            <if test="areaMin != null">
            AND A.AREA_EXCLUSIVE >= #{areaMin}

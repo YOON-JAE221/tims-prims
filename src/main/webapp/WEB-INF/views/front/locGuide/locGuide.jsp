@@ -54,69 +54,6 @@
 
 <%@ include file="/WEB-INF/views/front/common/footer.jsp" %>
 
-<!-- 오시는길 전용 CSS -->
-<style>
-.loc-wrap { max-width:1200px; margin:0 auto; padding:48px 24px 80px; }
-.loc-map { width:100%; height:450px; border:1px solid var(--gray-200); margin-bottom:0; }
-
-.loc-info { border-top:2px solid var(--navy); }
-.loc-row {
-  display:flex; align-items:center;
-  padding:14px 16px; border-bottom:1px solid var(--gray-100);
-  font-size:14px; color:var(--gray-700);
-}
-.loc-label {
-  width:80px; flex-shrink:0;
-  font-weight:700; color:var(--gray-500);
-}
-.loc-value { flex:1; }
-
-.loc-section-title {
-  padding:16px 16px 10px;
-  font-size:14px; font-weight:700; color:var(--gray-700);
-  border-bottom:1px solid var(--gray-100);
-}
-.loc-section-body {
-  display:flex; flex-wrap:wrap; gap:10px 24px;
-  padding:14px 16px;
-  border-bottom:1px solid var(--gray-100);
-  font-size:14px; color:var(--gray-600);
-}
-
-/* 지하철 */
-.loc-subway { display:inline-flex; align-items:center; gap:8px; }
-.loc-subway-num {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:22px; height:22px; border-radius:50%;
-  color:white; font-size:11px; font-weight:700;
-}
-
-/* 정류장 */
-.loc-stop { display:inline-flex; align-items:center; gap:6px; }
-.loc-stop-num {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:20px; height:20px; border-radius:50%;
-  background:var(--gray-400); color:white;
-  font-size:11px; font-weight:600;
-}
-
-/* 버스 */
-.loc-bus-area { flex-direction:column; gap:10px; }
-.loc-bus-row { display:flex; align-items:center; gap:12px; }
-.loc-bus-type {
-  display:inline-block; padding:2px 10px; border-radius:4px;
-  color:white; font-size:11px; font-weight:700;
-  min-width:36px; text-align:center;
-}
-.loc-bus-no { font-size:14px; color:var(--gray-700); font-weight:500; }
-
-@media (max-width: 768px) {
-  .loc-map { height:280px; }
-  .loc-row { flex-direction:column; align-items:flex-start; gap:4px; }
-  .loc-label { width:auto; }
-}
-</style>
-
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=<%= Constant.KAKAO_MAP_API_KEY %>"></script>
 <script>
   $(function () {

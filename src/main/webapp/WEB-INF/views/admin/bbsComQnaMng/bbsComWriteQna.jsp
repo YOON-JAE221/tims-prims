@@ -56,6 +56,15 @@
                   </c:if>
                 </td>
               </tr>
+              <c:if test="${not empty qst.propCd}">
+              <tr>
+                <th class="bg-light">매물정보</th>
+                <td>
+                  <c:if test="${not empty qst.propNo}"><span style="font-family:'SF Mono',Monaco,'Courier New',monospace; font-size:14px; font-weight:800; color:#5a6a7a; margin-right:8px;">${qst.propNo}</span></c:if>
+                  <span style="font-size:14px; font-weight:600; color:var(--primary);">${qst.propNm}</span>
+                </td>
+              </tr>
+              </c:if>
               <tr>
                 <th class="bg-light">성명</th>
                 <td>${qst.rgtUsrNm}</td>

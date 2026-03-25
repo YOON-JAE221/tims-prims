@@ -42,171 +42,6 @@
 
 </div>
 
-<!-- 스타일 -->
-<style>
-.ps-wrap {
-  display: flex; width: 100%;
-  height: calc(100vh - 72px);
-  margin-top: 72px;
-}
-.ps-map { flex: 1; min-width: 0; }
-.ps-panel {
-  width: 400px; flex-shrink: 0;
-  display: flex; flex-direction: column;
-  border-left: 1px solid var(--gray-200);
-  background: white;
-}
-.ps-filter {
-  display: flex; gap: 8px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--gray-200);
-}
-.ps-filter select {
-  flex: 1; padding: 9px 10px;
-  border: 1px solid var(--gray-200); border-radius: 8px;
-  font-size: 13px; font-family: inherit;
-  color: var(--gray-700); outline: none;
-}
-.ps-filter select:focus { border-color: var(--orange); }
-.ps-result-info {
-  padding: 10px 16px;
-  font-size: 13px; color: var(--gray-500);
-  border-bottom: 1px solid var(--gray-100);
-}
-.ps-result-info span strong { color: var(--orange); font-weight: 800; }
-.ps-list {
-  flex: 1; overflow-y: auto;
-}
-.ps-empty {
-  padding: 60px 20px; text-align: center;
-  color: var(--gray-400); font-size: 14px;
-}
-
-/* 매물 카드 */
-.ps-item {
-  padding: 14px 16px; border-bottom: 1px solid var(--gray-100);
-  cursor: pointer; transition: background 0.15s;
-}
-.ps-item:hover { background: var(--gray-50); }
-.ps-item-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
-.ps-item-type { font-size: 12px; color: var(--orange); font-weight: 700; }
-.ps-item-no {
-  font-size: 12px;
-  color: var(--navy);
-  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
-  font-weight: 700;
-  background: transparent;
-  padding: 2px 8px;
-  border-radius: 4px;
-  margin-left: auto;
-  border: 1.5px solid var(--navy);
-}
-.ps-item-badge {
-  font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; color: white;
-}
-.ps-item-badge.sold { background: var(--gray-400); }
-.ps-item-name { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 2px; line-height: 1.3; }
-.ps-item-addr { font-size: 12px; color: var(--gray-400); margin-bottom: 6px; }
-.ps-item-price { font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 6px; }
-.ps-item-price span { font-size: 12px; font-weight: 500; color: var(--gray-400); }
-/* 면적/층수 + 버튼 같은 라인 */
-.ps-item-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 10px;
-}
-.ps-item-info { display: flex; gap: 10px; font-size: 12px; color: var(--gray-500); }
-.ps-item.sold { opacity: 0.5; }
-
-/* 리스트 카드 상세보기 버튼 */
-.ps-item-detail-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 5px 12px; border: 1px solid var(--orange); border-radius: 6px;
-  font-size: 11px; font-weight: 600; color: var(--orange);
-  background: white; cursor: pointer; font-family: inherit;
-  transition: all 0.15s; white-space: nowrap; flex-shrink: 0;
-}
-.ps-item-detail-btn:hover {
-  background: var(--orange); color: white;
-}
-
-/* 커스텀 오버레이 (가격 말풍선) */
-.map-price-label {
-  background: var(--navy); color: white;
-  padding: 5px 10px; border-radius: 6px;
-  font-size: 12px; font-weight: 700;
-  white-space: nowrap; cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  position: relative;
-}
-.map-price-label::after {
-  content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
-  border-left: 6px solid transparent; border-right: 6px solid transparent;
-  border-top: 6px solid var(--navy);
-}
-.map-price-label.apt { background: #2c3e6b; }
-.map-price-label.apt::after { border-top-color: #2c3e6b; }
-.map-price-label.officetel { background: #5a4a8a; }
-.map-price-label.officetel::after { border-top-color: #5a4a8a; }
-.map-price-label.villa { background: #6b4c3b; }
-.map-price-label.villa::after { border-top-color: #6b4c3b; }
-.map-price-label.oneroom { background: #3b5e6b; }
-.map-price-label.oneroom::after { border-top-color: #3b5e6b; }
-.map-price-label.shop { background: #3a7a6a; }
-.map-price-label.shop::after { border-top-color: #3a7a6a; }
-.map-price-label.office { background: #5a6a3a; }
-.map-price-label.office::after { border-top-color: #5a6a3a; }
-.map-price-label.sold { background: var(--gray-400); }
-.map-price-label.sold::after { border-top-color: var(--gray-400); }
-
-/* 클러스터 (네이버부동산 스타일) */
-.map-cluster {
-  background: rgba(66, 133, 244, 0.75); color: white;
-  border: 2px solid rgba(255,255,255,0.9);
-  border-radius: 50%; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 6px rgba(66,133,244,0.35);
-  transition: all 0.15s;
-  text-align: center; line-height: 1;
-  font-weight: 800;
-}
-.map-cluster:hover { transform: scale(1.1); background: rgba(66, 133, 244, 0.9); }
-.map-cluster.active {
-  background: rgba(232, 119, 34, 0.85) !important;
-  border-color: rgba(255,255,255,0.95);
-  box-shadow: 0 3px 10px rgba(232,119,34,0.45);
-  transform: scale(1.12);
-}
-.map-cluster.sm { width: 40px; height: 40px; font-size: 15px; }
-.map-cluster.md { width: 50px; height: 50px; font-size: 17px; }
-.map-cluster.lg { width: 60px; height: 60px; font-size: 20px; }
-.map-cluster .cl-count { font-weight: 800; }
-.map-cluster .cl-label { display: none; }
-
-/* 선택된 마커 */
-.map-price-label.active {
-  background: var(--orange) !important;
-  transform: scale(1.15);
-  z-index: 10;
-  box-shadow: 0 4px 14px rgba(232,119,34,0.45);
-  transition: all 0.2s;
-}
-.map-price-label.active::after { border-top-color: var(--orange) !important; }
-
-/* 선택된 리스트 카드 */
-.ps-item.active {
-  background: #fff8f2;
-  border-left: 3px solid var(--orange);
-}
-
-/* 매물검색 페이지: 풋터 숨김 (전체화면 앱 레이아웃) */
-.ps-wrap ~ .primus-footer { display: none; }
-
-@media (max-width: 768px) {
-  .ps-wrap { flex-direction: column; height: calc(100vh - 60px); margin-top: 60px; }
-  .ps-map { height: 45vh; flex-shrink: 0; }
-  .ps-panel { width: 100%; flex: 1; min-height: 0; }
-}
-</style>
-
 <!-- 카카오맵 -->
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=<%= Constant.KAKAO_MAP_API_KEY %>&autoload=false"></script>
 <script>
@@ -277,7 +112,7 @@ function fnRenderList(list) {
     html += '<div class="ps-item' + (isActive ? ' active' : '') + '" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
     html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
-    html += '    <span class="ps-item-no">' + (d.propNo || '') + '</span>';
+    html += '    <span class="prop-no">' + (d.propNo || '') + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';
@@ -403,7 +238,7 @@ function fnRenderFilteredList(items) {
     html += '<div class="ps-item" data-id="' + d.propCd + '" onclick="fnGoDetail(\'' + d.propCd + '\')">';
     html += '  <div class="ps-item-top">';
     html += '    <span class="ps-item-type">' + fnCatPath(d) + '</span>';
-    html += '    <span class="ps-item-no">' + (d.propNo || '') + '</span>';
+    html += '    <span class="prop-no">' + (d.propNo || '') + '</span>';
     html += '    ' + badgeHtml;
     html += '  </div>';
     html += '  <div class="ps-item-name">' + d.propNm + '</div>';

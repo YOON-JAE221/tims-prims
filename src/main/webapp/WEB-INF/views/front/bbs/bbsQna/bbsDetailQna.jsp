@@ -21,7 +21,7 @@
           <c:when test="${pst.inqType eq 'ETC'}"><span class="qna-readonly-badge" style="font-size:12px; padding:5px 12px; background:var(--gray-700);">기타문의</span></c:when>
         </c:choose>
         <c:if test="${not empty pst.propNm}">
-          <a href="${ctx}/property/viewPropertyDetail?propCd=${pst.propCd}" target="_blank" style="margin-left:8px; font-size:13px; color:var(--orange); text-decoration:underline;">📍 ${pst.propNm}</a>
+          <a href="${ctx}/property/viewPropertyDetail?propCd=${pst.propCd}" target="_blank" style="margin-left:8px; font-size:13px; color:var(--orange); text-decoration:underline;">📍 <c:if test="${not empty pst.propNo}"><span class="prop-no" style="margin-right:4px;">${pst.propNo}</span></c:if>${pst.propNm}</a>
         </c:if>
       </div>
       <div class="board-detail-title">${pst.pstNm}</div>

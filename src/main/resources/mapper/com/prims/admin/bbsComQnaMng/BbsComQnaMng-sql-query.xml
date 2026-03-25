@@ -85,6 +85,7 @@
 	             WHEN 'ETC' THEN '기타문의'
 	             ELSE '-' END AS INQ_TYPE_NM
 	         , P.PROP_NM
+	         , P.PROP_NO
 	      FROM TB_BBS_PST A
 	      LEFT JOIN TB_PROPERTY P ON A.PROP_CD = P.PROP_CD AND P.DEL_YN = 'N'
 	     WHERE A.DEL_YN = 'N' AND A.USE_YN = 'Y'
