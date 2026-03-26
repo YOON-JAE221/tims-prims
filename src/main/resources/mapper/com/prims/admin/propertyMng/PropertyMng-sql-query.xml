@@ -106,7 +106,7 @@
             PROP_CD, PROP_NO, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
-            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
+            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, BUILDING_USAGE, ROAD_WIDTH,
             FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
             BUILD_DATE, ENTRANCE_TYPE, HEATING,
             DETAIL_CNTS, ATCH_FILE_KEY, THUMB_IMG_PATH,
@@ -117,7 +117,7 @@
             #{propCd}, #{propNo}, #{catCd}, #{midCatCd}, #{subCatCd}, #{dealType}, #{propNm}, #{propFeature},
             #{address}, #{addressDtl}, #{buildingNm}, #{lat}, #{lng},
             #{sellPrice}, #{deposit}, #{monthlyRent}, #{loanYn}, #{loanAmount}, #{premium}, #{monthlyMgmt},
-            #{areaSupply}, #{areaExclusive}, #{areaLand}, #{areaTotal}, #{zoneType}, #{roadWidth},
+            #{areaSupply}, #{areaExclusive}, #{areaLand}, #{areaTotal}, #{zoneType}, #{buildingUsage}, #{roadWidth},
             #{floorNo}, #{floorTotal}, #{roomCnt}, #{bathCnt}, #{direction}, #{parkingYn},
             #{buildDate}, #{entranceType}, #{heating},
             #{detailCnts}, #{atchFileKey}, #{thumbImgPath},
@@ -149,6 +149,7 @@
             AREA_LAND      = #{areaLand},
             AREA_TOTAL     = #{areaTotal},
             ZONE_TYPE      = #{zoneType},
+            BUILDING_USAGE = #{buildingUsage},
             ROAD_WIDTH     = #{roadWidth},
             FLOOR_NO       = #{floorNo},
             FLOOR_TOTAL    = #{floorTotal},
@@ -185,7 +186,7 @@
             PROP_CD, PROP_NO, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, PROP_NM, PROP_FEATURE,
             ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
             SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
-            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
+            AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, BUILDING_USAGE, ROAD_WIDTH,
             FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
             BUILD_DATE, ENTRANCE_TYPE, HEATING,
             DETAIL_CNTS,
@@ -196,7 +197,7 @@
         SELECT #{newPropCd}, #{newPropNo}, CAT_CD, MID_CAT_CD, SUB_CAT_CD, DEAL_TYPE, CONCAT(PROP_NM, '_복사본'), PROP_FEATURE,
                ADDRESS, ADDRESS_DTL, BUILDING_NM, LAT, LNG,
                SELL_PRICE, DEPOSIT, MONTHLY_RENT, LOAN_YN, LOAN_AMOUNT, PREMIUM, MONTHLY_MGMT,
-               AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, ROAD_WIDTH,
+               AREA_SUPPLY, AREA_EXCLUSIVE, AREA_LAND, AREA_TOTAL, ZONE_TYPE, BUILDING_USAGE, ROAD_WIDTH,
                FLOOR_NO, FLOOR_TOTAL, ROOM_CNT, BATH_CNT, DIRECTION, PARKING_YN,
                BUILD_DATE, ENTRANCE_TYPE, HEATING,
                DETAIL_CNTS,
@@ -277,6 +278,7 @@
              , A.AREA_LAND
              , A.AREA_TOTAL
              , A.ZONE_TYPE
+             , A.BUILDING_USAGE
              , A.ROAD_WIDTH
              , A.FLOOR_NO
              , A.FLOOR_TOTAL

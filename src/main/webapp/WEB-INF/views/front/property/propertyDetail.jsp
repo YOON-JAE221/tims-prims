@@ -115,10 +115,15 @@
     <div class="prop-detail-section">
       <h3 class="prop-detail-section-title">매물 정보</h3>
       <table class="prop-detail-table">
+        <%-- 매물번호 (있으면 표시) --%>
         <c:if test="${not empty prop.propNo}">
         <tr><th>매물번호</th><td colspan="3"><span class="prop-no-lg">${prop.propNo}</span></td></tr>
         </c:if>
-        <tr><th>매물유형</th><td>${prop.catNm}</td><th>거래유형</th><td>${prop.dealTypeNm}</td></tr>
+
+        <%-- 필수: 매물유형 / 거래유형 --%>
+        <tr><th>매물유형</th><td>${not empty prop.catNm ? prop.catNm : '-'}</td><th>거래유형</th><td>${not empty prop.dealTypeNm ? prop.dealTypeNm : '-'}</td></tr>
+
+        <%-- 필수: 가격 / 관리비 --%>
         <tr>
           <th>가격</th>
           <td>
@@ -130,29 +135,67 @@
               </c:choose>
             </span>
           </td>
-          <th>관리비</th><td><c:choose><c:when test="${prop.mgmtCost > 0}">월 <fmt:formatNumber value="${prop.mgmtCost}" pattern="#,###"/>만</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+          <th>관리비</th><td><c:choose><c:when test="${not empty prop.monthlyMgmt and prop.monthlyMgmt > 0}">월 <fmt:formatNumber value="${prop.monthlyMgmt}" pattern="#,###"/>만</c:when><c:otherwise>-</c:otherwise></c:choose></td>
         </tr>
+
+        <%-- 권리금 (있으면 표시) --%>
         <c:if test="${not empty prop.premium and prop.premium > 0}">
         <tr><th>권리금</th><td colspan="3"><fmt:formatNumber value="${prop.premium}" pattern="#,###"/>만</td></tr>
         </c:if>
-        <tr><th>전용면적</th><td>${prop.areaExclusive}&#13217; <c:if test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">(<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:if></td><th>공급면적</th><td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
-        <c:if test="${(not empty prop.areaLand and prop.areaLand > 0) or (not empty prop.areaTotal and prop.areaTotal > 0)}">
-        <tr><th>대지면적</th><td><c:choose><c:when test="${not empty prop.areaLand and prop.areaLand > 0}">${prop.areaLand}&#13217; (<fmt:formatNumber value="${prop.areaLand * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td><th>연면적</th><td><c:choose><c:when test="${not empty prop.areaTotal and prop.areaTotal > 0}">${prop.areaTotal}&#13217; (<fmt:formatNumber value="${prop.areaTotal * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td></tr>
+
+        <%-- 필수: 전용면적 / 공급면적 --%>
+        <tr>
+          <th>전용면적</th>
+          <td><c:choose><c:when test="${not empty prop.areaExclusive and prop.areaExclusive > 0}">${prop.areaExclusive}&#13217; (<fmt:formatNumber value="${prop.areaExclusive * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+          <th>공급면적</th>
+          <td><c:choose><c:when test="${not empty prop.areaSupply and prop.areaSupply > 0}">${prop.areaSupply}&#13217; (<fmt:formatNumber value="${prop.areaSupply * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+        </tr>
+
+        <%-- 필수: 대지면적 / 연면적 --%>
+        <tr>
+          <th>대지면적</th>
+          <td><c:choose><c:when test="${not empty prop.areaLand and prop.areaLand > 0}">${prop.areaLand}&#13217; (<fmt:formatNumber value="${prop.areaLand * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+          <th>연면적</th>
+          <td><c:choose><c:when test="${not empty prop.areaTotal and prop.areaTotal > 0}">${prop.areaTotal}&#13217; (<fmt:formatNumber value="${prop.areaTotal * 0.3025}" pattern="#,##0.#"/>평)</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+        </tr>
+
+        <%-- 필수: 용도지역 / 용도 --%>
+        <tr>
+          <th>용도지역</th><td>${not empty prop.zoneType ? prop.zoneType : '-'}</td>
+          <th>용도</th><td>${not empty prop.buildingUsage ? prop.buildingUsage : '-'}</td>
+        </tr>
+
+        <%-- 필수: 도로폭 / 방수/욕실수 --%>
+        <tr>
+          <th>도로폭</th><td>${not empty prop.roadWidth ? prop.roadWidth : '-'}</td>
+          <th>방수/욕실수</th><td>${prop.roomCnt > 0 ? prop.roomCnt : '-'}룸 / ${prop.bathCnt > 0 ? prop.bathCnt : '-'}욕실</td>
+        </tr>
+
+        <%-- 필수: 해당층/총층 / 방향 --%>
+        <tr>
+          <th>해당층/총층</th><td>${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</td>
+          <th>방향</th><td>${not empty prop.direction ? prop.direction : '-'}</td>
+        </tr>
+
+        <%-- 필수: 현관구조 / 주차 --%>
+        <tr>
+          <th>현관구조</th><td>${not empty prop.entranceType ? prop.entranceType : '-'}</td>
+          <th>주차</th><td><c:choose><c:when test="${prop.parkingYn eq 'Y'}">가능</c:when><c:when test="${prop.parkingYn eq 'N'}">불가</c:when><c:otherwise>-</c:otherwise></c:choose></td>
+        </tr>
+
+        <%-- 선택: 입주가능일 / 난방방식 (둘 중 하나라도 있으면 표시) --%>
+        <c:if test="${not empty prop.moveInDate or not empty prop.heating}">
+        <tr>
+          <th>입주가능일</th><td>${not empty prop.moveInDate ? prop.moveInDate : '-'}</td>
+          <th>난방방식</th><td>${not empty prop.heating ? prop.heating : '-'}</td>
+        </tr>
         </c:if>
-        <c:if test="${not empty prop.zoneType or not empty prop.roadWidth}">
-        <tr><th>용도지역</th><td>${not empty prop.zoneType ? prop.zoneType : '-'}</td><th>도로폭</th><td>${not empty prop.roadWidth ? prop.roadWidth : '-'}</td></tr>
-        </c:if>
-        <c:if test="${prop.roomCnt > 0 or not empty prop.floorNo}">
-        <tr><th>방수/욕실수</th><td>${prop.roomCnt > 0 ? prop.roomCnt : '-'}룸 / ${prop.bathCnt > 0 ? prop.bathCnt : '-'}욕실</td><th>해당층/총층</th><td>${not empty prop.floorNo ? prop.floorNo : '-'}층 / ${not empty prop.floorTotal ? prop.floorTotal : '-'}층</td></tr>
-        </c:if>
-        <c:if test="${not empty prop.direction or not empty prop.entranceType}">
-        <tr><th>방향</th><td>${not empty prop.direction ? prop.direction : '-'}</td><th>현관구조</th><td>${not empty prop.entranceType ? prop.entranceType : '-'}</td></tr>
-        </c:if>
-        <c:if test="${not empty prop.moveInDate or not empty prop.parking}">
-        <tr><th>입주가능일</th><td>${not empty prop.moveInDate ? prop.moveInDate : '-'}</td><th>주차</th><td>${not empty prop.parking ? prop.parking : '-'}</td></tr>
-        </c:if>
-        <c:if test="${not empty prop.heating or not empty prop.buildYear}">
-        <tr><th>난방방식</th><td>${not empty prop.heating ? prop.heating : '-'}</td><th>사용승인일</th><td>${not empty prop.buildYear ? prop.buildYear : '-'}</td></tr>
+
+        <%-- 선택: 사용승인일 (있으면 표시) --%>
+        <c:if test="${not empty prop.buildDate}">
+        <tr>
+          <th>사용승인일</th><td colspan="3">${prop.buildDate}</td>
+        </tr>
         </c:if>
       </table>
     </div>

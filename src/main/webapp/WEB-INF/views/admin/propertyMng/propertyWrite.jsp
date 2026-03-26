@@ -226,12 +226,16 @@
               <tr>
                 <th>용도지역</th>
                 <td><input type="text" name="zoneType" class="form-control form-control-sm" value="${prop.zoneType}" placeholder="예: 제2종일반주거지역" /></td>
-                <th>도로폭</th>
-                <td><input type="text" name="roadWidth" class="form-control form-control-sm" value="${prop.roadWidth}" placeholder="예: 8m" /></td>
+                <th>용도</th>
+                <td><input type="text" name="buildingUsage" class="form-control form-control-sm" value="${prop.buildingUsage}" placeholder="예: 근린생활시설, 판매시설" /></td>
               </tr>
               <tr>
+                <th>도로폭</th>
+                <td><input type="text" name="roadWidth" class="form-control form-control-sm" value="${prop.roadWidth}" placeholder="예: 8m" /></td>
                 <th>해당층</th>
                 <td><input type="text" name="floorNo" class="form-control form-control-sm" value="${prop.floorNo}" placeholder="예: 5, B1" /></td>
+              </tr>
+              <tr>
                 <th>총층</th>
                 <td><input type="number" name="floorTotal" class="form-control form-control-sm" value="${prop.floorTotal}" /></td>
               </tr>
